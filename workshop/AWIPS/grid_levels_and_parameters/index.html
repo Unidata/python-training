@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grid_Levels_and_Parameters | The Unidata Python Training Site</title>
+<link href="../../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/workshop/AWIPS/grid_levels_and_parameters/">
+<!--[if lt IE 9]><script src="../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="Grid_Levels_and_Parameters">
+<meta property="og:url" content="https://unidata.github.io/python-training/workshop/AWIPS/grid_levels_and_parameters/">
+<meta property="og:description" content="This example covers the callable methods of the Python AWIPS DAF when working with gridded data.  We start with a connection to an EDEX server, then query data types, then grid names, parameters, leve">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-08-30T15:02:20-06:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../../python/intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../../../gallery/gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.ipynb" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Grid_Levels_and_Parameters</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This example covers the callable methods of the Python AWIPS DAF when working with gridded data.  We start with a connection to an EDEX server, then query data types, then grid names, parameters, levels, and other information. Finally the gridded data is plotted for its domain using Matplotlib and Cartopy.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="DataAccessLayer.getSupportedDatatypes()">DataAccessLayer.getSupportedDatatypes()<a class="anchor-link" href="#DataAccessLayer.getSupportedDatatypes()">¶</a>
+</h3>
+<p>getSupportedDatatypes() returns a list of available data types offered by the EDEX server defined above.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">awips.dataaccess</span> <span class="k">import</span> <span class="n">DataAccessLayer</span>
+<span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">changeEDEXHost</span><span class="p">(</span><span class="s2">"edex-cloud.unidata.ucar.edu"</span><span class="p">)</span>
+<span class="n">dataTypes</span> <span class="o">=</span> <span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">getSupportedDatatypes</span><span class="p">()</span>
+<span class="nb">list</span><span class="p">(</span><span class="n">dataTypes</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="DataAccessLayer.getAvailableLocationNames()">DataAccessLayer.getAvailableLocationNames()<a class="anchor-link" href="#DataAccessLayer.getAvailableLocationNames()">¶</a>
+</h3>
+<p>Now create a new data request, and set the data type to <strong>grid</strong> to request all available grids with <strong>getAvailableLocationNames()</strong></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">request</span> <span class="o">=</span> <span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">newDataRequest</span><span class="p">()</span>
+<span class="n">request</span><span class="o">.</span><span class="n">setDatatype</span><span class="p">(</span><span class="s2">"grid"</span><span class="p">)</span>
+<span class="n">available_grids</span> <span class="o">=</span> <span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">getAvailableLocationNames</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+<span class="n">available_grids</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+<span class="nb">list</span><span class="p">(</span><span class="n">available_grids</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="DataAccessLayer.getAvailableParameters()">DataAccessLayer.getAvailableParameters()<a class="anchor-link" href="#DataAccessLayer.getAvailableParameters()">¶</a>
+</h3>
+<p>After datatype and model name (locationName) are set, you can query all available parameters with <strong>getAvailableParameters()</strong></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">request</span><span class="o">.</span><span class="n">setLocationNames</span><span class="p">(</span><span class="s2">"RAP13"</span><span class="p">)</span>
+<span class="n">availableParms</span> <span class="o">=</span> <span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">getAvailableParameters</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+<span class="n">availableParms</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+<span class="nb">list</span><span class="p">(</span><span class="n">availableParms</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="DataAccessLayer.getAvailableLevels()">DataAccessLayer.getAvailableLevels()<a class="anchor-link" href="#DataAccessLayer.getAvailableLevels()">¶</a>
+</h3>
+<p>Selecting <strong>"T"</strong> for temperature.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">request</span><span class="o">.</span><span class="n">setParameters</span><span class="p">(</span><span class="s2">"T"</span><span class="p">)</span>
+<span class="n">availableLevels</span> <span class="o">=</span> <span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">getAvailableLevels</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="n">availableLevels</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>
+<strong>0.0SFC</strong> is the Surface level</li>
+<li>
+<strong>FHAG</strong> stands for Fixed Height Above Ground (in meters)</li>
+<li>
+<strong>NTAT</strong> stands for Nominal Top of the ATmosphere</li>
+<li>
+<strong>BL</strong> stands for Boundary Layer, where <strong>0.0_30.0BL</strong> reads as <em>0-30 mb above ground level</em>  </li>
+<li>
+<strong>TROP</strong> is the Tropopause level</li>
+</ul>
+<p><strong>request.setLevels()</strong></p>
+<p>For this example we will use Surface Temperature</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">request</span><span class="o">.</span><span class="n">setLevels</span><span class="p">(</span><span class="s2">"2.0FHAG"</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="DataAccessLayer.getAvailableTimes()">DataAccessLayer.getAvailableTimes()<a class="anchor-link" href="#DataAccessLayer.getAvailableTimes()">¶</a>
+</h3>
+<ul>
+<li>
+<strong>getAvailableTimes(request, True)</strong> will return an object of <em>run times</em> - formatted as <code>YYYY-MM-DD HH:MM:SS</code>
+</li>
+<li>
+<strong>getAvailableTimes(request)</strong> will return an object of all times - formatted as <code>YYYY-MM-DD HH:MM:SS (F:ff)</code>
+</li>
+<li>
+<strong>getForecastRun(cycle, times)</strong> will return a DataTime array for a single forecast cycle.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cycles</span> <span class="o">=</span> <span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">getAvailableTimes</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">times</span> <span class="o">=</span> <span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">getAvailableTimes</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+<span class="n">fcstRun</span> <span class="o">=</span> <span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">getForecastRun</span><span class="p">(</span><span class="n">cycles</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">times</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="DataAccessLayer.getGridData()">DataAccessLayer.getGridData()<a class="anchor-link" href="#DataAccessLayer.getGridData()">¶</a>
+</h3>
+<p>Now that we have our <code>request</code> and DataTime <code>fcstRun</code> arrays ready, it's time to request the data array from EDEX.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">getGridData</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">[</span><span class="n">fcstRun</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+<span class="k">for</span> <span class="n">grid</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">getRawData</span><span class="p">()</span>
+    <span class="n">lons</span><span class="p">,</span> <span class="n">lats</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">getLatLonCoords</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'Time :'</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">getDataTime</span><span class="p">()))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">'Model:'</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">getLocationName</span><span class="p">()))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'Parm :'</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">getParameter</span><span class="p">()))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'Unit :'</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">getUnit</span><span class="p">()))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Plotting-with-Matplotlib-and-Cartopy">Plotting with Matplotlib and Cartopy<a class="anchor-link" href="#Plotting-with-Matplotlib-and-Cartopy">¶</a>
+</h3>
+<p><strong>1. pcolormesh</strong></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
+<span class="kn">from</span> <span class="nn">cartopy.mpl.gridliner</span> <span class="k">import</span> <span class="n">LONGITUDE_FORMATTER</span><span class="p">,</span> <span class="n">LATITUDE_FORMATTER</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy.ma</span> <span class="k">as</span> <span class="nn">ma</span>
+<span class="kn">from</span> <span class="nn">scipy.io</span> <span class="k">import</span> <span class="n">loadmat</span>
+<span class="k">def</span> <span class="nf">make_map</span><span class="p">(</span><span class="n">bbox</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span>
+                           <span class="n">subplot_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="n">bbox</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">(</span><span class="n">resolution</span><span class="o">=</span><span class="s1">'50m'</span><span class="p">)</span>
+    <span class="n">gl</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">gridlines</span><span class="p">(</span><span class="n">draw_labels</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">gl</span><span class="o">.</span><span class="n">xlabels_top</span> <span class="o">=</span> <span class="n">gl</span><span class="o">.</span><span class="n">ylabels_right</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">gl</span><span class="o">.</span><span class="n">xformatter</span> <span class="o">=</span> <span class="n">LONGITUDE_FORMATTER</span>
+    <span class="n">gl</span><span class="o">.</span><span class="n">yformatter</span> <span class="o">=</span> <span class="n">LATITUDE_FORMATTER</span>
+    <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span>
+
+<span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s1">'rainbow'</span><span class="p">)</span>
+<span class="n">bbox</span> <span class="o">=</span> <span class="p">[</span><span class="n">lons</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">lons</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">lats</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">lats</span><span class="o">.</span><span class="n">max</span><span class="p">()]</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">make_map</span><span class="p">(</span><span class="n">bbox</span><span class="o">=</span><span class="n">bbox</span><span class="p">)</span>
+<span class="n">cs</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">)</span>
+<span class="n">cbar</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="n">extend</span><span class="o">=</span><span class="s1">'both'</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">'horizontal'</span><span class="p">)</span>
+<span class="n">cbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">getLocationName</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">'UTF-8'</span><span class="p">)</span>  <span class="o">+</span><span class="s2">" "</span> \
+               <span class="o">+</span> <span class="n">grid</span><span class="o">.</span><span class="n">getLevel</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">'UTF-8'</span><span class="p">)</span> <span class="o">+</span> <span class="s2">" "</span> \
+               <span class="o">+</span> <span class="n">grid</span><span class="o">.</span><span class="n">getParameter</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">'UTF-8'</span><span class="p">)</span> \
+               <span class="o">+</span> <span class="s2">" ("</span> <span class="o">+</span> <span class="n">grid</span><span class="o">.</span><span class="n">getUnit</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">'UTF-8'</span><span class="p">)</span> <span class="o">+</span> <span class="s2">") "</span> \
+               <span class="o">+</span> <span class="s2">"valid "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">getDataTime</span><span class="p">()</span><span class="o">.</span><span class="n">getRefTime</span><span class="p">()))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>2. contourf</strong></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig2</span><span class="p">,</span> <span class="n">ax2</span> <span class="o">=</span> <span class="n">make_map</span><span class="p">(</span><span class="n">bbox</span><span class="o">=</span><span class="n">bbox</span><span class="p">)</span>
+<span class="n">cs2</span> <span class="o">=</span> <span class="n">ax2</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span>
+                  <span class="n">vmin</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">vmax</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+<span class="n">cbar2</span> <span class="o">=</span> <span class="n">fig2</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cs2</span><span class="p">,</span> <span class="n">extend</span><span class="o">=</span><span class="s1">'both'</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">'horizontal'</span><span class="p">)</span>
+<span class="n">cbar2</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">getLocationName</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">'UTF-8'</span><span class="p">)</span>  <span class="o">+</span><span class="s2">" "</span> \
+               <span class="o">+</span> <span class="n">grid</span><span class="o">.</span><span class="n">getLevel</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">'UTF-8'</span><span class="p">)</span> <span class="o">+</span> <span class="s2">" "</span> \
+               <span class="o">+</span> <span class="n">grid</span><span class="o">.</span><span class="n">getParameter</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">'UTF-8'</span><span class="p">)</span> \
+               <span class="o">+</span> <span class="s2">" ("</span> <span class="o">+</span> <span class="n">grid</span><span class="o">.</span><span class="n">getUnit</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">'UTF-8'</span><span class="p">)</span> <span class="o">+</span> <span class="s2">") "</span> \
+               <span class="o">+</span> <span class="s2">"valid "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">getDataTime</span><span class="p">()</span><span class="o">.</span><span class="n">getRefTime</span><span class="p">()))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+    </div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha256-SDRP1VVYu+tgAGKhddBSl5+ezofHKZeI+OzxakbIe/Y=" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

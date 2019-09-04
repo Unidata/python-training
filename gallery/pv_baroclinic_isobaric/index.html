@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PV_baroclinic_isobaric | The Unidata Python Training Site</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/gallery/pv_baroclinic_isobaric/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="PV_baroclinic_isobaric">
+<meta property="og:url" content="https://unidata.github.io/python-training/gallery/pv_baroclinic_isobaric/">
+<meta property="og:description" content="In [ ]:
+
+    
+%matplotlib inline
+
+
+    
+
+
+
+
+
+
+
+Baroclinic Potential Vorticity Analysis, Divergence, and Winds¶Classic baroclinic potential vorticity plot at 250 hPa using GFS
+analysis file.
+This examp">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-08-30T15:02:20-06:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../python/intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop/workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.ipynb" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">PV_baroclinic_isobaric</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Baroclinic-Potential-Vorticity-Analysis,-Divergence,-and-Winds">Baroclinic Potential Vorticity Analysis, Divergence, and Winds<a class="anchor-link" href="#Baroclinic-Potential-Vorticity-Analysis,-Divergence,-and-Winds">¶</a>
+</h2>
+<p>Classic baroclinic potential vorticity plot at 250 hPa using GFS
+analysis file.</p>
+<p>This example uses example data from the GFS analysis for 12 UTC 31
+October 2016 and uses xarray as the main read source with using MetPy to
+calculate the baroclinic potential vorticity, divergence and wind speed
+with geographic plotting using Cartopy for a CONUS view of the 250-hPa
+surface with divergence and wind barbs.</p>
+<p>By: Kevin Goebbert</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="k">as</span> <span class="nn">mpcalc</span>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="k">import</span> <span class="n">units</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The following code reads the example data using the xarray open_dataset
+function and prints the coordinate values that are associated with the
+various variables contained within the file.</p>
+<p>This code uses the metpy accessor to parse file to make it easy to pull
+data using common coordinate names (e.g., vertical) and attach units.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">'https://thredds.ucar.edu/thredds/dodsC/'</span>
+                     <span class="s1">'casestudies/python-gallery/GFS_20101026_1200.nc'</span><span class="p">)</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">parse_cf</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Data-Retrieval">Data Retrieval<a class="anchor-link" href="#Data-Retrieval">¶</a>
+</h3>
+<p>This code retrieves the necessary data from the file and completes some
+smoothing of the temperature, and wind fields using the MetPy function
+smooth_n_point. A nicely formated valid time (vtime) variable is also
+created.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Set subset slice for the geographic extent of data to limit download</span>
+<span class="n">lon_slice</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">350</span><span class="p">)</span>
+<span class="n">lat_slice</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">85</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># Grab lat/lon values (GFS will be 1D)</span>
+<span class="n">lats</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">lat</span><span class="o">=</span><span class="n">lat_slice</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+<span class="n">lons</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">lon</span><span class="o">=</span><span class="n">lon_slice</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+
+
+<span class="c1"># Grab the pressure levels and select the data to be imported</span>
+<span class="c1"># Need all pressure levels for Temperatures, U and V Wind, and Rel. Humidity</span>
+<span class="c1"># Smooth with the gaussian filter from scipy</span>
+<span class="n">pres</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s1">'isobaric3'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[:]</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">'Pa'</span><span class="p">)</span>
+
+<span class="n">tmpk_var</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s1">'Temperature_isobaric'</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">lat</span><span class="o">=</span><span class="n">lat_slice</span><span class="p">,</span> <span class="n">lon</span><span class="o">=</span><span class="n">lon_slice</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+<span class="n">tmpk</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">smooth_n_point</span><span class="p">(</span><span class="n">tmpk_var</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">thta</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">potential_temperature</span><span class="p">(</span><span class="n">pres</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">tmpk</span><span class="p">)</span>
+
+<span class="n">uwnd_var</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s1">'u-component_of_wind_isobaric'</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">lat</span><span class="o">=</span><span class="n">lat_slice</span><span class="p">,</span> <span class="n">lon</span><span class="o">=</span><span class="n">lon_slice</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+<span class="n">vwnd_var</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s1">'v-component_of_wind_isobaric'</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">lat</span><span class="o">=</span><span class="n">lat_slice</span><span class="p">,</span> <span class="n">lon</span><span class="o">=</span><span class="n">lon_slice</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+<span class="n">uwnd</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">smooth_n_point</span><span class="p">(</span><span class="n">uwnd_var</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">vwnd</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">smooth_n_point</span><span class="p">(</span><span class="n">vwnd_var</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Create a clean datetime object for plotting based on time of Geopotential heights</span>
+<span class="n">vtime</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">'datetime64[ms]'</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">'O'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Use MetPy to compute the baroclinic potential vorticity on all isobaric
+levels and other variables</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Compute dx and dy spacing for use in vorticity calculation</span>
+<span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">lat_lon_grid_deltas</span><span class="p">(</span><span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">)</span>
+
+<span class="c1"># Comput the PV on all isobaric surfaces</span>
+<span class="n">pv</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">potential_vorticity_baroclinic</span><span class="p">(</span><span class="n">thta</span><span class="p">,</span> <span class="n">pres</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">uwnd</span><span class="p">,</span> <span class="n">vwnd</span><span class="p">,</span>
+                                           <span class="n">dx</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">dy</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:],</span>
+                                           <span class="n">lats</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">'degrees'</span><span class="p">))</span>
+
+<span class="c1"># Use MetPy to compute the divergence on the pressure surfaces</span>
+<span class="n">div</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">divergence</span><span class="p">(</span><span class="n">uwnd</span><span class="p">,</span> <span class="n">vwnd</span><span class="p">,</span> <span class="n">dx</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">dy</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">dim_order</span><span class="o">=</span><span class="s1">'yx'</span><span class="p">)</span>
+
+<span class="c1"># Find the index value for the 250-hPa surface</span>
+<span class="n">i250</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pres</span><span class="o">.</span><span class="n">m</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">(((</span><span class="mi">250</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">'hPa'</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">pres</span><span class="o">.</span><span class="n">units</span><span class="p">))</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Map-Creation">Map Creation<a class="anchor-link" href="#Map-Creation">¶</a>
+</h3>
+<p>This next set of code creates the plot and draws contours on a Lambert
+Conformal map centered on -100 E longitude. The main view is over the
+CONUS with isobaric PV map with PV contoured every 1 PVU and divergence
+colorshaded.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Set up the projection that will be used for plotting</span>
+<span class="n">mapcrs</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">LambertConformal</span><span class="p">(</span><span class="n">central_longitude</span><span class="o">=-</span><span class="mi">100</span><span class="p">,</span> <span class="n">central_latitude</span><span class="o">=</span><span class="mi">35</span><span class="p">,</span>
+                               <span class="n">standard_parallels</span><span class="o">=</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">60</span><span class="p">))</span>
+
+<span class="c1"># Set up the projection of the data; if lat/lon then PlateCarree is what you want</span>
+<span class="n">datacrs</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()</span>
+
+<span class="c1"># Start the figure and create plot axes with proper projection</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">mapcrs</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">([</span><span class="o">-</span><span class="mi">130</span><span class="p">,</span> <span class="o">-</span><span class="mi">72</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">55</span><span class="p">],</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+
+<span class="c1"># Add geopolitical boundaries for map reference</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">COASTLINE</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">'50m'</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">'50m'</span><span class="p">))</span>
+
+<span class="c1"># Plot the contours of PV at 250 hPa, scaling 10^6 every 1 PVU</span>
+<span class="n">clevs_pv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">cs1</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">pv</span><span class="p">[</span><span class="n">i250</span><span class="p">]</span><span class="o">*</span><span class="mf">1e6</span><span class="p">,</span> <span class="n">clevs_pv</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span>
+                 <span class="n">transform</span><span class="o">=</span><span class="n">datacrs</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">cs1</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">'</span><span class="si">%d</span><span class="s1">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s1">'large'</span><span class="p">)</span>
+
+<span class="c1"># Plot the colorfill of divergence, scaled 10^5 every 1 s^1</span>
+<span class="n">clevs_div</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">cs1</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">div</span><span class="p">[</span><span class="n">i250</span><span class="p">]</span><span class="o">*</span><span class="mf">1e5</span><span class="p">,</span> <span class="n">clevs_div</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">PuOr</span><span class="p">,</span>
+                  <span class="n">extend</span><span class="o">=</span><span class="s1">'both'</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">datacrs</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cs1</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">'horizontal'</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">extendrect</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Plot the wind barbs at 250 hPa</span>
+<span class="n">wind_slice</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">barbs</span><span class="p">(</span><span class="n">lons</span><span class="p">[</span><span class="n">wind_slice</span><span class="p">],</span> <span class="n">lats</span><span class="p">[</span><span class="n">wind_slice</span><span class="p">],</span>
+         <span class="n">uwnd</span><span class="p">[</span><span class="n">i250</span><span class="p">][</span><span class="n">wind_slice</span><span class="p">,</span> <span class="n">wind_slice</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'kt'</span><span class="p">)</span><span class="o">.</span><span class="n">m</span><span class="p">,</span>
+         <span class="n">vwnd</span><span class="p">[</span><span class="n">i250</span><span class="p">][</span><span class="n">wind_slice</span><span class="p">,</span> <span class="n">wind_slice</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'kt'</span><span class="p">)</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">pivot</span><span class="o">=</span><span class="s1">'middle'</span><span class="p">,</span>
+         <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mf">6.5</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">datacrs</span><span class="p">)</span>
+
+<span class="c1"># Plot some titles to tell people what is on the map</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'250-hPa GFS PV (PVU), Divergence ($10^5$ s$^{-1}$),'</span>
+          <span class="s1">' and Wind Barbs (kt)'</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Valid Time: </span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vtime</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'right'</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+    </div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha256-SDRP1VVYu+tgAGKhddBSl5+ezofHKZeI+OzxakbIe/Y=" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

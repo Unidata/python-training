@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Why Python and Jupyter Notebooks? | The Unidata Python Training Site</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/python/introduction/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="Why Python and Jupyter Notebooks?">
+<meta property="og:url" content="https://unidata.github.io/python-training/python/introduction/">
+<meta property="og:description" content="Jupyter Notebooks
+One of the most significant advances in the scientific computing arena is underway with the explosion of interest in Jupyter (formerly, IPython) Notebook technology. The scientific p">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-08-30T15:02:20-06:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../../gallery/gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop/workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.md" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Why Python and Jupyter Notebooks?</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<h3>Jupyter Notebooks</h3>
+<p>One of the most significant advances in the scientific computing arena is underway with the explosion of interest in Jupyter (formerly, IPython) Notebook technology. The scientific publication <em>Nature</em> recently featured <a href="http://www.nature.com/news/interactive-notebooks-sharing-the-code-1.16261">an article on the benefits of Jupyter Notebooks</a> for scientific research. There are now Jupyter Notebooks on numerous topics in many scientific disciplines.  Here are a few examples of IPython Notebooks for science:</p>
+<ul>
+<li><a href="https://losc.ligo.org/s/events/GW150914/GW150914_tutorial.html">LIGO Gravitational Wave Data</a></li>
+<li><a href="http://unidata.github.io/python-gallery/examples/Satellite_Example.html">Satellite Imagery Analysis</a></li>
+<li><a href="https://github.com/barbagroup/CFDPython">12 Steps to Navier-Stokes</a></li>
+<li><a href="http://nbviewer.jupyter.org/github/ogrisel/notebooks/blob/master/Labeled%2520Faces%2520in%2520the%2520Wild%2520recognition.ipynb">Computer Vision</a></li>
+<li><a href="https://nbviewer.jupyter.org/github/rhiever/Data-Analysis-and-Machine-Learning-Projects/blob/master/example-data-science-notebook/Example%2520Machine%2520Learning%2520Notebook.ipynb">Machine Learning</a></li>
+</ul>
+<p>The reason for Jupyter's immense success is it excels in a form of programming called "literate programming".  Literate programming is a software development style pioneered by Stanford computer scientist, Donald Knuth. This type of programming emphasizes a prose first approach where exposition with human-friendly text is punctuated with code blocks. It excels at demonstration, research, and teaching objectives especially for science. Literate programming allows users to formulate and describe their thoughts with prose, supplemented by mathematical equations, as they prepare to write code blocks. This mindset is the opposite of how we usually think about code. Over the years, we have seen closed-source, for-profit implementations of literate programming with software packages such as Mathematica, and Matlab.</p>
+<p>Brian Granger and Fernando Pérez created the IPython (now "Jupyter") Notebooks web-based technology because of the clear advantages of literate programming and improved web browser technologies (e.g., HTML5). IPython Notebooks relieved the paucity of open-source options. Jupyter notebooks are a series of "cells" containing executable code, or markdown, the popular HTML markup language for prose descriptions. They have LaTeX support for mathematical equations with <a href="https://www.mathjax.org/">MathJax</a>, a web browser enhancement for display of mathematics. These notebooks can be saved and easily shared in <code>.ipynb</code> JSON format. They can also be committed to version control repositories such as git and the code sharing site github. (See the <a href="#">Getting Started, Github section</a> for an introduction to git and version control.) Jupyter notebooks can be viewed with <a href="http://nbviewer.jupyter.org/">nbviewer technology</a> which github supports. Moreover, because these notebook environments are for writing and developing code, they offer many niceties available in typical Interactive Development Environments (IDEs) such as code completion and easy access to help.</p>
+<p>For a bit of history, IPython notebooks quickly gained popularity and in 2013 the IPython team won a <a href="http://ipython.org/sloan-grant.html">Sloan Foundation Grant</a> to accelerate development of this technology. The IPython Notebook concept was expanded upon to allow for additional programming languages and was therefore renamed "Jupyter". "Jupyter" is a loose acronym meaning Julia, Python and R, but today, the notebook technology supports <a href="https://github.com/ipython/ipython/wiki/IPython-kernels-for-other-languages">many programming languages</a>. For more information on Jupyter notebooks see the <a href="notebook.html">How to Start and Run a Jupyter Notebook section</a>.</p>
+<h3>Python and IPython</h3>
+<p>Before getting into "What is Python?", the advantages of Python were once succinctly summarized by a UCAR scientist:</p>
+<blockquote>
+<p>I have used a combination of Perl, Fortran, NCL, Matlab, R and others for
+routine research, but found out this general- purpose language, Python, can
+handle almost all in an efficient way from requesting data from remote online
+sites to statistics, and graphics.</p>
+</blockquote>
+<h4>What Is Python?</h4>
+<p>Python is a "batteries included" computer programming language. More concretely, Python is a programming language
+that, in contrast to other programming languages such as C, Fortran, or Java, allows users to more readily focus and solve domain problems instead of dealing with the complexity of how a computer operates. Python achieves this goal by having the following attributes:</p>
+<ul>
+<li>Python is a <strong>high-level</strong> language, meaning that it abstracts underlying computer-related technical details.  For example, Python does not make its users think too much about computer memory management or proper declaration of variables and uses safe assumptions about what the programmer is trying to convey. In addition, a high-level language can be expressed in a manner closer to English prose or mathematical equations. Python is perfect for literate programming because of its lightweight, "low ceremony" nature.</li>
+<li>Python is a <strong>general-purpose</strong> language meaning that it can be used for all problems that a computer is capable of rather than specializing in a specific area such as statistical analysis. For example, Python can be used for both artificial intelligence and statistical analysis. Python can be used for a variety of heterogeneous tasks within a given work-flow, as the UCAR scientist described earlier.</li>
+<li>Python is an <strong>interpreted</strong> language meaning that evaluation of code to obtain results can happen immediately rather than having to go through a time-consuming, compile and run cycle, which thereby speeds up the thinking and experimentation processes. IPython is an interactive form of the Python language also invented by Fernando Pérez. These environments excel for rapid-prototype of code or quick and simple experimentation with new ideas.</li>
+<li>Python has a standard library, and numerous third-party libraries yielding a vast array of existing codebases and examples for solving problems.</li>
+<li>Python has many, many users which means that programmers can quickly find solutions and example code to problems with the help of Google and <a href="https://www.stackoverflow.com">Stackoverflow</a>.</li>
+</ul>
+<p>These features, perhaps, come with a minor cost of reduced language performance, but this is a trade-off the vast majority of users are willing to make in order to gain all the advantages Python has to offer.</p>
+<p>In addition, Python has a rich ecosystem for scientific inquiry in the form of many proven, and popular open-source packages including:</p>
+<ul>
+<li>
+<a href="http://www.numpy.org/">NumPy</a>, a Python package for scientific computing</li>
+<li>
+<a href="http://matplotlib.org/">matplotlib</a>, 2D plotting library which produces publication quality figures</li>
+<li>
+<a href="http://scitools.org.uk/cartopy/">CartoPy</a>, library providing cartographic tools for Python</li>
+<li>
+<a href="http://unidata.github.io/netcdf4-python/">netcdf4-python</a>, a Python interface to the netCDF-C library</li>
+<li>
+<a href="http://xarray.pydata.org/en/stable/">xarray</a>, N-D array handling with metadata</li>
+<li>
+<a href="https://pandas.pydata.org/pandas-docs/stable/">Pandas</a>, library for tabular data analysis</li>
+</ul>
+<p>In summary, Python's pragmatic focus for getting work done makes it an excellent choice for science students and professionals.</p>
+</div>
+    </div>
+    
+</article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

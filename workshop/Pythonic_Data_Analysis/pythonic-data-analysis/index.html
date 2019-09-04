@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pythonic Data Analysis | The Unidata Python Training Site</title>
+<link href="../../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/workshop/Pythonic_Data_Analysis/pythonic-data-analysis/">
+<!--[if lt IE 9]><script src="../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="Pythonic Data Analysis">
+<meta property="og:url" content="https://unidata.github.io/python-training/workshop/Pythonic_Data_Analysis/pythonic-data-analysis/">
+<meta property="og:description" content="Pythonic Data Analysis
+Unidata Python Workshop
+
+
+Overview:¶
+Teaching: 40 minutes
+Exercises: 40 minutes
+
+Questions¶
+How can we employ Python language features to make complicated analysis require less ">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-08-30T15:02:20-06:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../../python/intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../../../gallery/gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.ipynb" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Pythonic Data Analysis</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a name="top"></a></p>
+<div style="width:1000 px">
+
+<div style="float:right; width:98 px; height:98px;">
+<img src="https://raw.githubusercontent.com/Unidata/MetPy/master/metpy/plots/_static/unidata_150x150.png" alt="Unidata Logo" style="height: 98px;">
+</div>
+<p></p>
+<h2>Pythonic Data Analysis</h2>
+<h4>Unidata Python Workshop</h4>
+<div style="clear:both"></div>
+</div>
+<hr style="height:2px;">
+<div style="float:right; width:250 px"><img src="http://matplotlib.org/_images/date_demo.png" alt="METAR" style="height: 300px;"></div>
+<h3 id="Overview:">Overview:<a class="anchor-link" href="#Overview:">¶</a>
+</h3>
+<ul>
+<li>
+<strong>Teaching:</strong> 40 minutes</li>
+<li>
+<strong>Exercises:</strong> 40 minutes</li>
+</ul>
+<h4 id="Questions">Questions<a class="anchor-link" href="#Questions">¶</a>
+</h4>
+<ol>
+<li>How can we employ Python language features to make complicated analysis require less code?</li>
+<li>How can we make multi panel plots?</li>
+<li>What can be done to eliminate repeated code that operates on sequences of objects?</li>
+<li>How can functions be used to encapsulate calculations and behaviors?</li>
+</ol>
+<h4 id="Objectives">Objectives<a class="anchor-link" href="#Objectives">¶</a>
+</h4>
+<ol>
+<li><a href="#basicfunctionality">From the Time Series Plotting Episode</a></li>
+<li><a href="#multipanel">Multi-panel plots</a></li>
+<li><a href="#iteration">Iteration and Enumeration</a></li>
+<li><a href="#functions">Functions</a></li>
+<li><a href="#plottingiteration">Plotting with Iteration</a></li>
+<li><a href="#multifile">Plotting Multiple Files</a></li>
+</ol>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a name="basicfunctionality"></a></p>
+<h3 id="From-Time-Series-Plotting-Episode">From Time Series Plotting Episode<a class="anchor-link" href="#From-Time-Series-Plotting-Episode">¶</a>
+</h3>
+<p>Here's the basic set of imports and data reading functionality that we established in the <a href="../Time_Series/Basic%20Time%20Series%20Plotting.ipynb">Basic Time Series Plotting</a> notebook.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib.dates</span> <span class="k">import</span> <span class="n">DateFormatter</span><span class="p">,</span> <span class="n">DayLocator</span>
+<span class="kn">from</span> <span class="nn">siphon.simplewebservice.ndbc</span> <span class="k">import</span> <span class="n">NDBC</span>
+
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">read_buoy_data</span><span class="p">(</span><span class="n">buoy</span><span class="p">,</span> <span class="n">days</span><span class="o">=</span><span class="mi">7</span><span class="p">):</span> 
+    <span class="c1"># Read in some data</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">NDBC</span><span class="o">.</span><span class="n">realtime_observations</span><span class="p">(</span><span class="n">buoy</span><span class="p">)</span>
+
+    <span class="c1"># Trim to the last 7 days</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'time'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">-</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">days</span><span class="p">))]</span>
+    <span class="k">return</span> <span class="n">df</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">read_buoy_data</span><span class="p">(</span><span class="s1">'41056'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a name="multipanel"></a></p>
+<h3 id="Multi-panel-Plots">Multi-panel Plots<a class="anchor-link" href="#Multi-panel-Plots">¶</a>
+</h3>
+<p>Often we wish to create figures with multiple panels of data. It's common to separate variables of different types into these panels. We also don't want to create each panel as an individual figure and combine them in a tool like Illustrator - imagine having to do that for hundreds of plots!</p>
+<p>We can use the <code>subplots</code> method to specify a number of rows and columns of plots in our figure:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># ShareX means that the axes will share range, ticking, etc. for the x axis</span>
+<span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="c1"># Panel 1</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">wind_speed</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'tab:orange'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Windspeed'</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Time'</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Speed'</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'Measured Winds'</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper left'</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Not repeated only by sharing x</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">DateFormatter</span><span class="p">(</span><span class="s1">'%m/</span><span class="si">%d</span><span class="s1">'</span><span class="p">))</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">DayLocator</span><span class="p">())</span>
+
+<span class="c1"># Panel 2</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">pressure</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Pressure'</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Time'</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'hPa'</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'Atmospheric Pressure'</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper left'</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">'Buoy 41056 Data'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>So even with the sharing of axis information, there's still a lot of repeated code. This current version with just two parameters might still be ok, but:</p>
+<ul>
+<li>What if we had more data being plotted on each axes?</li>
+<li>What if we had many subplots?</li>
+<li>What if we wanted to change one of the parameters?</li>
+<li>What if we wanted to plot data from different files on the same plot?</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a name="iteration"></a></p>
+<h4 id="Iteration-and-Enumeration">Iteration and Enumeration<a class="anchor-link" href="#Iteration-and-Enumeration">¶</a>
+</h4>
+<p>Iterating over lists is a very useful tool to reduce the amount of repeated code you write. We're going to start out by iterating over a single list with a <code>for</code> loop. Unlike C or other common scientific languages, Python 'knows' how to iterate over certain objects without you needing to specify an index variable and do the book keeping on that.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">my_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'2001 A Space Obyssey'</span><span class="p">,</span>
+           <span class="s1">'The Princess Bride'</span><span class="p">,</span>
+           <span class="s1">'Monty Python and the Holy Grail'</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">my_list</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Using the <code>zip</code> function we can even iterate over multiple lists at the same time with ease:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">my_other_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'I</span><span class="se">\'</span><span class="s1">m sorry, Dave. I</span><span class="se">\'</span><span class="s1">m afraid I can</span><span class="se">\'</span><span class="s1">t do that.'</span><span class="p">,</span>
+                 <span class="s1">'My name is Inigo Montoya.'</span><span class="p">,</span>
+                 <span class="s1">'It</span><span class="se">\'</span><span class="s1">s only a flesh wound.'</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">my_list</span><span class="p">,</span> <span class="n">my_other_list</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>That's really handy, but needing to access each part of each item with an index like <code>item[0]</code> isn't very flexible, requires us to remember the layout of the item, and isn't best practice. Instead we can use Python's unpacking syntax to make things nice an intuitive.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">reference</span><span class="p">,</span> <span class="n">quote</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">my_list</span><span class="p">,</span> <span class="n">my_other_list</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">reference</span><span class="p">,</span> <span class="s1">'-'</span><span class="p">,</span> <span class="n">quote</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="alert alert-success">
+    <b>EXERCISE</b>:
+     <ul>
+<li>Make two new lists named <code>plot_variables</code> and <code>plot_names</code>. Populate them
+        with the variable name and plot label string for windspeed and pressure.</li>
+    <li>Using the unpacking syntax, write a for loop that prints a sentence describing the action
+        that would be taken (i.e. Plotting variable wind_speed as Windspeed</li>
+    </ul>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Your code goes here</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Solution">Solution<a class="anchor-link" href="#Solution">¶</a>
+</h5>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/zip.py</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><code>zip</code> can also be used to "unzip" items.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">zipped_list</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> 
+               <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+               <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">)]</span>
+<span class="n">unzipped</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">zipped_list</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">unzipped</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's break down what happened there. Zip pairs elements from all of the input arguements and hands those back to us. So effectively out <code>zip(*zipped_list)</code> is <code>zip((1, 2), (3, 4), (5, 6))</code>, so the first element from each input is paired (1, 3, 5), etc. You can think of it like unzipping or transposing.</p>
+<hr>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can use the <code>enumerate</code> function to 'count through' an iterable object as well. This can be useful when placing figures in certain rows/columns or when a counter is needed.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">quote</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">my_other_list</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="s1">' - '</span><span class="p">,</span> <span class="n">quote</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="alert alert-success">
+    <b>EXERCISE</b>:
+     <ul>
+<li>Combine what you've learned about enumeration and iteration to produce the following output:</li>
+    </ul>
+<code>0  -  2001 A Space Obyssey  -  I'm sorry, Dave. I'm afraid I can't do that.
+1  -  The Princess Bride  -  My name is Inigo Montoya.
+2  -  Monty Python and the Holy Grail  -  It's only a flesh wound.</code>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Your code goes here</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Solution">Solution<a class="anchor-link" href="#Solution">¶</a>
+</h5>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/enumerate.py</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a name="functions"></a></p>
+<h4 id="Functions">Functions<a class="anchor-link" href="#Functions">¶</a>
+</h4>
+<p>You're probably already familiar with Python functions, but here's a quick refresher. Functions are used to house blocks of code that we can run repeatedly. Paramters are given as inputs, and values are returned from the function to where it was called. In the world of programming you can think of functions like paragraphs, they encapsulate a complete idea/process.</p>
+<p>Let's define a simple function that returns a value:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">silly_add</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We've re-implemented add which isn't incredibly exiciting, but that could be hundreds of lines of a numerical method, making a plot, or some other task. Using the function is simple:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">silly_add</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="alert alert-success">
+    <b>EXERCISE</b>:
+     <ul>
+<li>Write a function that returns powers of 2. (i.e. calling <code>myfunc(4)</code> returns 2^4)</li>
+    <li>**Bonus**: Using for loop iteration, print all powers of 2 from 0 to 24.</li>
+    </ul>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Your code goes here</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Solution">Solution<a class="anchor-link" href="#Solution">¶</a>
+</h5>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/functions.py</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a name="plottingiteration"></a></p>
+<h4 id="Plotting-with-Iteration">Plotting with Iteration<a class="anchor-link" href="#Plotting-with-Iteration">¶</a>
+</h4>
+<p>Now let's bring what we've learned about iteration to bear on the problem of plotting. We'll start with a basic example and roll into a more involved system at the end.</p>
+<p>To begin, let's make an arbitrary number of plots in a single row:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># A list of names of variables we want to plot</span>
+<span class="n">plot_variables</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'wind_speed'</span><span class="p">,</span> <span class="s1">'pressure'</span><span class="p">]</span>
+
+<span class="c1"># Make our figure, now choosing number of subplots based on length of variable name list</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">plot_variables</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="c1"># Loop over the list of subplots and names together</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">var_name</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">plot_variables</span><span class="p">):</span>
+    
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="n">var_name</span><span class="p">])</span>
+
+    <span class="c1"># Set label/title based on variable name--no longer hard-coded</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">var_name</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">f</span><span class="s1">'Buoy </span><span class="si">{var_name}</span><span class="s1">'</span><span class="p">)</span>
+
+    <span class="c1"># Set up our formatting--note lack of repetition</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Time'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">DateFormatter</span><span class="p">(</span><span class="s1">'%m/</span><span class="si">%d</span><span class="s1">'</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">DayLocator</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>It's a step forward, but we've lost a lot of formatting information. The lines are both blue, the labels as less ideal, and the title just uses the variable name. We can use some of Python's features like dictionaries, functions, and string manipulation to help improve the versatility of the plotter.</p>
+<p>To start out, let's get the line color functionality back by using a Python dictionary to hold that information. Dictionaries can hold any data type and allow you to access that value with a key (hence the name key-value pair). We'll use the variable name for the key and the value will be the color of line to plot.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">colors</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'wind_speed'</span><span class="p">:</span> <span class="s1">'tab:orange'</span><span class="p">,</span> <span class="s1">'wind_gust'</span><span class="p">:</span> <span class="s1">'tab:olive'</span><span class="p">,</span> <span class="s1">'pressure'</span><span class="p">:</span> <span class="s1">'black'</span><span class="p">}</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>To access the value, just access that element of the dictionary with the key.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">colors</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now let's apply that to our plot. We'll use the same code from the previous example, but now look up the line color in the dictionary.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">plot_variables</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">var_name</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">plot_variables</span><span class="p">):</span>
+
+    <span class="c1"># Grab the color from our dictionary and pass it to plot()</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="n">var_name</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="n">var_name</span><span class="p">],</span> <span class="n">color</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">var_name</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">f</span><span class="s1">'Buoy </span><span class="si">{var_name}</span><span class="s1">'</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Time'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">DateFormatter</span><span class="p">(</span><span class="s1">'%m/</span><span class="si">%d</span><span class="s1">'</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">DayLocator</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>That's already much better. We need to be able to plot multiple variables on the wind speed/gust plot though. In this case, we'll allow a list of variables for each plot to be given and iterate over them. We'll store this in a list of lists. Each plot has its own list of variables!</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot_variables</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">'wind_speed'</span><span class="p">,</span> <span class="s1">'wind_gust'</span><span class="p">],</span> <span class="p">[</span><span class="s1">'pressure'</span><span class="p">]]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">plot_variables</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">var_names</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">plot_variables</span><span class="p">):</span>
+
+    <span class="k">for</span> <span class="n">var_name</span> <span class="ow">in</span> <span class="n">var_names</span><span class="p">:</span>
+        <span class="c1"># Grab the color from our dictionary and pass it to plot()</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="n">var_name</span><span class="p">]</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="n">var_name</span><span class="p">],</span> <span class="n">color</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">var_name</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">f</span><span class="s1">'Buoy </span><span class="si">{var_name}</span><span class="s1">'</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Time'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">DateFormatter</span><span class="p">(</span><span class="s1">'%m/</span><span class="si">%d</span><span class="s1">'</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">DayLocator</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="alert alert-success">
+    <b>EXERCISE</b>:
+     <ul>
+<li>Create a dictionary of linestyles in which the variable name is the key and the linestyle is the value.</li>
+    <li>Use that dictionary to modify the code below to plot the lines with the styles you specified.</li>
+    </ul>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Create your linestyles dictionary and modify the code below</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">plot_variables</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">var_names</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">plot_variables</span><span class="p">):</span>
+
+    <span class="k">for</span> <span class="n">var_name</span> <span class="ow">in</span> <span class="n">var_names</span><span class="p">:</span>
+        <span class="c1"># Grab the color from our dictionary and pass it to plot()</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="n">var_name</span><span class="p">]</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="n">var_name</span><span class="p">],</span> <span class="n">color</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">var_name</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">f</span><span class="s1">'Buoy </span><span class="si">{var_name}</span><span class="s1">'</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Time'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">DateFormatter</span><span class="p">(</span><span class="s1">'%m/</span><span class="si">%d</span><span class="s1">'</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">DayLocator</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Solution">Solution<a class="anchor-link" href="#Solution">¶</a>
+</h5>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/looping1.py</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We're almost back to where to started, but in a much more versatile form! We just need to make the labels and titles look nice. To do that, let's write a function that uses some string manipulation to clean up the variable names and give us an axis/plot title and legend label.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">format_varname</span><span class="p">(</span><span class="n">varname</span><span class="p">):</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="n">varname</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'_'</span><span class="p">)</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="n">varname</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'_'</span><span class="p">,</span> <span class="s1">' '</span><span class="p">)</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">title</span><span class="p">,</span> <span class="n">label</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">plot_variables</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">linestyles</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'wind_speed'</span><span class="p">:</span> <span class="s1">'-'</span><span class="p">,</span> <span class="s1">'wind_gust'</span><span class="p">:</span> <span class="s1">'--'</span><span class="p">,</span> <span class="s1">'pressure'</span><span class="p">:</span> <span class="s1">'-'</span><span class="p">}</span>
+
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">var_names</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">plot_variables</span><span class="p">):</span>
+
+    <span class="k">for</span> <span class="n">var_name</span> <span class="ow">in</span> <span class="n">var_names</span><span class="p">:</span>
+        
+        <span class="n">title</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">format_varname</span><span class="p">(</span><span class="n">var_name</span><span class="p">)</span>
+        
+        <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="n">var_name</span><span class="p">]</span>
+        <span class="n">linestyle</span> <span class="o">=</span> <span class="n">linestyles</span><span class="p">[</span><span class="n">var_name</span><span class="p">]</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="n">var_name</span><span class="p">],</span> <span class="n">color</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="n">linestyle</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">f</span><span class="s1">'Buoy </span><span class="si">{title}</span><span class="s1">'</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Time'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">DateFormatter</span><span class="p">(</span><span class="s1">'%m/</span><span class="si">%d</span><span class="s1">'</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">DayLocator</span><span class="p">())</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper left'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="#top">Top</a></p>
+<hr style="height:2px;">
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a name="multifile"></a></p>
+<h3 id="Plotting-Multiple-Files">Plotting Multiple Files<a class="anchor-link" href="#Plotting-Multiple-Files">¶</a>
+</h3>
+<p>Finally, let's plot data for two buoys on the same figure by iterating over a list of file names. We can use enumerate to plot each file on a new row of the figure. We will also create a function to read in the buoy data and avoid all of that repeated code.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">buoys</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'41056'</span><span class="p">,</span> <span class="s1">'41052'</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">buoys</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">plot_variables</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">row</span><span class="p">,</span> <span class="n">buoy</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">buoys</span><span class="p">):</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">read_buoy_data</span><span class="p">(</span><span class="n">buoy</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">var_names</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">plot_variables</span><span class="p">):</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">var_name</span> <span class="ow">in</span> <span class="n">var_names</span><span class="p">:</span>
+            <span class="n">title</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">format_varname</span><span class="p">(</span><span class="n">var_name</span><span class="p">)</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="n">var_name</span><span class="p">]</span>
+            <span class="n">linestyle</span> <span class="o">=</span> <span class="n">linestyles</span><span class="p">[</span><span class="n">var_name</span><span class="p">]</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="n">var_name</span><span class="p">],</span> <span class="n">color</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="n">linestyle</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">f</span><span class="s1">'Buoy </span><span class="si">{buoy}</span><span class="s1"> </span><span class="si">{title}</span><span class="s1">'</span><span class="p">)</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Time'</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">DateFormatter</span><span class="p">(</span><span class="s1">'%m/</span><span class="si">%d</span><span class="s1">'</span><span class="p">))</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">DayLocator</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="#top">Top</a></p>
+<hr style="height:2px;">
+</div>
+</div>
+</div>
+</div>
+    </div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha256-SDRP1VVYu+tgAGKhddBSl5+ezofHKZeI+OzxakbIe/Y=" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

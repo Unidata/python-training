@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Introduction to Python for Atmospheric Science &amp; Meteorology | The Unidata Python Training Site</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/python/intro-to-python/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="Introduction to Python for Atmospheric Science &amp; Meteorology">
+<meta property="og:url" content="https://unidata.github.io/python-training/python/intro-to-python/">
+<meta property="og:description" content="With support from the National Science Foundation, Unidata is working to create
+a collection of online training materials focused on the use of Python in the
+atmospheric sciences. While our examples a">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-07-29T13:51:42-06:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../../gallery/gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop/workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.md" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Introduction to Python for Atmospheric Science &amp; Meteorology</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<p>With support from the National Science Foundation, Unidata is working to create
+a collection of online training materials focused on the use of Python in the
+atmospheric sciences. While our examples and scenarios may feature Unidata tools
+and data technologies, our aim is to present a generic set of freely available
+tools that are generally useful to scientists, educators, and students in the
+geosciences, broadly defined.</p>
+<p>This page is intended for new Python users looking to gain an understanding of the
+scientific Python ecosystem. All things related to getting started with Python
+are hosted here, including download instructions, basic syntax, and general 
+usage examples. For more detailed examples of how to analyze data and produce
+publication-quality figures specifically for atmospheric science and meteorology,
+please see our <a href="../../gallery/gallery-home">Example Gallery</a> or <a href="../../workshop/workshop-intro">Python Workshop</a>
+materials.</p>
+<p>Unidata staff are actively developing and curating the material here, but what
+you see today is an early version of what we envision for this resource. Please
+forgive the unfinished nature of the materials here, and feel free to give us
+your suggestions for additions or improvements by contacting
+<a href="../support">Unidata Python Support</a>.</p>
+<h3>Introduction</h3>
+<ul>
+<li><a href="../what">What Is This?</a></li>
+<li><a href="../introduction">Why Python and Jupyter Notebooks?</a></li>
+</ul>
+<h3>Getting Started</h3>
+<h4>Git and Github</h4>
+<p>GitHub is a online platform for hosting code that promotes collaboration.</p>
+<ul>
+<li><a href="../git">What Is Git, Github and Why Do You Care?</a></li>
+<li><a href="https://guides.github.com/activities/hello-world/">Introduction to GitHub</a></li>
+<li>
+<a href="https://egghead.io/lessons/javascript-introduction-to-github?series=how-to-contribute-to-an-open-source-project-on-github">Creating a GitHub Account</a> (<em>Free</em> video from egghead.io)</li>
+<li><a href="https://guides.github.com/">GitHub's Guides</a></li>
+<li>
+<a href="https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github">How to Contribute on Github</a> (<em>Free</em> video series from egghead.io)</li>
+<li><a href="https://try.github.io/">Online Interactive Git Tutorial (from GitHub)</a></li>
+<li><a href="https://git-scm.com/download/gui/windows">Mac OS X and Windows Desktop Applications for Using Git and Github</a></li>
+</ul>
+<h4>Installing Python</h4>
+<ul>
+<li><a href="../choosing">Which Python?</a></li>
+<li><a href="../conda-osx">Installing Python on Mac OS X</a></li>
+<li><a href="../conda-windows">Installing Python on Microsoft Windows</a></li>
+</ul>
+<h4>Jupyter Notebooks</h4>
+<ul>
+<li><a href="../notebook">How to Start and Run a Jupyter Notebook</a></li>
+<li><a href="http://unidata.github.io/notebook-gallery">Unidata's Jupyter Notebook Gallery</a></li>
+<li><a href="http://nbviewer.jupyter.org/github/Unidata/online-python-training/blob/master/notebooks/Whetting%20Your%20Appetite%20for%20Python.ipynb">Whetting Your Appetite for Python</a></li>
+</ul>
+<h3>Basic Python Syntax</h3>
+<p>Here are some good sources for learning the basics of Python's Syntax:</p>
+<ul>
+<li>
+<a href="https://www.codecademy.com/learn/python">Codecademy</a> has some free lessons on learning Python</li>
+<li>
+<a href="http://www.learnpython.org/">learnpython.org</a> also has some free, interactive materials</li>
+<li>The <a href="https://docs.python.org/3.5/tutorial/index.html">official</a> Python tutorial is pretty good as well</li>
+</ul>
+<h3>Beginning Python Concepts</h3>
+<p>What follows is a series of Jupyter notebooks on learning Python with geoscience objectives. You can either peruse this material with the nbviewer links below or <a href="notebook.html#how-to-run-opt-notebooks">run the Jupyter notebooks interactively</a>.</p>
+<ul>
+<li>
+<a href="../controlflowintro">Control Flow</a><ul>
+<li><a href="http://nbviewer.jupyter.org/github/Unidata/online-python-training/blob/master/notebooks/Conditionals.ipynb">Conditional Statements</a></li>
+<li><a href="http://nbviewer.jupyter.org/github/Unidata/online-python-training/blob/master/notebooks/Loops.ipynb">Loops</a></li>
+<li><a href="http://nbviewer.jupyter.org/github/Unidata/online-python-training/blob/master/notebooks/Functions.ipynb">Functions</a></li>
+</ul>
+</li>
+<li><a href="http://nbviewer.jupyter.org/github/Unidata/online-python-training/blob/master/notebooks/Basic%20Data%20Structures.ipynb">Basic Data Structures</a></li>
+<li><a href="http://nbviewer.jupyter.org/github/Unidata/online-python-training/blob/master/notebooks/Basic%20Input%20and%20Output.ipynb">Basic Input and Output</a></li>
+<li><a href="http://nbviewer.jupyter.org/github/Unidata/online-python-training/blob/master/notebooks/Times%20and%20Dates.ipynb">Times and Dates</a></li>
+</ul>
+<h3>Scientific Python Packages</h3>
+<ul>
+<li><a href="https://numpy.org">NumPy</a></li>
+<li>
+<a href="https://matplotlib.org">Matplotlib</a><ul>
+<li><a href="http://nbviewer.jupyter.org/github/Unidata/online-python-training/blob/master/notebooks/Beginning%20Plots%20With%20Matplotlib.ipynb">Basic Line Plots</a></li>
+</ul>
+</li>
+<li><a href="https://unidata.github.io/netcdf4-python/netCDF4/index.html">netCDF</a></li>
+<li><a href="http://xarray.pydata.org/en/stable/">xarray</a></li>
+<li><a href="https://scitools.org.uk/cartopy/docs/latest/">CartoPy</a></li>
+<li><a href="https://pandas.pydata.org/pandas-docs/stable/">Pandas</a></li>
+</ul>
+<h3>Python Packages for Meteorology</h3>
+<ul>
+<li><a href="https://unidata.github.io/MetPy/latest/">MetPy</a></li>
+<li><a href="https://unidata.github.io/siphon/">Siphon</a></li>
+</ul>
+<h4>Support or Contact</h4>
+<ul>
+<li><a href="../support">Unidata Python Support</a></li>
+</ul>
+</div>
+    </div>
+    
+</article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

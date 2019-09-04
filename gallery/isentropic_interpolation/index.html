@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Isentropic_Interpolation | The Unidata Python Training Site</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/gallery/isentropic_interpolation/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="Isentropic_Interpolation">
+<meta property="og:url" content="https://unidata.github.io/python-training/gallery/isentropic_interpolation/">
+<meta property="og:description" content="In [ ]:
+
+    
+%matplotlib inline
+
+
+    
+
+
+
+
+
+
+
+===================
+Isentropic Analysis¶The MetPy function metpy.calc.isentropic_interpolation allows for isentropic analysis from
+model analysis data in">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-08-30T15:02:20-06:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../python/intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop/workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.ipynb" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Isentropic_Interpolation</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>===================</p>
+<h2 id="Isentropic-Analysis">Isentropic Analysis<a class="anchor-link" href="#Isentropic-Analysis">¶</a>
+</h2>
+<p>The MetPy function <code>metpy.calc.isentropic_interpolation</code> allows for isentropic analysis from
+model analysis data in isobaric coordinates.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">metpy.calc</span>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="k">import</span> <span class="n">units</span>
+<span class="kn">from</span> <span class="nn">netCDF4</span> <span class="k">import</span> <span class="n">num2date</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">siphon.catalog</span> <span class="k">import</span> <span class="n">TDSCatalog</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Getting the data</p>
+<p>In this example, the latest GFS forecasts data from the National Centers for
+Environmental Information (<a href="https://nomads.ncdc.noaa.gov">https://nomads.ncdc.noaa.gov</a>) will be used, courtesy of the
+Univeristy Corporation for Atmospheric Research Thredds Data Server.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Latest GFS Dataset</span>
+<span class="n">cat</span> <span class="o">=</span> <span class="n">TDSCatalog</span><span class="p">(</span><span class="s1">'http://thredds.ucar.edu/thredds/catalog/grib/'</span>
+                 <span class="s1">'NCEP/GFS/Global_0p5deg/catalog.xml'</span><span class="p">)</span>
+<span class="n">ncss</span> <span class="o">=</span> <span class="n">cat</span><span class="o">.</span><span class="n">latest</span><span class="o">.</span><span class="n">subset</span><span class="p">()</span>
+
+<span class="c1"># Find the start of the model run and define time range</span>
+<span class="n">start_time</span> <span class="o">=</span> <span class="n">ncss</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">time_span</span><span class="p">[</span><span class="s1">'begin'</span><span class="p">]</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">start_time</span><span class="p">,</span> <span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%Sz'</span><span class="p">)</span>
+<span class="n">end</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+
+<span class="c1"># Query for Latest GFS Run</span>
+<span class="n">gfsdata</span> <span class="o">=</span> <span class="n">ncss</span><span class="o">.</span><span class="n">query</span><span class="p">()</span><span class="o">.</span><span class="n">time_range</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="s1">'netcdf4'</span><span class="p">)</span>
+
+<span class="n">gfsdata</span><span class="o">.</span><span class="n">variables</span><span class="p">(</span><span class="s1">'Temperature_isobaric'</span><span class="p">,</span>
+                  <span class="s1">'u-component_of_wind_isobaric'</span><span class="p">,</span>
+                  <span class="s1">'v-component_of_wind_isobaric'</span><span class="p">,</span>
+                  <span class="s1">'Relative_humidity_isobaric'</span><span class="p">)</span><span class="o">.</span><span class="n">add_lonlat</span><span class="p">()</span>
+
+<span class="c1"># Set the lat/lon box for the data you want to pull in.</span>
+<span class="c1"># lonlat_box(north_lat,south_lat,east_lon,west_lon)</span>
+<span class="n">gfsdata</span><span class="o">.</span><span class="n">lonlat_box</span><span class="p">(</span><span class="o">-</span><span class="mi">150</span><span class="p">,</span> <span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">65</span><span class="p">)</span>
+
+<span class="c1"># Actually getting the data</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">ncss</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="n">gfsdata</span><span class="p">)</span>
+
+<span class="n">dtime</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Temperature_isobaric'</span><span class="p">]</span><span class="o">.</span><span class="n">dimensions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">dlev_hght</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Temperature_isobaric'</span><span class="p">]</span><span class="o">.</span><span class="n">dimensions</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">dlev_uwnd</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'u-component_of_wind_isobaric'</span><span class="p">]</span><span class="o">.</span><span class="n">dimensions</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">lat</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'lat'</span><span class="p">][:]</span>
+<span class="n">lon</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'lon'</span><span class="p">][:]</span>
+<span class="n">lev_hght</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">dlev_hght</span><span class="p">][:]</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">Pa</span>
+<span class="n">lev_uwnd</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">dlev_uwnd</span><span class="p">][:]</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">Pa</span>
+<span class="c1"># Due to a different number of vertical levels find where they are common</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">common_ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">lev_uwnd</span><span class="p">,</span> <span class="n">lev_hght</span><span class="p">,</span> <span class="n">return_indices</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">times</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">dtime</span><span class="p">]</span>
+<span class="n">vtimes</span> <span class="o">=</span> <span class="n">num2date</span><span class="p">(</span><span class="n">times</span><span class="p">[:],</span> <span class="n">times</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+<span class="n">temps</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Temperature_isobaric'</span><span class="p">]</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">temps</span><span class="p">[:,</span> <span class="n">common_ind</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">kelvin</span>
+<span class="n">uwnd</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'u-component_of_wind_isobaric'</span><span class="p">][:]</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meter</span> <span class="o">/</span> <span class="n">units</span><span class="o">.</span><span class="n">second</span>
+<span class="n">vwnd</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'v-component_of_wind_isobaric'</span><span class="p">][:]</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meter</span> <span class="o">/</span> <span class="n">units</span><span class="o">.</span><span class="n">second</span>
+<span class="n">relh</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Relative_humidity_isobaric'</span><span class="p">][:]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>To properly interpolate to isentropic coordinates, the function must know the desired output
+isentropic levels. An array with these levels will be created below.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">isentlevs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">310</span><span class="p">,</span> <span class="mi">316</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">kelvin</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Conversion to Isentropic Coordinates</p>
+<p>Once model data in isobaric coordinates has been pulled and the desired isentropic levels
+created, the conversion to isentropic coordinates can begin. Data will be passed to the
+function as below. The function requires that isentropic levels, isobaric levels, and
+temperature be input. Any additional inputs (in this case relative humidity, u, and v wind
+components) will be linearly interpolated to isentropic space.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">isent_anal</span> <span class="o">=</span> <span class="n">metpy</span><span class="o">.</span><span class="n">calc</span><span class="o">.</span><span class="n">isentropic_interpolation</span><span class="p">(</span><span class="n">isentlevs</span><span class="p">,</span> <span class="n">lev_uwnd</span><span class="p">,</span> <span class="n">tmp</span><span class="p">,</span>
+                                                 <span class="n">relh</span><span class="p">,</span> <span class="n">uwnd</span><span class="p">,</span> <span class="n">vwnd</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The output is a list, so now we will separate the variables to different names before
+plotting.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">isentprs</span><span class="p">,</span> <span class="n">isentrh</span><span class="p">,</span> <span class="n">isentu</span><span class="p">,</span> <span class="n">isentv</span> <span class="o">=</span> <span class="n">isent_anal</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>A quick look at the shape of these variables will show that the data is now in isentropic
+coordinates, with the number of vertical levels as specified above.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">isentprs</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">isentrh</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">isentu</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">isentv</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Plotting the Isentropic Analysis</strong></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Set up our projection</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">crs</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">LambertConformal</span><span class="p">(</span><span class="n">central_longitude</span><span class="o">=-</span><span class="mf">100.0</span><span class="p">,</span> <span class="n">central_latitude</span><span class="o">=</span><span class="mf">45.0</span><span class="p">)</span>
+
+<span class="c1"># Set up our array of latitude and longitude values and transform to</span>
+<span class="c1"># the desired projection.</span>
+<span class="n">clons</span><span class="p">,</span> <span class="n">clats</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span>
+
+<span class="c1"># Get data to plot state and province boundaries</span>
+<span class="n">states_provinces</span> <span class="o">=</span> <span class="n">cfeature</span><span class="o">.</span><span class="n">NaturalEarthFeature</span><span class="p">(</span>
+    <span class="n">category</span><span class="o">=</span><span class="s1">'cultural'</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">'admin_1_states_provinces_lakes'</span><span class="p">,</span>
+    <span class="n">scale</span><span class="o">=</span><span class="s1">'50m'</span><span class="p">,</span>
+    <span class="n">facecolor</span><span class="o">=</span><span class="s1">'none'</span><span class="p">)</span>
+<span class="n">level</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">FH</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">14.</span><span class="p">,</span> <span class="mf">12.</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">crs</span><span class="p">)</span>
+
+<span class="c1"># Set plot extent</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">((</span><span class="o">-</span><span class="mf">121.</span><span class="p">,</span> <span class="o">-</span><span class="mf">74.</span><span class="p">,</span> <span class="mf">25.</span><span class="p">,</span> <span class="mf">50.</span><span class="p">),</span> <span class="n">crs</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">(</span><span class="s1">'50m'</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">states_provinces</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="c1"># Plot the 300K surface</span>
+<span class="n">clevisent</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+<span class="n">cs</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">clons</span><span class="p">,</span> <span class="n">clats</span><span class="p">,</span> <span class="n">isentprs</span><span class="p">[</span><span class="n">FH</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">clevisent</span><span class="p">,</span>
+                <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
+                <span class="n">colors</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">'solid'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+           <span class="n">fmt</span><span class="o">=</span><span class="s1">'</span><span class="si">%i</span><span class="s1">'</span><span class="p">,</span> <span class="n">rightside_up</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">cf</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">clons</span><span class="p">,</span> <span class="n">clats</span><span class="p">,</span> <span class="n">isentrh</span><span class="p">[</span><span class="n">FH</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:],</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">106</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+                 <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
+                 <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gist_earth_r</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cf</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">'horizontal'</span><span class="p">,</span> <span class="n">extend</span><span class="o">=</span><span class="nb">max</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">65</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+             <span class="n">extendrect</span><span class="o">=</span><span class="s1">'True'</span><span class="p">)</span>
+
+<span class="n">wind_slice</span> <span class="o">=</span> <span class="p">[</span><span class="n">FH</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">5</span><span class="p">)]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">barbs</span><span class="p">(</span><span class="n">clons</span><span class="p">[</span><span class="n">wind_slice</span><span class="p">[</span><span class="mi">2</span><span class="p">:]],</span> <span class="n">clats</span><span class="p">[</span><span class="n">wind_slice</span><span class="p">[</span><span class="mi">2</span><span class="p">:]],</span>
+         <span class="n">isentu</span><span class="p">[</span><span class="n">wind_slice</span><span class="p">]</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">isentv</span><span class="p">[</span><span class="n">wind_slice</span><span class="p">]</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+         <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+
+<span class="c1"># Make some titles</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'</span><span class="si">{:.0f}</span><span class="s1"> K Isentropic Level'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">isentlevs</span><span class="p">[</span><span class="n">level</span><span class="p">]</span><span class="o">.</span><span class="n">m</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'VALID: </span><span class="si">{:s}</span><span class="s1"> UTC'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">vtimes</span><span class="p">[</span><span class="n">FH</span><span class="p">])),</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'right'</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+    </div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha256-SDRP1VVYu+tgAGKhddBSl5+ezofHKZeI+OzxakbIe/Y=" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

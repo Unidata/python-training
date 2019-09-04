@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Upper_Air_BUFR_Soundings | The Unidata Python Training Site</title>
+<link href="../../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/workshop/AWIPS/upper_air_bufr_soundings/">
+<!--[if lt IE 9]><script src="../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="Upper_Air_BUFR_Soundings">
+<meta property="og:url" content="https://unidata.github.io/python-training/workshop/AWIPS/upper_air_bufr_soundings/">
+<meta property="og:description" content="The following script takes you through the steps of retrieving an Upper Air vertical profile from an AWIPS EDEX server and plotting a Skew-T/Log-P chart with Matplotlib and MetPy.
+The bufrua plugin re">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-08-30T15:02:20-06:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../../python/intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../../../gallery/gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.ipynb" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Upper_Air_BUFR_Soundings</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The following script takes you through the steps of retrieving an Upper Air vertical profile from an AWIPS EDEX server and plotting a Skew-T/Log-P chart with Matplotlib and MetPy.</p>
+<p>The <strong>bufrua</strong> plugin returns separate objects for parameters at <strong>mandatory levels</strong> and at <strong>significant temperature levels</strong>.  For the Skew-T/Log-P plot, significant temperature levels are used to plot the pressure, temperature, and dewpoint lines, while mandatory levels are used to plot the wind profile.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">from</span> <span class="nn">awips.dataaccess</span> <span class="k">import</span> <span class="n">DataAccessLayer</span>
+<span class="kn">import</span> <span class="nn">matplotlib.tri</span> <span class="k">as</span> <span class="nn">mtri</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.axes_grid1.inset_locator</span> <span class="k">import</span> <span class="n">inset_axes</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">metpy.calc</span> <span class="k">import</span> <span class="n">wind_speed</span><span class="p">,</span> <span class="n">wind_components</span><span class="p">,</span> <span class="n">lcl</span><span class="p">,</span> <span class="n">dry_lapse</span><span class="p">,</span> <span class="n">parcel_profile</span>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <span class="n">SkewT</span><span class="p">,</span> <span class="n">Hodograph</span>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="k">import</span> <span class="n">units</span><span class="p">,</span> <span class="n">concatenate</span>
+
+<span class="c1"># Set host</span>
+<span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">changeEDEXHost</span><span class="p">(</span><span class="s2">"edex-cloud.unidata.ucar.edu"</span><span class="p">)</span>
+<span class="n">request</span> <span class="o">=</span> <span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">newDataRequest</span><span class="p">()</span>
+
+<span class="c1"># Set data type</span>
+<span class="n">request</span><span class="o">.</span><span class="n">setDatatype</span><span class="p">(</span><span class="s2">"bufrua"</span><span class="p">)</span>
+<span class="n">availableLocs</span> <span class="o">=</span> <span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">getAvailableLocationNames</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+<span class="n">availableLocs</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+    
+<span class="n">MAN_PARAMS</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="s1">'prMan'</span><span class="p">,</span> <span class="s1">'htMan'</span><span class="p">,</span> <span class="s1">'tpMan'</span><span class="p">,</span> <span class="s1">'tdMan'</span><span class="p">,</span> <span class="s1">'wdMan'</span><span class="p">,</span> <span class="s1">'wsMan'</span><span class="p">])</span>
+<span class="n">SIGT_PARAMS</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="s1">'prSigT'</span><span class="p">,</span> <span class="s1">'tpSigT'</span><span class="p">,</span> <span class="s1">'tdSigT'</span><span class="p">])</span>
+<span class="n">request</span><span class="o">.</span><span class="n">setParameters</span><span class="p">(</span><span class="s2">"wmoStaNum"</span><span class="p">,</span> <span class="s2">"validTime"</span><span class="p">,</span> <span class="s2">"rptType"</span><span class="p">,</span> <span class="s2">"staElev"</span><span class="p">,</span> <span class="s2">"numMand"</span><span class="p">,</span>
+                      <span class="s2">"numSigT"</span><span class="p">,</span> <span class="s2">"numSigW"</span><span class="p">,</span> <span class="s2">"numTrop"</span><span class="p">,</span> <span class="s2">"numMwnd"</span><span class="p">,</span> <span class="s2">"staName"</span><span class="p">)</span>
+<span class="n">request</span><span class="o">.</span><span class="n">getParameters</span><span class="p">()</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">MAN_PARAMS</span><span class="p">)</span>
+<span class="n">request</span><span class="o">.</span><span class="n">getParameters</span><span class="p">()</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">SIGT_PARAMS</span><span class="p">)</span>
+<span class="n">locations</span> <span class="o">=</span> <span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">getAvailableLocationNames</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+<span class="n">locations</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+
+<span class="c1"># Set station ID (not name)</span>
+<span class="n">request</span><span class="o">.</span><span class="n">setLocationNames</span><span class="p">(</span><span class="s2">"72562"</span><span class="p">)</span> <span class="c1">#KLBF</span>
+
+<span class="c1"># Get all times</span>
+<span class="n">datatimes</span> <span class="o">=</span> <span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">getAvailableTimes</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+
+<span class="c1"># Get most recent record</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">getGeometryData</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="n">times</span><span class="o">=</span><span class="n">datatimes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">validPeriod</span><span class="p">)</span>
+
+<span class="c1"># Initialize data arrays</span>
+<span class="n">tdMan</span><span class="p">,</span><span class="n">tpMan</span><span class="p">,</span><span class="n">prMan</span><span class="p">,</span><span class="n">wdMan</span><span class="p">,</span><span class="n">wsMan</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+<span class="n">prSig</span><span class="p">,</span><span class="n">tpSig</span><span class="p">,</span><span class="n">tdSig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+<span class="n">manGeos</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">sigtGeos</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Build  arrays</span>
+<span class="k">for</span> <span class="n">ob</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
+    <span class="n">parm_array</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">'utf-8'</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ob</span><span class="o">.</span><span class="n">getParameters</span><span class="p">()]</span>
+    <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="n">parm_array</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">MAN_PARAMS</span><span class="p">:</span>
+        <span class="n">manGeos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ob</span><span class="p">)</span>
+        <span class="n">prMan</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prMan</span><span class="p">,</span><span class="n">ob</span><span class="o">.</span><span class="n">getString</span><span class="p">(</span><span class="sa">b</span><span class="s2">"prMan"</span><span class="p">))</span>
+        <span class="n">tpMan</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tpMan</span><span class="p">,</span><span class="n">ob</span><span class="o">.</span><span class="n">getString</span><span class="p">(</span><span class="sa">b</span><span class="s2">"tpMan"</span><span class="p">))</span>
+        <span class="n">tdMan</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tdMan</span><span class="p">,</span><span class="n">ob</span><span class="o">.</span><span class="n">getString</span><span class="p">(</span><span class="sa">b</span><span class="s2">"tdMan"</span><span class="p">))</span>
+        <span class="n">wdMan</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wdMan</span><span class="p">,</span><span class="n">ob</span><span class="o">.</span><span class="n">getString</span><span class="p">(</span><span class="sa">b</span><span class="s2">"wdMan"</span><span class="p">))</span>
+        <span class="n">wsMan</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wsMan</span><span class="p">,</span><span class="n">ob</span><span class="o">.</span><span class="n">getString</span><span class="p">(</span><span class="sa">b</span><span class="s2">"wsMan"</span><span class="p">))</span>
+        <span class="k">continue</span>
+    <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="n">parm_array</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">SIGT_PARAMS</span><span class="p">:</span>
+        <span class="n">sigtGeos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ob</span><span class="p">)</span>
+        <span class="n">prSig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prSig</span><span class="p">,</span><span class="n">ob</span><span class="o">.</span><span class="n">getString</span><span class="p">(</span><span class="sa">b</span><span class="s2">"prSigT"</span><span class="p">))</span>
+        <span class="n">tpSig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tpSig</span><span class="p">,</span><span class="n">ob</span><span class="o">.</span><span class="n">getString</span><span class="p">(</span><span class="sa">b</span><span class="s2">"tpSigT"</span><span class="p">))</span>
+        <span class="n">tdSig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tdSig</span><span class="p">,</span><span class="n">ob</span><span class="o">.</span><span class="n">getString</span><span class="p">(</span><span class="sa">b</span><span class="s2">"tdSigT"</span><span class="p">))</span>
+        <span class="k">continue</span>
+
+<span class="c1"># Sort mandatory levels (but not sigT levels) because of the 1000.MB interpolation inclusion</span>
+<span class="n">ps</span> <span class="o">=</span> <span class="n">prMan</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">wpres</span> <span class="o">=</span> <span class="n">prMan</span><span class="p">[</span><span class="n">ps</span><span class="p">]</span>
+<span class="n">direc</span> <span class="o">=</span> <span class="n">wdMan</span><span class="p">[</span><span class="n">ps</span><span class="p">]</span>
+<span class="n">spd</span>   <span class="o">=</span> <span class="n">wsMan</span><span class="p">[</span><span class="n">ps</span><span class="p">]</span>
+<span class="n">tman</span> <span class="o">=</span> <span class="n">tpMan</span><span class="p">[</span><span class="n">ps</span><span class="p">]</span>
+<span class="n">dman</span> <span class="o">=</span> <span class="n">tdMan</span><span class="p">[</span><span class="n">ps</span><span class="p">]</span>
+
+<span class="c1"># Flag missing data</span>
+<span class="n">prSig</span><span class="p">[</span><span class="n">prSig</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mi">9999</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="n">tpSig</span><span class="p">[</span><span class="n">tpSig</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mi">9999</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="n">tdSig</span><span class="p">[</span><span class="n">tdSig</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mi">9999</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="n">wpres</span><span class="p">[</span><span class="n">wpres</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mi">9999</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="n">tman</span><span class="p">[</span><span class="n">tman</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mi">9999</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="n">dman</span><span class="p">[</span><span class="n">dman</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mi">9999</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="n">direc</span><span class="p">[</span><span class="n">direc</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mi">9999</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="n">spd</span><span class="p">[</span><span class="n">spd</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mi">9999</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+<span class="c1"># assign units</span>
+<span class="n">p</span> <span class="o">=</span> <span class="p">(</span><span class="n">prSig</span><span class="o">/</span><span class="mi">100</span><span class="p">)</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">mbar</span>
+<span class="n">T</span> <span class="o">=</span> <span class="p">(</span><span class="n">tpSig</span><span class="o">-</span><span class="mf">273.15</span><span class="p">)</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span>
+<span class="n">Td</span> <span class="o">=</span> <span class="p">(</span><span class="n">tdSig</span><span class="o">-</span><span class="mf">273.15</span><span class="p">)</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span>
+<span class="n">wpres</span> <span class="o">=</span> <span class="p">(</span><span class="n">wpres</span><span class="o">/</span><span class="mi">100</span><span class="p">)</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">mbar</span>
+<span class="n">tman</span> <span class="o">=</span> <span class="n">tman</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span>
+<span class="n">dman</span> <span class="o">=</span> <span class="n">dman</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span>
+<span class="n">u</span><span class="p">,</span><span class="n">v</span> <span class="o">=</span> <span class="n">wind_components</span><span class="p">(</span><span class="n">spd</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">direc</span><span class="p">))</span>
+
+<span class="c1"># Create SkewT/LogP</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">'figure.figsize'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">skew</span> <span class="o">=</span> <span class="n">SkewT</span><span class="p">()</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">Td</span><span class="p">,</span> <span class="s1">'g'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">plot_barbs</span><span class="p">(</span><span class="n">wpres</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">60</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+
+<span class="n">title_string</span> <span class="o">=</span> <span class="s2">" T(F)   Td   "</span> 
+<span class="n">title_string</span> <span class="o">+=</span>  <span class="s2">" "</span> <span class="o">+</span> <span class="n">ob</span><span class="o">.</span><span class="n">getString</span><span class="p">(</span><span class="sa">b</span><span class="s2">"staName"</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">'UTF-8'</span><span class="p">)</span>
+<span class="n">title_string</span> <span class="o">+=</span> <span class="s2">" "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ob</span><span class="o">.</span><span class="n">getDataTime</span><span class="p">()</span><span class="o">.</span><span class="n">getRefTime</span><span class="p">())</span>
+<span class="n">title_string</span> <span class="o">+=</span> <span class="s2">" ("</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ob</span><span class="o">.</span><span class="n">getString</span><span class="p">(</span><span class="sa">b</span><span class="s2">"staElev"</span><span class="p">))</span> <span class="o">+</span> <span class="s2">"m elev)"</span>
+<span class="n">title_string</span> <span class="o">+=</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'degF'</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">title_string</span> <span class="o">+=</span> <span class="s2">"  "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">Td</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'degF'</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title_string</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span>
+
+<span class="c1"># Calculate LCL height and plot as black dot</span>
+<span class="n">lcl_pressure</span><span class="p">,</span> <span class="n">lcl_temperature</span> <span class="o">=</span> <span class="n">lcl</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Td</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lcl_pressure</span><span class="p">,</span> <span class="n">lcl_temperature</span><span class="p">,</span> <span class="s1">'ko'</span><span class="p">,</span> <span class="n">markerfacecolor</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)</span>
+
+<span class="c1"># Calculate full parcel profile and add to plot as black line</span>
+<span class="n">prof</span> <span class="o">=</span> <span class="n">parcel_profile</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Td</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'degC'</span><span class="p">)</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">prof</span><span class="p">,</span> <span class="s1">'k'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># An example of a slanted line at constant T -- in this case the 0 isotherm</span>
+<span class="n">l</span> <span class="o">=</span> <span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'c'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Draw hodograph</span>
+<span class="n">ax_hod</span> <span class="o">=</span> <span class="n">inset_axes</span><span class="p">(</span><span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="p">,</span> <span class="s1">'30%'</span><span class="p">,</span> <span class="s1">'30%'</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">h</span> <span class="o">=</span> <span class="n">Hodograph</span><span class="p">(</span><span class="n">ax_hod</span><span class="p">,</span> <span class="n">component_range</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">wsMan</span><span class="p">))</span>
+<span class="n">h</span><span class="o">.</span><span class="n">add_grid</span><span class="p">(</span><span class="n">increment</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">h</span><span class="o">.</span><span class="n">plot_colormapped</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">spd</span><span class="p">)</span>
+
+<span class="c1"># Show the plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+    </div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha256-SDRP1VVYu+tgAGKhddBSl5+ezofHKZeI+OzxakbIe/Y=" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

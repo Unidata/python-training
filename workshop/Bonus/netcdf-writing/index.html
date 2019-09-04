@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>netCDF-Writing | The Unidata Python Training Site</title>
+<link href="../../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/workshop/Bonus/netcdf-writing/">
+<!--[if lt IE 9]><script src="../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="netCDF-Writing">
+<meta property="og:url" content="https://unidata.github.io/python-training/workshop/Bonus/netcdf-writing/">
+<meta property="og:description" content="Writing netCDF data
+Unidata Python Workshop
+
+
+Important Note: when running this notebook interactively in a browser, you probably will not be able to execute individual cells out of order without gett">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-08-30T15:02:20-06:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../../python/intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../../../gallery/gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.ipynb" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">netCDF-Writing</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div style="width:1000 px">
+
+<div style="float:right; width:98 px; height:98px;">
+<img src="https://raw.githubusercontent.com/Unidata/MetPy/master/metpy/plots/_static/unidata_150x150.png" alt="Unidata Logo" style="height: 98px;">
+</div>
+<p></p>
+<h2>Writing netCDF data</h2>
+<h4>Unidata Python Workshop</h4>
+<div style="clear:both"></div>
+</div>
+<hr style="height:2px;">
+<div style="float:right; width:250 px"><img src="https://www.unidata.ucar.edu/images/logos/netcdf-50x50.png" alt="netCDF logo" style="height: 100px;"></div>
+<p><strong>Important Note</strong>: when running this notebook interactively in a browser, you probably will not be able to execute individual cells out of order without getting an error.  Instead, choose "Run All" from the Cell menu after you modify a cell.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">netCDF4</span> <span class="k">import</span> <span class="n">Dataset</span>    <span class="c1"># Note: python is case-sensitive!</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Opening-a-file,-creating-a-new-Dataset">Opening a file, creating a new Dataset<a class="anchor-link" href="#Opening-a-file,-creating-a-new-Dataset">¶</a>
+</h3>
+<p>Let's create a new, empty netCDF file named '../data/new.nc', opened for writing.</p>
+<p>Be careful, opening a file with 'w' will clobber any existing data (unless <code>clobber=False</code> is used, in which case an exception is raised if the file already exists).</p>
+<ul>
+<li>
+<code>mode='r'</code> is the default.</li>
+<li>
+<code>mode='a'</code> opens an existing file and allows for appending (does not clobber existing data)</li>
+<li>
+<code>format</code> can be one of <code>NETCDF3_CLASSIC</code>, <code>NETCDF3_64BIT</code>, <code>NETCDF4_CLASSIC</code> or <code>NETCDF4</code> (default). <code>NETCDF4_CLASSIC</code> uses HDF5 for the underlying storage layer (as does <code>NETCDF4</code>) but enforces the classic netCDF 3 data model so data can be read with older clients.  </li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">try</span><span class="p">:</span> <span class="n">ncfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>  <span class="c1"># just to be safe, make sure dataset is not already open.</span>
+<span class="k">except</span><span class="p">:</span> <span class="k">pass</span>
+<span class="n">ncfile</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s1">'../../data/new.nc'</span><span class="p">,</span><span class="n">mode</span><span class="o">=</span><span class="s1">'w'</span><span class="p">,</span><span class="nb">format</span><span class="o">=</span><span class="s1">'NETCDF4_CLASSIC'</span><span class="p">)</span> 
+<span class="nb">print</span><span class="p">(</span><span class="n">ncfile</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Creating-dimensions">Creating dimensions<a class="anchor-link" href="#Creating-dimensions">¶</a>
+</h3>
+<p>The <strong>ncfile</strong> object we created is a container for <em>dimensions</em>, <em>variables</em>, and <em>attributes</em>.   First, let's create some dimensions using the <a href="http://unidata.github.io/netcdf4-python/netCDF4.Dataset-class.html#createDimension"><code>createDimension</code></a> method.</p>
+<ul>
+<li>Every dimension has a name and a length.  </li>
+<li>The name is a string that is used to specify the dimension to be used when creating a variable, and as a key to access the dimension object in the <code>ncfile.dimensions</code> dictionary.</li>
+</ul>
+<p>Setting the dimension length to <code>0</code> or <code>None</code> makes it unlimited, so it can grow.</p>
+<ul>
+<li>For <code>NETCDF4</code> files, any variable's dimension can be unlimited.  </li>
+<li>For <code>NETCDF4_CLASSIC</code> and <code>NETCDF3*</code> files, only one per variable can be unlimited, and it must be the leftmost (slowest varying) dimension.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">lat_dim</span> <span class="o">=</span> <span class="n">ncfile</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">'lat'</span><span class="p">,</span> <span class="mi">73</span><span class="p">)</span>     <span class="c1"># latitude axis</span>
+<span class="n">lon_dim</span> <span class="o">=</span> <span class="n">ncfile</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">'lon'</span><span class="p">,</span> <span class="mi">144</span><span class="p">)</span>    <span class="c1"># longitude axis</span>
+<span class="n">time_dim</span> <span class="o">=</span> <span class="n">ncfile</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">'time'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="c1"># unlimited axis (can be appended to).</span>
+<span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">ncfile</span><span class="o">.</span><span class="n">dimensions</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Creating-attributes">Creating attributes<a class="anchor-link" href="#Creating-attributes">¶</a>
+</h3>
+<p>netCDF attributes can be created just like you would for any python object.</p>
+<ul>
+<li>Best to adhere to established conventions (like the <a href="http://cfconventions.org/">CF</a> conventions)</li>
+<li>We won't try to adhere to any specific convention here though.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ncfile</span><span class="o">.</span><span class="n">title</span><span class="o">=</span><span class="s1">'My model data'</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ncfile</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ncfile</span><span class="o">.</span><span class="n">subtitle</span><span class="o">=</span><span class="s2">"My model data subtitle"</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ncfile</span><span class="o">.</span><span class="n">subtitle</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ncfile</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Try adding some more attributes...</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Creating-variables">Creating variables<a class="anchor-link" href="#Creating-variables">¶</a>
+</h3>
+<p>Now let's add some variables and store some data in them.</p>
+<ul>
+<li>A variable has a name, a type, a shape, and some data values.  </li>
+<li>The shape of a variable is specified by a tuple of dimension names.  </li>
+<li>A variable should also have some named attributes, such as 'units', that describe the data.</li>
+</ul>
+<p>The <a href="http://unidata.github.io/netcdf4-python/netCDF4.Dataset-class.html#createVariable"><code>createVariable</code></a> method takes 3 mandatory args.</p>
+<ul>
+<li>the 1st argument is the variable name (a string). This is used as the key to access the variable object from the <code>variables</code> dictionary.</li>
+<li>the 2nd argument is the datatype (most numpy datatypes supported).  </li>
+<li>the third argument is a tuple containing the dimension names (the dimensions must be created first).  Unless this is a <code>NETCDF4</code> file, any unlimited dimension must be the leftmost one.</li>
+<li>there are lots of optional arguments (many of which are only relevant when <code>format='NETCDF4'</code>) to control compression, chunking, fill_value, etc.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Define two variables with the same names as dimensions,</span>
+<span class="c1"># a conventional way to define "coordinate variables".</span>
+<span class="n">lat</span> <span class="o">=</span> <span class="n">ncfile</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">'lat'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="p">(</span><span class="s1">'lat'</span><span class="p">,))</span>
+<span class="n">lat</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">'degrees_north'</span>
+<span class="n">lat</span><span class="o">.</span><span class="n">long_name</span> <span class="o">=</span> <span class="s1">'latitude'</span>
+<span class="n">lon</span> <span class="o">=</span> <span class="n">ncfile</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">'lon'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="p">(</span><span class="s1">'lon'</span><span class="p">,))</span>
+<span class="n">lon</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">'degrees_east'</span>
+<span class="n">lon</span><span class="o">.</span><span class="n">long_name</span> <span class="o">=</span> <span class="s1">'longitude'</span>
+<span class="n">time</span> <span class="o">=</span> <span class="n">ncfile</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">'time'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="s1">'time'</span><span class="p">,))</span>
+<span class="n">time</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">'hours since 1800-01-01'</span>
+<span class="n">time</span><span class="o">.</span><span class="n">long_name</span> <span class="o">=</span> <span class="s1">'time'</span>
+<span class="c1"># Define a 3D variable to hold the data</span>
+<span class="n">temp</span> <span class="o">=</span> <span class="n">ncfile</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">'temp'</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,(</span><span class="s1">'time'</span><span class="p">,</span><span class="s1">'lat'</span><span class="p">,</span><span class="s1">'lon'</span><span class="p">))</span> <span class="c1"># note: unlimited dimension is leftmost</span>
+<span class="n">temp</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">'K'</span> <span class="c1"># degrees Kelvin</span>
+<span class="n">temp</span><span class="o">.</span><span class="n">standard_name</span> <span class="o">=</span> <span class="s1">'air_temperature'</span> <span class="c1"># this is a CF standard name</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Pre-defined-variable-attributes-(read-only)">Pre-defined variable attributes (read only)<a class="anchor-link" href="#Pre-defined-variable-attributes-(read-only)">¶</a>
+</h3>
+<p>The netCDF4 module provides some useful pre-defined Python attributes for netCDF variables, such as dimensions, shape, dtype, ndim.</p>
+<p>Note: since no data has been written yet, the length of the 'time' dimension is 0.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"-- Some pre-defined attributes for variable temp:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"temp.dimensions:"</span><span class="p">,</span> <span class="n">temp</span><span class="o">.</span><span class="n">dimensions</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"temp.shape:"</span><span class="p">,</span> <span class="n">temp</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"temp.dtype:"</span><span class="p">,</span> <span class="n">temp</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"temp.ndim:"</span><span class="p">,</span> <span class="n">temp</span><span class="o">.</span><span class="n">ndim</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Writing-data">Writing data<a class="anchor-link" href="#Writing-data">¶</a>
+</h3>
+<p>To write data a netCDF variable object, just treat it like a numpy array and assign values to a slice.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">nlats</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lat_dim</span><span class="p">);</span> <span class="n">nlons</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lon_dim</span><span class="p">);</span> <span class="n">ntimes</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="c1"># Write latitudes, longitudes.</span>
+<span class="c1"># Note: the ":" is necessary in these "write" statements</span>
+<span class="n">lat</span><span class="p">[:]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">90.</span> <span class="o">+</span> <span class="p">(</span><span class="mf">180.</span><span class="o">/</span><span class="n">nlats</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nlats</span><span class="p">)</span> <span class="c1"># south pole to north pole</span>
+<span class="n">lon</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">180.</span><span class="o">/</span><span class="n">nlats</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nlons</span><span class="p">)</span> <span class="c1"># Greenwich meridian eastward</span>
+<span class="c1"># create a 3D array of random numbers</span>
+<span class="n">data_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">280</span><span class="p">,</span><span class="n">high</span><span class="o">=</span><span class="mi">330</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">ntimes</span><span class="p">,</span><span class="n">nlats</span><span class="p">,</span><span class="n">nlons</span><span class="p">))</span>
+<span class="c1"># Write the data.  This writes the whole 3D netCDF variable all at once.</span>
+<span class="n">temp</span><span class="p">[:,:,:]</span> <span class="o">=</span> <span class="n">data_arr</span>  <span class="c1"># Appends data along unlimited dimension</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"-- Wrote data, temp.shape is now "</span><span class="p">,</span> <span class="n">temp</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="c1"># read data back from variable (by slicing it), print min and max</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"-- Min/Max values:"</span><span class="p">,</span> <span class="n">temp</span><span class="p">[:,:,:]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">temp</span><span class="p">[:,:,:]</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>You can just treat a netCDF Variable object like a numpy array and assign values to it.</li>
+<li>Variables automatically grow along unlimited dimensions (unlike numpy arrays)</li>
+<li>The above writes the whole 3D variable all at once,  but you can write it a slice at a time instead.</li>
+</ul>
+<p>Let's add another time slice....</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># create a 2D array of random numbers</span>
+<span class="n">data_slice</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">280</span><span class="p">,</span><span class="n">high</span><span class="o">=</span><span class="mi">330</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">nlats</span><span class="p">,</span><span class="n">nlons</span><span class="p">))</span>
+<span class="n">temp</span><span class="p">[</span><span class="mi">3</span><span class="p">,:,:]</span> <span class="o">=</span> <span class="n">data_slice</span>   <span class="c1"># Appends the 4th time slice</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"-- Wrote more data, temp.shape is now "</span><span class="p">,</span> <span class="n">temp</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Note that we have not yet written any data to the time variable.  It automatically grew as we appended data along the time dimension to the variable <code>temp</code>, but the data is missing.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+<span class="n">times_arr</span> <span class="o">=</span> <span class="n">time</span><span class="p">[:]</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">times_arr</span><span class="p">),</span><span class="n">times_arr</span><span class="p">)</span>  <span class="c1"># dashes indicate masked values (where data has not yet been written)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's add/write some data into the time variable.</p>
+<ul>
+<li>Given a set of datetime instances, use date2num to convert to numeric time values and then write that data to the variable.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
+<span class="kn">from</span> <span class="nn">netCDF4</span> <span class="k">import</span> <span class="n">date2num</span><span class="p">,</span><span class="n">num2date</span>
+<span class="c1"># 1st 4 days of October.</span>
+<span class="n">dates</span> <span class="o">=</span> <span class="p">[</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2014</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2014</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2014</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2014</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">)]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dates</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">times</span> <span class="o">=</span> <span class="n">date2num</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">units</span><span class="p">)</span> <span class="c1"># numeric values</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">time</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">times</span>
+<span class="c1"># read time data back, convert to datetime instances, check values.</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">time</span><span class="p">[:])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">num2date</span><span class="p">(</span><span class="n">time</span><span class="p">[:],</span><span class="n">time</span><span class="o">.</span><span class="n">units</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Closing-a-netCDF-file">Closing a netCDF file<a class="anchor-link" href="#Closing-a-netCDF-file">¶</a>
+</h3>
+<p>It's <strong>important</strong> to close a netCDF file you opened for writing:</p>
+<ul>
+<li>flushes buffers to make sure all data gets written</li>
+<li>releases memory resources used by open netCDF files</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># first print the Dataset object to see what we've got</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ncfile</span><span class="p">)</span>
+<span class="c1"># close the Dataset.</span>
+<span class="n">ncfile</span><span class="o">.</span><span class="n">close</span><span class="p">();</span> <span class="nb">print</span><span class="p">(</span><span class="s1">'Dataset is closed!'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>ncdump -h ../data/new.nc
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Advanced-features">Advanced features<a class="anchor-link" href="#Advanced-features">¶</a>
+</h2>
+<p>So far we've only exercised features associated with the old netCDF version 3 data model.  netCDF version 4 adds a lot of new functionality that comes with the more flexible HDF5 storage layer.</p>
+<p>Let's create a new file with <code>format='NETCDF4'</code> so we can try out some of these features.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ncfile</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s1">'../../data/new2.nc'</span><span class="p">,</span><span class="s1">'w'</span><span class="p">,</span><span class="nb">format</span><span class="o">=</span><span class="s1">'NETCDF4'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ncfile</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Creating-Groups">Creating Groups<a class="anchor-link" href="#Creating-Groups">¶</a>
+</h3>
+<p>netCDF version 4 added support for organizing data in hierarchical groups.</p>
+<ul>
+<li>analagous to directories in a filesystem. </li>
+<li>Groups serve as containers for variables, dimensions and attributes, as well as other groups. </li>
+<li>
+<p>A <code>netCDF4.Dataset</code> creates a special group, called the 'root group', which is similar to the root directory in a unix filesystem.</p>
+</li>
+<li>
+<p>groups are created using the <a href="http://unidata.github.io/netcdf4-python/netCDF4.Dataset-class.html#createGroup"><code>createGroup</code></a> method.</p>
+</li>
+<li>takes a single argument (a string, which is the name of the Group instance).  This string is used as a key to access the group instances in the <code>groups</code> dictionary.</li>
+</ul>
+<p>Here we create two groups to hold data for two different model runs.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">grp1</span> <span class="o">=</span> <span class="n">ncfile</span><span class="o">.</span><span class="n">createGroup</span><span class="p">(</span><span class="s1">'model_run1'</span><span class="p">)</span>
+<span class="n">grp2</span> <span class="o">=</span> <span class="n">ncfile</span><span class="o">.</span><span class="n">createGroup</span><span class="p">(</span><span class="s1">'model_run2'</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">grp</span> <span class="ow">in</span> <span class="n">ncfile</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">grp</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Create some dimensions in the root group.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">lat_dim</span> <span class="o">=</span> <span class="n">ncfile</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">'lat'</span><span class="p">,</span> <span class="mi">73</span><span class="p">)</span>     <span class="c1"># latitude axis</span>
+<span class="n">lon_dim</span> <span class="o">=</span> <span class="n">ncfile</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">'lon'</span><span class="p">,</span> <span class="mi">144</span><span class="p">)</span>    <span class="c1"># longitude axis</span>
+<span class="n">time_dim</span> <span class="o">=</span> <span class="n">ncfile</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">'time'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="c1"># unlimited axis (can be appended to).</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now create a variable in grp1 and grp2.  The library will search recursively upwards in the group tree to find the dimensions (which in this case are defined one level up).</p>
+<ul>
+<li>These variables are create with <strong>zlib compression</strong>, another nifty feature of netCDF 4. </li>
+<li>The data are automatically compressed when data is written to the file, and uncompressed when the data is read.  </li>
+<li>This can really save disk space, especially when used in conjunction with the <a href="http://unidata.github.io/netcdf4-python/netCDF4.Dataset-class.html#createVariable"><strong>least_significant_digit</strong></a> keyword argument, which causes the data to be quantized (truncated) before compression.  This makes the compression lossy, but more efficient.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">temp1</span> <span class="o">=</span> <span class="n">grp1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">'temp'</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,(</span><span class="s1">'time'</span><span class="p">,</span><span class="s1">'lat'</span><span class="p">,</span><span class="s1">'lon'</span><span class="p">),</span><span class="n">zlib</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">temp2</span> <span class="o">=</span> <span class="n">grp2</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">'temp'</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,(</span><span class="s1">'time'</span><span class="p">,</span><span class="s1">'lat'</span><span class="p">,</span><span class="s1">'lon'</span><span class="p">),</span><span class="n">zlib</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">grp</span> <span class="ow">in</span> <span class="n">ncfile</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>  <span class="c1"># shows that each group now contains 1 variable</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">grp</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Creating-a-variable-with-a-compound-data-type">Creating a variable with a compound data type<a class="anchor-link" href="#Creating-a-variable-with-a-compound-data-type">¶</a>
+</h3>
+<ul>
+<li>Compound data types map directly to numpy structured (a.k.a 'record' arrays). </li>
+<li>Structured arrays are akin to C structs, or derived types in Fortran. </li>
+<li>They allow for the construction of table-like structures composed of combinations of other data types, including other compound types. </li>
+<li>Might be useful for representing multiple parameter values at each point on a grid, or at each time and space location for scattered (point) data. </li>
+</ul>
+<p>Here we create a variable with a compound data type to represent complex data (there is no native complex data type in netCDF).</p>
+<ul>
+<li>The compound data type is created with the <a href="http://unidata.github.io/netcdf4-python/netCDF4.Dataset-class.html#createCompoundType"><code>createCompoundType</code></a> method.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># create complex128 numpy structured data type</span>
+<span class="n">complex128</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">([(</span><span class="s1">'real'</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),(</span><span class="s1">'imag'</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)])</span>
+<span class="c1"># using this numpy dtype, create a netCDF compound data type object</span>
+<span class="c1"># the string name can be used as a key to access the datatype from the cmptypes dictionary.</span>
+<span class="n">complex128_t</span> <span class="o">=</span> <span class="n">ncfile</span><span class="o">.</span><span class="n">createCompoundType</span><span class="p">(</span><span class="n">complex128</span><span class="p">,</span><span class="s1">'complex128'</span><span class="p">)</span>
+<span class="c1"># create a variable with this data type, write some data to it.</span>
+<span class="n">cmplxvar</span> <span class="o">=</span> <span class="n">grp1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">'cmplx_var'</span><span class="p">,</span><span class="n">complex128_t</span><span class="p">,(</span><span class="s1">'time'</span><span class="p">,</span><span class="s1">'lat'</span><span class="p">,</span><span class="s1">'lon'</span><span class="p">))</span>
+<span class="c1"># write some data to this variable</span>
+<span class="c1"># first create some complex random data</span>
+<span class="n">nlats</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lat_dim</span><span class="p">);</span> <span class="n">nlons</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lon_dim</span><span class="p">)</span>
+<span class="n">data_arr_cmplx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">nlats</span><span class="p">,</span><span class="n">nlons</span><span class="p">))</span><span class="o">+</span><span class="mf">1.</span><span class="n">j</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">nlats</span><span class="p">,</span><span class="n">nlons</span><span class="p">))</span>
+<span class="c1"># write this complex data to a numpy complex128 structured array</span>
+<span class="n">data_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">nlats</span><span class="p">,</span><span class="n">nlons</span><span class="p">),</span><span class="n">complex128</span><span class="p">)</span>
+<span class="n">data_arr</span><span class="p">[</span><span class="s1">'real'</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_arr_cmplx</span><span class="o">.</span><span class="n">real</span><span class="p">;</span> <span class="n">data_arr</span><span class="p">[</span><span class="s1">'imag'</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_arr_cmplx</span><span class="o">.</span><span class="n">imag</span>
+<span class="n">cmplxvar</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_arr</span>  <span class="c1"># write the data to the variable (appending to time dimension)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cmplxvar</span><span class="p">)</span>
+<span class="n">data_out</span> <span class="o">=</span> <span class="n">cmplxvar</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># read one value of data back from variable</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data_out</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">data_out</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">data_out</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Creating-a-variable-with-a-variable-length-(vlen)-data-type">Creating a variable with a variable-length (vlen) data type<a class="anchor-link" href="#Creating-a-variable-with-a-variable-length-(vlen)-data-type">¶</a>
+</h3>
+<p>netCDF 4 has support for variable-length or "ragged" arrays. These are arrays of variable length sequences having the same type.</p>
+<ul>
+<li>To create a variable-length data type, use the <a href="http://unidata.github.io/netcdf4-python/netCDF4.Dataset-class.html#createVLType"><code>createVLType</code></a> method.</li>
+<li>The numpy datatype of the variable-length sequences and the name of the new datatype must be specified. </li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">vlen_t</span> <span class="o">=</span> <span class="n">ncfile</span><span class="o">.</span><span class="n">createVLType</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span> <span class="s1">'phony_vlen'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>A new variable can then be created using this datatype.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">vlvar</span> <span class="o">=</span> <span class="n">grp2</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">'phony_vlen_var'</span><span class="p">,</span> <span class="n">vlen_t</span><span class="p">,</span> <span class="p">(</span><span class="s1">'time'</span><span class="p">,</span><span class="s1">'lat'</span><span class="p">,</span><span class="s1">'lon'</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Since there is no native vlen datatype in numpy, vlen arrays are represented in python as object arrays (arrays of dtype <code>object</code>).</p>
+<ul>
+<li>These are arrays whose elements are Python object pointers, and can contain any type of python object. </li>
+<li>For this application, they must contain 1-D numpy arrays all of the same type but of varying length. </li>
+<li>Fill with 1-D random numpy int64 arrays of random length between 1 and 10.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">vlen_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">nlats</span><span class="p">,</span><span class="n">nlons</span><span class="p">),</span><span class="nb">object</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nlons</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nlats</span><span class="p">):</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># random length of sequence</span>
+        <span class="n">vlen_data</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">vlen_t</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="c1"># generate random sequence</span>
+<span class="n">vlvar</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">vlen_data</span> <span class="c1"># append along unlimited dimension (time)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">vlvar</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'data =</span><span class="se">\n</span><span class="s1">'</span><span class="p">,</span><span class="n">vlvar</span><span class="p">[:])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Close the Dataset and examine the contents with ncdump.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ncfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="o">!</span>ncdump -h ../data/new2.nc
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Other-interesting-and-useful-projects-using-netcdf4-python">Other interesting and useful projects using netcdf4-python<a class="anchor-link" href="#Other-interesting-and-useful-projects-using-netcdf4-python">¶</a>
+</h3>
+<ul>
+<li>
+<a href="http://xarray.pydata.org">xarray</a>: N-dimensional variant of the core <a href="http://pandas.pydata.org">pandas</a> data structure that can operate on netcdf variables.</li>
+<li>
+<a href="http://scitools.org.uk/iris/">Iris</a>: a data model to create a data abstraction layer which isolates analysis and visualisation code from data format specifics.  Uses netcdf4-python to access netcdf data (can also handle GRIB).</li>
+<li>
+<a href="https://github.com/SciTools/biggus">Biggus</a>: Virtual large arrays (from netcdf variables) with lazy evaluation.</li>
+<li>
+<a href="http://cfpython.bitbucket.org/">cf-python</a>: Implements the <a href="http://cfconventions.org">CF</a> data model for the reading, writing and processing of data and metadata. </li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+    </div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha256-SDRP1VVYu+tgAGKhddBSl5+ezofHKZeI+OzxakbIe/Y=" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

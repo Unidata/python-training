@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jupyter Notebooks Introduction | The Unidata Python Training Site</title>
+<link href="../../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/workshop/Jupyter_Notebooks/jupyter-notebooks-introduction/">
+<!--[if lt IE 9]><script src="../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="Jupyter Notebooks Introduction">
+<meta property="og:url" content="https://unidata.github.io/python-training/workshop/Jupyter_Notebooks/jupyter-notebooks-introduction/">
+<meta property="og:description" content="Jupyter Notebooks Introduction
+Unidata Python Workshop
+
+
+
+
+
+
+
+Jupyter notebooks are a great way to have code, output, images, video, and other information in one place. Notebooks are an ideal tool for">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-08-30T15:02:20-06:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../../python/intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../../../gallery/gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.ipynb" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Jupyter Notebooks Introduction</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div style="width:1000 px">
+
+<div style="float:right; width:98 px; height:98px;">
+<img src="https://raw.githubusercontent.com/Unidata/MetPy/master/metpy/plots/_static/unidata_150x150.png" alt="Unidata Logo" style="height: 98px;">
+</div>
+<p></p>
+<h2>Jupyter Notebooks Introduction</h2>
+<h4>Unidata Python Workshop</h4>
+<div style="clear:both"></div>
+</div>
+<hr style="height:2px;">
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Jupyter notebooks are a great way to have code, output, images, video, and other information in one place. Notebooks are an ideal tool for the student, research scientist, and even software developer. In this lesson we will go over the basic features of Jupyter notebooks and how to use them.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Getting-Started">Getting Started<a class="anchor-link" href="#Getting-Started">¶</a>
+</h3>
+<p>Before you can explore Jupyter notebooks, you need to get them up and running! On the command line, type <code>jupyter lab</code> and press <code>Enter</code>. This will start up a jupyter lab server and open your default browser connected to this server. On the main page you'll see a file explorer interface. Notice that you cannot go any further up the directory structure that where you started the server. For security reasons, you should run out of a sane sub-directory, not from your home directory. Clicking on a part of the path at the top of the page will change the working directory to that location.</p>
+<p>The tabs at the top of the interface <code>File</code>, <code>Running</code>, and <code>Clusters</code> allow you to see the file explorer, state of running notebooks, and parallel execution information. In the <code>File</code> tab you can navigate to find notebooks and click to launch them or create new ones. Click on the <code>New</code> button to create a new item. New items can be:</p>
+<ul>
+<li>
+<strong>Notebook</strong> - Create a new notebook</li>
+<li>
+<strong>Text File</strong> - Opens a built-in editor to create text based files</li>
+<li>
+<strong>Folder</strong> - Create a new directory</li>
+<li>
+<strong>Terminal</strong> - Open an instance of your default terminal</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Notebook-Components">Notebook Components<a class="anchor-link" href="#Notebook-Components">¶</a>
+</h3>
+<p>Notebooks consist of cells that contain information of various forms. New cells can be created easily by pressing <code>a</code> for above for <code>b</code> for below the current cell when in command mode.</p>
+<ul>
+<li>Active cells have an outline around them</li>
+<li>You can navigate with the mouse or arrow keys</li>
+<li>The cell type is shown in the dropdown menu at the top of the notebook.</li>
+<li>Think of cells as paragraphs in an essay - they contain a complete set of ideas. Splitting your notebook into properly sized cells is really an art and matter of personal preference.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Using-Notebooks">Using Notebooks<a class="anchor-link" href="#Using-Notebooks">¶</a>
+</h3>
+<p>Notebooks provide an easy-to-use interface to make some potenitally complicated documents. Notebooks operate in one of two modes:</p>
+<ul>
+<li>
+<strong>Edit Mode</strong> - Press <code>Enter</code> in a cell to enter edit mode.</li>
+<li>
+<strong>Command Mode</strong> - Press <code>ESC</code> or <code>Ctrl-m</code> to enter command mode. The notebook will accept keyboard commands.</li>
+</ul>
+<h4 id="Notebook-Menus">Notebook Menus<a class="anchor-link" href="#Notebook-Menus">¶</a>
+</h4>
+<p>At the top of the notebook window you will find menus containing many useful functions.</p>
+<ul>
+<li>
+<strong>File</strong> - Save, copy, export notebooks</li>
+<li>
+<strong>Edit</strong> - Move, split, cut, copy, and insert</li>
+<li>
+<strong>View</strong> - Modify the notebook's appearance</li>
+<li>
+<strong>Run</strong> - Run cells</li>
+<li>
+<strong>Kernel</strong> - Interrupt, restart, or change the active kernel</li>
+<li>
+<strong>Tabs</strong> - Control jupyter lab tabs</li>
+<li>
+<strong>Help</strong> - Access documentation and helpful information</li>
+</ul>
+<p>There are lots of keyboard commands so you never have to use a mouse, but for the workshop the <code>Shift-Enter</code> shortcut is probably the most useful. It runs the current cell and advances to the next cell. <code>Ctrl-Enter</code> will run the current cell without advancing. Shortcuts for split, merge, and delete are also very useful. Don't do these operations by hand - let the computer do the work!</p>
+<h4 id="Notebook-Toolbar">Notebook Toolbar<a class="anchor-link" href="#Notebook-Toolbar">¶</a>
+</h4>
+<p>Below the menus at the top of the notebook is a toolbar. It contains buttons to allow you to save, copy, move, etc. as well as run cells and change cell type. Generally you'll be using keyboard shortcuts, but these buttons are available. If you decide to not use the toolbar, it can be hidden in the <code>View</code> menu, as can the left file view panel.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Cells">Cells<a class="anchor-link" href="#Cells">¶</a>
+</h2>
+<p>Notebooks have cells that can be one of three types. Using a mix of cell types can result in a really nice looking and useful document. We'll cover the two you'll be most likely to use: <code>code</code> and <code>markdown</code> cells.</p>
+<h4 id="Code">Code<a class="anchor-link" href="#Code">¶</a>
+</h4>
+<p>Code cells contain.... well... code. While most commonly associated with Python, Jupyter notebooks can run many kernels including R, Ruby, Julia, and <a href="https://github.com/jupyter/jupyter/wiki/Jupyter-kernels">many more</a>. Each notebook can only use a single kernel though. Let's run some simple code in this notebook. Remember, run the cell via the keyboard (<code>Shift-Enter</code>) or by pressing the <button class="btn btn-default btn-xs"><i class="icon-step-forward fa fa-step-forward"></i></button> button.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">temperature</span> <span class="o">=</span> <span class="mi">25</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">temperature</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Notice that the standard output is displayed right below the cell that generated it. The system standard error is also displayed below cells.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'I</span><span class="se">\'</span><span class="s1">m afraid I</span><span class="se">\'</span><span class="s1">ve made a horrible mistake'</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The output of the cell appears as it is generated - you can see what's happening as the process is running. The cell below will countdown from 10. If this were a long process that you wanted to interrupt, you could press the <button class="btn btn-default btn-xs"><i class="icon-stop fa fa-stop"></i></button> button. Try it!</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">time</span> 
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Blast off!"</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Help on functions can be obtained by putting a <code>?</code> afterwards:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+np.arange<span class="o">?</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>You can also use the tab-completion feature to help save time or find functions.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Markdown-Cells">Markdown Cells<a class="anchor-link" href="#Markdown-Cells">¶</a>
+</h4>
+<p>Markdown is a convenient way to create formatted text using a simple syntax. There are different flavors of markdown, but the <a href="https://daringfireball.net/projects/markdown/basics">basics</a> are supported across the board and generally cover 80% of the use cases. HTML is also valid in markdown cells. In fact, all of the text and the header of this notebook are markdown/HTML. With markdown you can create headings, embed images, link to other pages, create lists, and more. We aren't going to exhaustively cover markdown, but the essentials can help you make really nice notebooks. Remember, the better your documentation, the more you'll thank yourself later. Think of the notebook as a lab notebook.</p>
+<h5 id="Basic-Text-Formatting">Basic Text Formatting<a class="anchor-link" href="#Basic-Text-Formatting">¶</a>
+</h5>
+<p>Text can be made <strong>bold</strong> or <em>italic</em> by enclosing it in astericks. Notice that a preview even renders in the cell to help you see the formatting that will be applied!</p>
+
+<pre><code>**This text will be bold**
+*This text will be in italics*</code></pre>
+<hr>
+<p><strong>This text will be bold</strong></p>
+<p><em>This text will be in italics</em></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Headings">Headings<a class="anchor-link" href="#Headings">¶</a>
+</h5>
+<p>You can create headings by prepending the text with a number of octothorpes (that's these: #). These go up to five levels deep!</p>
+
+<pre><code># Heading
+## Sub-Heading
+### Subsub-Heading
+#### Subsubsub-Heading
+##### Subsubsubsub-Heading</code></pre>
+<hr>
+<h2 id="Heading">Heading<a class="anchor-link" href="#Heading">¶</a>
+</h2>
+<h3 id="Sub-Heading">Sub-Heading<a class="anchor-link" href="#Sub-Heading">¶</a>
+</h3>
+<h4 id="Subsub-Heading">Subsub-Heading<a class="anchor-link" href="#Subsub-Heading">¶</a>
+</h4>
+<h5 id="Subsubsub-Heading">Subsubsub-Heading<a class="anchor-link" href="#Subsubsub-Heading">¶</a>
+</h5>
+<h6 id="Subsubsubsub-Heading">Subsubsubsub-Heading<a class="anchor-link" href="#Subsubsubsub-Heading">¶</a>
+</h6>
+<hr>
+<p><strong>PS</strong> - Notice the horizontal lines helping separate content above? Create them with <code>---</code></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Lists">Lists<a class="anchor-link" href="#Lists">¶</a>
+</h5>
+<p>You can create ordered and unordered lists with markdown in a format that is much more human readable and editable than making an HTML list. For ordered lists the markdown rendering will even take care of numbering, just use all ones. Remember, let the computer do your work! Sublist formatting is also handled in a sane way automatically.</p>
+<hr>
+<pre><code>* This is an unordered list
+* It is useful for many things
+    * Grocery lists
+    * Plans to take over the world
+        * Large plans may require multiple lists</code></pre>
+<hr>
+<ul>
+<li>This is an unordered list</li>
+<li>It is useful for many things<ul>
+<li>Grocery lists</li>
+<li>Plans to take over the world<ul>
+<li>Large plans may require multiple lists</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<pre><code>1. Create an ordered list
+    1. Use numbers
+    1. Let the computer handle numbering
+    1. Look super organized
+1. Take over the world</code></pre>
+<hr>
+<ol>
+<li>Create an ordered list<ol>
+<li>Use numbers</li>
+<li>Let the computer handle numbering</li>
+<li>Look super organized</li>
+</ol>
+</li>
+<li>Take over the world</li>
+</ol>
+<hr>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Other-Text-Formatting">Other Text Formatting<a class="anchor-link" href="#Other-Text-Formatting">¶</a>
+</h5>
+<p>There are a few other handy text formatting tricks that don't really get their own section, but are nice to see.</p>
+<p>Blockquoting is handy for inserting quotes from papers, documents, etc. Just prepend all of the lines with &gt;.</p>
+
+<pre><code>&gt; I was born not knowing and have had only a little time to
+&gt; change that here and there.
+&gt; \- Richard P. Feynman</code></pre>
+<hr>
+<blockquote>
+<p>I was born not knowing and have had only a little time to
+change that here and there.
+- Richard P. Feynman</p>
+</blockquote>
+<hr>
+<p>The notebook environment also supports so called GitHub flavored markdown. You can tripple quote code blocks and get a nicely formatted output. Providing the langauge even provides syntax highlighting.</p>
+<hr>
+<pre>
+```python
+import time 
+
+for i in range(10, 0, -1):
+    print(i)
+    time.sleep(1)
+print("Blast off!")
+```
+</pre>
+<hr>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span> 
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">"Blast off!"</span><span class="p">)</span>
+</pre></div>
+<hr>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Tables">Tables<a class="anchor-link" href="#Tables">¶</a>
+</h5>
+<p>Making tables is horrible in HTML. Markdown (multi-markdown actually) makes really good looking tables with simple text input.</p>
+<hr>
+<pre><code>| Date | Max Temp | Min Temp |
+| ---- | -------- | -------- |
+| 4/12 | 75       | 65       |
+| 4/13 | 80       | 68       |
+| 4/14 | 68       | 50       |</code></pre>
+<hr>
+<table>
+<thead><tr>
+<th>Date</th>
+<th>Max Temp</th>
+<th>Min Temp</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>4/12</td>
+<td>75</td>
+<td>65</td>
+</tr>
+<tr>
+<td>4/13</td>
+<td>80</td>
+<td>68</td>
+</tr>
+<tr>
+<td>4/14</td>
+<td>68</td>
+<td>50</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Images">Images<a class="anchor-link" href="#Images">¶</a>
+</h5>
+<p>Inserting images in markdown is a one liner!</p>
+
+<pre><code>![alt text](/path/to/img.jpg "Title")</code></pre>
+<p><img src="https://github.com/Unidata/MetPy/raw/master/docs/_static/metpy_150x150_white_bg.png" alt="MetPy Logo" title="MetPy's Logo"></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Equations">Equations<a class="anchor-link" href="#Equations">¶</a>
+</h5>
+<p>Notebooks are MathJax-aware, so using a subset of the $\LaTeX$ syntax, you can easily render complex equations in notebook cells. We don't have time to go into the details of the syntax, but you can find <a href="http://www.math.harvard.edu/texman/">many tutorials</a> on the topic. Showing a few examples will give you the idea though!</p>
+<p>To put equations inline with text enclose them in <code>$</code>, to put them on separate lines enclose them in <code>$$</code>.</p>
+<p>Let's start with a simple example, Newton's second law:</p>
+
+<pre><code>$$F = m a$$</code></pre>
+$$F = m a$$<hr>
+<p>We can also typeset much more complicated equations with a little more syntax effort:</p>
+
+<pre><code>$$\left( \frac{Dv}{Dt} \right) = -2 \Omega u \text{sin}\phi - \frac{u^2}{a} \text{tan}\phi$$</code></pre>
+$$\left( \frac{Dv}{Dt} \right) = -2 \Omega u \text{sin}\phi - \frac{u^2}{a} \text{tan}\phi$$<hr>
+<pre><code>$$\frac{\partial\zeta}{\partial t} = - V \cdot \nabla(\zeta + f) - \omega \frac{\partial \zeta}{\partial p}
+- (\zeta + f) \nabla \cdot V + k \cdot \left(\frac{\partial V}{\partial p} \times \nabla \omega \right)$$</code></pre>
+$$\frac{\partial\zeta}{\partial t} = - V \cdot \nabla(\zeta + f) - \omega \frac{\partial \zeta}{\partial p}
+- (\zeta + f) \nabla \cdot V + k \cdot \left(\frac{\partial V}{\partial p} \times \nabla \omega \right)$$
+</div>
+</div>
+</div>
+</div>
+    </div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha256-SDRP1VVYu+tgAGKhddBSl5+ezofHKZeI+OzxakbIe/Y=" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SkewT_and_Hodograph | The Unidata Python Training Site</title>
+<link href="../../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/workshop/Skew_T/skewt_and_hodograph/">
+<!--[if lt IE 9]><script src="../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="SkewT_and_Hodograph">
+<meta property="og:url" content="https://unidata.github.io/python-training/workshop/Skew_T/skewt_and_hodograph/">
+<meta property="og:description" content="Upper Air and the Skew-T Log-P
+Unidata Python Workshop
+
+
+Overview:¶
+Teaching: 25 minutes
+Exercises: 25 minutes
+
+Questions¶
+Where can upper air data be found and what format is it in?
+How can I obtain ">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-08-30T15:02:20-06:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../../python/intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../../../gallery/gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.ipynb" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">SkewT_and_Hodograph</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a name="pagetop"></a></p>
+<div style="width:1000 px">
+
+<div style="float:right; width:98 px; height:98px;">
+<img src="https://raw.githubusercontent.com/Unidata/MetPy/master/metpy/plots/_static/unidata_150x150.png" alt="Unidata Logo" style="height: 98px;">
+</div>
+<p></p>
+<h2>Upper Air and the Skew-T Log-P</h2>
+<h4>Unidata Python Workshop</h4>
+<div style="clear:both"></div>
+</div>
+<hr style="height:2px;">
+<div style="float:right; width:250 px"><img src="https://unidata.github.io/MetPy/latest/_images/sphx_glr_Advanced_Sounding_001.png" alt="Example Skew-T" style="height: 500px;"></div>
+<h3 id="Overview:">Overview:<a class="anchor-link" href="#Overview:">¶</a>
+</h3>
+<ul>
+<li>
+<strong>Teaching:</strong> 25 minutes</li>
+<li>
+<strong>Exercises:</strong> 25 minutes</li>
+</ul>
+<h4 id="Questions">Questions<a class="anchor-link" href="#Questions">¶</a>
+</h4>
+<ol>
+<li>Where can upper air data be found and what format is it in?</li>
+<li>How can I obtain upper air data programatically?</li>
+<li>How can MetPy be used to make a Skew-T Log-P diagram and associated fiducial lines?</li>
+<li>How are themodynamic calculations performed on upper-air data?</li>
+</ol>
+<h4 id="Table-of-Contents">Table of Contents<a class="anchor-link" href="#Table-of-Contents">¶</a>
+</h4>
+<ol>
+<li><a href="#upperairdata">Obtain upper air data</a></li>
+<li><a href="#makeskewt">Make a Skew-T</a></li>
+<li><a href="#thermo">Thermodynamics</a></li>
+<li><a href="#hodograph">Plotting a Hodograph</a></li>
+<li><a href="#advanced">Advanced Layout</a></li>
+</ol>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<hr style="height:2px;">
+<p><a name="upperairdata"></a></p>
+<h3 id="Obtain-upper-air-data">Obtain upper air data<a class="anchor-link" href="#Obtain-upper-air-data">¶</a>
+</h3>
+<h4 id="Overview">Overview<a class="anchor-link" href="#Overview">¶</a>
+</h4>
+<p>Upper air observations are generally reported as a plain text file in a tabular format that represents the down sampled raw data transmitted by the rawinsonde. Data are reported an mandatory levels and at levels of significant change. An example of sounding data may look like this:</p>
+
+<pre><code>-----------------------------------------------------------------------------
+   PRES   HGHT   TEMP   DWPT   RELH   MIXR   DRCT   SKNT   THTA   THTE   THTV
+    hPa     m      C      C      %    g/kg    deg   knot     K      K      K 
+-----------------------------------------------------------------------------
+ 1000.0    270                                                               
+  991.0    345   -0.3   -2.8     83   3.15      0      0  273.6  282.3  274.1
+  984.0    403   10.2   -7.8     27   2.17    327      4  284.7  291.1  285.0
+  963.0    581   11.8   -9.2     22   1.99    226     17  288.0  294.1  288.4
+  959.7    610   11.6   -9.4     22   1.96    210     19  288.1  294.1  288.5</code></pre>
+<p>Data are available to download from the <a href="http://weather.uwyo.edu/upperair/sounding.html">University of Wyoming archive</a>, the <a href="https://mesonet.agron.iastate.edu/archive/raob/">Iowa State archive</a>, and the <a href="https://www.ncdc.noaa.gov/data-access/weather-balloon/integrated-global-radiosonde-archive">Integrated Global Radiosonde Archive (IGRA)</a>. <strong>There is no need to download data manually.</strong> We can use the siphon library (also developed at Unidata) to request and download these data. Be sure to checkout the <a href="https://unidata.github.io/siphon/latest/api/index.html">documentation</a> on all of siphon's capabilities.</p>
+<h4 id="Getting-our-data">Getting our data<a class="anchor-link" href="#Getting-our-data">¶</a>
+</h4>
+<p>First, we need to create a <code>datetime</code> object that has the time of observation we are looking for. We can then request the data for a specific station. Note that if you provide an invalid time or station where no sounding data are present you will receive an error.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Create a datetime for our request - notice the times are from laregest (year) to smallest (hour)</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+<span class="n">request_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">1999</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Store the station name in a variable for flexibility and clarity</span>
+<span class="n">station</span> <span class="o">=</span> <span class="s1">'OUN'</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Import the Wyoming simple web service and request the data</span>
+<span class="c1"># Don't worry about a possible warning from Pandas - it's related to our handling of units</span>
+<span class="kn">from</span> <span class="nn">siphon.simplewebservice.wyoming</span> <span class="k">import</span> <span class="n">WyomingUpperAir</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">WyomingUpperAir</span><span class="o">.</span><span class="n">request_data</span><span class="p">(</span><span class="n">request_time</span><span class="p">,</span> <span class="n">station</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Let's see what we got in return</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We got a Pandas dataframe back, which is great. Sadly, Pandas does not play well with units, so we need to attach units and make some other kind of data structure. We've provided a helper function for this - it takes the dataframe with our special <code>.units</code> attribute and returns a dictionary where the keys are column (data series) names and the values are united arrays. This means we can still use the dictionary access syntax and mostly forget that it is not a data frame any longer.</p>
+<p>Fist, let's look at the special attribute siphon added:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">units</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now let's import the helper and the units registry from MetPy and get units attached.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">metpy.units</span> <span class="k">import</span> <span class="n">pandas_dataframe_to_unit_arrays</span><span class="p">,</span> <span class="n">units</span>
+<span class="n">sounding</span> <span class="o">=</span> <span class="n">pandas_dataframe_to_unit_arrays</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sounding</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="#pagetop">Top</a></p>
+<hr style="height:2px;">
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a name="makeskewt"></a></p>
+<h3 id="Make-a-Skew-T">Make a Skew-T<a class="anchor-link" href="#Make-a-Skew-T">¶</a>
+</h3>
+<p>Now that we have data, we can actually start making our Skew-T Log-P diagram. This consists of:</p>
+<ul>
+<li>Import matplotlib</li>
+<li>Importing the SkewT object</li>
+<li>Creating a figure</li>
+<li>Creating a SkewT object based upon that figure</li>
+<li>Plotting our data</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <span class="n">SkewT</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Create a new figure. The dimensions here give a good aspect ratio</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">skew</span> <span class="o">=</span> <span class="n">SkewT</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Plot the data using normal plotting functions, all of the transforms</span>
+<span class="c1"># happen in the background!</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">],</span> <span class="n">sounding</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'tab:red'</span><span class="p">)</span>
+
+<span class="c1"># Redisplay the figure</span>
+<span class="n">fig</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Plot a isotherm using axvline (axis vertical line)</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'cyan'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">)</span>
+
+<span class="c1"># Redisplay the figure</span>
+<span class="n">fig</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Exercise">Exercise<a class="anchor-link" href="#Exercise">¶</a>
+</h4>
+<h5 id="Part-1">Part 1<a class="anchor-link" href="#Part-1">¶</a>
+</h5>
+<ul>
+<li>Download your own data using the Iowa State archive. Have a look at the <a href="https://unidata.github.io/siphon/latest/api/simplewebservice.html#module-siphon.simplewebservice.iastate">documentation</a> to help get started. Don't have a favorite case study? Try getting data for the same case as above, but from Iowa.</li>
+<li>Attach units using the unit helper.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Import the Iowa state simple web service upper air object</span>
+<span class="c1"># YOUR CODE GOES HERE</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Create the datetime and station variables you'll need</span>
+<span class="c1"># YOUR CODE GOES HERE</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Make the request for the data</span>
+<span class="c1"># YOUR CODE GOES HERE</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Attach units to the data</span>
+<span class="c1"># YOUR CODE GOES HERE</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Solution">Solution<a class="anchor-link" href="#Solution">¶</a>
+</h5>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/skewt_get_data.py</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Part-2">Part 2<a class="anchor-link" href="#Part-2">¶</a>
+</h5>
+<ul>
+<li>Make a figure and <code>SkewT</code> object.</li>
+<li>Plot the temperature and dewpoint in red and green lines.</li>
+<li>Set the axis limits to sensible limits with <code>set_xlim</code> and <code>set_ylim</code>.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Make a figure</span>
+
+<span class="c1"># Make a SkewT object</span>
+
+<span class="c1"># Plot the temperature and dewpoint</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Solution">Solution<a class="anchor-link" href="#Solution">¶</a>
+</h5>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/skewt_make_figure.py</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Part-3">Part 3<a class="anchor-link" href="#Part-3">¶</a>
+</h5>
+<ul>
+<li>Plot wind barbs using the <code>plot_barbs</code> method of the <code>SkewT</code> object.</li>
+<li>Add the fiducial lines for dry adiabats, moist adiabats, and mixing ratio lines using the <code>plot_dry_adiabats()</code>, <code>plot_moist_adiabats()</code>, <code>plot_mixing_lines()</code> functions. </li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Plot wind barbs</span>
+
+<span class="c1"># Add dry adiabats</span>
+
+<span class="c1"># Add moist adiabats</span>
+
+<span class="c1"># Add mixing ratio lines</span>
+
+<span class="c1"># Redisplay figure</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Solution">Solution<a class="anchor-link" href="#Solution">¶</a>
+</h5>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/skewt_wind_fiducials.py</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="#pagetop">Top</a></p>
+<hr style="height:2px;">
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a name="thermo"></a></p>
+<h3 id="Thermodynamics">Thermodynamics<a class="anchor-link" href="#Thermodynamics">¶</a>
+</h3>
+<p>Using MetPy's calculations functions we can calculate thermodynamic paramters like LCL, LFC, EL, CAPE, and CIN. Let's start off with the LCL.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Grab data for our original case and make a basic figure for us to keep working with.</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">WyomingUpperAir</span><span class="o">.</span><span class="n">request_data</span><span class="p">(</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1999</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span> <span class="s1">'OUN'</span><span class="p">)</span>
+<span class="n">sounding</span> <span class="o">=</span> <span class="n">pandas_dataframe_to_unit_arrays</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># Create a new figure and SkewT object</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">skew</span> <span class="o">=</span> <span class="n">SkewT</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+
+<span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">],</span> <span class="n">sounding</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'tab:red'</span><span class="p">)</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">],</span> <span class="n">sounding</span><span class="p">[</span><span class="s1">'dewpoint'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'tab:blue'</span><span class="p">)</span>
+
+<span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">60</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="n">skew</span><span class="o">.</span><span class="n">plot_dry_adiabats</span><span class="p">()</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">plot_moist_adiabats</span><span class="p">()</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">plot_mixing_lines</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="k">as</span> <span class="nn">mpcalc</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">lcl_pressure</span><span class="p">,</span> <span class="n">lcl_temperature</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">lcl</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+                                           <span class="n">sounding</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+                                           <span class="n">sounding</span><span class="p">[</span><span class="s1">'dewpoint'</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">lcl_pressure</span><span class="p">,</span> <span class="n">lcl_temperature</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can this as a point on our sounding using the <code>scatter</code> method.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">lcl_temperature</span><span class="p">,</span> <span class="n">lcl_pressure</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'k'</span><span class="p">)</span>
+<span class="n">fig</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can also calculate the ideal parcel profile and plot it.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sounding</span><span class="p">[</span><span class="s1">'profile'</span><span class="p">]</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">parcel_profile</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">],</span> <span class="n">sounding</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">sounding</span><span class="p">[</span><span class="s1">'dewpoint'</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'profile'</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Plot the profile</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">],</span> <span class="n">sounding</span><span class="p">[</span><span class="s1">'profile'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)</span>
+
+<span class="c1"># Redisplay the figure</span>
+<span class="n">fig</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Exercise">Exercise<a class="anchor-link" href="#Exercise">¶</a>
+</h4>
+<h5 id="Part-1">Part 1<a class="anchor-link" href="#Part-1">¶</a>
+</h5>
+<ul>
+<li>Calculate the LFC and EL for the sounding.</li>
+<li>Plot them as horizontal lines with the linestyle of your choice. Remember <code>axvline</code>? Checkout <code>axhline</code> for this exercise.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Get data for the sounding</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">WyomingUpperAir</span><span class="o">.</span><span class="n">request_data</span><span class="p">(</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1999</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span> <span class="s1">'OUN'</span><span class="p">)</span>
+
+<span class="c1"># Calculate the ideal surface parcel path</span>
+<span class="n">sounding</span><span class="p">[</span><span class="s1">'profile'</span><span class="p">]</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">parcel_profile</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">],</span>
+                                            <span class="n">sounding</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+                                            <span class="n">sounding</span><span class="p">[</span><span class="s1">'dewpoint'</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'degC'</span><span class="p">)</span>
+
+<span class="c1"># Calculate the LCL</span>
+<span class="n">lcl_pressure</span><span class="p">,</span> <span class="n">lcl_temperature</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">lcl</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+                                           <span class="n">sounding</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+                                           <span class="n">sounding</span><span class="p">[</span><span class="s1">'dewpoint'</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># Calculate the LFC</span>
+<span class="c1"># YOUR CODE GOES HERE</span>
+
+<span class="c1"># Calculate the EL</span>
+<span class="c1"># YOUR CODE GOES HERE</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Create a new figure and SkewT object</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">skew</span> <span class="o">=</span> <span class="n">SkewT</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+
+<span class="c1"># Plot the profile and data</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">],</span> <span class="n">sounding</span><span class="p">[</span><span class="s1">'profile'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">],</span> <span class="n">sounding</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'tab:red'</span><span class="p">)</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">],</span> <span class="n">sounding</span><span class="p">[</span><span class="s1">'dewpoint'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'tab:blue'</span><span class="p">)</span>
+
+<span class="c1"># Plot the LCL, LFC, and EL as horizontal lines</span>
+<span class="c1"># YOUR CODE GOES HERE</span>
+
+<span class="c1"># Set axis limits</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">60</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="c1"># Add fiducial lines</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">plot_dry_adiabats</span><span class="p">()</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">plot_moist_adiabats</span><span class="p">()</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">plot_mixing_lines</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Solution">Solution<a class="anchor-link" href="#Solution">¶</a>
+</h5>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/skewt_thermo.py</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Bonus">Bonus<a class="anchor-link" href="#Bonus">¶</a>
+</h5>
+<ul>
+<li>Use the function <code>surface_based_cape_cin</code> in the MetPy calculations module to calculate the CAPE and CIN of this sounding. Print out the values</li>
+<li>Using the methods <code>shade_cape</code> and <code>shade_cin</code> on the SkewT object, shade the areas representing CAPE and CIN.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Calculate surface based cape/cin</span>
+<span class="c1"># YOUR CODE GOES HERE</span>
+
+<span class="c1"># Print CAPE and CIN</span>
+<span class="c1"># YOUR CODE GOES HERE</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Shade CAPE</span>
+<span class="c1"># YOUR CODE GOES HERE</span>
+
+<span class="c1"># Shade CIN</span>
+<span class="c1"># YOUR CODE GOES HERE</span>
+
+<span class="c1"># Redisplay the figure</span>
+<span class="n">fig</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Solution">Solution<a class="anchor-link" href="#Solution">¶</a>
+</h5>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/skewt_cape_cin.py</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="#pagetop">Top</a></p>
+<hr style="height:2px;">
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a name="hodograph"></a></p>
+<h3 id="Plotting-a-Hodograph">Plotting a Hodograph<a class="anchor-link" href="#Plotting-a-Hodograph">¶</a>
+</h3>
+<p>Hodographs are a great way to look at wind shear - they are created by drawing wind vectors, all starting at the origin of a plot, and the connecting the vector tips. They are often thought of as a polar plot where the range rings (lines of constant radius) represent speed and the angle representes the compass angle of the wind.</p>
+<p>In MetPy we can create a hodograph in a similar way to a skew-T - we create a hodograph object and attach it to an axes.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Import the hodograph class</span>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <span class="n">Hodograph</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Make a figure and axis</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="c1"># Create a hodograph</span>
+<span class="n">h</span> <span class="o">=</span> <span class="n">Hodograph</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">component_range</span><span class="o">=</span><span class="mf">60.</span><span class="p">)</span>
+
+<span class="c1"># Add "range rings" to the plot</span>
+<span class="n">h</span><span class="o">.</span><span class="n">add_grid</span><span class="p">(</span><span class="n">increment</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="c1"># Plot the wind data</span>
+<span class="n">h</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'u_wind'</span><span class="p">],</span> <span class="n">sounding</span><span class="p">[</span><span class="s1">'v_wind'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'tab:red'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can even add wind vectors, which is helpful for learning/teaching hodographs.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Add vectors</span>
+<span class="n">h</span><span class="o">.</span><span class="n">wind_vectors</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'u_wind'</span><span class="p">],</span> <span class="n">sounding</span><span class="p">[</span><span class="s1">'v_wind'</span><span class="p">])</span>
+
+<span class="c1"># Redisplay figure</span>
+<span class="n">fig</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This is great, but we generally don't care about wind shear for the entire sounding. Let's say we want to view it in the lowest 10km of the atmosphere. We can do this with the powerful, but complex <code>get_layer</code> function. Let's get a subset of the u-wind, v-wind, and windspeed.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">u_trimmed</span><span class="p">,</span> <span class="n">v_trimmed</span><span class="p">,</span>
+ <span class="n">speed_trimmed</span><span class="p">,</span> <span class="n">height_trimmed</span><span class="p">)</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">get_layer</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">],</span>
+                                                   <span class="n">sounding</span><span class="p">[</span><span class="s1">'u_wind'</span><span class="p">],</span>
+                                                   <span class="n">sounding</span><span class="p">[</span><span class="s1">'v_wind'</span><span class="p">],</span>
+                                                   <span class="n">sounding</span><span class="p">[</span><span class="s1">'speed'</span><span class="p">],</span>
+                                                   <span class="n">sounding</span><span class="p">[</span><span class="s1">'height'</span><span class="p">],</span>
+                                                   <span class="n">heights</span><span class="o">=</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'height'</span><span class="p">],</span>
+                                                   <span class="n">depth</span><span class="o">=</span><span class="mi">10</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">km</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's make the same hodograph again, but we'll also color the line by the value of the windspeed and we'll use the trimmed data we just created.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <span class="n">colortables</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="n">h</span> <span class="o">=</span> <span class="n">Hodograph</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">component_range</span><span class="o">=</span><span class="mf">60.</span><span class="p">)</span>
+<span class="n">h</span><span class="o">.</span><span class="n">add_grid</span><span class="p">(</span><span class="n">increment</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="n">norm</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">colortables</span><span class="o">.</span><span class="n">get_with_range</span><span class="p">(</span><span class="s1">'ir_rgbv'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">speed_trimmed</span><span class="p">),</span>
+                                        <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">speed_trimmed</span><span class="p">))</span>
+
+<span class="n">h</span><span class="o">.</span><span class="n">plot_colormapped</span><span class="p">(</span><span class="n">u_trimmed</span><span class="p">,</span> <span class="n">v_trimmed</span><span class="p">,</span> <span class="n">speed_trimmed</span><span class="p">,</span>
+                   <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">)</span>
+<span class="n">h</span><span class="o">.</span><span class="n">wind_vectors</span><span class="p">(</span><span class="n">u_trimmed</span><span class="p">[::</span><span class="mi">3</span><span class="p">],</span> <span class="n">v_trimmed</span><span class="p">[::</span><span class="mi">3</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Exercise">Exercise<a class="anchor-link" href="#Exercise">¶</a>
+</h4>
+<p>In this exercise you'll create a hodograph that is colored by a variable that is not displayed - height above ground level. We generally wouldn't want to color this in a continuous fashion, so we'll make a hodograph that is segmented by height.</p>
+<h5 id="Part-1">Part 1<a class="anchor-link" href="#Part-1">¶</a>
+</h5>
+<ul>
+<li>Make a variable to hold the height above ground level (subtract the surface height from the heights in the sounding).</li>
+<li>Make an list of boundary values that we'll use to segment the hodograph from 0-1, 1-3, 3-5, and 5-8 km. (Hint the array should have one more value than the number of segments desired.)</li>
+<li>Make a list of colors for each segment.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Calculate the height above ground level (AGL)</span>
+<span class="c1"># YOUR CODE GOES HERE</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Make an array of segment boundaries - don't forget units!</span>
+<span class="c1"># YOUR CODE GOES HERE</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Make a list of colors for the segments</span>
+<span class="c1"># YOUR CODE GOES HERE</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Solution">Solution<a class="anchor-link" href="#Solution">¶</a>
+</h5>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/hodograph_preprocessing.py</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Part-2">Part 2<a class="anchor-link" href="#Part-2">¶</a>
+</h5>
+<ul>
+<li>Make a new figure and hodograph object.</li>
+<li>Using the <code>bounds</code> and <code>colors</code> keyword arguments to <code>plot_colormapped</code> create the segmented hodograph.</li>
+<li>BONUS: Add a colorbar!</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Create figure/axis</span>
+<span class="c1"># YOUR CODE GOES HERE</span>
+
+<span class="c1"># Create a hodograph object/fiducial lines</span>
+<span class="c1"># YOUR CODE GOES HERE</span>
+
+<span class="c1"># Plot the data</span>
+<span class="c1"># YOUR CODE GOES HERE</span>
+
+<span class="c1"># BONUS - add a colorbar</span>
+<span class="c1"># YOUR CODE GOES HERE</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Solution">Solution<a class="anchor-link" href="#Solution">¶</a>
+</h5>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/hodograph_segmented.py</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="#pagetop">Top</a></p>
+<hr style="height:2px;">
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a name="advanced"></a></p>
+<h3 id="Advanced-Layout">Advanced Layout<a class="anchor-link" href="#Advanced-Layout">¶</a>
+</h3>
+<p>This section is meant to show you some fancy matplotlib to make nice Skew-T/Hodograph combinations. It's a good starting place to make your custom plot for your needs.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Get the data we want</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">WyomingUpperAir</span><span class="o">.</span><span class="n">request_data</span><span class="p">(</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1998</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">'OUN'</span><span class="p">)</span>
+<span class="n">sounding</span> <span class="o">=</span> <span class="n">pandas_dataframe_to_unit_arrays</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Calculate thermodynamics</span>
+<span class="n">lcl_pressure</span><span class="p">,</span> <span class="n">lcl_temperature</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">lcl</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+                                           <span class="n">sounding</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+                                           <span class="n">sounding</span><span class="p">[</span><span class="s1">'dewpoint'</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">lfc_pressure</span><span class="p">,</span> <span class="n">lfc_temperature</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">lfc</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">],</span>
+                                           <span class="n">sounding</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">],</span>
+                                           <span class="n">sounding</span><span class="p">[</span><span class="s1">'dewpoint'</span><span class="p">])</span>
+
+<span class="n">el_pressure</span><span class="p">,</span> <span class="n">el_temperature</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">el</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">],</span>
+                                        <span class="n">sounding</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">],</span>
+                                        <span class="n">sounding</span><span class="p">[</span><span class="s1">'dewpoint'</span><span class="p">])</span>
+
+<span class="n">parcel_profile</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">parcel_profile</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">],</span>
+                                       <span class="n">sounding</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+                                       <span class="n">sounding</span><span class="p">[</span><span class="s1">'dewpoint'</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Some new imports</span>
+<span class="kn">import</span> <span class="nn">matplotlib.gridspec</span> <span class="k">as</span> <span class="nn">gridspec</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.axes_grid1.inset_locator</span> <span class="k">import</span> <span class="n">inset_axes</span>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <span class="n">add_metpy_logo</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Make the plot</span>
+<span class="c1"># Create a new figure. The dimensions here give a good aspect ratio</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+<span class="n">add_metpy_logo</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="mi">630</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s1">'large'</span><span class="p">)</span>
+
+<span class="c1"># Grid for plots</span>
+<span class="n">gs</span> <span class="o">=</span> <span class="n">gridspec</span><span class="o">.</span><span class="n">GridSpec</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">skew</span> <span class="o">=</span> <span class="n">SkewT</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">subplot</span><span class="o">=</span><span class="n">gs</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">])</span>
+
+<span class="c1"># Plot the sounding using normal plotting functions, in this case using</span>
+<span class="c1"># log scaling in Y, as dictated by the typical meteorological plot</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">],</span> <span class="n">sounding</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">],</span> <span class="s1">'tab:red'</span><span class="p">)</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">],</span> <span class="n">sounding</span><span class="p">[</span><span class="s1">'dewpoint'</span><span class="p">],</span> <span class="s1">'tab:green'</span><span class="p">)</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">],</span> <span class="n">parcel_profile</span><span class="p">,</span> <span class="s1">'k'</span><span class="p">)</span>
+
+<span class="c1"># Mask barbs to be below 100 hPa only</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">sounding</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">plot_barbs</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">][</span><span class="n">mask</span><span class="p">],</span> <span class="n">sounding</span><span class="p">[</span><span class="s1">'u_wind'</span><span class="p">][</span><span class="n">mask</span><span class="p">],</span> <span class="n">sounding</span><span class="p">[</span><span class="s1">'v_wind'</span><span class="p">][</span><span class="n">mask</span><span class="p">])</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="c1"># Add the relevant special lines</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">plot_dry_adiabats</span><span class="p">()</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">plot_moist_adiabats</span><span class="p">()</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">plot_mixing_lines</span><span class="p">()</span>
+
+<span class="c1"># Shade areas</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">shade_cin</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">],</span> <span class="n">sounding</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">],</span> <span class="n">parcel_profile</span><span class="p">)</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">shade_cape</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">],</span> <span class="n">sounding</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">],</span> <span class="n">parcel_profile</span><span class="p">)</span>
+
+<span class="c1"># Good bounds for aspect ratio</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">lcl_pressure</span><span class="p">:</span>
+    <span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">lcl_pressure</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)</span>
+    
+<span class="k">if</span> <span class="n">lfc_pressure</span><span class="p">:</span>
+    <span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">lfc_pressure</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'tab:brown'</span><span class="p">)</span>
+    
+<span class="k">if</span> <span class="n">el_pressure</span><span class="p">:</span>
+    <span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">el_pressure</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'tab:blue'</span><span class="p">)</span>
+
+<span class="c1"># Create a hodograph</span>
+<span class="n">agl</span> <span class="o">=</span> <span class="n">sounding</span><span class="p">[</span><span class="s1">'height'</span><span class="p">]</span> <span class="o">-</span> <span class="n">sounding</span><span class="p">[</span><span class="s1">'height'</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">agl</span> <span class="o">&lt;=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">km</span>
+<span class="n">boundaries</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">km</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'tab:red'</span><span class="p">,</span> <span class="s1">'tab:green'</span><span class="p">,</span> <span class="s1">'tab:blue'</span><span class="p">,</span> <span class="s1">'tab:olive'</span><span class="p">]</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">h</span> <span class="o">=</span> <span class="n">Hodograph</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">component_range</span><span class="o">=</span><span class="mf">30.</span><span class="p">)</span>
+<span class="n">h</span><span class="o">.</span><span class="n">add_grid</span><span class="p">(</span><span class="n">increment</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">h</span><span class="o">.</span><span class="n">plot_colormapped</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'u_wind'</span><span class="p">][</span><span class="n">mask</span><span class="p">],</span> <span class="n">sounding</span><span class="p">[</span><span class="s1">'v_wind'</span><span class="p">][</span><span class="n">mask</span><span class="p">],</span> <span class="n">agl</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span> <span class="n">bounds</span><span class="o">=</span><span class="n">boundaries</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="#pagetop">Top</a></p>
+<hr style="height:2px;">
+</div>
+</div>
+</div>
+</div>
+    </div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha256-SDRP1VVYu+tgAGKhddBSl5+ezofHKZeI+OzxakbIe/Y=" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

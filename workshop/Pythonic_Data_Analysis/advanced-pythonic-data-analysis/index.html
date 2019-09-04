@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Advanced Pythonic Data Analysis | The Unidata Python Training Site</title>
+<link href="../../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/workshop/Pythonic_Data_Analysis/advanced-pythonic-data-analysis/">
+<!--[if lt IE 9]><script src="../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="Advanced Pythonic Data Analysis">
+<meta property="og:url" content="https://unidata.github.io/python-training/workshop/Pythonic_Data_Analysis/advanced-pythonic-data-analysis/">
+<meta property="og:description" content="Advanced Pythonic Data Analysis
+Unidata Python Workshop
+
+
+Overview:¶
+Teaching: 45 minutes
+Exercises: 45 minutes
+
+Questions¶
+How can we improve upon the versatility of the plotter developed in the basi">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-08-30T15:02:20-06:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../../python/intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../../../gallery/gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.ipynb" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Advanced Pythonic Data Analysis</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a name="top"></a></p>
+<div style="width:1000 px">
+
+<div style="float:right; width:98 px; height:98px;">
+<img src="https://raw.githubusercontent.com/Unidata/MetPy/master/metpy/plots/_static/unidata_150x150.png" alt="Unidata Logo" style="height: 98px;">
+</div>
+<p></p>
+<h2>Advanced Pythonic Data Analysis</h2>
+<h4>Unidata Python Workshop</h4>
+<div style="clear:both"></div>
+</div>
+<hr style="height:2px;">
+<div style="float:right; width:250 px"><img src="http://matplotlib.org/_images/date_demo.png" alt="METAR" style="height: 300px;"></div>
+<h3 id="Overview:">Overview:<a class="anchor-link" href="#Overview:">¶</a>
+</h3>
+<ul>
+<li>
+<strong>Teaching:</strong> 45 minutes</li>
+<li>
+<strong>Exercises:</strong> 45 minutes</li>
+</ul>
+<h4 id="Questions">Questions<a class="anchor-link" href="#Questions">¶</a>
+</h4>
+<ol>
+<li>How can we improve upon the versatility of the plotter developed in the basic time series notebook?</li>
+<li>How can we iterate over all data file in a directory?</li>
+<li>How can data processing functions be applied on a variable-by-variable basis?</li>
+</ol>
+<h4 id="Objectives">Objectives<a class="anchor-link" href="#Objectives">¶</a>
+</h4>
+<ol>
+<li><a href="#basicfunctionality">From Time Series Plotting Episode</a></li>
+<li><a href="#parameterdict">Dictionaries of Parameters</a></li>
+<li><a href="#multipledict">Multiple Dictionaries</a></li>
+<li><a href="#functions">Function Application</a></li>
+<li><a href="#glob">Glob and Multiple Files</a></li>
+</ol>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a name="basicfunctionality"></a></p>
+<h3 id="From-Time-Series-Plotting-Episode">From Time Series Plotting Episode<a class="anchor-link" href="#From-Time-Series-Plotting-Episode">¶</a>
+</h3>
+<p>Here's the basic set of imports and data reading functionality that we established in the <a href="../Time_Series/Basic%20Time%20Series%20Plotting.ipynb">Basic Time Series Plotting</a> notebook.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib.dates</span> <span class="k">import</span> <span class="n">DateFormatter</span><span class="p">,</span> <span class="n">DayLocator</span>
+<span class="kn">from</span> <span class="nn">siphon.simplewebservice.ndbc</span> <span class="k">import</span> <span class="n">NDBC</span>
+
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">format_varname</span><span class="p">(</span><span class="n">varname</span><span class="p">):</span>
+    <span class="sd">"""Format the variable name nicely for titles and labels."""</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="n">varname</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'_'</span><span class="p">)</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="n">varname</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'_'</span><span class="p">,</span> <span class="s1">' '</span><span class="p">)</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">title</span><span class="p">,</span> <span class="n">label</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">read_buoy_data</span><span class="p">(</span><span class="n">buoy</span><span class="p">,</span> <span class="n">days</span><span class="o">=</span><span class="mi">7</span><span class="p">):</span> 
+    <span class="c1"># Read in some data</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">NDBC</span><span class="o">.</span><span class="n">realtime_observations</span><span class="p">(</span><span class="n">buoy</span><span class="p">)</span>
+
+    <span class="c1"># Trim to the last 7 days</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'time'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">-</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">days</span><span class="p">))]</span>
+    <span class="k">return</span> <span class="n">df</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="#top">Top</a></p>
+<hr style="height:2px;">
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a name="parameterdict"></a></p>
+<h3 id="Dictionaries-of-Parameters">Dictionaries of Parameters<a class="anchor-link" href="#Dictionaries-of-Parameters">¶</a>
+</h3>
+<p>When we left off last time, we had created dictionaries that stored line colors and plot properties in a key value pair. To further simplify things, we can actually pass a dictionary of arguements to the plot call. Enter the dictionary of dictionaries. Each key has a value that is a dictionary itself with it's key value pairs being the arguements to each plot call. Notice that different variables can have different arguements!</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">read_buoy_data</span><span class="p">(</span><span class="s1">'41056'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Dictionary of plotting parameters by variable name</span>
+<span class="n">styles</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'wind_speed'</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'tab:orange'</span><span class="p">),</span>
+          <span class="s1">'wind_gust'</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'tab:olive'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'None'</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+          <span class="s1">'pressure'</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)}</span>
+
+<span class="n">plot_variables</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">'wind_speed'</span><span class="p">,</span> <span class="s1">'wind_gust'</span><span class="p">],</span> <span class="p">[</span><span class="s1">'pressure'</span><span class="p">]]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">plot_variables</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">var_names</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">plot_variables</span><span class="p">):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">col</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">var_name</span> <span class="ow">in</span> <span class="n">var_names</span><span class="p">:</span>
+        <span class="n">title</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">format_varname</span><span class="p">(</span><span class="n">var_name</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="n">var_name</span><span class="p">],</span> <span class="o">**</span><span class="n">styles</span><span class="p">[</span><span class="n">var_name</span><span class="p">])</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'Buoy 41056 </span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">title</span><span class="p">))</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Time'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">DateFormatter</span><span class="p">(</span><span class="s1">'%m/</span><span class="si">%d</span><span class="s1">'</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">DayLocator</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="#top">Top</a></p>
+<hr style="height:2px;">
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a name="multipledict"></a></p>
+<h3 id="Multiple-Dictionaries">Multiple Dictionaries<a class="anchor-link" href="#Multiple-Dictionaries">¶</a>
+</h3>
+<p>We can even use multiple dictionaries to define styles for types of observations and then specific observation properties such as levels, sources, etc. One common use case of this would be plotting all temperature data as red, but with different linestyles for an isobaric level and the surface.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">type_styles</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'Temperature'</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">),</span>
+               <span class="s1">'Relative humidity'</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'green'</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'s'</span><span class="p">)}</span>
+
+<span class="n">level_styles</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'isobaric'</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">linestyle</span><span class="o">=</span><span class="s1">'-'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+                <span class="s1">'surface'</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">linestyle</span><span class="o">=</span><span class="s1">':'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)}</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">my_style</span> <span class="o">=</span> <span class="n">type_styles</span><span class="p">[</span><span class="s1">'Temperature'</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">my_style</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">my_style</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">level_styles</span><span class="p">[</span><span class="s1">'isobaric'</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">my_style</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>If we look back at the original entry in <code>type_styles</code> we see it was updated too! That may not be the expected or even the desired behavior.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">type_styles</span><span class="p">[</span><span class="s1">'Temperature'</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can use the <code>copy</code> method to make a copy of the element and avoid update the original.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">type_styles</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'Temperature'</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">),</span>
+               <span class="s1">'Relative humidity'</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'green'</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'s'</span><span class="p">)}</span>
+
+<span class="n">level_styles</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'isobaric'</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">linestyle</span><span class="o">=</span><span class="s1">'-'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+                <span class="s1">'surface'</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">linestyle</span><span class="o">=</span><span class="s1">':'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)}</span>
+
+<span class="n">my_style</span> <span class="o">=</span> <span class="n">type_styles</span><span class="p">[</span><span class="s1">'Temperature'</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># Avoids altering the original entry</span>
+<span class="n">my_style</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">level_styles</span><span class="p">[</span><span class="s1">'isobaric'</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">my_style</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">type_styles</span><span class="p">[</span><span class="s1">'Temperature'</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Since we don't have data from different levels, we'll work with wind measurements and pressure data. Our <code>format_varname</code> function returns a title and full variable name label.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="alert alert-success">
+    <b>EXERCISE</b>:
+     <ul>
+<li>Create a type styles dictionary of dictionaries with the variable title as the key that has styles for `Wind` and `Pressure` data. The pressure should be a solid black line. Wind should be a solid line.</li>
+    <li>Create a variable style dictionary of dictionaries with the variable name as the key that specifies an orange line of width 2 for wind speed, olive line of width 0.5 for gusts, and no additional information for pressure.</li>
+    <li>Update the plotting code below to use the new type and variable styles dictionary.
+    </li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Your code goes here (modify the skeleton below)</span>
+<span class="n">type_styles</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="n">variable_styles</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">plot_variables</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">var_names</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">plot_variables</span><span class="p">):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">col</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">var_name</span> <span class="ow">in</span> <span class="n">var_names</span><span class="p">:</span>
+        <span class="n">title</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">format_varname</span><span class="p">(</span><span class="n">var_name</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="n">var_name</span><span class="p">],</span> <span class="o">**</span><span class="n">styles</span><span class="p">[</span><span class="n">var_name</span><span class="p">])</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'Buoy 41056 </span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">title</span><span class="p">))</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Time'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">DateFormatter</span><span class="p">(</span><span class="s1">'%m/</span><span class="si">%d</span><span class="s1">'</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">DayLocator</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Solution">Solution<a class="anchor-link" href="#Solution">¶</a>
+</h5>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/dict_args.py</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="#top">Top</a></p>
+<hr style="height:2px;">
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a name="functions"></a></p>
+<h3 id="Function-Application">Function Application<a class="anchor-link" href="#Function-Application">¶</a>
+</h3>
+<p>There are times where we might want to apply a certain amount of pre-processing to the data before they are plotted. Maybe we want to do a unit conversion, scale the data, or filter it. We can create a dictionary in which functions are the values and variable names are the keys.</p>
+<p>For example, let's define a function that uses the running median to filter the wind data (effectively a low-pass). We'll also make a do nothing function for data we don't want to alter.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="k">import</span> <span class="n">medfilt</span>
+
+<span class="k">def</span> <span class="nf">filter_wind</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">medfilt</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">donothing</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">converters</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'Wind'</span><span class="p">:</span> <span class="n">filter_wind</span><span class="p">,</span> <span class="s1">'Pressure'</span><span class="p">:</span> <span class="n">donothing</span><span class="p">}</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">type_styles</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'Pressure'</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">),</span>
+               <span class="s1">'Wind'</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">linestyle</span><span class="o">=</span><span class="s1">'-'</span><span class="p">)}</span>
+
+<span class="n">variable_styles</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'pressure'</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(),</span>
+                   <span class="s1">'wind_speed'</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'tab:orange'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+                   <span class="s1">'wind_gust'</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'tab:olive'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)}</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">plot_variables</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">var_names</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">plot_variables</span><span class="p">):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">col</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">var_name</span> <span class="ow">in</span> <span class="n">var_names</span><span class="p">:</span>
+        <span class="n">title</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">format_varname</span><span class="p">(</span><span class="n">var_name</span><span class="p">)</span>
+        
+        <span class="c1"># Apply our pre-processing</span>
+        <span class="n">var_data</span> <span class="o">=</span> <span class="n">converters</span><span class="p">[</span><span class="n">title</span><span class="p">](</span><span class="n">df</span><span class="p">[</span><span class="n">var_name</span><span class="p">])</span>
+        
+        <span class="n">style</span> <span class="o">=</span> <span class="n">type_styles</span><span class="p">[</span><span class="n">title</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># So the next line doesn't change the original</span>
+        <span class="n">style</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">variable_styles</span><span class="p">[</span><span class="n">var_name</span><span class="p">])</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">var_data</span><span class="p">,</span> <span class="o">**</span><span class="n">style</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'Buoy 41056 </span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">title</span><span class="p">))</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Time'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">DateFormatter</span><span class="p">(</span><span class="s1">'%m/</span><span class="si">%d</span><span class="s1">'</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">DayLocator</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="alert alert-success">
+    <b>EXERCISE</b>:
+     <ul>
+<li>Write a function to convert the pressure data to bars. (**Hint**: 1 bar = 100000 Pa)</li>
+    <li>Apply your converter in the code below and replot the data.</li>
+    </ul>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Your code goes here (modify the code below)</span>
+
+<span class="n">converters</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'Wind'</span><span class="p">:</span> <span class="n">filter_wind</span><span class="p">,</span> <span class="s1">'Pressure'</span><span class="p">:</span> <span class="n">donothing</span><span class="p">}</span>
+
+<span class="n">type_styles</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'Pressure'</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">),</span>
+               <span class="s1">'Wind'</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">linestyle</span><span class="o">=</span><span class="s1">'-'</span><span class="p">)}</span>
+
+<span class="n">variable_styles</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'pressure'</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(),</span>
+                   <span class="s1">'wind_speed'</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'tab:orange'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+                   <span class="s1">'wind_gust'</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'tab:olive'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)}</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">plot_variables</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">var_names</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">plot_variables</span><span class="p">):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">col</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">var_name</span> <span class="ow">in</span> <span class="n">var_names</span><span class="p">:</span>
+        <span class="n">title</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">format_varname</span><span class="p">(</span><span class="n">var_name</span><span class="p">)</span>
+        
+        <span class="c1"># Apply our pre-processing</span>
+        <span class="n">var_data</span> <span class="o">=</span> <span class="n">converters</span><span class="p">[</span><span class="n">title</span><span class="p">](</span><span class="n">df</span><span class="p">[</span><span class="n">var_name</span><span class="p">])</span>
+        
+        <span class="n">style</span> <span class="o">=</span> <span class="n">type_styles</span><span class="p">[</span><span class="n">title</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># So the next line doesn't change the original</span>
+        <span class="n">style</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">variable_styles</span><span class="p">[</span><span class="n">var_name</span><span class="p">])</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">var_data</span><span class="p">,</span> <span class="o">**</span><span class="n">style</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'Buoy 41056 </span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">title</span><span class="p">))</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Time'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">DateFormatter</span><span class="p">(</span><span class="s1">'%m/</span><span class="si">%d</span><span class="s1">'</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">DayLocator</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Solution">Solution<a class="anchor-link" href="#Solution">¶</a>
+</h5>
+<div class="alert alert-info">
+    <b>REMINDER</b>:
+    You should be using the unit library to convert between various physical units, this is simply for demonstration purposes!
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/function_application.py</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="#top">Top</a></p>
+<hr style="height:2px;">
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a name="glob"></a></p>
+<h3 id="Multiple-Buoys">Multiple Buoys<a class="anchor-link" href="#Multiple-Buoys">¶</a>
+</h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can now use the techniques we've seen before to make a plot of multiple buoys in a single figure.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">buoys</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'41052'</span><span class="p">,</span> <span class="s1">'41056'</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">type_styles</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'Pressure'</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">),</span>
+               <span class="s1">'Wind'</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">linestyle</span><span class="o">=</span><span class="s1">'-'</span><span class="p">)}</span>
+
+<span class="n">variable_styles</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'pressure'</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(),</span>
+                   <span class="s1">'wind_speed'</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'tab:orange'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+                   <span class="s1">'wind_gust'</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'tab:olive'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)}</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">buoys</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">plot_variables</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">row</span><span class="p">,</span> <span class="n">buoy</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">buoys</span><span class="p">):</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">read_buoy_data</span><span class="p">(</span><span class="n">buoy</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">var_names</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">plot_variables</span><span class="p">):</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">var_name</span> <span class="ow">in</span> <span class="n">var_names</span><span class="p">:</span>
+            <span class="n">title</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">format_varname</span><span class="p">(</span><span class="n">var_name</span><span class="p">)</span>
+            <span class="n">style</span> <span class="o">=</span> <span class="n">type_styles</span><span class="p">[</span><span class="n">title</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># So the next line doesn't change the original</span>
+            <span class="n">style</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">variable_styles</span><span class="p">[</span><span class="n">var_name</span><span class="p">])</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="n">var_name</span><span class="p">],</span> <span class="o">**</span><span class="n">style</span><span class="p">)</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'Buoy </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">buoy</span><span class="p">,</span> <span class="n">title</span><span class="p">))</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Time'</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">DateFormatter</span><span class="p">(</span><span class="s1">'%m/</span><span class="si">%d</span><span class="s1">'</span><span class="p">))</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">DayLocator</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="#top">Top</a></p>
+<hr style="height:2px;">
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="alert alert-success">
+    <b>EXERCISE</b>: As a final exercise, use a dictionary to allow all of the plots to share common y axis limits based on the variable title.
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Your code goes here</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Solution">Solution<a class="anchor-link" href="#Solution">¶</a>
+</h5>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/final.py</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="#top">Top</a></p>
+<hr style="height:2px;">
+</div>
+</div>
+</div>
+</div>
+    </div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha256-SDRP1VVYu+tgAGKhddBSl5+ezofHKZeI+OzxakbIe/Y=" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

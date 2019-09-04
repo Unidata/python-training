@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sounding_Plotter | The Unidata Python Training Site</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/gallery/sounding_plotter/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="Sounding_Plotter">
+<meta property="og:url" content="https://unidata.github.io/python-training/gallery/sounding_plotter/">
+<meta property="og:description" content="In [ ]:
+
+    
+%matplotlib inline
+
+
+    
+
+
+
+
+
+
+
+================
+Sounding Plotter¶This should be run as a script from the command line - not as a notebook.
+Download and plot the most recent sounding da">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-08-30T15:02:20-06:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../python/intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop/workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.ipynb" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Sounding_Plotter</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>================</p>
+<h2 id="Sounding-Plotter">Sounding Plotter<a class="anchor-link" href="#Sounding-Plotter">¶</a>
+</h2>
+<p><strong>This should be run as a script from the command line - not as a notebook.</strong></p>
+<p>Download and plot the most recent sounding data for a specified site.</p>
+<p>Provides a simple command line interface to specify a site. Using the current
+UTC time, the script calculates what the most recent sounding should be and requests
+it from the Wyoming archive using Siphon.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Do the needed imports</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">posixpath</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="k">as</span> <span class="nn">mpcalc</span>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <span class="n">add_metpy_logo</span><span class="p">,</span> <span class="n">add_timestamp</span><span class="p">,</span> <span class="n">SkewT</span>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="k">import</span> <span class="n">units</span>
+<span class="kn">from</span> <span class="nn">siphon.simplewebservice.wyoming</span> <span class="k">import</span> <span class="n">WyomingUpperAir</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This class encapsulates the code needed to upload an image to Google Drive</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">DriveUploader</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">credsfile</span><span class="o">=</span><span class="s1">'mycreds.txt'</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">pydrive.drive</span> <span class="k">import</span> <span class="n">GoogleDrive</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gdrive</span> <span class="o">=</span> <span class="n">GoogleDrive</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_auth</span><span class="p">(</span><span class="n">credsfile</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_get_auth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">credsfile</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">pydrive.auth</span> <span class="k">import</span> <span class="n">GoogleAuth</span>
+        <span class="n">gauth</span> <span class="o">=</span> <span class="n">GoogleAuth</span><span class="p">()</span>
+
+        <span class="c1"># Try to load saved client credentials</span>
+        <span class="n">gauth</span><span class="o">.</span><span class="n">LoadCredentialsFile</span><span class="p">(</span><span class="n">credsfile</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">gauth</span><span class="o">.</span><span class="n">credentials</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Authenticate if they're not there</span>
+            <span class="n">gauth</span><span class="o">.</span><span class="n">LocalWebserverAuth</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">gauth</span><span class="o">.</span><span class="n">access_token_expired</span><span class="p">:</span>
+            <span class="c1"># Refresh them if expired</span>
+            <span class="n">gauth</span><span class="o">.</span><span class="n">Refresh</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Initialize the saved creds</span>
+            <span class="n">gauth</span><span class="o">.</span><span class="n">Authorize</span><span class="p">()</span>
+        <span class="c1"># Save the current credentials to a file</span>
+        <span class="n">gauth</span><span class="o">.</span><span class="n">SaveCredentialsFile</span><span class="p">(</span><span class="n">credsfile</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">gauth</span>
+
+    <span class="k">def</span> <span class="nf">_get_first_file_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="s2">"title='</span><span class="si">{}</span><span class="s2">' and '</span><span class="si">{}</span><span class="s2">' in parents"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">query</span> <span class="o">+=</span> <span class="s2">" and </span><span class="si">{}</span><span class="s2">='</span><span class="si">{}</span><span class="s2">'"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gdrive</span><span class="o">.</span><span class="n">ListFile</span><span class="p">({</span><span class="s1">'q'</span><span class="p">:</span> <span class="n">query</span><span class="p">}))</span>
+        <span class="k">if</span> <span class="n">res</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">'id'</span><span class="p">]</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">get_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="n">parent</span> <span class="o">=</span> <span class="s1">'root'</span>
+        <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'/'</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">part</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_first_file_id</span><span class="p">(</span><span class="n">part</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span>
+                                             <span class="n">mimeType</span><span class="o">=</span><span class="s1">'application/vnd.google-apps.folder'</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">parent</span>
+
+    <span class="k">def</span> <span class="nf">create_or_get_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="n">pathname</span><span class="p">,</span> <span class="n">filename</span> <span class="o">=</span> <span class="n">posixpath</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">folder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_folder</span><span class="p">(</span><span class="n">pathname</span><span class="p">)</span>
+        <span class="n">create_file_args</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'parents'</span><span class="p">:</span> <span class="p">[{</span><span class="s1">'kind'</span><span class="p">:</span> <span class="s1">'drive#fileLink'</span><span class="p">,</span> <span class="s1">'id'</span><span class="p">:</span> <span class="n">folder</span><span class="p">}]}</span>
+
+        <span class="n">file_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_first_file_id</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">folder</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">file_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">create_file_args</span><span class="p">[</span><span class="s1">'id'</span><span class="p">]</span> <span class="o">=</span> <span class="n">file_id</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gdrive</span><span class="o">.</span><span class="n">CreateFile</span><span class="p">(</span><span class="n">create_file_args</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">upload_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">local_path</span><span class="p">,</span> <span class="n">remote_path</span><span class="p">):</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_or_get_file</span><span class="p">(</span><span class="n">remote_path</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">SetContentFile</span><span class="p">(</span><span class="n">local_path</span><span class="p">)</span>
+        <span class="n">f</span><span class="p">[</span><span class="s1">'title'</span><span class="p">]</span> <span class="o">=</span> <span class="n">posixpath</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">remote_path</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">Upload</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This function takes care of actually generating a skewT from the <code>DataFrame</code></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">plot_skewt</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="c1"># We will pull the data out of the example dataset into individual variables</span>
+    <span class="c1"># and assign units.</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span>
+    <span class="n">Td</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'dewpoint'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span>
+    <span class="n">wind_speed</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'speed'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">knots</span>
+    <span class="n">wind_dir</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'direction'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degrees</span>
+    <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">wind_components</span><span class="p">(</span><span class="n">wind_speed</span><span class="p">,</span> <span class="n">wind_dir</span><span class="p">)</span>
+
+    <span class="c1"># Create a new figure. The dimensions here give a good aspect ratio.</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+    <span class="n">add_metpy_logo</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="mi">115</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">skew</span> <span class="o">=</span> <span class="n">SkewT</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+
+    <span class="c1"># Plot the data using normal plotting functions, in this case using</span>
+    <span class="c1"># log scaling in Y, as dictated by the typical meteorological plot</span>
+    <span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">)</span>
+    <span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">Td</span><span class="p">,</span> <span class="s1">'g'</span><span class="p">)</span>
+    <span class="n">skew</span><span class="o">.</span><span class="n">plot_barbs</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+    <span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+
+    <span class="c1"># Calculate LCL height and plot as black dot</span>
+    <span class="n">lcl_pressure</span><span class="p">,</span> <span class="n">lcl_temperature</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">lcl</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Td</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lcl_pressure</span><span class="p">,</span> <span class="n">lcl_temperature</span><span class="p">,</span> <span class="s1">'ko'</span><span class="p">,</span> <span class="n">markerfacecolor</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)</span>
+
+    <span class="c1"># Calculate full parcel profile and add to plot as black line</span>
+    <span class="n">prof</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">parcel_profile</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Td</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'degC'</span><span class="p">)</span>
+    <span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">prof</span><span class="p">,</span> <span class="s1">'k'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># An example of a slanted line at constant T -- in this case the 0</span>
+    <span class="c1"># isotherm</span>
+    <span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'c'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># Add the relevant special lines</span>
+    <span class="n">skew</span><span class="o">.</span><span class="n">plot_dry_adiabats</span><span class="p">()</span>
+    <span class="n">skew</span><span class="o">.</span><span class="n">plot_moist_adiabats</span><span class="p">()</span>
+    <span class="n">skew</span><span class="o">.</span><span class="n">plot_mixing_lines</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">skew</span>
+
+
+<span class="k">def</span> <span class="nf">make_name</span><span class="p">(</span><span class="n">site</span><span class="p">,</span> <span class="n">time</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s1">'</span><span class="si">{site}</span><span class="s1">_{dt:%Y%m</span><span class="si">%d</span><span class="s1">_%H%M}.png'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="n">site</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">time</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This is where the command line script will actually enter, and handles parsing
+command line arguments and driving everything else.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">argparse</span>
+    <span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+    <span class="kn">import</span> <span class="nn">tempfile</span>
+
+    <span class="c1"># Set up argument parsing for the script. Provides one argument for the site, and another</span>
+    <span class="c1"># that controls whether the plot should be shown or saved as an image.</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">'Download sounding data and plot.'</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">'-s'</span><span class="p">,</span> <span class="s1">'--site'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Site to obtain data for'</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="s1">'DNR'</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">'--show'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Whether to show the plot rather than save to disk'</span><span class="p">,</span>
+                        <span class="n">action</span><span class="o">=</span><span class="s1">'store_true'</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">'-d'</span><span class="p">,</span> <span class="s1">'--date'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Date and time to request data for in YYYYMMDDHH.'</span>
+                        <span class="s1">' Defaults to most recent 00/12 hour.'</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">'-g'</span><span class="p">,</span> <span class="s1">'--gdrive'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Google Drive upload path'</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">'-f'</span><span class="p">,</span> <span class="s1">'--filename'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Image filename'</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">date</span><span class="p">:</span>
+        <span class="n">request_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="s1">'%Y%m</span><span class="si">%d</span><span class="s1">%H'</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Figure out the most recent sounding, 00 or 12. Subtracting two hours</span>
+        <span class="c1"># helps ensure that we choose a time with data available.</span>
+        <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">request_time</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="p">(</span><span class="n">now</span><span class="o">.</span><span class="n">hour</span> <span class="o">//</span> <span class="mi">12</span><span class="p">)</span> <span class="o">*</span> <span class="mi">12</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">second</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># Request the data and plot</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">WyomingUpperAir</span><span class="o">.</span><span class="n">request_data</span><span class="p">(</span><span class="n">request_time</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">site</span><span class="p">)</span>
+    <span class="n">skewt</span> <span class="o">=</span> <span class="n">plot_skewt</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+    <span class="c1"># Add the timestamp for the data to the plot</span>
+    <span class="n">add_timestamp</span><span class="p">(</span><span class="n">skewt</span><span class="o">.</span><span class="n">ax</span><span class="p">,</span> <span class="n">request_time</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.02</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">'left'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s1">'large'</span><span class="p">)</span>
+    <span class="n">skewt</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">site</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">show</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">fname</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">filename</span> <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">filename</span> <span class="k">else</span> <span class="n">make_name</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">site</span><span class="p">,</span> <span class="n">request_time</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">gdrive</span><span class="p">:</span>
+            <span class="n">uploader</span> <span class="o">=</span> <span class="n">DriveUploader</span><span class="p">()</span>
+            <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s1">'.png'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">skewt</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="n">uploader</span><span class="o">.</span><span class="n">upload_to</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">posixpath</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">gdrive</span><span class="p">,</span> <span class="n">fname</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">skewt</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">make_name</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">site</span><span class="p">,</span> <span class="n">request_time</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+    </div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha256-SDRP1VVYu+tgAGKhddBSl5+ezofHKZeI+OzxakbIe/Y=" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

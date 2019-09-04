@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Getting Going with Python on a Windows | The Unidata Python Training Site</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/python/conda-windows/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="Getting Going with Python on a Windows">
+<meta property="og:url" content="https://unidata.github.io/python-training/python/conda-windows/">
+<meta property="og:description" content="The aim of this web page is to help you get started with Python on Windows. We will explain what a package management tool is, how to download conda package management tool via the Anaconda installer,">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-08-30T15:02:20-06:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../../gallery/gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop/workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.md" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Getting Going with Python on a Windows</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<p>The aim of this web page is to help you get started with Python on Windows. We will explain what a package management tool is, how to download <code>conda</code> package management tool via the Anaconda installer, and guide you on the Windows Command Prompt so that you can use <code>conda</code> from the command line. Finally, we will wrap up by installing one library with <code>conda</code>.</p>
+<h3>What Is a Package Management Tool?</h3>
+<p>A package management tool is a software application that helps you manage software libraries that enable you to get your work done. These software libraries may relate to plotting for scientific publication or accessing certain kinds of data, for example.</p>
+<p>When you start using Python, you will want use software libraries that are not part of the standard Python installation. For example, you may wish to use the <a href="https://pypi.python.org/pypi/MetPy">Unidata metpy library</a> for meteorological data and visualization. Anaconda from Continuum Analytics will help you install <code>metpy</code> easily.</p>
+<h3>Installing the <code>conda</code> Package Management Tool</h3>
+<p>The <code>conda</code> package management tool is part of the Anaconda software package. Install <code>conda</code> by navigating to the <a href="https://www.anaconda.com/distribution/">Anaconda download page</a>. Scroll down to the "Anaconda for Windows" portion of the web page.</p>
+<p>Download the Python 3.5 version by clicking on the "Windows 64 bit Graphical Installer" link. It is a big download, so it is best to be on fast network. Open the installer file you just downloaded. It should be named something like <code>Anaconda[version]-Windows-x86_64</code>.</p>
+<p>This action will guide you through the <a href="https://docs.continuum.io/anaconda/install#anaconda-for-windows-install">conda installation on Windows</a>. The last step of the installation process will ask you if you want to add Anaconda to my the PATH environment variable. Ensure this option is checked.</p>
+<h3>Windows Command Prompt</h3>
+<p>The Windows Command Prompt is a software program that gives you the ability to give text based instructions to your computer. </p>
+<p>To open the Windows Command Prompt, left-click on the Windows Start menu located in the lower left portion  of the desktop and search for 'Command Prompt' in the search box located at the bottom of the menu.</p>
+<p>In the Windows Command Prompt, you will see some text such as <strong><code>C:\Users\Jane&gt;</code></strong>. This is known as the <strong>command line</strong>. The command line is where you give text instructions to your computer.</p>
+<h3>Interacting with <code>conda</code>
+</h3>
+<p>Let's make sure conda is installed by entering this instruction on the command line:</p>
+<pre class="code literal-block"><span></span><span class="n">conda</span> <span class="n">list</span>
+</pre>
+
+
+<p>yields</p>
+<pre class="code literal-block"><span></span><span class="o">#</span> <span class="n">packages</span> <span class="k">in</span> <span class="n">environment</span> <span class="k">at</span> <span class="k">C</span><span class="p">:</span><span class="err">\</span><span class="n">Users</span><span class="err">\</span><span class="n">Jane</span><span class="err">\</span><span class="n">AppData</span><span class="err">\</span><span class="k">Local</span><span class="err">\</span><span class="n">Continuum</span><span class="err">\</span><span class="n">Anaconda3</span><span class="p">:</span>
+<span class="o">#</span>
+<span class="n">alabaster</span>                 <span class="mi">0</span><span class="p">.</span><span class="mi">7</span><span class="p">.</span><span class="mi">7</span>                    <span class="n">py35_0</span>  
+<span class="n">anaconda</span>                  <span class="mi">4</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span>               <span class="n">np110py35_0</span>  
+<span class="n">anaconda</span><span class="o">-</span><span class="n">client</span>           <span class="mi">1</span><span class="p">.</span><span class="mi">4</span><span class="p">.</span><span class="mi">0</span>                    <span class="n">py35_0</span>  
+<span class="p">...</span>
+<span class="n">numexpr</span>                   <span class="mi">2</span><span class="p">.</span><span class="mi">5</span>                 <span class="n">np110py35_0</span>  
+<span class="n">numpy</span>                     <span class="mi">1</span><span class="p">.</span><span class="mi">10</span><span class="p">.</span><span class="mi">4</span>                   <span class="n">py35_0</span>  
+<span class="n">odo</span>                       <span class="mi">0</span><span class="p">.</span><span class="mi">4</span><span class="p">.</span><span class="mi">2</span>                    <span class="n">py35_0</span>  
+<span class="p">...</span>
+<span class="n">yaml</span>                      <span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">.</span><span class="mi">6</span>                         <span class="mi">0</span>  
+<span class="n">zeromq</span>                    <span class="mi">4</span><span class="p">.</span><span class="mi">1</span><span class="p">.</span><span class="mi">3</span>                         <span class="mi">0</span>  
+<span class="n">zlib</span>                      <span class="mi">1</span><span class="p">.</span><span class="mi">2</span><span class="p">.</span><span class="mi">8</span>                         <span class="mi">0</span>
+</pre>
+
+
+<p>which will list linked packages in a conda environment. You’ll notice libraries such as the scientific computing library <a href="http://www.numpy.org/">numpy</a> that you will probably be making use of.</p>
+<h3>Getting Our Feet Wet by Installing Metpy with <code>conda</code>
+</h3>
+<p>We first have to give <code>conda</code> an instruction on where to find <code>metpy</code> on the <code>conda-forge</code> channel.</p>
+<pre class="code literal-block"><span></span><span class="n">conda</span> <span class="n">config</span> <span class="c1">--add channels conda-forge</span>
+</pre>
+
+
+<p>We can now install <code>metpy</code>:</p>
+<pre class="code literal-block"><span></span><span class="n">conda</span> <span class="n">install</span> <span class="n">metpy</span>
+</pre>
+
+
+<p>Let's verify we installed <code>metpy</code> with the following command:</p>
+<pre class="code literal-block"><span></span><span class="n">conda</span> <span class="n">list</span>
+</pre>
+
+
+<p>should yield amongst other libraries:</p>
+<pre class="code literal-block"><span></span><span class="o">#</span> <span class="n">packages</span> <span class="k">in</span> <span class="n">environment</span> <span class="k">at</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">chastang</span><span class="o">/</span><span class="n">anaconda</span><span class="p">:</span>
+<span class="o">#</span>
+<span class="p">...</span>
+<span class="n">metpy</span>                     <span class="mi">0</span><span class="p">.</span><span class="mi">3</span><span class="p">.</span><span class="mi">0</span>                    <span class="n">py35_1</span>    <span class="n">conda</span><span class="o">-</span><span class="n">forge</span>
+<span class="p">...</span>
+</pre>
+
+
+<h3>In Summary</h3>
+<p>You have just learned how to:</p>
+<ul>
+<li>Download <code>conda</code>
+</li>
+<li>Install <code>conda</code>
+</li>
+<li>Installed the <code>metpy</code> library with <code>conda</code>
+</li>
+</ul>
+<p>In future installments of the Unidata Online Python training, we will be using <code>conda</code> to install various libraries.</p>
+</div>
+    </div>
+    
+</article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

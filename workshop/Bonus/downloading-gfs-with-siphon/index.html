@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Downloading GFS with Siphon | The Unidata Python Training Site</title>
+<link href="../../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/workshop/Bonus/downloading-gfs-with-siphon/">
+<!--[if lt IE 9]><script src="../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="Downloading GFS with Siphon">
+<meta property="og:url" content="https://unidata.github.io/python-training/workshop/Bonus/downloading-gfs-with-siphon/">
+<meta property="og:description" content="Using Siphon to query the NetCDF Subset Service
+Unidata Python Workshop
+
+
+Objectives¶
+Learn what Siphon is
+Employ Siphon's NCSS class to retrieve data from a THREDDS Data Server (TDS)
+Plot a map using">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-08-30T15:02:20-06:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../../python/intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../../../gallery/gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.ipynb" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Downloading GFS with Siphon</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div style="width:1000 px">
+
+<div style="float:right; width:98 px; height:98px;">
+<img src="https://raw.githubusercontent.com/Unidata/MetPy/master/metpy/plots/_static/unidata_150x150.png" alt="Unidata Logo" style="height: 98px;">
+</div>
+<p></p>
+<h2>Using Siphon to query the NetCDF Subset Service</h2>
+<h4>Unidata Python Workshop</h4>
+<div style="clear:both"></div>
+</div>
+<hr style="height:2px;">
+<h4 id="Objectives">Objectives<a class="anchor-link" href="#Objectives">¶</a>
+</h4>
+<ol>
+<li>Learn what Siphon is</li>
+<li>Employ Siphon's NCSS class to retrieve data from a THREDDS Data Server (TDS)</li>
+<li>Plot a map using numpy arrays, matplotlib, and cartopy!</li>
+</ol>
+<h4 id="Introduction:">Introduction:<a class="anchor-link" href="#Introduction:">¶</a>
+</h4>
+<p>Siphon is a python package that makes downloading data from Unidata data technologies a breeze! In our examples, we'll focus on interacting with the netCDF Subset Service (NCSS) as well as the radar server to retrieve grid data and radar data.</p>
+<p><strong>But first!</strong>
+Bookmark these resources for when you want to use Siphon later!</p>
+<ul>
+<li><a href="http://siphon.readthedocs.org/en/latest/">latest Siphon documentation</a></li>
+<li><a href="https://github.com/Unidata/siphon">Siphon github repo</a></li>
+<li><a href="http://www.unidata.ucar.edu/software/thredds/v4.6/tds/TDS.html">TDS documentation</a></li>
+<li><a href="http://www.unidata.ucar.edu/software/thredds/current/tds/reference/NetcdfSubsetServiceReference.html">netCDF subset service documentation</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Let's-get-started!">Let's get started!<a class="anchor-link" href="#Let's-get-started!">¶</a>
+</h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>First, we'll import the TDSCatalog class from Siphon and put the special 'matplotlib' line in so our map will show up later in the notebook. Let's construct an instance of TDSCatalog pointing to our dataset of interest. In this case, I've chosen the TDS' "Best" virtual dataset for the GFS global 0.25 degree collection of GRIB files. This will give us a good resolution for our map. This catalog contains a single dataset.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">from</span> <span class="nn">siphon.catalog</span> <span class="k">import</span> <span class="n">TDSCatalog</span>
+<span class="n">best_gfs</span> <span class="o">=</span> <span class="n">TDSCatalog</span><span class="p">(</span><span class="s1">'http://thredds.ucar.edu/thredds/catalog/grib/NCEP/GFS/'</span>
+                      <span class="s1">'Global_0p25deg/catalog.xml?dataset=grib/NCEP/GFS/Global_0p25deg/Best'</span><span class="p">)</span>
+<span class="n">best_gfs</span><span class="o">.</span><span class="n">datasets</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We pull out this dataset and call <code>subset()</code> to set up requesting a subset of the data.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">best_ds</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">best_gfs</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">ncss</span> <span class="o">=</span> <span class="n">best_ds</span><span class="o">.</span><span class="n">subset</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can then use the <code>ncss</code> object to create a new query object, which
+facilitates asking for data from the server.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">query</span> <span class="o">=</span> <span class="n">ncss</span><span class="o">.</span><span class="n">query</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can look at the <code>ncss.variables</code> object to see what variables are available from the dataset:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ncss</span><span class="o">.</span><span class="n">variables</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We construct a query asking for data corresponding to a latitude and longitude box where 43 lat is the northern extent, 35 lat is the southern extent, 260 long is the western extent and 249 is the eastern extent. Note that longitude values are the longitude distance from the prime meridian. We request the data for the current time. This request will return all surface temperatures for points in our bounding box for a single time. Note the string representation of the query is a properly encoded query string.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+<span class="n">query</span><span class="o">.</span><span class="n">lonlat_box</span><span class="p">(</span><span class="n">north</span><span class="o">=</span><span class="mi">43</span><span class="p">,</span> <span class="n">south</span><span class="o">=</span><span class="mi">35</span><span class="p">,</span> <span class="n">east</span><span class="o">=</span><span class="mi">260</span><span class="p">,</span> <span class="n">west</span><span class="o">=</span><span class="mi">249</span><span class="p">)</span><span class="o">.</span><span class="n">time</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">())</span>
+<span class="n">query</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="s1">'netcdf4'</span><span class="p">)</span>
+<span class="n">query</span><span class="o">.</span><span class="n">variables</span><span class="p">(</span><span class="s1">'Temperature_surface'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We now request data from the server using this query. The <code>NCSS</code> class handles parsing this NetCDF data (using the <code>netCDF4</code> module). If we print out the variable names, we see our requested variables, as well as a few others (more metadata information)</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">xarray.backends</span> <span class="k">import</span> <span class="n">NetCDF4DataStore</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">ncss</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">NetCDF4DataStore</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+
+<span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We'll pull out the temperature variable.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">temp_3d</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">'Temperature_surface'</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We'll pull out the useful variables for latitude, and longitude, and time (which is the time, in hours since the forecast run). Notice the variable names are labeled to show how many dimensions each variable is. This will come in to play soon when we prepare to plot. Try printing one of the variables to see some info on the data!</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Helper function for finding proper time variable</span>
+<span class="k">def</span> <span class="nf">find_time_var</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="n">time_basename</span><span class="o">=</span><span class="s1">'time'</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">coord_name</span> <span class="ow">in</span> <span class="n">var</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">coord_name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">time_basename</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">var</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">coord_name</span><span class="p">]</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'No time variable found for '</span> <span class="o">+</span> <span class="n">var</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">time_1d</span> <span class="o">=</span> <span class="n">find_time_var</span><span class="p">(</span><span class="n">temp_3d</span><span class="p">)</span>
+<span class="n">lat_1d</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">'lat'</span><span class="p">]</span>
+<span class="n">lon_1d</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">'lon'</span><span class="p">]</span>
+<span class="n">time_1d</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now we make our data suitable for plotting. We'll import numpy so we can combine lat/longs (meshgrid) and remove one-dimensional entities from our arrays (squeeze). Also we'll use netCDF4's num2date to change the time since the model run to an actual date.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">netCDF4</span> <span class="k">import</span> <span class="n">num2date</span>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="k">import</span> <span class="n">units</span>
+
+<span class="c1"># Reduce the dimensions of the data and get as an array with units</span>
+<span class="n">temp_2d</span> <span class="o">=</span> <span class="n">temp_3d</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">unit_array</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+
+<span class="c1"># Combine latitude and longitudes </span>
+<span class="n">lon_2d</span><span class="p">,</span> <span class="n">lat_2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">lon_1d</span><span class="p">,</span> <span class="n">lat_1d</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now we can plot these up using matplotlib. We import cartopy and matplotlib classes, create our figure, add a map, then add the temperature data and grid points.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <span class="n">ctables</span>
+
+<span class="c1"># Create a new figure</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+
+<span class="c1"># Add the map and set the extent</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">([</span><span class="o">-</span><span class="mf">100.03</span><span class="p">,</span> <span class="o">-</span><span class="mf">111.03</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">43</span><span class="p">])</span>
+
+<span class="c1"># Retrieve the state boundaries using cFeature and add to plot</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">STATES</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'gray'</span><span class="p">)</span>
+
+<span class="c1"># Contour temperature at each lat/long</span>
+<span class="n">contours</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">lon_2d</span><span class="p">,</span> <span class="n">lat_2d</span><span class="p">,</span> <span class="n">temp_2d</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'degF'</span><span class="p">),</span> <span class="mi">200</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
+                       <span class="n">cmap</span><span class="o">=</span><span class="s1">'RdBu_r'</span><span class="p">)</span>
+<span class="c1">#Plot a colorbar to show temperature and reduce the size of it</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">contours</span><span class="p">)</span>
+
+<span class="c1"># Make a title with the time value</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">f</span><span class="s1">'Temperature forecast (</span><span class="se">\u00b0</span><span class="s1">F) for </span><span class="si">{time_1d[0].values}</span><span class="s1">Z'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="c1"># Plot markers for each lat/long to show grid points for 0.25 deg GFS</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lon_2d</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">lat_2d</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'none'</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">());</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Exercise">Exercise<a class="anchor-link" href="#Exercise">¶</a>
+</h4>
+<p>Create your own map using the same projection as above but plot different data variables such as dewpoint or relative humidity.</p>
+<ol>
+<li>Explore the variables available in the NCSS dataset by printing NCSS.variables</li>
+<li>Change the latitude/longitude values for the request and the map to a region of your own interest!</li>
+<li>If you're feeling bold, pass in a different TDSCatalog reference url (such as the GFS half degree). Take a look at the full TDS catalog <a href="http://thredds.ucar.edu/thredds/catalog.html">here</a>.</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+    </div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha256-SDRP1VVYu+tgAGKhddBSl5+ezofHKZeI+OzxakbIe/Y=" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

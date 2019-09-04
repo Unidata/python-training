@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Precipitation_Map | The Unidata Python Training Site</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/gallery/precipitation_map/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="Precipitation_Map">
+<meta property="og:url" content="https://unidata.github.io/python-training/gallery/precipitation_map/">
+<meta property="og:description" content="In [ ]:
+
+    
+%matplotlib inline
+
+
+    
+
+
+
+
+
+
+
+=====================
+NWS Precipitation Map¶Plot a 1-day precipitation map using a netCDF file from the National Weather Service.
+This opens the data dir">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-08-30T15:02:20-06:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../python/intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop/workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.ipynb" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Precipitation_Map</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>=====================</p>
+<h2 id="NWS-Precipitation-Map">NWS Precipitation Map<a class="anchor-link" href="#NWS-Precipitation-Map">¶</a>
+</h2>
+<p>Plot a 1-day precipitation map using a netCDF file from the National Weather Service.</p>
+<p>This opens the data directly in memory using the support in the netCDF library to open
+from an existing memory buffer. In addition to CartoPy and Matplotlib, this uses
+a custom colortable as well as MetPy's unit support.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Imports</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">from</span> <span class="nn">urllib.request</span> <span class="k">import</span> <span class="n">urlopen</span>
+
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
+<span class="kn">import</span> <span class="nn">matplotlib.colors</span> <span class="k">as</span> <span class="nn">mcolors</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="k">import</span> <span class="n">masked_array</span><span class="p">,</span> <span class="n">units</span>
+<span class="kn">from</span> <span class="nn">netCDF4</span> <span class="k">import</span> <span class="n">Dataset</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Download the data from the National Weather Service.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># This should always be available</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s1">'http://water.weather.gov/precip/downloads/{dt:%Y/%m/</span><span class="si">%d</span><span class="s1">}/nws_precip_1day_'</span>\
+      <span class="s1">'{dt:%Y%m</span><span class="si">%d</span><span class="s1">}_conus.nc'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">nc</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s1">''</span><span class="p">,</span> <span class="n">memory</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Pull the needed information out of the netCDF file</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">prcpvar</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'observation'</span><span class="p">]</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">masked_array</span><span class="p">(</span><span class="n">prcpvar</span><span class="p">[:],</span> <span class="n">units</span><span class="p">(</span><span class="n">prcpvar</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">()))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'mm'</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'x'</span><span class="p">][:]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'y'</span><span class="p">][:]</span>
+<span class="n">proj_var</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">prcpvar</span><span class="o">.</span><span class="n">grid_mapping</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Set up the projection information within CartoPy</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">globe</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">Globe</span><span class="p">(</span><span class="n">semimajor_axis</span><span class="o">=</span><span class="n">proj_var</span><span class="o">.</span><span class="n">earth_radius</span><span class="p">)</span>
+<span class="n">proj</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">Stereographic</span><span class="p">(</span><span class="n">central_latitude</span><span class="o">=</span><span class="mf">90.0</span><span class="p">,</span>
+                          <span class="n">central_longitude</span><span class="o">=</span><span class="n">proj_var</span><span class="o">.</span><span class="n">straight_vertical_longitude_from_pole</span><span class="p">,</span>
+                          <span class="n">true_scale_latitude</span><span class="o">=</span><span class="n">proj_var</span><span class="o">.</span><span class="n">standard_parallel</span><span class="p">,</span> <span class="n">globe</span><span class="o">=</span><span class="n">globe</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Create the figure and plot the data
+create figure and axes instances</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">proj</span><span class="p">)</span>
+
+<span class="c1"># draw coastlines, state and country boundaries, edge of map.</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">BORDERS</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">STATES</span><span class="p">)</span>
+
+<span class="c1"># draw filled contours.</span>
+<span class="n">clevs</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mf">7.5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span>
+         <span class="mi">50</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">750</span><span class="p">]</span>
+<span class="c1"># In future MetPy</span>
+<span class="c1"># norm, cmap = ctables.registry.get_with_boundaries('precipitation', clevs)</span>
+<span class="n">cmap_data</span> <span class="o">=</span> <span class="p">[(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+             <span class="p">(</span><span class="mf">0.3137255012989044</span><span class="p">,</span> <span class="mf">0.8156862854957581</span><span class="p">,</span> <span class="mf">0.8156862854957581</span><span class="p">),</span>
+             <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+             <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.8784313797950745</span><span class="p">,</span> <span class="mf">0.501960813999176</span><span class="p">),</span>
+             <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.7529411911964417</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+             <span class="p">(</span><span class="mf">0.501960813999176</span><span class="p">,</span> <span class="mf">0.8784313797950745</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+             <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+             <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.6274510025978088</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+             <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+             <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.125490203499794</span><span class="p">,</span> <span class="mf">0.501960813999176</span><span class="p">),</span>
+             <span class="p">(</span><span class="mf">0.9411764740943909</span><span class="p">,</span> <span class="mf">0.250980406999588</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+             <span class="p">(</span><span class="mf">0.501960813999176</span><span class="p">,</span> <span class="mf">0.125490203499794</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+             <span class="p">(</span><span class="mf">0.250980406999588</span><span class="p">,</span> <span class="mf">0.250980406999588</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+             <span class="p">(</span><span class="mf">0.125490203499794</span><span class="p">,</span> <span class="mf">0.125490203499794</span><span class="p">,</span> <span class="mf">0.501960813999176</span><span class="p">),</span>
+             <span class="p">(</span><span class="mf">0.125490203499794</span><span class="p">,</span> <span class="mf">0.125490203499794</span><span class="p">,</span> <span class="mf">0.125490203499794</span><span class="p">),</span>
+             <span class="p">(</span><span class="mf">0.501960813999176</span><span class="p">,</span> <span class="mf">0.501960813999176</span><span class="p">,</span> <span class="mf">0.501960813999176</span><span class="p">),</span>
+             <span class="p">(</span><span class="mf">0.8784313797950745</span><span class="p">,</span> <span class="mf">0.8784313797950745</span><span class="p">,</span> <span class="mf">0.8784313797950745</span><span class="p">),</span>
+             <span class="p">(</span><span class="mf">0.9333333373069763</span><span class="p">,</span> <span class="mf">0.8313725590705872</span><span class="p">,</span> <span class="mf">0.7372549176216125</span><span class="p">),</span>
+             <span class="p">(</span><span class="mf">0.8549019694328308</span><span class="p">,</span> <span class="mf">0.6509804129600525</span><span class="p">,</span> <span class="mf">0.47058823704719543</span><span class="p">),</span>
+             <span class="p">(</span><span class="mf">0.6274510025978088</span><span class="p">,</span> <span class="mf">0.42352941632270813</span><span class="p">,</span> <span class="mf">0.23529411852359772</span><span class="p">),</span>
+             <span class="p">(</span><span class="mf">0.4000000059604645</span><span class="p">,</span> <span class="mf">0.20000000298023224</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)]</span>
+<span class="n">cmap</span> <span class="o">=</span> <span class="n">mcolors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">(</span><span class="n">cmap_data</span><span class="p">,</span> <span class="s1">'precipitation'</span><span class="p">)</span>
+<span class="n">norm</span> <span class="o">=</span> <span class="n">mcolors</span><span class="o">.</span><span class="n">BoundaryNorm</span><span class="p">(</span><span class="n">clevs</span><span class="p">,</span> <span class="n">cmap</span><span class="o">.</span><span class="n">N</span><span class="p">)</span>
+
+<span class="n">cs</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">clevs</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">)</span>
+
+<span class="c1"># add colorbar.</span>
+<span class="n">cbar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">'horizontal'</span><span class="p">)</span>
+<span class="n">cbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">prcpvar</span><span class="o">.</span><span class="n">long_name</span> <span class="o">+</span> <span class="s1">' for period ending '</span> <span class="o">+</span> <span class="n">nc</span><span class="o">.</span><span class="n">creation_time</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+    </div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha256-SDRP1VVYu+tgAGKhddBSl5+ezofHKZeI+OzxakbIe/Y=" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

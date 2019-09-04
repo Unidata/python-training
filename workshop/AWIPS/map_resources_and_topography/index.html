@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Map_Resources_and_Topography | The Unidata Python Training Site</title>
+<link href="../../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/workshop/AWIPS/map_resources_and_topography/">
+<!--[if lt IE 9]><script src="../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="Map_Resources_and_Topography">
+<meta property="og:url" content="https://unidata.github.io/python-training/workshop/AWIPS/map_resources_and_topography/">
+<meta property="og:description" content="The python-awips package provides access to the entire AWIPS Maps Database for use in Python GIS applications.  Map objects are returned as Shapely geometries (Polygon, Point, MultiLineString, etc.) a">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-08-30T15:02:20-06:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../../python/intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../../../gallery/gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.ipynb" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Map_Resources_and_Topography</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The python-awips package provides access to the entire AWIPS Maps Database for use in Python GIS applications.  Map objects are returned as <a href="http://toblerity.org/shapely/manual.html">Shapely</a> geometries (<em>Polygon</em>, <em>Point</em>, <em>MultiLineString</em>, etc.) and can be easily plotted by Matplotlib, Cartopy, MetPy, and other packages.</p>
+<p>Each map database table has a geometry field called <code>the_geom</code>, which can be used to spatially select map resources for any column of type geometry,</p>
+<h3 id="Notes">Notes<a class="anchor-link" href="#Notes">¶</a>
+</h3>
+<ul>
+<li>This notebook requires: <strong>python-awips, numpy, matplotplib, cartopy, shapely</strong>
+</li>
+<li>Use datatype <strong>maps</strong> and <strong>addIdentifier('table', &lt;postgres maps schema&gt;)</strong> to define the map table:
+<pre><code>  DataAccessLayer.changeEDEXHost("edex-cloud.unidata.ucar.edu")
+  request = DataAccessLayer.newDataRequest('maps')
+  request.addIdentifier('table', 'mapdata.county')</code></pre>
+</li>
+<li>
+<p>Use <strong>request.setLocationNames()</strong> and <strong>request.addIdentifier()</strong> to spatially filter a map resource. In the example below, WFO ID <strong>BOU</strong> (Boulder, Colorado) is used to query counties within the BOU county watch area (CWA)</p>
+
+<pre><code>  request.addIdentifier('geomField', 'the_geom')
+  request.addIdentifier('inLocation', 'true')
+  request.addIdentifier('locationField', 'cwa')
+  request.setLocationNames('BOU')
+  request.addIdentifier('cwa', 'BOU')</code></pre>
+</li>
+</ul>
+<p>See the <a href="http://unidata.github.io/awips2/python/maps-database/#mapdatacwa">Maps Database Reference Page</a> for available database tables, column names, and types.</p>
+<blockquote>
+<p>Note the geometry definition of <code>the_geom</code> for each data type, which can be <strong>Point</strong>, <strong>MultiPolygon</strong>, or <strong>MultiLineString</strong>.</p>
+</blockquote>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Setup">Setup<a class="anchor-link" href="#Setup">¶</a>
+</h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">awips.dataaccess</span> <span class="k">import</span> <span class="n">DataAccessLayer</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">cartopy.mpl.gridliner</span> <span class="k">import</span> <span class="n">LONGITUDE_FORMATTER</span><span class="p">,</span> <span class="n">LATITUDE_FORMATTER</span>
+<span class="kn">from</span> <span class="nn">cartopy.feature</span> <span class="k">import</span> <span class="n">ShapelyFeature</span><span class="p">,</span><span class="n">NaturalEarthFeature</span>
+<span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="k">import</span> <span class="n">Polygon</span>
+<span class="kn">from</span> <span class="nn">shapely.ops</span> <span class="k">import</span> <span class="n">cascaded_union</span>
+
+<span class="c1"># Standard map plot</span>
+<span class="k">def</span> <span class="nf">make_map</span><span class="p">(</span><span class="n">bbox</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">12</span><span class="p">),</span>
+            <span class="n">subplot_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="n">bbox</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">(</span><span class="n">resolution</span><span class="o">=</span><span class="s1">'50m'</span><span class="p">)</span>
+    <span class="n">gl</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">gridlines</span><span class="p">(</span><span class="n">draw_labels</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">gl</span><span class="o">.</span><span class="n">xlabels_top</span> <span class="o">=</span> <span class="n">gl</span><span class="o">.</span><span class="n">ylabels_right</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">gl</span><span class="o">.</span><span class="n">xformatter</span> <span class="o">=</span> <span class="n">LONGITUDE_FORMATTER</span>
+    <span class="n">gl</span><span class="o">.</span><span class="n">yformatter</span> <span class="o">=</span> <span class="n">LATITUDE_FORMATTER</span>
+    <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span>
+
+<span class="c1"># Server, Data Request Type, and Database Table</span>
+<span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">changeEDEXHost</span><span class="p">(</span><span class="s2">"edex-cloud.unidata.ucar.edu"</span><span class="p">)</span>
+
+<span class="n">request</span> <span class="o">=</span> <span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">newDataRequest</span><span class="p">(</span><span class="s1">'maps'</span><span class="p">)</span>
+<span class="n">request</span><span class="o">.</span><span class="n">addIdentifier</span><span class="p">(</span><span class="s1">'table'</span><span class="p">,</span> <span class="s1">'mapdata.county'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Request-County-Boundaries-for-a-WFO">Request County Boundaries for a WFO<a class="anchor-link" href="#Request-County-Boundaries-for-a-WFO">¶</a>
+</h3>
+<ul>
+<li>Use <strong>request.setParameters()</strong> to define fields to be returned by the request.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Define a WFO ID for location</span>
+<span class="c1"># tie this ID to the mapdata.county column "cwa" for filtering</span>
+<span class="n">request</span><span class="o">.</span><span class="n">setLocationNames</span><span class="p">(</span><span class="s1">'BOU'</span><span class="p">)</span>
+<span class="n">request</span><span class="o">.</span><span class="n">addIdentifier</span><span class="p">(</span><span class="s1">'cwa'</span><span class="p">,</span> <span class="s1">'BOU'</span><span class="p">)</span>
+
+<span class="c1"># enable location filtering (inLocation)</span>
+<span class="c1"># locationField is tied to the above cwa definition (BOU)</span>
+<span class="n">request</span><span class="o">.</span><span class="n">addIdentifier</span><span class="p">(</span><span class="s1">'geomField'</span><span class="p">,</span> <span class="s1">'the_geom'</span><span class="p">)</span>
+<span class="n">request</span><span class="o">.</span><span class="n">addIdentifier</span><span class="p">(</span><span class="s1">'inLocation'</span><span class="p">,</span> <span class="s1">'true'</span><span class="p">)</span>
+<span class="n">request</span><span class="o">.</span><span class="n">addIdentifier</span><span class="p">(</span><span class="s1">'locationField'</span><span class="p">,</span> <span class="s1">'cwa'</span><span class="p">)</span>
+
+<span class="c1"># This is essentially the same as "'"select count(*) from mapdata.cwa where cwa='BOU';" (=1)</span>
+
+<span class="c1"># Get response and create dict of county geometries</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">getGeometryData</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">[])</span>
+<span class="n">counties</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+<span class="k">for</span> <span class="n">ob</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
+    <span class="n">counties</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">counties</span><span class="p">,</span><span class="n">ob</span><span class="o">.</span><span class="n">getGeometry</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Using "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">counties</span><span class="p">))</span> <span class="o">+</span> <span class="s2">" county MultiPolygons"</span><span class="p">)</span>
+
+
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="c1"># All WFO counties merged to a single Polygon</span>
+<span class="n">merged_counties</span> <span class="o">=</span> <span class="n">cascaded_union</span><span class="p">(</span><span class="n">counties</span><span class="p">)</span>
+<span class="n">envelope</span> <span class="o">=</span> <span class="n">merged_counties</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">boundaries</span><span class="o">=</span><span class="p">[</span><span class="n">merged_counties</span><span class="p">]</span>
+
+<span class="c1"># Get bounds of this merged Polygon to use as buffered map extent</span>
+<span class="n">bounds</span> <span class="o">=</span> <span class="n">merged_counties</span><span class="o">.</span><span class="n">bounds</span>
+<span class="n">bbox</span><span class="o">=</span><span class="p">[</span><span class="n">bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">bounds</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span><span class="n">bounds</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">+</span><span class="mf">1.5</span><span class="p">]</span>
+
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">make_map</span><span class="p">(</span><span class="n">bbox</span><span class="o">=</span><span class="n">bbox</span><span class="p">)</span>
+<span class="c1"># Plot political/state boundaries handled by Cartopy</span>
+<span class="n">political_boundaries</span> <span class="o">=</span> <span class="n">NaturalEarthFeature</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s1">'cultural'</span><span class="p">,</span>
+                               <span class="n">name</span><span class="o">=</span><span class="s1">'admin_0_boundary_lines_land'</span><span class="p">,</span>
+                               <span class="n">scale</span><span class="o">=</span><span class="s1">'50m'</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">'none'</span><span class="p">)</span>
+<span class="n">states</span> <span class="o">=</span> <span class="n">NaturalEarthFeature</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s1">'cultural'</span><span class="p">,</span>
+                               <span class="n">name</span><span class="o">=</span><span class="s1">'admin_1_states_provinces_lines'</span><span class="p">,</span>
+                               <span class="n">scale</span><span class="o">=</span><span class="s1">'50m'</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">'none'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">political_boundaries</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'-'</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">states</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'-'</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Plot CWA counties</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">geom</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">counties</span><span class="p">):</span>
+    <span class="n">cbounds</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
+    <span class="n">intersection</span> <span class="o">=</span> <span class="n">cbounds</span><span class="o">.</span><span class="n">intersection</span>
+    <span class="n">geoms</span> <span class="o">=</span> <span class="p">(</span><span class="n">intersection</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
+         <span class="k">for</span> <span class="n">geom</span> <span class="ow">in</span> <span class="n">counties</span>
+         <span class="k">if</span> <span class="n">cbounds</span><span class="o">.</span><span class="n">intersects</span><span class="p">(</span><span class="n">geom</span><span class="p">))</span>
+    <span class="n">shape_feature</span> <span class="o">=</span> <span class="n">ShapelyFeature</span><span class="p">(</span><span class="n">geoms</span><span class="p">,</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span> 
+                        <span class="n">facecolor</span><span class="o">=</span><span class="s1">'none'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"-"</span><span class="p">,</span><span class="n">edgecolor</span><span class="o">=</span><span class="s1">'#86989B'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">shape_feature</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Create-a-merged-CWA-with-cascaded_union">Create a merged CWA with cascaded_union<a class="anchor-link" href="#Create-a-merged-CWA-with-cascaded_union">¶</a>
+</h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Plot CWA envelope</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">geom</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">boundaries</span><span class="p">):</span>
+    <span class="n">gbounds</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
+    <span class="n">intersection</span> <span class="o">=</span> <span class="n">gbounds</span><span class="o">.</span><span class="n">intersection</span>
+    <span class="n">geoms</span> <span class="o">=</span> <span class="p">(</span><span class="n">intersection</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
+         <span class="k">for</span> <span class="n">geom</span> <span class="ow">in</span> <span class="n">boundaries</span>
+         <span class="k">if</span> <span class="n">gbounds</span><span class="o">.</span><span class="n">intersects</span><span class="p">(</span><span class="n">geom</span><span class="p">))</span>
+    <span class="n">shape_feature</span> <span class="o">=</span> <span class="n">ShapelyFeature</span><span class="p">(</span><span class="n">geoms</span><span class="p">,</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span> 
+                        <span class="n">facecolor</span><span class="o">=</span><span class="s1">'none'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"-"</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mf">3.</span><span class="p">,</span><span class="n">edgecolor</span><span class="o">=</span><span class="s1">'#cc5000'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">shape_feature</span><span class="p">)</span>
+
+<span class="n">fig</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="WFO-boundary-spatial-filter-for-interstates">WFO boundary spatial filter for interstates<a class="anchor-link" href="#WFO-boundary-spatial-filter-for-interstates">¶</a>
+</h3>
+<p>Using the previously-defined <strong>envelope=merged_counties.buffer(2)</strong> in <strong>newDataRequest()</strong> to request geometries which fall inside the buffered boundary.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">request</span> <span class="o">=</span> <span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">newDataRequest</span><span class="p">(</span><span class="s1">'maps'</span><span class="p">,</span> <span class="n">envelope</span><span class="o">=</span><span class="n">envelope</span><span class="p">)</span>
+<span class="n">request</span><span class="o">.</span><span class="n">addIdentifier</span><span class="p">(</span><span class="s1">'table'</span><span class="p">,</span> <span class="s1">'mapdata.interstate'</span><span class="p">)</span>
+<span class="n">request</span><span class="o">.</span><span class="n">addIdentifier</span><span class="p">(</span><span class="s1">'geomField'</span><span class="p">,</span> <span class="s1">'the_geom'</span><span class="p">)</span>
+<span class="n">request</span><span class="o">.</span><span class="n">setParameters</span><span class="p">(</span><span class="s1">'name'</span><span class="p">)</span>
+<span class="n">interstates</span> <span class="o">=</span> <span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">getGeometryData</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">[])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Using "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">interstates</span><span class="p">))</span> <span class="o">+</span> <span class="s2">" interstate MultiLineStrings"</span><span class="p">)</span>
+
+<span class="c1"># Plot interstates</span>
+<span class="k">for</span> <span class="n">ob</span> <span class="ow">in</span> <span class="n">interstates</span><span class="p">:</span>
+    <span class="n">shape_feature</span> <span class="o">=</span> <span class="n">ShapelyFeature</span><span class="p">(</span><span class="n">ob</span><span class="o">.</span><span class="n">getGeometry</span><span class="p">(),</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span> 
+                        <span class="n">facecolor</span><span class="o">=</span><span class="s1">'none'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"-"</span><span class="p">,</span><span class="n">edgecolor</span><span class="o">=</span><span class="s1">'orange'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">shape_feature</span><span class="p">)</span>
+<span class="n">fig</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Nearby-cities">Nearby cities<a class="anchor-link" href="#Nearby-cities">¶</a>
+</h3>
+<p>Request the city table and filter by population and progressive disclosure level:</p>
+<p><strong>Warning</strong>: the <code>prog_disc</code> field is not entirely understood and values appear to change significantly depending on WFO site.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">request</span> <span class="o">=</span> <span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">newDataRequest</span><span class="p">(</span><span class="s1">'maps'</span><span class="p">,</span> <span class="n">envelope</span><span class="o">=</span><span class="n">envelope</span><span class="p">)</span>
+<span class="n">request</span><span class="o">.</span><span class="n">addIdentifier</span><span class="p">(</span><span class="s1">'table'</span><span class="p">,</span> <span class="s1">'mapdata.city'</span><span class="p">)</span>
+<span class="n">request</span><span class="o">.</span><span class="n">addIdentifier</span><span class="p">(</span><span class="s1">'geomField'</span><span class="p">,</span> <span class="s1">'the_geom'</span><span class="p">)</span>
+<span class="n">request</span><span class="o">.</span><span class="n">setParameters</span><span class="p">(</span><span class="s1">'name'</span><span class="p">,</span><span class="s1">'population'</span><span class="p">,</span><span class="s1">'prog_disc'</span><span class="p">)</span>
+<span class="n">cities</span> <span class="o">=</span> <span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">getGeometryData</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">[])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Queried "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cities</span><span class="p">))</span> <span class="o">+</span> <span class="s2">" total cities"</span><span class="p">)</span>
+
+<span class="n">citylist</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">cityname</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c1"># For BOU, progressive disclosure values above 50 and pop above 5000 looks good</span>
+<span class="k">for</span> <span class="n">ob</span> <span class="ow">in</span> <span class="n">cities</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">ob</span><span class="o">.</span><span class="n">getString</span><span class="p">(</span><span class="sa">b</span><span class="s2">"population"</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">ob</span><span class="o">.</span><span class="n">getString</span><span class="p">(</span><span class="sa">b</span><span class="s2">"prog_disc"</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">50</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">ob</span><span class="o">.</span><span class="n">getString</span><span class="p">(</span><span class="sa">b</span><span class="s2">"population"</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">'UTF-8'</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">5000</span><span class="p">:</span>
+                <span class="n">citylist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ob</span><span class="o">.</span><span class="n">getGeometry</span><span class="p">())</span>
+                <span class="n">cityname</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ob</span><span class="o">.</span><span class="n">getString</span><span class="p">(</span><span class="sa">b</span><span class="s2">"name"</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">'UTF-8'</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Plotting "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cityname</span><span class="p">))</span> <span class="o">+</span> <span class="s2">" cities"</span><span class="p">)</span>
+
+<span class="c1"># Plot city markers</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">([</span><span class="n">point</span><span class="o">.</span><span class="n">x</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">citylist</span><span class="p">],</span>
+       <span class="p">[</span><span class="n">point</span><span class="o">.</span><span class="n">y</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">citylist</span><span class="p">],</span>
+       <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">Geodetic</span><span class="p">(),</span><span class="n">marker</span><span class="o">=</span><span class="s2">"+"</span><span class="p">,</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)</span>
+<span class="c1"># Plot city names</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">txt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cityname</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">txt</span><span class="p">,</span> <span class="p">(</span><span class="n">citylist</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">,</span><span class="n">citylist</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">y</span><span class="p">),</span>
+                <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">textcoords</span><span class="o">=</span><span class="s2">"offset points"</span><span class="p">)</span>
+
+<span class="n">fig</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Lakes">Lakes<a class="anchor-link" href="#Lakes">¶</a>
+</h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">request</span> <span class="o">=</span> <span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">newDataRequest</span><span class="p">(</span><span class="s1">'maps'</span><span class="p">,</span> <span class="n">envelope</span><span class="o">=</span><span class="n">envelope</span><span class="p">)</span>
+<span class="n">request</span><span class="o">.</span><span class="n">addIdentifier</span><span class="p">(</span><span class="s1">'table'</span><span class="p">,</span> <span class="s1">'mapdata.lake'</span><span class="p">)</span>
+<span class="n">request</span><span class="o">.</span><span class="n">addIdentifier</span><span class="p">(</span><span class="s1">'geomField'</span><span class="p">,</span> <span class="s1">'the_geom'</span><span class="p">)</span>
+<span class="n">request</span><span class="o">.</span><span class="n">setParameters</span><span class="p">(</span><span class="s1">'name'</span><span class="p">)</span>
+
+<span class="c1"># Get lake geometries</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">getGeometryData</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">[])</span>
+<span class="n">lakes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+<span class="k">for</span> <span class="n">ob</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
+    <span class="n">lakes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lakes</span><span class="p">,</span><span class="n">ob</span><span class="o">.</span><span class="n">getGeometry</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Using "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lakes</span><span class="p">))</span> <span class="o">+</span> <span class="s2">" lake MultiPolygons"</span><span class="p">)</span>
+
+<span class="c1"># Plot lakes</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">geom</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lakes</span><span class="p">):</span>
+    <span class="n">cbounds</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
+    <span class="n">intersection</span> <span class="o">=</span> <span class="n">cbounds</span><span class="o">.</span><span class="n">intersection</span>
+    <span class="n">geoms</span> <span class="o">=</span> <span class="p">(</span><span class="n">intersection</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
+         <span class="k">for</span> <span class="n">geom</span> <span class="ow">in</span> <span class="n">lakes</span>
+         <span class="k">if</span> <span class="n">cbounds</span><span class="o">.</span><span class="n">intersects</span><span class="p">(</span><span class="n">geom</span><span class="p">))</span>
+    <span class="n">shape_feature</span> <span class="o">=</span> <span class="n">ShapelyFeature</span><span class="p">(</span><span class="n">geoms</span><span class="p">,</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span> 
+                        <span class="n">facecolor</span><span class="o">=</span><span class="s1">'blue'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"-"</span><span class="p">,</span><span class="n">edgecolor</span><span class="o">=</span><span class="s1">'#20B2AA'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">shape_feature</span><span class="p">)</span>
+<span class="n">fig</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Major-Rivers">Major Rivers<a class="anchor-link" href="#Major-Rivers">¶</a>
+</h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">request</span> <span class="o">=</span> <span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">newDataRequest</span><span class="p">(</span><span class="s1">'maps'</span><span class="p">,</span> <span class="n">envelope</span><span class="o">=</span><span class="n">envelope</span><span class="p">)</span>
+<span class="n">request</span><span class="o">.</span><span class="n">addIdentifier</span><span class="p">(</span><span class="s1">'table'</span><span class="p">,</span> <span class="s1">'mapdata.majorrivers'</span><span class="p">)</span>
+<span class="n">request</span><span class="o">.</span><span class="n">addIdentifier</span><span class="p">(</span><span class="s1">'geomField'</span><span class="p">,</span> <span class="s1">'the_geom'</span><span class="p">)</span>
+<span class="n">request</span><span class="o">.</span><span class="n">setParameters</span><span class="p">(</span><span class="s1">'pname'</span><span class="p">)</span>
+<span class="n">rivers</span> <span class="o">=</span> <span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">getGeometryData</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">[])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Using "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rivers</span><span class="p">))</span> <span class="o">+</span> <span class="s2">" river MultiLineStrings"</span><span class="p">)</span>
+
+<span class="c1"># Plot rivers</span>
+<span class="k">for</span> <span class="n">ob</span> <span class="ow">in</span> <span class="n">rivers</span><span class="p">:</span>
+    <span class="n">shape_feature</span> <span class="o">=</span> <span class="n">ShapelyFeature</span><span class="p">(</span><span class="n">ob</span><span class="o">.</span><span class="n">getGeometry</span><span class="p">(),</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span> 
+                        <span class="n">facecolor</span><span class="o">=</span><span class="s1">'none'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">":"</span><span class="p">,</span><span class="n">edgecolor</span><span class="o">=</span><span class="s1">'#20B2AA'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">shape_feature</span><span class="p">)</span>
+<span class="n">fig</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Topography">Topography<a class="anchor-link" href="#Topography">¶</a>
+</h3>
+<p>Spatial envelopes are required for topo requests, which can become slow to download and render for large (CONUS) maps.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy.ma</span> <span class="k">as</span> <span class="nn">ma</span>
+<span class="n">request</span> <span class="o">=</span> <span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">newDataRequest</span><span class="p">()</span>
+<span class="n">request</span><span class="o">.</span><span class="n">setDatatype</span><span class="p">(</span><span class="s2">"topo"</span><span class="p">)</span>
+<span class="n">request</span><span class="o">.</span><span class="n">addIdentifier</span><span class="p">(</span><span class="s2">"group"</span><span class="p">,</span> <span class="s2">"/"</span><span class="p">)</span>
+<span class="n">request</span><span class="o">.</span><span class="n">addIdentifier</span><span class="p">(</span><span class="s2">"dataset"</span><span class="p">,</span> <span class="s2">"full"</span><span class="p">)</span>
+<span class="n">request</span><span class="o">.</span><span class="n">setEnvelope</span><span class="p">(</span><span class="n">envelope</span><span class="p">)</span>
+<span class="n">gridData</span> <span class="o">=</span> <span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">getGridData</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gridData</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Number of grid records: "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gridData</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Sample grid data shape:</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">gridData</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getRawData</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Sample grid data:</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">gridData</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getRawData</span><span class="p">())</span> <span class="o">+</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">grid</span><span class="o">=</span><span class="n">gridData</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">topo</span><span class="o">=</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_invalid</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">getRawData</span><span class="p">())</span> 
+<span class="n">lons</span><span class="p">,</span> <span class="n">lats</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">getLatLonCoords</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">topo</span><span class="o">.</span><span class="n">min</span><span class="p">())</span> <span class="c1"># minimum elevation in our domain (meters)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">topo</span><span class="o">.</span><span class="n">max</span><span class="p">())</span> <span class="c1"># maximum elevation in our domain (meters)</span>
+
+<span class="c1"># Plot topography</span>
+<span class="n">cs</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">topo</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s1">'terrain'</span><span class="p">),</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">cbar</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="n">extend</span><span class="o">=</span><span class="s1">'both'</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">'horizontal'</span><span class="p">)</span>
+<span class="n">cbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">"topography height in meters"</span><span class="p">)</span>
+
+<span class="n">fig</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+    </div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha256-SDRP1VVYu+tgAGKhddBSl5+ezofHKZeI+OzxakbIe/Y=" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

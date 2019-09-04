@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Model_Sounding_Data | The Unidata Python Training Site</title>
+<link href="../../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/workshop/AWIPS/model_sounding_data/">
+<!--[if lt IE 9]><script src="../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="Model_Sounding_Data">
+<meta property="og:url" content="https://unidata.github.io/python-training/workshop/AWIPS/model_sounding_data/">
+<meta property="og:description" content="The EDEX modelsounding plugin creates 64-level vertical profiles from GFS and ETA (NAM) BUFR products distirubted over NOAAport. Paramters which are requestable are pressure, temperature, specHum, uCo">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-08-30T15:02:20-06:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../../python/intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../../../gallery/gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.ipynb" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Model_Sounding_Data</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The EDEX modelsounding plugin creates 64-level vertical profiles from GFS and ETA (NAM) BUFR products distirubted over NOAAport. Paramters which are requestable are <strong>pressure</strong>, <strong>temperature</strong>, <strong>specHum</strong>, <strong>uComp</strong>, <strong>vComp</strong>, <strong>omega</strong>, <strong>cldCvr</strong>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">awips.dataaccess</span> <span class="k">import</span> <span class="n">DataAccessLayer</span>
+<span class="kn">import</span> <span class="nn">matplotlib.tri</span> <span class="k">as</span> <span class="nn">mtri</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.axes_grid1.inset_locator</span> <span class="k">import</span> <span class="n">inset_axes</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">exp</span><span class="p">,</span> <span class="n">log</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">metpy.calc</span> <span class="k">import</span> <span class="n">get_wind_components</span><span class="p">,</span> <span class="n">lcl</span><span class="p">,</span> <span class="n">dry_lapse</span><span class="p">,</span> <span class="n">parcel_profile</span><span class="p">,</span> <span class="n">dewpoint</span>
+<span class="kn">from</span> <span class="nn">metpy.calc</span> <span class="k">import</span> <span class="n">wind_speed</span><span class="p">,</span> <span class="n">wind_direction</span><span class="p">,</span> <span class="n">thermo</span><span class="p">,</span> <span class="n">vapor_pressure</span>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <span class="n">SkewT</span><span class="p">,</span> <span class="n">Hodograph</span>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="k">import</span> <span class="n">units</span><span class="p">,</span> <span class="n">concatenate</span>
+
+<span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">changeEDEXHost</span><span class="p">(</span><span class="s2">"edex-cloud.unidata.ucar.edu"</span><span class="p">)</span>
+<span class="n">request</span> <span class="o">=</span> <span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">newDataRequest</span><span class="p">()</span>
+<span class="n">request</span><span class="o">.</span><span class="n">setDatatype</span><span class="p">(</span><span class="s2">"modelsounding"</span><span class="p">)</span>
+<span class="n">forecastModel</span> <span class="o">=</span> <span class="s2">"GFS"</span>
+<span class="n">request</span><span class="o">.</span><span class="n">addIdentifier</span><span class="p">(</span><span class="s2">"reportType"</span><span class="p">,</span> <span class="n">forecastModel</span><span class="p">)</span>
+<span class="n">request</span><span class="o">.</span><span class="n">setParameters</span><span class="p">(</span><span class="s2">"pressure"</span><span class="p">,</span><span class="s2">"temperature"</span><span class="p">,</span><span class="s2">"specHum"</span><span class="p">,</span><span class="s2">"uComp"</span><span class="p">,</span><span class="s2">"vComp"</span><span class="p">,</span><span class="s2">"omega"</span><span class="p">,</span><span class="s2">"cldCvr"</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Available-Locations">Available Locations<a class="anchor-link" href="#Available-Locations">¶</a>
+</h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">locations</span> <span class="o">=</span> <span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">getAvailableLocationNames</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+<span class="n">locations</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+<span class="nb">list</span><span class="p">(</span><span class="n">locations</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">request</span><span class="o">.</span><span class="n">setLocationNames</span><span class="p">(</span><span class="s2">"KFRM"</span><span class="p">)</span>
+<span class="n">cycles</span> <span class="o">=</span> <span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">getAvailableTimes</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">times</span> <span class="o">=</span> <span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">getAvailableTimes</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">fcstRun</span> <span class="o">=</span> <span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">getForecastRun</span><span class="p">(</span><span class="n">cycles</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">times</span><span class="p">)</span>
+    <span class="nb">list</span><span class="p">(</span><span class="n">fcstRun</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">getGeometryData</span><span class="p">(</span><span class="n">request</span><span class="p">,[</span><span class="n">fcstRun</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'No times available'</span><span class="p">)</span>
+    <span class="n">exit</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Model-Sounding-Parameters">Model Sounding Parameters<a class="anchor-link" href="#Model-Sounding-Parameters">¶</a>
+</h3>
+<p>Construct arrays for each parameter to plot (temperature, pressure, moisutre (spec. humidity), wind components, and cloud cover)</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">tmp</span><span class="p">,</span><span class="n">prs</span><span class="p">,</span><span class="n">sh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+<span class="n">uc</span><span class="p">,</span><span class="n">vc</span><span class="p">,</span><span class="n">om</span><span class="p">,</span><span class="n">cld</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+
+<span class="k">for</span> <span class="n">ob</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span><span class="n">ob</span><span class="o">.</span><span class="n">getString</span><span class="p">(</span><span class="sa">b</span><span class="s2">"temperature"</span><span class="p">))</span>
+    <span class="n">prs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prs</span><span class="p">,</span><span class="n">ob</span><span class="o">.</span><span class="n">getString</span><span class="p">(</span><span class="sa">b</span><span class="s2">"pressure"</span><span class="p">))</span>
+    <span class="n">sh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sh</span><span class="p">,</span><span class="n">ob</span><span class="o">.</span><span class="n">getString</span><span class="p">(</span><span class="sa">b</span><span class="s2">"specHum"</span><span class="p">))</span>
+    <span class="n">uc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">uc</span><span class="p">,</span><span class="n">ob</span><span class="o">.</span><span class="n">getString</span><span class="p">(</span><span class="sa">b</span><span class="s2">"uComp"</span><span class="p">))</span>
+    <span class="n">vc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vc</span><span class="p">,</span><span class="n">ob</span><span class="o">.</span><span class="n">getString</span><span class="p">(</span><span class="sa">b</span><span class="s2">"vComp"</span><span class="p">))</span>
+    <span class="n">om</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">om</span><span class="p">,</span><span class="n">ob</span><span class="o">.</span><span class="n">getString</span><span class="p">(</span><span class="sa">b</span><span class="s2">"omega"</span><span class="p">))</span>
+    <span class="n">cld</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cld</span><span class="p">,</span><span class="n">ob</span><span class="o">.</span><span class="n">getString</span><span class="p">(</span><span class="sa">b</span><span class="s2">"cldCvr"</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"parms    = "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ob</span><span class="o">.</span><span class="n">getParameters</span><span class="p">()))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"site     = "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ob</span><span class="o">.</span><span class="n">getLocationName</span><span class="p">()))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"geom     = "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ob</span><span class="o">.</span><span class="n">getGeometry</span><span class="p">()))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"datetime = "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ob</span><span class="o">.</span><span class="n">getDataTime</span><span class="p">()))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"reftime  = "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ob</span><span class="o">.</span><span class="n">getDataTime</span><span class="p">()</span><span class="o">.</span><span class="n">getRefTime</span><span class="p">()))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"fcstHour = "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ob</span><span class="o">.</span><span class="n">getDataTime</span><span class="p">()</span><span class="o">.</span><span class="n">getFcstTime</span><span class="p">()))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"period   = "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ob</span><span class="o">.</span><span class="n">getDataTime</span><span class="p">()</span><span class="o">.</span><span class="n">getValidPeriod</span><span class="p">()))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Calculating-Dewpoint-from-Specific-Humidity">Calculating Dewpoint from Specific Humidity<a class="anchor-link" href="#Calculating-Dewpoint-from-Specific-Humidity">¶</a>
+</h3>
+<p>Because the modelsounding plugin does not return dewpoint values, we must calculate the profile ourselves.  Here are three examples of dewpoint calculated from specific humidity, including a manual calculation following NCEP AWIPS/NSHARP.</p>
+<p><strong>1) MetPy calculated mixing ratio and vapor pressure</strong></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="n">tmp</span><span class="o">-</span><span class="mf">273.15</span><span class="p">)</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">prs</span><span class="o">/</span><span class="mi">100</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">mbar</span>
+
+<span class="n">u</span><span class="p">,</span><span class="n">v</span> <span class="o">=</span> <span class="n">uc</span><span class="o">*</span><span class="mf">1.94384</span><span class="p">,</span><span class="n">vc</span><span class="o">*</span><span class="mf">1.94384</span> <span class="c1"># m/s to knots</span>
+<span class="n">spd</span> <span class="o">=</span> <span class="n">wind_speed</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">knots</span>
+<span class="nb">dir</span> <span class="o">=</span> <span class="n">wind_direction</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">deg</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">rmix</span> <span class="o">=</span> <span class="p">(</span><span class="n">sh</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">sh</span><span class="p">))</span> <span class="o">*</span><span class="mi">1000</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">'g/kg'</span><span class="p">)</span>
+<span class="n">e</span> <span class="o">=</span> <span class="n">vapor_pressure</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">rmix</span><span class="p">)</span>
+<span class="n">td</span> <span class="o">=</span> <span class="n">dewpoint</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>2) metpy calculated assuming spec. humidity = mixing ratio</strong></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">td2</span> <span class="o">=</span> <span class="n">dewpoint</span><span class="p">(</span><span class="n">vapor_pressure</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">sh</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>3) NCEP AWIPS soundingrequest plugin</strong></p>
+<p>based on GEMPAK/NSHARP, from <a href="https://github.com/Unidata/awips2-ncep/blob/unidata_16.2.2/edex/gov.noaa.nws.ncep.edex.plugin.soundingrequest/src/gov/noaa/nws/ncep/edex/plugin/soundingrequest/handler/MergeSounding.java#L1783">https://github.com/Unidata/awips2-ncep/blob/unidata_16.2.2/edex/gov.noaa.nws.ncep.edex.plugin.soundingrequest/src/gov/noaa/nws/ncep/edex/plugin/soundingrequest/handler/MergeSounding.java#L1783</a></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># new arrays</span>
+<span class="n">ntmp</span> <span class="o">=</span> <span class="n">tmp</span>
+
+<span class="c1"># where p=pressure(pa), T=temp(C), T0=reference temp(273.16)</span>
+<span class="n">rh</span> <span class="o">=</span> <span class="mf">0.263</span><span class="o">*</span><span class="n">prs</span><span class="o">*</span><span class="n">sh</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mf">17.67</span><span class="o">*</span><span class="n">ntmp</span><span class="o">/</span><span class="p">(</span><span class="n">ntmp</span><span class="o">+</span><span class="mf">273.15</span><span class="o">-</span><span class="mf">29.65</span><span class="p">)))</span>
+<span class="n">vaps</span> <span class="o">=</span>  <span class="mf">6.112</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">((</span><span class="mf">17.67</span> <span class="o">*</span> <span class="n">ntmp</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">ntmp</span> <span class="o">+</span> <span class="mf">243.5</span><span class="p">))</span>
+<span class="n">vapr</span> <span class="o">=</span> <span class="n">rh</span> <span class="o">*</span> <span class="n">vaps</span> <span class="o">/</span> <span class="mi">100</span>
+<span class="n">dwpc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">243.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">6.112</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">vapr</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">vapr</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">6.112</span><span class="p">)</span> <span class="o">-</span> <span class="mf">17.67</span><span class="p">))</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="MetPy-SkewT-and-Hodograph">MetPy SkewT and Hodograph<a class="anchor-link" href="#MetPy-SkewT-and-Hodograph">¶</a>
+</h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">'figure.figsize'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">14</span><span class="p">)</span>
+
+<span class="c1"># Create a skewT plot</span>
+<span class="n">skew</span> <span class="o">=</span> <span class="n">SkewT</span><span class="p">()</span>
+
+<span class="c1"># Plot the data</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">td</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">td2</span><span class="p">,</span> <span class="s1">'y'</span><span class="p">)</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">dwpc</span><span class="p">,</span> <span class="s1">'g'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">skew</span><span class="o">.</span><span class="n">plot_barbs</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span> <span class="n">forecastModel</span> <span class="o">+</span> <span class="s2">" "</span> \
+          <span class="o">+</span> <span class="n">ob</span><span class="o">.</span><span class="n">getLocationName</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">'UTF-8'</span><span class="p">)</span> \
+          <span class="o">+</span> <span class="s2">"("</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ob</span><span class="o">.</span><span class="n">getGeometry</span><span class="p">())</span> <span class="o">+</span> <span class="s2">")"</span> \
+          <span class="o">+</span> <span class="s2">", "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ob</span><span class="o">.</span><span class="n">getDataTime</span><span class="p">())</span>
+<span class="p">)</span>
+
+<span class="c1"># An example of a slanted line at constant T -- in this case the 0 isotherm</span>
+<span class="n">l</span> <span class="o">=</span> <span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'c'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Draw hodograph</span>
+<span class="n">ax_hod</span> <span class="o">=</span> <span class="n">inset_axes</span><span class="p">(</span><span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="p">,</span> <span class="s1">'40%'</span><span class="p">,</span> <span class="s1">'40%'</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">h</span> <span class="o">=</span> <span class="n">Hodograph</span><span class="p">(</span><span class="n">ax_hod</span><span class="p">,</span> <span class="n">component_range</span><span class="o">=</span><span class="n">wind_speed</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+<span class="n">h</span><span class="o">.</span><span class="n">add_grid</span><span class="p">(</span><span class="n">increment</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">h</span><span class="o">.</span><span class="n">plot_colormapped</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">spd</span><span class="p">)</span>
+
+<span class="c1"># Show the plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+    </div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha256-SDRP1VVYu+tgAGKhddBSl5+ezofHKZeI+OzxakbIe/Y=" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HILO_Symbol_Plot | The Unidata Python Training Site</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/gallery/hilo_symbol_plot/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="HILO_Symbol_Plot">
+<meta property="og:url" content="https://unidata.github.io/python-training/gallery/hilo_symbol_plot/">
+<meta property="og:description" content="In [ ]:
+
+    
+%matplotlib inline
+
+
+    
+
+
+
+
+
+
+
+=========================================================
+MSLP and 1000-500 hPa Thickness with High and Low Symbols¶Plot MSLP, calculate and plot 1000-50">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-08-30T15:02:20-06:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../python/intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop/workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.ipynb" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">HILO_Symbol_Plot</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>=========================================================</p>
+<h2 id="MSLP-and-1000-500-hPa-Thickness-with-High-and-Low-Symbols">MSLP and 1000-500 hPa Thickness with High and Low Symbols<a class="anchor-link" href="#MSLP-and-1000-500-hPa-Thickness-with-High-and-Low-Symbols">¶</a>
+</h2>
+<p>Plot MSLP, calculate and plot 1000-500 hPa thickness, and plot H and L markers.
+Beyond just plotting a few variables, in the example we use functionality
+from the scipy module to find local maximum and minimimum values within the
+MSLP field in order to plot symbols at those locations.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Imports</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="k">import</span> <span class="n">units</span>
+<span class="kn">from</span> <span class="nn">netCDF4</span> <span class="k">import</span> <span class="n">num2date</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="k">import</span> <span class="n">gaussian_filter</span>
+<span class="kn">from</span> <span class="nn">siphon.ncss</span> <span class="k">import</span> <span class="n">NCSS</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Function for finding and plotting max/min points</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">plot_maxmin_points</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">extrema</span><span class="p">,</span> <span class="n">nsize</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span>
+                       <span class="n">plotValue</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    This function will find and plot relative maximum and minimum for a 2D grid. The function</span>
+<span class="sd">    can be used to plot an H for maximum values (e.g., High pressure) and an L for minimum</span>
+<span class="sd">    values (e.g., low pressue). It is best to used filetered data to obtain  a synoptic scale</span>
+<span class="sd">    max/min value. The symbol text can be set to a string value and optionally the color of the</span>
+<span class="sd">    symbol and any plotted value can be set with the parameter color</span>
+<span class="sd">    lon = plotting longitude values (2D)</span>
+<span class="sd">    lat = plotting latitude values (2D)</span>
+<span class="sd">    data = 2D data that you wish to plot the max/min symbol placement</span>
+<span class="sd">    extrema = Either a value of max for Maximum Values or min for Minimum Values</span>
+<span class="sd">    nsize = Size of the grid box to filter the max and min values to plot a reasonable number</span>
+<span class="sd">    symbol = String to be placed at location of max/min value</span>
+<span class="sd">    color = String matplotlib colorname to plot the symbol (and numerica value, if plotted)</span>
+<span class="sd">    plot_value = Boolean (True/False) of whether to plot the numeric value of max/min point</span>
+<span class="sd">    The max/min symbol will be plotted on the current axes within the bounding frame</span>
+<span class="sd">    (e.g., clip_on=True)</span>
+<span class="sd">    """</span>
+    <span class="kn">from</span> <span class="nn">scipy.ndimage.filters</span> <span class="k">import</span> <span class="n">maximum_filter</span><span class="p">,</span> <span class="n">minimum_filter</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">extrema</span> <span class="o">==</span> <span class="s1">'max'</span><span class="p">):</span>
+        <span class="n">data_ext</span> <span class="o">=</span> <span class="n">maximum_filter</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">nsize</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">'nearest'</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">extrema</span> <span class="o">==</span> <span class="s1">'min'</span><span class="p">):</span>
+        <span class="n">data_ext</span> <span class="o">=</span> <span class="n">minimum_filter</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">nsize</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">'nearest'</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Value for hilo must be either max or min'</span><span class="p">)</span>
+
+    <span class="n">mxy</span><span class="p">,</span> <span class="n">mxx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">data_ext</span> <span class="o">==</span> <span class="n">data</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mxy</span><span class="p">)):</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">lon</span><span class="p">[</span><span class="n">mxy</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">mxx</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="n">lat</span><span class="p">[</span><span class="n">mxy</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">mxx</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span>
+                <span class="n">clip_on</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">'center'</span><span class="p">,</span> <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">'center'</span><span class="p">,</span>
+                <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">lon</span><span class="p">[</span><span class="n">mxy</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">mxx</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="n">lat</span><span class="p">[</span><span class="n">mxy</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">mxx</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span>
+                <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">mxy</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">mxx</span><span class="p">[</span><span class="n">i</span><span class="p">]])),</span>
+                <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">clip_on</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">,</span>
+                <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">'center'</span><span class="p">,</span> <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">'top'</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Get NARR data</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dattim</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">1999</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="n">ncss</span> <span class="o">=</span> <span class="n">NCSS</span><span class="p">(</span><span class="s1">'https://www.ncei.noaa.gov/thredds/ncss/grid/narr-a-files/{0:%Y%m}/{0:%Y%m</span><span class="si">%d</span><span class="s1">}/'</span>
+            <span class="s1">'narr-a_221_{0:%Y%m</span><span class="si">%d</span><span class="s1">}_{0:%H}00_000.grb'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dattim</span><span class="p">))</span>
+<span class="n">query</span> <span class="o">=</span> <span class="n">ncss</span><span class="o">.</span><span class="n">query</span><span class="p">()</span>
+<span class="n">query</span><span class="o">.</span><span class="n">all_times</span><span class="p">()</span><span class="o">.</span><span class="n">variables</span><span class="p">(</span><span class="s1">'Pressure_reduced_to_MSL_msl'</span><span class="p">,</span>
+                            <span class="s1">'Geopotential_height_isobaric'</span><span class="p">)</span><span class="o">.</span><span class="n">add_lonlat</span><span class="p">()</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="s1">'netcdf'</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">ncss</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Extract data into variables</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Grab pressure levels</span>
+<span class="n">plev</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'isobaric1'</span><span class="p">][:])</span>
+
+<span class="c1"># Grab lat/lons and make all lons 0-360</span>
+<span class="n">lats</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'lat'</span><span class="p">][:]</span>
+<span class="n">lons</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'lon'</span><span class="p">][:]</span>
+<span class="n">lons</span><span class="p">[</span><span class="n">lons</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">360</span> <span class="o">+</span> <span class="n">lons</span><span class="p">[</span><span class="n">lons</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Grab valid time and get into datetime format</span>
+<span class="n">time</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">'time2'</span><span class="p">]</span>
+<span class="n">vtime</span> <span class="o">=</span> <span class="n">num2date</span><span class="p">(</span><span class="n">time</span><span class="p">[:],</span> <span class="n">units</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+
+<span class="c1"># Grab MSLP and smooth, use MetPy Units module for conversion</span>
+<span class="n">EMSL</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Pressure_reduced_to_MSL_msl'</span><span class="p">][:]</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">Pa</span>
+<span class="n">EMSL</span><span class="o">.</span><span class="n">ito</span><span class="p">(</span><span class="s1">'hPa'</span><span class="p">)</span>
+<span class="n">mslp</span> <span class="o">=</span> <span class="n">gaussian_filter</span><span class="p">(</span><span class="n">EMSL</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">3.0</span><span class="p">)</span>
+
+<span class="c1"># Grab pressure level data</span>
+<span class="n">hght_1000</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Geopotential_height_isobaric'</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="n">plev</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="mi">1000</span><span class="p">)]</span>
+<span class="n">hght_500</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Geopotential_height_isobaric'</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="n">plev</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="mi">500</span><span class="p">)]</span>
+
+<span class="c1"># Calculate and smooth 1000-500 hPa thickness</span>
+<span class="n">thickness_1000_500</span> <span class="o">=</span> <span class="n">gaussian_filter</span><span class="p">(</span><span class="n">hght_500</span> <span class="o">-</span> <span class="n">hght_1000</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">3.0</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Set map and data projections for use in mapping</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Set projection of map display</span>
+<span class="n">mapproj</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">LambertConformal</span><span class="p">(</span><span class="n">central_latitude</span><span class="o">=</span><span class="mf">45.</span><span class="p">,</span> <span class="n">central_longitude</span><span class="o">=-</span><span class="mf">100.</span><span class="p">)</span>
+
+<span class="c1"># Set projection of data</span>
+<span class="n">dataproj</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()</span>
+
+<span class="c1"># Grab data for plotting state boundaries</span>
+<span class="n">states_provinces</span> <span class="o">=</span> <span class="n">cfeature</span><span class="o">.</span><span class="n">NaturalEarthFeature</span><span class="p">(</span>
+        <span class="n">category</span><span class="o">=</span><span class="s1">'cultural'</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s1">'admin_1_states_provinces_lakes'</span><span class="p">,</span>
+        <span class="n">scale</span><span class="o">=</span><span class="s1">'50m'</span><span class="p">,</span>
+        <span class="n">facecolor</span><span class="o">=</span><span class="s1">'none'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Create figure and plot data</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">17.</span><span class="p">,</span> <span class="mf">11.</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">mapproj</span><span class="p">)</span>
+
+<span class="c1"># Set extent and plot map lines</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">([</span><span class="o">-</span><span class="mf">145.</span><span class="p">,</span> <span class="o">-</span><span class="mi">70</span><span class="p">,</span> <span class="mf">20.</span><span class="p">,</span> <span class="mf">60.</span><span class="p">],</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">(</span><span class="s1">'50m'</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">states_provinces</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="c1"># Plot thickness with multiple colors</span>
+<span class="n">clevs</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5400</span><span class="p">,</span> <span class="mi">60</span><span class="p">),</span>
+         <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">5400</span><span class="p">]),</span>
+         <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5460</span><span class="p">,</span> <span class="mi">7000</span><span class="p">,</span> <span class="mi">60</span><span class="p">))</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">(</span><span class="s1">'tab:blue'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'tab:red'</span><span class="p">)</span>
+<span class="n">kw_clabels</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'fontsize'</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span> <span class="s1">'inline'</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">'inline_spacing'</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">'fmt'</span><span class="p">:</span> <span class="s1">'</span><span class="si">%i</span><span class="s1">'</span><span class="p">,</span>
+              <span class="s1">'rightside_up'</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">'use_clabeltext'</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+<span class="k">for</span> <span class="n">clevthick</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">clevs</span><span class="p">,</span> <span class="n">colors</span><span class="p">):</span>
+    <span class="n">cs</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">thickness_1000_500</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="n">clevthick</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+                    <span class="n">linewidths</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">'dashed'</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">dataproj</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="o">**</span><span class="n">kw_clabels</span><span class="p">)</span>
+
+<span class="c1"># Plot MSLP</span>
+<span class="n">clevmslp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">800.</span><span class="p">,</span> <span class="mf">1120.</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">cs2</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">mslp</span><span class="p">,</span> <span class="n">clevmslp</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">1.25</span><span class="p">,</span>
+                 <span class="n">linestyles</span><span class="o">=</span><span class="s1">'solid'</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">dataproj</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">cs2</span><span class="p">,</span> <span class="o">**</span><span class="n">kw_clabels</span><span class="p">)</span>
+
+<span class="c1"># Use definition to plot H/L symbols</span>
+<span class="n">plot_maxmin_points</span><span class="p">(</span><span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">mslp</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="s1">'H'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'b'</span><span class="p">,</span>  <span class="n">transform</span><span class="o">=</span><span class="n">dataproj</span><span class="p">)</span>
+<span class="n">plot_maxmin_points</span><span class="p">(</span><span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">mslp</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="s1">'L'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'r'</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">dataproj</span><span class="p">)</span>
+
+<span class="c1"># Put on some titles</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'MSLP (hPa) with Highs and Lows, 1000-500 hPa Thickness (m)'</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'VALID: </span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vtime</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'right'</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+    </div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha256-SDRP1VVYu+tgAGKhddBSl5+ezofHKZeI+OzxakbIe/Y=" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

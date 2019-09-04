@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEXRAD_Level_3_Plot_with_Matplotlib | The Unidata Python Training Site</title>
+<link href="../../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/workshop/AWIPS/nexrad_level_3_plot_with_matplotlib/">
+<!--[if lt IE 9]><script src="../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="NEXRAD_Level_3_Plot_with_Matplotlib">
+<meta property="og:url" content="https://unidata.github.io/python-training/workshop/AWIPS/nexrad_level_3_plot_with_matplotlib/">
+<meta property="og:description" content="Shown here are plots for Base Reflectivity (N0Q, 94) and Base Velocity (N0U, 99) using AWIPS data rendered with Matplotlib, Cartopy, and MetPy.  This example improves upon existing Level 3 Python rend">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-08-30T15:02:20-06:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../../python/intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../../../gallery/gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.ipynb" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">NEXRAD_Level_3_Plot_with_Matplotlib</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Shown here are plots for Base Reflectivity (N0Q, 94) and Base Velocity (N0U, 99) using AWIPS data rendered with Matplotlib, Cartopy, and MetPy.  This example improves upon existing Level 3 Python rendering by doing the following:</p>
+<ul>
+<li>Display scaled and labeled colorbar below each figure.</li>
+<li>Plot radar radial images as coordinate maps in Cartopy and label with lat/lon.</li>
+<li>8 bit Z and V colormap and data scaling added to MetPy from operational AWIPS. </li>
+<li>Level 3 data are retrieved from the <a href="http://unidata.github.io/awips2/docs/install/install-cave.html#how-to-run-cave">Unidata EDEX Cloud server</a> (<code>edex-cloud.unidata.ucar.edu</code>)</li>
+<li>
+<p>Raw HDF5 byte data are converted to product values and scaled according to (page 3-34 <a href="https://www.roc.noaa.gov/wsr88d/PublicDocs/ICDS/2620001U.pdf">https://www.roc.noaa.gov/wsr88d/PublicDocs/ICDS/2620001U.pdf</a>)</p>
+
+<pre><code>  The threshold level fields are used to describe (up to) 256 levels as follows:
+   halfword 31 contains the minimum data value in m/s*10 (or dBZ*10)
+   halfword 32 contains the increment in m/s*10 (or dBZ*10)
+   halfword 33 contains the number of levels (0 - 255) </code></pre>
+</li>
+</ul>
+<p>According to the <a href="https://www.roc.noaa.gov/WSR88D/PublicDocs/NewTechnology/B17_2620003W_draft.pdf">ICD for the Product Specification</a>, <em>"the 256 data levels of the digital product cover a range of reflectivity between -32.0 to +94.5 dBZ, in increments of 0.5 dBZ. Level codes 0 and 1 correspond to 'Below Threshold' and 'Range Folded', respectively, while level codes 2 through 255 correspond to the reflectivity data itself"</em>.</p>
+<p>For AWIPS, the National Weather Service uses a mostly-blended color scale with a discrete jump to red at reflectivity values of 50 dBZ:</p>
+<p><img src="http://i.imgur.com/o18gmio.png" alt=""></p>
+<p>50 dBZ corresponds to the 16-level color <em>light red</em> (<strong>FF6060</strong>). Note that <code>FF6060</code> is not used in the NWS AWIPS color scale, instead RGB value is given as <code>255,0,0</code> (hex code <strong>FF0000</strong>). 60 dBZ is not quite exactly where white starts, but it makes sense that it would.  Obviously the AWIPS D2D authors took some liberties with their 256-level rendering, not adhering strictly to "dark red" for dBZ values between 60-65 (white was for 70 dBZ and above on the 16-level colormap).  For this exercise we will assume 50 dBZ should be red and 60 dBZ white, and 75 dBZ cyan.</p>
+<p><strong>Python Script</strong></p>
+<p>Download this script as a <a href="http://nbviewer.jupyter.org/github/Unidata/python-awips/blob/master/examples/notebooks/NEXRAD_Level_3_Plot_with_Matplotlib.ipynb">Jupyter Notebook</a>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">awips.dataaccess</span> <span class="k">import</span> <span class="n">DataAccessLayer</span>
+<span class="kn">from</span> <span class="nn">awips</span> <span class="k">import</span> <span class="n">ThriftClient</span><span class="p">,</span> <span class="n">RadarCommon</span>
+<span class="kn">from</span> <span class="nn">dynamicserialize.dstypes.com.raytheon.uf.common.time</span> <span class="k">import</span> <span class="n">TimeRange</span>
+<span class="kn">from</span> <span class="nn">dynamicserialize.dstypes.com.raytheon.uf.common.dataplugin.radar.request</span> <span class="k">import</span> <span class="n">GetRadarDataRecordRequest</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">timedelta</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">ma</span>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <span class="n">ctables</span>
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">from</span> <span class="nn">cartopy.feature</span> <span class="k">import</span> <span class="n">ShapelyFeature</span><span class="p">,</span><span class="n">NaturalEarthFeature</span>
+<span class="kn">from</span> <span class="nn">cartopy.mpl.gridliner</span> <span class="k">import</span> <span class="n">LONGITUDE_FORMATTER</span><span class="p">,</span> <span class="n">LATITUDE_FORMATTER</span>
+
+<span class="c1"># set EDEX server and radar site definitions</span>
+<span class="n">site</span> <span class="o">=</span> <span class="s1">'klzk'</span>
+<span class="n">edexServer</span> <span class="o">=</span> <span class="s1">'edex-cloud.unidata.ucar.edu'</span>
+<span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">changeEDEXHost</span><span class="p">(</span><span class="n">edexServer</span><span class="p">)</span>
+<span class="n">request</span> <span class="o">=</span> <span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">newDataRequest</span><span class="p">()</span>
+<span class="n">request</span><span class="o">.</span><span class="n">setDatatype</span><span class="p">(</span><span class="s1">'radar'</span><span class="p">)</span>
+<span class="n">request</span><span class="o">.</span><span class="n">setLocationNames</span><span class="p">(</span><span class="n">site</span><span class="p">)</span>
+
+<span class="c1"># Get latest time for site</span>
+<span class="n">datatimes</span> <span class="o">=</span> <span class="n">DataAccessLayer</span><span class="o">.</span><span class="n">getAvailableTimes</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+<span class="n">dateTimeStr</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">datatimes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="c1">#dateTimeStr = "2017-02-02 03:53:03"</span>
+<span class="n">buffer</span> <span class="o">=</span> <span class="mi">60</span> <span class="c1"># seconds</span>
+<span class="n">dateTime</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">dateTimeStr</span><span class="p">,</span> <span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S'</span><span class="p">)</span>
+<span class="c1"># Build timerange +/- buffer</span>
+<span class="n">beginRange</span> <span class="o">=</span> <span class="n">dateTime</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">buffer</span><span class="p">)</span>
+<span class="n">endRange</span> <span class="o">=</span> <span class="n">dateTime</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">buffer</span><span class="p">)</span>
+<span class="n">timerange</span> <span class="o">=</span> <span class="n">TimeRange</span><span class="p">(</span><span class="n">beginRange</span><span class="p">,</span> <span class="n">endRange</span><span class="p">)</span>
+
+<span class="c1"># GetRadarDataRecordRequest to query site with timerange</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">ThriftClient</span><span class="o">.</span><span class="n">ThriftClient</span><span class="p">(</span><span class="n">edexServer</span><span class="p">)</span>
+<span class="n">request</span> <span class="o">=</span> <span class="n">GetRadarDataRecordRequest</span><span class="p">()</span>
+<span class="n">request</span><span class="o">.</span><span class="n">setTimeRange</span><span class="p">(</span><span class="n">timerange</span><span class="p">)</span>
+<span class="n">request</span><span class="o">.</span><span class="n">setRadarId</span><span class="p">(</span><span class="n">site</span><span class="p">)</span>
+
+<span class="n">political_boundaries</span> <span class="o">=</span> <span class="n">NaturalEarthFeature</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s1">'cultural'</span><span class="p">,</span>
+                               <span class="n">name</span><span class="o">=</span><span class="s1">'admin_0_boundary_lines_land'</span><span class="p">,</span>
+                               <span class="n">scale</span><span class="o">=</span><span class="s1">'50m'</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">'none'</span><span class="p">)</span>
+<span class="n">states</span> <span class="o">=</span> <span class="n">NaturalEarthFeature</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s1">'cultural'</span><span class="p">,</span>
+                                   <span class="n">name</span><span class="o">=</span><span class="s1">'admin_1_states_provinces_lines'</span><span class="p">,</span>
+                                   <span class="n">scale</span><span class="o">=</span><span class="s1">'50m'</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">'none'</span><span class="p">)</span>
+
+<span class="c1"># Map config</span>
+<span class="k">def</span> <span class="nf">make_map</span><span class="p">(</span><span class="n">bbox</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span>
+            <span class="n">subplot_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="n">bbox</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">(</span><span class="n">resolution</span><span class="o">=</span><span class="s1">'50m'</span><span class="p">)</span>
+    <span class="n">gl</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">gridlines</span><span class="p">(</span><span class="n">draw_labels</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">gl</span><span class="o">.</span><span class="n">xlabels_top</span> <span class="o">=</span> <span class="n">gl</span><span class="o">.</span><span class="n">ylabels_right</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">gl</span><span class="o">.</span><span class="n">xformatter</span> <span class="o">=</span> <span class="n">LONGITUDE_FORMATTER</span>
+    <span class="n">gl</span><span class="o">.</span><span class="n">yformatter</span> <span class="o">=</span> <span class="n">LATITUDE_FORMATTER</span>
+    <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span>
+
+<span class="c1"># ctable defines the colortable, beginning value, data increment</span>
+<span class="c1">#  * For N0Q the scale is -20 to +75 dBZ in increments of 0.5 dBZ</span>
+<span class="c1">#  * For N0U the scale is -100 to +100 kts in increments of 1 kt</span>
+<span class="n">nexrad</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">nexrad</span><span class="p">[</span><span class="s2">"N0Q"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'id'</span><span class="p">:</span> <span class="mi">94</span><span class="p">,</span> 
+    <span class="s1">'unit'</span><span class="p">:</span><span class="s1">'dBZ'</span><span class="p">,</span> 
+    <span class="s1">'name'</span><span class="p">:</span><span class="s1">'0.5 deg Base Reflectivity'</span><span class="p">,</span> 
+    <span class="s1">'ctable'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'NWSStormClearReflectivity'</span><span class="p">,</span><span class="o">-</span><span class="mf">20.</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> 
+    <span class="s1">'res'</span><span class="p">:</span> <span class="mf">1000.</span><span class="p">,</span>
+    <span class="s1">'elev'</span><span class="p">:</span> <span class="s1">'0.5'</span>
+<span class="p">}</span>
+<span class="n">nexrad</span><span class="p">[</span><span class="s2">"N0U"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'id'</span><span class="p">:</span> <span class="mi">99</span><span class="p">,</span> 
+    <span class="s1">'unit'</span><span class="p">:</span><span class="s1">'kts'</span><span class="p">,</span> 
+    <span class="s1">'name'</span><span class="p">:</span><span class="s1">'0.5 deg Base Velocity'</span><span class="p">,</span> 
+    <span class="s1">'ctable'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'NWS8bitVel'</span><span class="p">,</span><span class="o">-</span><span class="mf">100.</span><span class="p">,</span><span class="mf">1.</span><span class="p">],</span> 
+    <span class="s1">'res'</span><span class="p">:</span> <span class="mf">250.</span><span class="p">,</span>
+    <span class="s1">'elev'</span><span class="p">:</span> <span class="s1">'0.5'</span>
+<span class="p">}</span>
+<span class="n">grids</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">nexrad</span><span class="p">:</span>
+    <span class="n">request</span><span class="o">.</span><span class="n">setProductCode</span><span class="p">(</span><span class="n">nexrad</span><span class="p">[</span><span class="n">code</span><span class="p">][</span><span class="s1">'id'</span><span class="p">])</span>
+    <span class="n">request</span><span class="o">.</span><span class="n">setPrimaryElevationAngle</span><span class="p">(</span><span class="n">nexrad</span><span class="p">[</span><span class="n">code</span><span class="p">][</span><span class="s1">'elev'</span><span class="p">])</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sendRequest</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">getData</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">getData</span><span class="p">():</span>
+            <span class="c1"># Get record hdf5 data</span>
+            <span class="n">idra</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">getHdf5Data</span><span class="p">()</span>
+            <span class="n">rdat</span><span class="p">,</span><span class="n">azdat</span><span class="p">,</span><span class="n">depVals</span><span class="p">,</span><span class="n">threshVals</span> <span class="o">=</span> <span class="n">RadarCommon</span><span class="o">.</span><span class="n">get_hdf5_data</span><span class="p">(</span><span class="n">idra</span><span class="p">)</span>
+            <span class="n">dim</span> <span class="o">=</span> <span class="n">rdat</span><span class="o">.</span><span class="n">getDimension</span><span class="p">()</span>
+            <span class="n">lat</span><span class="p">,</span><span class="n">lon</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">getLatitude</span><span class="p">()),</span><span class="nb">float</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">getLongitude</span><span class="p">())</span>
+            <span class="n">radials</span><span class="p">,</span><span class="n">rangeGates</span> <span class="o">=</span> <span class="n">rdat</span><span class="o">.</span><span class="n">getSizes</span><span class="p">()</span>
+            
+            <span class="c1"># Convert raw byte to pixel value</span>
+            <span class="n">rawValue</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rdat</span><span class="o">.</span><span class="n">getByteData</span><span class="p">())</span>
+            <span class="n">array</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">rec</span> <span class="ow">in</span> <span class="n">rawValue</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">rec</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">:</span>
+                    <span class="n">rec</span><span class="o">+=</span><span class="mi">256</span>
+                <span class="n">array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span>
+                
+            <span class="k">if</span> <span class="n">azdat</span><span class="p">:</span>
+                <span class="n">azVals</span> <span class="o">=</span> <span class="n">azdat</span><span class="o">.</span><span class="n">getFloatData</span><span class="p">()</span>
+                <span class="n">az</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">RadarCommon</span><span class="o">.</span><span class="n">encode_radial</span><span class="p">(</span><span class="n">azVals</span><span class="p">))</span>
+                <span class="n">dattyp</span> <span class="o">=</span> <span class="n">RadarCommon</span><span class="o">.</span><span class="n">get_data_type</span><span class="p">(</span><span class="n">azdat</span><span class="p">)</span>
+                <span class="n">az</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">az</span><span class="p">,</span><span class="n">az</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+            <span class="n">header</span> <span class="o">=</span> <span class="n">RadarCommon</span><span class="o">.</span><span class="n">get_header</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="nb">format</span><span class="p">,</span> <span class="n">rangeGates</span><span class="p">,</span> <span class="n">radials</span><span class="p">,</span> <span class="n">azdat</span><span class="p">,</span> <span class="s1">'description'</span><span class="p">)</span>
+            <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">rangeGates</span><span class="p">,</span> <span class="n">rangeGates</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+            <span class="c1"># Convert az/range to a lat/lon</span>
+            <span class="kn">from</span> <span class="nn">pyproj</span> <span class="k">import</span> <span class="n">Geod</span>
+            <span class="n">g</span> <span class="o">=</span> <span class="n">Geod</span><span class="p">(</span><span class="n">ellps</span><span class="o">=</span><span class="s1">'clrk66'</span><span class="p">)</span>
+            <span class="n">center_lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">az</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="n">rng</span><span class="p">)])</span><span class="o">*</span><span class="n">lat</span>   
+            <span class="n">center_lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">az</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="n">rng</span><span class="p">)])</span><span class="o">*</span><span class="n">lon</span>
+            <span class="n">az2D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">center_lat</span><span class="p">)</span><span class="o">*</span><span class="n">az</span><span class="p">[:,</span><span class="kc">None</span><span class="p">]</span>
+            <span class="n">rng2D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">center_lat</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">rng</span><span class="p">[:,</span><span class="kc">None</span><span class="p">])</span><span class="o">*</span><span class="n">nexrad</span><span class="p">[</span><span class="n">code</span><span class="p">][</span><span class="s1">'res'</span><span class="p">]</span>
+            <span class="n">lons</span><span class="p">,</span><span class="n">lats</span><span class="p">,</span><span class="n">back</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">fwd</span><span class="p">(</span><span class="n">center_lon</span><span class="p">,</span><span class="n">center_lat</span><span class="p">,</span><span class="n">az2D</span><span class="p">,</span><span class="n">rng2D</span><span class="p">)</span>
+            <span class="n">bbox</span> <span class="o">=</span> <span class="p">[</span><span class="n">lons</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">lons</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">lats</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">lats</span><span class="o">.</span><span class="n">max</span><span class="p">()]</span>
+            
+            <span class="c1"># Create 2d array</span>
+            <span class="n">multiArray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">rangeGates</span><span class="p">))</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">ma</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">multiArray</span><span class="p">)</span>
+            
+            <span class="c1"># threshVals[0:2] contains halfwords 31,32,33 (min value, increment, num levels)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">ma</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">threshVals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mf">10.</span> <span class="o">+</span> <span class="p">(</span><span class="n">multiArray</span><span class="p">)</span><span class="o">*</span><span class="n">threshVals</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mf">10.</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="n">nexrad</span><span class="p">[</span><span class="n">code</span><span class="p">][</span><span class="s1">'unit'</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'kts'</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="o">&lt;-</span><span class="mi">63</span><span class="p">]</span> <span class="o">=</span> <span class="n">ma</span><span class="o">.</span><span class="n">masked</span>
+                <span class="n">data</span> <span class="o">*=</span> <span class="mf">1.94384</span> <span class="c1"># Convert to knots</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="o">&lt;=</span><span class="p">((</span><span class="n">threshVals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mf">10.</span><span class="p">)</span><span class="o">+</span><span class="n">threshVals</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mf">10.</span><span class="p">)]</span> <span class="o">=</span> <span class="n">ma</span><span class="o">.</span><span class="n">masked</span>
+            
+            <span class="c1"># Save our requested grids so we can render them multiple times</span>
+            <span class="n">product</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">"code"</span><span class="p">:</span> <span class="n">code</span><span class="p">,</span>
+                <span class="s2">"bbox"</span><span class="p">:</span> <span class="n">bbox</span><span class="p">,</span>
+                <span class="s2">"lats"</span><span class="p">:</span> <span class="n">lats</span><span class="p">,</span>
+                <span class="s2">"lons"</span><span class="p">:</span> <span class="n">lons</span><span class="p">,</span>
+                <span class="s2">"data"</span><span class="p">:</span> <span class="n">data</span>
+            <span class="p">}</span>
+            <span class="n">grids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">product</span><span class="p">)</span>
+            
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Processed "</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">grids</span><span class="p">))</span><span class="o">+</span><span class="s2">" grids."</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Plot-N0Q-and-N0U-with-Cartopy">Plot N0Q and N0U with Cartopy<a class="anchor-link" href="#Plot-N0Q-and-N0U-with-Cartopy">¶</a>
+</h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">rec</span> <span class="ow">in</span> <span class="n">grids</span><span class="p">:</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="n">rec</span><span class="p">[</span><span class="s2">"code"</span><span class="p">]</span>
+    <span class="n">bbox</span> <span class="o">=</span> <span class="n">rec</span><span class="p">[</span><span class="s2">"bbox"</span><span class="p">]</span>
+    <span class="n">lats</span> <span class="o">=</span> <span class="n">rec</span><span class="p">[</span><span class="s2">"lats"</span><span class="p">]</span>
+    <span class="n">lons</span> <span class="o">=</span> <span class="n">rec</span><span class="p">[</span><span class="s2">"lons"</span><span class="p">]</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">rec</span><span class="p">[</span><span class="s2">"data"</span><span class="p">]</span>
+    <span class="c1"># Create figure</span>
+    <span class="o">%</span><span class="k">matplotlib</span> inline
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">make_map</span><span class="p">(</span><span class="n">bbox</span><span class="o">=</span><span class="n">bbox</span><span class="p">)</span>
+    <span class="c1"># Colortable filename, beginning value, increment</span>
+    <span class="n">ctable</span> <span class="o">=</span> <span class="n">nexrad</span><span class="p">[</span><span class="n">code</span><span class="p">][</span><span class="s1">'ctable'</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">beg</span> <span class="o">=</span> <span class="n">nexrad</span><span class="p">[</span><span class="n">code</span><span class="p">][</span><span class="s1">'ctable'</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">inc</span> <span class="o">=</span> <span class="n">nexrad</span><span class="p">[</span><span class="n">code</span><span class="p">][</span><span class="s1">'ctable'</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="n">norm</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">ctables</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">get_with_steps</span><span class="p">(</span><span class="n">ctable</span><span class="p">,</span> <span class="n">beg</span><span class="p">,</span> <span class="n">inc</span><span class="p">)</span>
+    <span class="n">cs</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">'equal'</span><span class="p">,</span> <span class="s1">'datalim'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">political_boundaries</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'-'</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">states</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'-'</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">cbar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="n">extend</span><span class="o">=</span><span class="s1">'both'</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">'horizontal'</span><span class="p">)</span>
+    <span class="n">cbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="n">site</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">+</span><span class="s2">" "</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">nexrad</span><span class="p">[</span><span class="n">code</span><span class="p">][</span><span class="s1">'res'</span><span class="p">]</span><span class="o">/</span><span class="mf">1000.</span><span class="p">)</span> <span class="o">+</span><span class="s2">"km "</span> \
+                   <span class="o">+</span><span class="n">nexrad</span><span class="p">[</span><span class="n">code</span><span class="p">][</span><span class="s1">'name'</span><span class="p">]</span><span class="o">+</span><span class="s2">" ("</span><span class="o">+</span><span class="n">code</span><span class="o">+</span><span class="s2">") "</span> \
+                   <span class="o">+</span><span class="n">nexrad</span><span class="p">[</span><span class="n">code</span><span class="p">][</span><span class="s1">'unit'</span><span class="p">]</span><span class="o">+</span><span class="s2">" "</span> \
+                   <span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">getDataTime</span><span class="p">()))</span>
+
+    <span class="c1"># Zoom to within +-2 deg of center</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">lon</span><span class="o">-</span><span class="mf">2.</span><span class="p">,</span> <span class="n">lon</span><span class="o">+</span><span class="mf">2.</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">lat</span><span class="o">-</span><span class="mf">2.</span><span class="p">,</span> <span class="n">lat</span><span class="o">+</span><span class="mf">2.</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+    </div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha256-SDRP1VVYu+tgAGKhddBSl5+ezofHKZeI+OzxakbIe/Y=" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>miller_composite | The Unidata Python Training Site</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/gallery/miller_composite/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="miller_composite">
+<meta property="og:url" content="https://unidata.github.io/python-training/gallery/miller_composite/">
+<meta property="og:description" content="In [ ]:
+
+    
+%matplotlib inline
+
+
+    
+
+
+
+
+
+
+
+======================
+Miller Composite Chart¶Create a Miller Composite chart based on Miller 1972 in Python with MetPy and
+Matplotlib.
+
+
+
+
+
+
+In [ ]:
+
+  ">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-08-30T15:02:20-06:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../python/intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop/workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.ipynb" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">miller_composite</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>======================</p>
+<h2 id="Miller-Composite-Chart">Miller Composite Chart<a class="anchor-link" href="#Miller-Composite-Chart">¶</a>
+</h2>
+<p>Create a Miller Composite chart based on Miller 1972 in Python with MetPy and
+Matplotlib.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
+<span class="kn">import</span> <span class="nn">matplotlib.lines</span> <span class="k">as</span> <span class="nn">lines</span>
+<span class="kn">import</span> <span class="nn">matplotlib.patches</span> <span class="k">as</span> <span class="nn">mpatches</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="k">as</span> <span class="nn">mpcalc</span>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="k">import</span> <span class="n">units</span>
+<span class="kn">from</span> <span class="nn">netCDF4</span> <span class="k">import</span> <span class="n">num2date</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy.ma</span> <span class="k">as</span> <span class="nn">ma</span>
+<span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="k">import</span> <span class="n">gaussian_filter</span>
+<span class="kn">from</span> <span class="nn">siphon.ncss</span> <span class="k">import</span> <span class="n">NCSS</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Get the data</strong></p>
+<p>This example will use data from the North American Mesoscale Model Analysis
+(<a href="https://nomads.ncdc.gov/">https://nomads.ncdc.gov/</a>) for 12 UTC 27 April 2011.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">base_url</span> <span class="o">=</span> <span class="s1">'https://www.ncei.noaa.gov/thredds/ncss/grid/namanl/'</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2011</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">27</span><span class="p">)</span>
+<span class="n">ncss</span> <span class="o">=</span> <span class="n">NCSS</span><span class="p">(</span><span class="s1">'</span><span class="si">{}</span><span class="s1">{dt:%Y%m}/{dt:%Y%m</span><span class="si">%d</span><span class="s1">}/namanl_218_{dt:%Y%m</span><span class="si">%d</span><span class="s1">}_'</span>
+            <span class="s1">'1800_000.grb'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">))</span>
+
+<span class="c1"># Query for required variables</span>
+<span class="n">gfsdata</span> <span class="o">=</span> <span class="n">ncss</span><span class="o">.</span><span class="n">query</span><span class="p">()</span><span class="o">.</span><span class="n">all_times</span><span class="p">()</span>
+<span class="n">gfsdata</span><span class="o">.</span><span class="n">variables</span><span class="p">(</span><span class="s1">'Geopotential_height_isobaric'</span><span class="p">,</span>
+                  <span class="s1">'u-component_of_wind_isobaric'</span><span class="p">,</span>
+                  <span class="s1">'v-component_of_wind_isobaric'</span><span class="p">,</span>
+                  <span class="s1">'Temperature_isobaric'</span><span class="p">,</span>
+                  <span class="s1">'Relative_humidity_isobaric'</span><span class="p">,</span>
+                  <span class="s1">'Best_4_layer_lifted_index_layer_between_two_pressure_'</span>
+                  <span class="s1">'difference_from_ground_layer'</span><span class="p">,</span>
+                  <span class="s1">'Absolute_vorticity_isobaric'</span><span class="p">,</span>
+                  <span class="s1">'Pressure_reduced_to_MSL_msl'</span><span class="p">,</span>
+                  <span class="s1">'Dew_point_temperature_height_above_ground'</span>
+                  <span class="p">)</span><span class="o">.</span><span class="n">add_lonlat</span><span class="p">()</span>
+
+<span class="c1"># Set the lat/lon box for the data to pull in.</span>
+<span class="n">gfsdata</span><span class="o">.</span><span class="n">lonlat_box</span><span class="p">(</span><span class="o">-</span><span class="mi">135</span><span class="p">,</span> <span class="o">-</span><span class="mi">60</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">65</span><span class="p">)</span>
+
+<span class="c1"># Actually getting the data</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">ncss</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="n">gfsdata</span><span class="p">)</span>
+
+<span class="c1"># Assign variable names to collected data</span>
+<span class="n">dtime</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Geopotential_height_isobaric'</span><span class="p">]</span><span class="o">.</span><span class="n">dimensions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">dlev</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Geopotential_height_isobaric'</span><span class="p">]</span><span class="o">.</span><span class="n">dimensions</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">lat</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'lat'</span><span class="p">][:]</span>
+<span class="n">lon</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'lon'</span><span class="p">][:]</span>
+<span class="n">lev</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span> <span class="o">*</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">dlev</span><span class="p">][:]</span>
+<span class="n">times</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">dtime</span><span class="p">]</span>
+<span class="n">vtimes</span> <span class="o">=</span> <span class="n">num2date</span><span class="p">(</span><span class="n">times</span><span class="p">[:],</span> <span class="n">times</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+<span class="n">temps</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Temperature_isobaric'</span><span class="p">]</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">kelvin</span> <span class="o">*</span> <span class="n">temps</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>
+<span class="n">uwnd</span> <span class="o">=</span> <span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">meter</span> <span class="o">/</span> <span class="n">units</span><span class="o">.</span><span class="n">second</span><span class="p">)</span> <span class="o">*</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'u-component_of_wind_isobaric'</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>
+<span class="n">vwnd</span> <span class="o">=</span> <span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">meter</span> <span class="o">/</span> <span class="n">units</span><span class="o">.</span><span class="n">second</span><span class="p">)</span> <span class="o">*</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'v-component_of_wind_isobaric'</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>
+<span class="n">hgt</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">meter</span> <span class="o">*</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Geopotential_height_isobaric'</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>
+<span class="n">relh</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Relative_humidity_isobaric'</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>
+<span class="n">lifted_index</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Best_4_layer_lifted_index_layer_between_two_'</span>
+                               <span class="s1">'pressure_difference_from_ground_layer'</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span>
+                <span class="n">units</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Best_4_layer_lifted_index_layer_between_two_'</span>
+                                     <span class="s1">'pressure_difference_from_ground_layer'</span><span class="p">]</span><span class="o">.</span><span class="n">units</span><span class="p">))</span>
+<span class="n">Td_sfc</span> <span class="o">=</span> <span class="p">(</span><span class="n">units</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Dew_point_temperature_height_above_ground'</span><span class="p">]</span><span class="o">.</span><span class="n">units</span><span class="p">)</span> <span class="o">*</span>
+          <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Dew_point_temperature_height_above_ground'</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:])</span>
+<span class="n">avor</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Absolute_vorticity_isobaric'</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">'1/s'</span><span class="p">)</span>
+<span class="n">pmsl</span> <span class="o">=</span> <span class="p">(</span><span class="n">units</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Pressure_reduced_to_MSL_msl'</span><span class="p">]</span><span class="o">.</span><span class="n">units</span><span class="p">)</span> <span class="o">*</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Pressure_reduced_to_MSL_msl'</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="p">:])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Query for 00 UTC to calculate pressure falls and height change</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ncss2</span> <span class="o">=</span> <span class="n">NCSS</span><span class="p">(</span><span class="s1">'</span><span class="si">{}</span><span class="s1">{dt:%Y%m}/{dt:%Y%m</span><span class="si">%d</span><span class="s1">}/namanl_218_{dt:%Y%m</span><span class="si">%d</span><span class="s1">}_'</span>
+             <span class="s1">'0600_000.grb'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">))</span>
+
+<span class="c1"># Query for required variables</span>
+<span class="n">gfsdata</span> <span class="o">=</span> <span class="n">ncss</span><span class="o">.</span><span class="n">query</span><span class="p">()</span><span class="o">.</span><span class="n">all_times</span><span class="p">()</span>
+<span class="n">gfsdata</span><span class="o">.</span><span class="n">variables</span><span class="p">(</span><span class="s1">'Geopotential_height_isobaric'</span><span class="p">,</span>
+                  <span class="s1">'Pressure_reduced_to_MSL_msl'</span><span class="p">,</span>
+                  <span class="p">)</span><span class="o">.</span><span class="n">add_lonlat</span><span class="p">()</span>
+
+<span class="c1"># Set the lat/lon box for the data you want to pull in.</span>
+<span class="n">gfsdata</span><span class="o">.</span><span class="n">lonlat_box</span><span class="p">(</span><span class="o">-</span><span class="mi">135</span><span class="p">,</span> <span class="o">-</span><span class="mi">60</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">65</span><span class="p">)</span>
+
+<span class="c1"># Actually getting the data</span>
+<span class="n">data2</span> <span class="o">=</span> <span class="n">ncss2</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="n">gfsdata</span><span class="p">)</span>
+
+<span class="n">hgt_00z</span> <span class="o">=</span> <span class="n">data2</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Geopotential_height_isobaric'</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meter</span>
+<span class="n">pmsl_00z</span> <span class="o">=</span> <span class="p">(</span><span class="n">units</span><span class="p">(</span><span class="n">data2</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Pressure_reduced_to_MSL_msl'</span><span class="p">]</span><span class="o">.</span><span class="n">units</span><span class="p">)</span> <span class="o">*</span>
+            <span class="n">data2</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Pressure_reduced_to_MSL_msl'</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="p">:])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Subset the Data</strong></p>
+<p>With the data pulled in, we will now subset to the specific levels desired</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># 300 hPa, index 28</span>
+<span class="n">idx_300</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">lev</span> <span class="o">==</span> <span class="mf">300.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">u_300</span> <span class="o">=</span> <span class="n">uwnd</span><span class="p">[</span><span class="n">idx_300</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'kt'</span><span class="p">)</span>
+<span class="n">v_300</span> <span class="o">=</span> <span class="n">vwnd</span><span class="p">[</span><span class="n">idx_300</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'kt'</span><span class="p">)</span>
+
+<span class="c1"># 500 hPa, index 20</span>
+<span class="n">idx_500</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">lev</span> <span class="o">==</span> <span class="mf">500.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">avor_500</span> <span class="o">=</span> <span class="n">avor</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">u_500</span> <span class="o">=</span> <span class="n">uwnd</span><span class="p">[</span><span class="n">idx_500</span><span class="p">,</span> <span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'kt'</span><span class="p">)</span>
+<span class="n">v_500</span> <span class="o">=</span> <span class="n">vwnd</span><span class="p">[</span><span class="n">idx_500</span><span class="p">,</span> <span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'kt'</span><span class="p">)</span>
+<span class="n">hgt_500</span> <span class="o">=</span> <span class="n">hgt</span><span class="p">[</span><span class="n">idx_500</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">hgt_500_00z</span> <span class="o">=</span> <span class="n">hgt_00z</span><span class="p">[</span><span class="n">idx_500</span><span class="p">,</span> <span class="p">]</span>
+
+<span class="c1"># 700 hPa, index 12</span>
+<span class="n">idx_700</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">lev</span> <span class="o">==</span> <span class="mf">700.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">tmp_700</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">[</span><span class="n">idx_700</span><span class="p">,</span> <span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'degC'</span><span class="p">)</span>
+<span class="n">rh_700</span> <span class="o">=</span> <span class="n">relh</span><span class="p">[</span><span class="n">idx_700</span><span class="p">,</span> <span class="p">]</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">percent</span>
+
+<span class="c1"># 850 hPa, index 6</span>
+<span class="n">idx_850</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">lev</span> <span class="o">==</span> <span class="mf">850.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">u_850</span> <span class="o">=</span> <span class="n">uwnd</span><span class="p">[</span><span class="n">idx_850</span><span class="p">,</span> <span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'kt'</span><span class="p">)</span>
+<span class="n">v_850</span> <span class="o">=</span> <span class="n">vwnd</span><span class="p">[</span><span class="n">idx_850</span><span class="p">,</span> <span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'kt'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Prepare Variables for Plotting</strong></p>
+<p>With the data queried and subset, we will make any needed calculations in preparation for
+plotting.</p>
+<p><strong>The following fields should be plotted:</strong></p>
+<p>500-hPa cyclonic vorticity advection</p>
+<p>Surface-based Lifted Index</p>
+<p>The axis of the 300-hPa, 500-hPa, and 850-hPa jets</p>
+<p>Surface dewpoint</p>
+<p>700-hPa dewpoint depression</p>
+<p>12-hr surface pressure falls and 500-hPa height changes</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># 500 hPa CVA</span>
+<span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">lat_lon_grid_deltas</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span>
+<span class="n">vort_adv_500</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">advection</span><span class="p">(</span><span class="n">avor_500</span><span class="p">,</span> <span class="p">[</span><span class="n">u_500</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'m/s'</span><span class="p">),</span> <span class="n">v_500</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'m/s'</span><span class="p">)],</span>
+                                <span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">),</span> <span class="n">dim_order</span><span class="o">=</span><span class="s1">'yx'</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e9</span>
+<span class="n">vort_adv_500_smooth</span> <span class="o">=</span> <span class="n">gaussian_filter</span><span class="p">(</span><span class="n">vort_adv_500</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>For the jet axes, we will calculate the windspeed at each level, and plot the highest values</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">wspd_300</span> <span class="o">=</span> <span class="n">gaussian_filter</span><span class="p">(</span><span class="n">mpcalc</span><span class="o">.</span><span class="n">wind_speed</span><span class="p">(</span><span class="n">u_300</span><span class="p">,</span> <span class="n">v_300</span><span class="p">),</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">wspd_500</span> <span class="o">=</span> <span class="n">gaussian_filter</span><span class="p">(</span><span class="n">mpcalc</span><span class="o">.</span><span class="n">wind_speed</span><span class="p">(</span><span class="n">u_500</span><span class="p">,</span> <span class="n">v_500</span><span class="p">),</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">wspd_850</span> <span class="o">=</span> <span class="n">gaussian_filter</span><span class="p">(</span><span class="n">mpcalc</span><span class="o">.</span><span class="n">wind_speed</span><span class="p">(</span><span class="n">u_850</span><span class="p">,</span> <span class="n">v_850</span><span class="p">),</span> <span class="mi">5</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>700-hPa dewpoint depression will be calculated from Temperature_isobaric and RH</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Td_dep_700</span> <span class="o">=</span> <span class="n">tmp_700</span> <span class="o">-</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">dewpoint_rh</span><span class="p">(</span><span class="n">tmp_700</span><span class="p">,</span> <span class="n">rh_700</span> <span class="o">/</span> <span class="mf">100.</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>12-hr surface pressure falls and 500-hPa height changes</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pmsl_change</span> <span class="o">=</span> <span class="n">pmsl</span> <span class="o">-</span> <span class="n">pmsl_00z</span>
+<span class="n">hgt_500_change</span> <span class="o">=</span> <span class="n">hgt_500</span> <span class="o">-</span> <span class="n">hgt_500_00z</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>To plot the jet axes, we will mask the wind fields below the upper 1/3 of windspeed.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mask_500</span> <span class="o">=</span> <span class="n">ma</span><span class="o">.</span><span class="n">masked_less_equal</span><span class="p">(</span><span class="n">wspd_500</span><span class="p">,</span> <span class="mf">0.66</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">wspd_500</span><span class="p">))</span><span class="o">.</span><span class="n">mask</span>
+<span class="n">u_500</span><span class="p">[</span><span class="n">mask_500</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="n">v_500</span><span class="p">[</span><span class="n">mask_500</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+<span class="c1"># 300 hPa</span>
+<span class="n">mask_300</span> <span class="o">=</span> <span class="n">ma</span><span class="o">.</span><span class="n">masked_less_equal</span><span class="p">(</span><span class="n">wspd_300</span><span class="p">,</span> <span class="mf">0.66</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">wspd_300</span><span class="p">))</span><span class="o">.</span><span class="n">mask</span>
+<span class="n">u_300</span><span class="p">[</span><span class="n">mask_300</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="n">v_300</span><span class="p">[</span><span class="n">mask_300</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+<span class="c1"># 850 hPa</span>
+<span class="n">mask_850</span> <span class="o">=</span> <span class="n">ma</span><span class="o">.</span><span class="n">masked_less_equal</span><span class="p">(</span><span class="n">wspd_850</span><span class="p">,</span> <span class="mf">0.66</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">wspd_850</span><span class="p">))</span><span class="o">.</span><span class="n">mask</span>
+<span class="n">u_850</span><span class="p">[</span><span class="n">mask_850</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="n">v_850</span><span class="p">[</span><span class="n">mask_850</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Create the Plot</strong></p>
+<p>With the data now ready, we will create the plot</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Set up our projection</span>
+<span class="n">crs</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">LambertConformal</span><span class="p">(</span><span class="n">central_longitude</span><span class="o">=-</span><span class="mf">100.0</span><span class="p">,</span> <span class="n">central_latitude</span><span class="o">=</span><span class="mf">45.0</span><span class="p">)</span>
+
+
+<span class="c1"># Coordinates to limit map area</span>
+<span class="n">bounds</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">122.</span><span class="p">,</span> <span class="o">-</span><span class="mf">75.</span><span class="p">,</span> <span class="mf">25.</span><span class="p">,</span> <span class="mf">50.</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Plot the composite</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">crs</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="n">bounds</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">(</span><span class="s1">'50m'</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">STATES</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+
+<span class="c1"># Plot Lifted Index</span>
+<span class="n">cs1</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lifted_index</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
+                 <span class="n">colors</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">'solid'</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">cs1</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+           <span class="n">fmt</span><span class="o">=</span><span class="s1">'</span><span class="si">%i</span><span class="s1">'</span><span class="p">,</span> <span class="n">rightside_up</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Plot Surface pressure falls</span>
+<span class="n">cs2</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">pmsl_change</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'hPa'</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+                 <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
+                 <span class="n">colors</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">'dashed'</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">cs2</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+           <span class="n">fmt</span><span class="o">=</span><span class="s1">'</span><span class="si">%i</span><span class="s1">'</span><span class="p">,</span> <span class="n">rightside_up</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Plot 500-hPa height falls</span>
+<span class="n">cs3</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">hgt_500_change</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">60</span><span class="p">,</span> <span class="o">-</span><span class="mi">29</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span>
+                 <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span> <span class="n">colors</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span>
+                 <span class="n">linestyles</span><span class="o">=</span><span class="s1">'solid'</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">cs3</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+           <span class="n">fmt</span><span class="o">=</span><span class="s1">'</span><span class="si">%i</span><span class="s1">'</span><span class="p">,</span> <span class="n">rightside_up</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Plot surface pressure</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">pmsl</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'hPa'</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="mi">990</span><span class="p">,</span> <span class="mi">1011</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+            <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
+            <span class="n">colors</span><span class="o">=</span><span class="s1">'yellow'</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Plot surface dewpoint</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">Td_sfc</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'degF'</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="mi">76</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
+            <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
+            <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="s1">'green'</span><span class="p">],</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Plot 700-hPa dewpoint depression</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">Td_dep_700</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">46</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
+            <span class="n">colors</span><span class="o">=</span><span class="s1">'tan'</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># Plot Vorticity Advection</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">vort_adv_500_smooth</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">106</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+            <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
+            <span class="n">colors</span><span class="o">=</span><span class="s1">'BlueViolet'</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="c1"># Define a skip to reduce the barb point density</span>
+<span class="n">skip_300</span> <span class="o">=</span> <span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+<span class="n">skip_500</span> <span class="o">=</span> <span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">skip_850</span> <span class="o">=</span> <span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+
+<span class="c1"># 300-hPa wind barbs</span>
+<span class="n">jet300</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">barbs</span><span class="p">(</span><span class="n">lon</span><span class="p">[</span><span class="n">skip_300</span><span class="p">],</span> <span class="n">lat</span><span class="p">[</span><span class="n">skip_300</span><span class="p">],</span> <span class="n">u_300</span><span class="p">[</span><span class="n">skip_300</span><span class="p">]</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">v_300</span><span class="p">[</span><span class="n">skip_300</span><span class="p">]</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                  <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
+                  <span class="n">color</span><span class="o">=</span><span class="s1">'green'</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'300-hPa Jet Core Winds (kt)'</span><span class="p">)</span>
+
+
+<span class="c1"># 500-hPa wind barbs</span>
+<span class="n">jet500</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">barbs</span><span class="p">(</span><span class="n">lon</span><span class="p">[</span><span class="n">skip_500</span><span class="p">],</span> <span class="n">lat</span><span class="p">[</span><span class="n">skip_500</span><span class="p">],</span> <span class="n">u_500</span><span class="p">[</span><span class="n">skip_500</span><span class="p">]</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">v_500</span><span class="p">[</span><span class="n">skip_500</span><span class="p">]</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                  <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
+                  <span class="n">color</span><span class="o">=</span><span class="s1">'blue'</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'500-hPa Jet Core Winds (kt)'</span><span class="p">)</span>
+
+<span class="c1"># 850-hPa wind barbs</span>
+<span class="n">jet850</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">barbs</span><span class="p">(</span><span class="n">lon</span><span class="p">[</span><span class="n">skip_850</span><span class="p">],</span> <span class="n">lat</span><span class="p">[</span><span class="n">skip_850</span><span class="p">],</span> <span class="n">u_850</span><span class="p">[</span><span class="n">skip_850</span><span class="p">]</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">v_850</span><span class="p">[</span><span class="n">skip_850</span><span class="p">]</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                  <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
+                  <span class="n">color</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'850-hPa Jet Core Winds (kt)'</span><span class="p">)</span>
+
+<span class="c1"># Legend</span>
+<span class="n">purple</span> <span class="o">=</span> <span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'BlueViolet'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Cyclonic Absolute Vorticity Advection'</span><span class="p">)</span>
+<span class="n">yellow</span> <span class="o">=</span> <span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'yellow'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Surface MSLP &lt; 1010 hPa'</span><span class="p">)</span>
+<span class="n">green</span> <span class="o">=</span> <span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'green'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Surface Td &gt; 65 F'</span><span class="p">)</span>
+<span class="n">tan</span> <span class="o">=</span> <span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'tan'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'700 hPa Dewpoint Depression &gt; 15 C'</span><span class="p">)</span>
+<span class="n">red_line</span> <span class="o">=</span> <span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Best Lifted Index (C)'</span><span class="p">)</span>
+<span class="n">dashed_black_line</span> <span class="o">=</span> <span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'dashed'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span>
+                                 <span class="n">label</span><span class="o">=</span><span class="s1">'12-hr Surface Pressure Falls (hPa)'</span><span class="p">)</span>
+<span class="n">black_line</span> <span class="o">=</span> <span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'solid'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span>
+                          <span class="n">label</span><span class="o">=</span><span class="s1">'12-hr 500-hPa Height Falls (m)'</span><span class="p">)</span>
+<span class="n">leg</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="p">[</span><span class="n">jet300</span><span class="p">,</span> <span class="n">jet500</span><span class="p">,</span> <span class="n">jet850</span><span class="p">,</span> <span class="n">dashed_black_line</span><span class="p">,</span> <span class="n">black_line</span><span class="p">,</span> <span class="n">red_line</span><span class="p">,</span>
+                          <span class="n">purple</span><span class="p">,</span> <span class="n">tan</span><span class="p">,</span> <span class="n">green</span><span class="p">,</span> <span class="n">yellow</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                 <span class="n">title</span><span class="o">=</span><span class="s1">'Composite Analysis Valid: </span><span class="si">{:s}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">vtimes</span><span class="p">[</span><span class="mi">0</span><span class="p">])),</span>
+                 <span class="n">framealpha</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">leg</span><span class="o">.</span><span class="n">set_zorder</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+    </div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha256-SDRP1VVYu+tgAGKhddBSl5+ezofHKZeI+OzxakbIe/Y=" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

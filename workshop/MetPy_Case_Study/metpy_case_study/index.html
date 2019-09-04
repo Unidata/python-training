@@ -1,0 +1,1543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MetPy_Case_Study | The Unidata Python Training Site</title>
+<link href="../../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/workshop/MetPy_Case_Study/metpy_case_study/">
+<!--[if lt IE 9]><script src="../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="MetPy_Case_Study">
+<meta property="og:url" content="https://unidata.github.io/python-training/workshop/MetPy_Case_Study/metpy_case_study/">
+<meta property="og:description" content="MetPy Case Study
+
+
+This is a tutorial on building a case study map for Dynamic Meteorology courses with use of Unidata tools, specifically MetPy and Siphon. In this tutorial we will cover accessing, c">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-08-30T15:02:20-06:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../../python/intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../../../gallery/gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.ipynb" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">MetPy_Case_Study</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a name="top"></a></p>
+<div style="width:1000 px">
+
+<div style="float:right; width:98 px; height:98px;">
+<img src="https://raw.githubusercontent.com/Unidata/MetPy/master/metpy/plots/_static/unidata_150x150.png" alt="Unidata Logo" style="height: 98px;">
+</div>
+<h2>MetPy Case Study</h2>
+<div style="clear:both"></div>
+</div>
+<hr style="height:2px;">
+<p>This is a tutorial on building a case study map for Dynamic Meteorology courses with use of Unidata tools, specifically <a href="https://unidata.github.io/MetPy/latest/">MetPy</a> and <a href="https://unidata.github.io/siphon/latest/">Siphon</a>. In this tutorial we will cover accessing, calculating, and plotting model output.</p>
+<p>Let's investigate The Storm of the Century, although it would easy to change which case you wanted (please feel free to do so).</p>
+<p>Reanalysis Output: NARR 00 UTC 13 March 1993</p>
+<h4 id="Data-from-Reanalysis-on-pressure-surfaces:">Data from Reanalysis on pressure surfaces:<a class="anchor-link" href="#Data-from-Reanalysis-on-pressure-surfaces:">¶</a>
+</h4>
+<ul>
+<li>Geopotential Heights</li>
+<li>Temperature</li>
+<li>u-wind component</li>
+<li>v-wind component</li>
+</ul>
+<h4 id="Calculations:">Calculations:<a class="anchor-link" href="#Calculations:">¶</a>
+</h4>
+<ul>
+<li>Vertical Vorticity</li>
+<li>Advection of Temperature and Vorticity</li>
+<li>Horizontal Divergence</li>
+<li>Wind Speed</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
+<span class="kn">from</span> <span class="nn">netCDF4</span> <span class="k">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">num2date</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="k">import</span> <span class="n">gaussian_filter</span>
+<span class="kn">from</span> <span class="nn">siphon.catalog</span> <span class="k">import</span> <span class="n">TDSCatalog</span>
+<span class="kn">from</span> <span class="nn">siphon.ncss</span> <span class="k">import</span> <span class="n">NCSS</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="k">as</span> <span class="nn">mpcalc</span>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <span class="n">StationPlot</span>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="k">import</span> <span class="n">units</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Case-Study-Data">Case Study Data<a class="anchor-link" href="#Case-Study-Data">¶</a>
+</h3>
+<p>There are a number of different sites that you can utilize to access past model output analyses and even forecasts. The most robust collection is housed at the National Center for Environmental Information (NCEI, formerly NCDC) on a THREDDS server. The general website to begin your search is</p>
+<p><a href="https://www.ncdc.noaa.gov/data-access">https://www.ncdc.noaa.gov/data-access</a></p>
+<p>this link contains links to many different data sources (some of which we will come back to later in this tutorial). But for now, lets investigate what model output is avaiable</p>
+<p><a href="https://www.ncdc.noaa.gov/data-access/model-data/model-datasets">https://www.ncdc.noaa.gov/data-access/model-data/model-datasets</a></p>
+<p>The gridded model output that are available</p>
+<p><strong>Reanalysis</strong></p>
+<ul>
+<li>Climate Forecast System Reanalysis (CFSR)<ul>
+<li>CFSR provides a global reanalysis (a best estimate of the observed state of the atmosphere) of past weather from January 1979 through March 2011 at a horizontal resolution of 0.5°.</li>
+</ul>
+</li>
+<li>North American Regional Reanalysis (NARR)<ul>
+<li>NARR is a regional reanalysis of North America containing temperatures, winds, moisture, soil data, and dozens of other parameters at 32km horizontal resolution.</li>
+</ul>
+</li>
+<li>Reanalysis-1 / Reanalysis-2 (R1/R2)<ul>
+<li>Reanalysis-1 / Reanalysis-2 are two global reanalyses of atmospheric data spanning 1948/1979 to present at a 2.5° horizontal resolution.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Numerical Weather Prediction</strong></p>
+<ul>
+<li>Climate Forecast System (CFS) <ul>
+<li>CFS provides a global reanalysis, a global reforecast of past weather, and an operational, seasonal forecast of weather out to nine months.</li>
+</ul>
+</li>
+<li>Global Data Assimilation System (GDAS)<ul>
+<li>GDAS is the set of assimilation data, both input and output, in various formats for the Global Forecast System model.</li>
+</ul>
+</li>
+<li>Global Ensemble Forecast System (GEFS)<ul>
+<li>GEFS is a global-coverage weather forecast model made up of 21 separate forecasts, or ensemble members, used to quantify the amount of uncertainty in a forecast. GEFS produces output four times a day with weather forecasts going out to 16 days.</li>
+</ul>
+</li>
+<li>Global Forecast System (GFS)<ul>
+<li>The GFS model is a coupled weather forecast model, composed of four separate models which work together to provide an accurate picture of weather conditions. GFS covers the entire globe down to a horizontal resolution of 28km.</li>
+</ul>
+</li>
+<li>North American Mesoscale (NAM)<ul>
+<li>NAM is a regional weather forecast model covering North America down to a horizontal resolution of 12km. Dozens of weather parameters are available from the NAM grids, from temperature and precipitation to lightning and turbulent kinetic energy.</li>
+</ul>
+</li>
+<li>Rapid Refresh (RAP)<ul>
+<li>RAP is a regional weather forecast model of North America, with separate sub-grids (with different horizontal resolutions) within the overall North America domain. RAP produces forecasts every hour with forecast lengths going out 18 hours.  RAP replaced the Rapid Update Cycle (RUC) model on May 1, 2012.</li>
+</ul>
+</li>
+<li>Navy Operational Global Atmospheric Prediction System (NOGAPS)<ul>
+<li>NOGAPS analysis data are available in six-hourly increments on regularly spaced latitude-longitude grids at 1-degree and one-half-degree resolutions. Vertical resolution varies from 18 to 28 pressure levels, 34 sea level depths, the surface, and other various levels.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Ocean Models</strong></p>
+<ul>
+<li>Hybrid Coordinate Ocean Model (HYCOM), Global<ul>
+<li>The Navy implementation of HYCOM is the successor to Global NCOM. This site hosts regions covering U.S. coastal waters as well as a global surface model.</li>
+</ul>
+</li>
+<li>Navy Coastal Ocean Model (NCOM), Global<ul>
+<li>Global NCOM was run by the Naval Oceanographic Office (NAVOCEANO) as the Navy’s operational global ocean-prediction system prior to its replacement by the Global HYCOM system in 2013. This site hosts regions covering U.S., European, West Pacific, and Australian coastal waters as well as a global surface model.</li>
+</ul>
+</li>
+<li>Navy Coastal Ocean Model (NCOM), Regional<ul>
+<li>The Regional NCOM is a high-resolution version of NCOM for specific areas. NCEI serves the Americas Seas, U.S. East, and Alaska regions of NCOM.</li>
+</ul>
+</li>
+<li>Naval Research Laboratory Adaptive Ecosystem Climatology (AEC)<ul>
+<li>The Naval Research Laboratory AEC combines an ocean model with Earth observations to provide a synoptic view of the typical (climatic) state of the ocean for every day of the year. This dataset covers the Gulf of Mexico and nearby areas.</li>
+</ul>
+</li>
+<li>National Centers for Environmental Prediction (NCEP) Real Time Ocean Forecast System (RTOFS)–Atlantic<ul>
+<li>RTOFS–Atlantic is a data-assimilating nowcast-forecast system operated by NCEP. This dataset covers the Gulf of Mexico and most of the northern and central Atlantic.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Climate Prediction</strong></p>
+<ul>
+<li>CM2 Global Coupled Climate Models (CM2.X)<ul>
+<li>CM2.X consists of two climate models to model the changes in climate over the past century and into the 21st century.</li>
+</ul>
+</li>
+<li>Coupled Model Intercomparison Project Phase 5 (CMIP5) (link is external)<ul>
+<li>The U.N. Intergovernmental Panel on Climate Change (IPCC) coordinates global analysis of climate models under the Climate Model Intercomparison Project (CMIP). CMIP5 is in its fifth iteration. Data are available through the Program for Climate Model Diagnosis and Intercomparison (PCMDI) website.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Derived / Other Model Data</strong></p>
+<ul>
+<li>Service Records Retention System (SRRS)<ul>
+<li>SRRS is a store of weather observations, summaries, forecasts, warnings, and advisories generated by the National Weather Service for public use.</li>
+</ul>
+</li>
+<li>NOMADS Ensemble Probability Tool<ul>
+<li>The NOMADS Ensemble Probability Tool allows a user to query the Global Ensemble Forecast System (GEFS) to determine the probability that a set of forecast conditions will occur at a given location using all of the 21 separate GEFS ensemble members.</li>
+</ul>
+</li>
+<li>National Digital Forecast Database (NDFD)<ul>
+<li>NDFD are gridded forecasts created from weather data collected by National Weather Service field offices and processed through the National Centers for Environmental Prediction. NDFD data are available by WMO header or by date range.</li>
+</ul>
+</li>
+<li>National Digital Guidance Database (NDGD)<ul>
+<li>NDGD consists of forecasts, observations, model probabilities, climatological normals, and other digital data that complement the National Digital Forecast Database.</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="NARR-Output">NARR Output<a class="anchor-link" href="#NARR-Output">¶</a>
+</h3>
+<p>Lets investigate what specific NARR output is available to work with from NCEI.</p>
+<p><a href="https://www.ncdc.noaa.gov/data-access/model-data/model-datasets/north-american-regional-reanalysis-narr">https://www.ncdc.noaa.gov/data-access/model-data/model-datasets/north-american-regional-reanalysis-narr</a></p>
+<p>We specifically want to look for data that has "TDS" data access, since that is short for a THREDDS server data access point. There are a total of four different GFS datasets that we could potentially use.</p>
+<p><strong>Choosing our data source</strong>
+Let's go ahead and use the NARR Analysis data to investigate the past case we identified (The Storm of the Century).</p>
+<p><a href="https://www.ncei.noaa.gov/thredds/catalog/narr-a-files/199303/19930313/catalog.html?dataset=narr-a-files/199303/19930313/narr-a_221_19930313_0000_000.grb">https://www.ncei.noaa.gov/thredds/catalog/narr-a-files/199303/19930313/catalog.html?dataset=narr-a-files/199303/19930313/narr-a_221_19930313_0000_000.grb</a></p>
+<p>And we will use a python package called Siphon to read this data through the NetCDFSubset (NetCDFServer) link.</p>
+<p><a href="https://www.ncei.noaa.gov/thredds/ncss/grid/narr-a-files/199303/19930313/narr-a_221_19930313_0000_000.grb/dataset.html">https://www.ncei.noaa.gov/thredds/ncss/grid/narr-a-files/199303/19930313/narr-a_221_19930313_0000_000.grb/dataset.html</a></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Case Study Date</span>
+<span class="n">year</span> <span class="o">=</span> <span class="mi">1993</span>
+<span class="n">month</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">day</span> <span class="o">=</span> <span class="mi">13</span>
+<span class="n">hour</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">hour</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Read NARR Data from THREDDS server</span>
+<span class="n">base_url</span> <span class="o">=</span> <span class="s1">'https://www.ncei.noaa.gov/thredds/catalog/narr-a-files/'</span>
+
+<span class="c1"># Programmatically generate the URL to the day of data we want</span>
+<span class="n">cat</span> <span class="o">=</span> <span class="n">TDSCatalog</span><span class="p">(</span><span class="n">f</span><span class="s1">'</span><span class="si">{base_url}</span><span class="s1">{dt:%Y%m}/{dt:%Y%m</span><span class="si">%d</span><span class="s1">}/catalog.xml'</span><span class="p">)</span>
+
+<span class="c1"># Have Siphon find the appropriate dataset</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">cat</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">filter_time_nearest</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+
+<span class="c1"># Download data using the NetCDF Subset Service</span>
+<span class="n">ncss</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">subset</span><span class="p">()</span>
+<span class="n">query</span> <span class="o">=</span> <span class="n">ncss</span><span class="o">.</span><span class="n">query</span><span class="p">()</span><span class="o">.</span><span class="n">lonlat_box</span><span class="p">(</span><span class="n">north</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">south</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">east</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">west</span><span class="o">=</span><span class="mi">225</span><span class="p">)</span>
+<span class="n">query</span><span class="o">.</span><span class="n">all_times</span><span class="p">()</span><span class="o">.</span><span class="n">variables</span><span class="p">(</span><span class="s1">'Geopotential_height_isobaric'</span><span class="p">,</span> <span class="s1">'Temperature_isobaric'</span><span class="p">,</span>
+                            <span class="s1">'u-component_of_wind_isobaric'</span><span class="p">,</span>
+                            <span class="s1">'v-component_of_wind_isobaric'</span><span class="p">)</span><span class="o">.</span><span class="n">add_lonlat</span><span class="p">()</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="s1">'netcdf'</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">ncss</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Back up in case of bad internet connection.</span>
+<span class="c1"># Uncomment the following line to read local netCDF file of NARR data</span>
+<span class="c1"># data = Dataset('../../data/NARR_19930313_0000.nc','r')</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's see what dimensions are in the file:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">dimensions</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Pulling-Data-for-Calculation/Plotting">Pulling Data for Calculation/Plotting<a class="anchor-link" href="#Pulling-Data-for-Calculation/Plotting">¶</a>
+</h3>
+<p>The object that we get from Siphon is netCDF-like, so we can pull data using familiar calls for all of the variables that are desired for calculations and plotting purposes.</p>
+<p><strong>NOTE:</strong>
+Due to the curvilinear nature of the NARR grid, there is a need to smooth the data that we import for calculation and plotting purposes. For more information about why, please see the following link: <a href="http://www.atmos.albany.edu/facstaff/rmctc/narr/">http://www.atmos.albany.edu/facstaff/rmctc/narr/</a></p>
+<p>Additionally, we want to attach units to our values for use in MetPy calculations later and it will also allow for easy conversion to other units.</p>
+<div class="alert alert-success">
+    <b>EXERCISE</b>:
+    Replace the `0`'s in the template below with your code:
+     <ul>
+<li>Use the `gaussian_filter` function to smooth the `Temperature_isobaric`, `Geopotential_height_isobaric`, `u-component_of_wind_isobaric`, and `v-component_of_wind_isobaric` variables from the netCDF object with a `sigma` value of 1.</li>
+    <li>Assign the units of `kelvin`, `meter`, `m/s`, and `m/s` resectively.</li>
+    <li>Extract the `lat`, `lon`, and `isobaric1` variables.</li>
+    </ul>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Extract data and assign units</span>
+<span class="n">tmpk</span> <span class="o">=</span> <span class="n">gaussian_filter</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Temperature_isobaric'</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">K</span>
+<span class="n">hght</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">uwnd</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">vwnd</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c1"># Extract coordinate data for plotting</span>
+<span class="n">lat</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'lat'</span><span class="p">][:]</span>
+<span class="n">lon</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'lon'</span><span class="p">][:]</span>
+<span class="n">lev</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><button data-toggle="collapse" data-target="#sol1" class="btn btn-primary">View Solution</button></p>
+<div id="sol1" class="collapse">
+<code><pre>
+# Extract data and assign units
+tmpk = gaussian_filter(data.variables['Temperature_isobaric'][0],
+                       sigma=1.0) * units.K
+hght = gaussian_filter(data.variables['Geopotential_height_isobaric'][0],
+                       sigma=1.0) * units.meter
+uwnd = gaussian_filter(data.variables['u-component_of_wind_isobaric'][0], sigma=1.0) * units('m/s')
+vwnd = gaussian_filter(data.variables['v-component_of_wind_isobaric'][0], sigma=1.0) * units('m/s')
+
+\# Extract coordinate data for plotting
+lat = data.variables['lat'][:]
+lon = data.variables['lon'][:]
+lev = data.variables['isobaric1'][:]
+</pre></code>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Next we need to extract the time variable. It's not in very useful units, but the <code>num2date</code> function can be used to easily create regular datetime objects.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">time</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'time1'</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+<span class="n">vtime</span> <span class="o">=</span> <span class="n">num2date</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">units</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">vtime</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Finally, we need to calculate the spacing of the grid in distance units instead of degrees using the MetPy helper function <code>lat_lon_grid_spacing</code>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Calcualte dx and dy for calculations</span>
+<span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">lat_lon_grid_deltas</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Finding-Pressure-Level-Data">Finding Pressure Level Data<a class="anchor-link" href="#Finding-Pressure-Level-Data">¶</a>
+</h3>
+<p>A robust way to parse the data for a certain pressure level is to find the index value using the <code>np.where</code> function. Since the NARR pressure data ('levels') is in hPa, then we'll want to search that array for our pressure levels 850, 500, and 300 hPa.</p>
+<div class="alert alert-success">
+    <b>EXERCISE</b>:
+    Replace the `0`'s in the template below with your code:
+     <ul>
+<li>Find the index of the 850 hPa, 500 hPa, and 300 hPa levels.</li>
+      <li>Extract the heights, temperature, u, and v winds at those levels.</li>
+    </ul>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Specify 850 hPa data</span>
+<span class="n">ilev850</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">lev</span><span class="o">==</span><span class="mi">850</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">hght_850</span> <span class="o">=</span> <span class="n">hght</span><span class="p">[</span><span class="n">ilev850</span><span class="p">]</span>
+<span class="n">tmpk_850</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">uwnd_850</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">vwnd_850</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Specify 500 hPa data</span>
+<span class="n">ilev500</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">hght_500</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">uwnd_500</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">vwnd_500</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Specify 300 hPa data</span>
+<span class="n">ilev300</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">hght_300</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">uwnd_300</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">vwnd_300</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><button data-toggle="collapse" data-target="#sol2" class="btn btn-primary">View Solution</button></p>
+<div id="sol2" class="collapse">
+<code><pre>
+# Specify 850 hPa data
+ilev850 = np.where(lev == 850)[0][0]
+hght_850 = hght[ilev850]
+tmpk_850 = tmpk[ilev850]
+uwnd_850 = uwnd[ilev850]
+vwnd_850 = vwnd[ilev850]
+
+\# Specify 500 hPa data
+ilev500 = np.where(lev == 500)[0][0]
+hght_500 = hght[ilev500]
+uwnd_500 = uwnd[ilev500]
+vwnd_500 = vwnd[ilev500]
+
+\# Specify 300 hPa data
+ilev300 = np.where(lev == 300)[0][0]
+hght_300 = hght[ilev300]
+uwnd_300 = uwnd[ilev300]
+vwnd_300 = vwnd[ilev300]
+</pre></code>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Using-MetPy-to-Calculate-Atmospheric-Dynamic-Quantities">Using MetPy to Calculate Atmospheric Dynamic Quantities<a class="anchor-link" href="#Using-MetPy-to-Calculate-Atmospheric-Dynamic-Quantities">¶</a>
+</h3>
+<p>MetPy has a large and growing list of functions to calculate many different atmospheric quantities. Here we want to use some classic functions to calculate wind speed, advection, planetary vorticity, relative vorticity, and divergence.</p>
+<ul>
+<li>Wind Speed: <code>mpcalc.wind_speed()</code>
+</li>
+<li>Advection: <code>mpcalc.advection()</code>
+</li>
+<li>Planetary Vorticity: <code>mpcalc.coriolis_parameter()</code>
+</li>
+<li>Relative Vorticity: <code>mpcalc.vorticity()</code>
+</li>
+<li>Divergence: <code>mpcalc.divergence()</code>
+</li>
+</ul>
+<p>Note: For the above, MetPy Calculation module is imported in the following manner <code>import metpy.calc as mpcalc</code>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Temperature-Advection">Temperature Advection<a class="anchor-link" href="#Temperature-Advection">¶</a>
+</h4>
+<p>A classic QG forcing term is 850-hPa temperature advection. MetPy has a function for advection</p>
+<p><a href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.advection.html#metpy.calc.advection"><code>advection(scalar quantity, [advecting vector components], (grid spacing components))</code></a></p>
+<p>So for temperature advection our scalar quantity would be the tempertaure, the advecting vector components would be our u and v components of the wind, and the grid spacing would be our dx and dy we computed in an earier cell.</p>
+<div class="alert alert-success">
+    <b>EXERCISE</b>:
+     <ul>
+<li>Uncomment and fill out the advection calculation below.</li>
+    </ul>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Temperature Advection</span>
+<span class="c1"># tmpc_adv_850 = mpcalc.advection(--Fill in this call--).to('degC/s')</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><button data-toggle="collapse" data-target="#sol3" class="btn btn-primary">View Solution</button></p>
+<div id="sol3" class="collapse">
+<code><pre>
+# Temperature Advection
+tmpc_adv_850 = mpcalc.advection(tmpk_850, [uwnd_850, vwnd_850],
+                                (dx, dy), dim_order='yx').to('degC/s')
+
+</pre></code>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Vorticity-Calculations">Vorticity Calculations<a class="anchor-link" href="#Vorticity-Calculations">¶</a>
+</h4>
+<p>There are a couple of different vorticities that we are interested in for various calculations, planetary vorticity, relative vorticity, and absolute vorticity. Currently MetPy has two of the three as functions within the calc module.</p>
+<p><strong>Planetary Vorticity (Coriolis Parameter)</strong></p>
+<p><a href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.coriolis_parameter.html#metpy.calc.coriolis_parameter"><code>coriolis_parameter(latitude in radians)</code></a></p>
+<p>Note: You must can convert your array of latitudes to radians...NumPy give a great function <code>np.deg2rad()</code> or have units attached to your latitudes in order for MetPy to convert them for you! Always check your output to make sure that your code is producing what you think it is producing.</p>
+<p><strong>Relative Vorticity</strong></p>
+<p>When atmospheric scientists talk about relative vorticity, we are really refering to the relative vorticity that is occuring about the vertical axis (the k-hat component). So in MetPy the function is</p>
+<p><a href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.vorticity.html#metpy.calc.vorticity"><code>vorticity(uwind, vwind, dx, dy)</code></a></p>
+<p><strong> Absolute Vorticity</strong></p>
+<p>Currently there is no specific function for Absolute Vorticity, but this is easy for us to calculate from the previous two calculations because we just need to add them together!</p>
+<p><code>ABS Vort = Rel. Vort + Coriolis Parameter</code></p>
+<p>Here having units are great, becase we won't be able to add things together that don't have the same units! Its a nice safety check just in case you entered something wrong in another part of the calculation, you'll get a units error.</p>
+<div class="alert alert-success">
+    <b>EXERCISE</b>:
+     <ul>
+<li>Fill in the function calls below to complete the vorticity calculations.</li>
+    </ul>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Vorticity and Absolute Vorticity Calculations</span>
+
+<span class="c1"># Planetary Vorticity</span>
+<span class="c1"># f = mpcalc.coriolis_parameter(-- Fill in here --).to('1/s')</span>
+
+<span class="c1"># Relative Vorticity</span>
+<span class="c1"># vor_500 = mpcalc.vorticity(-- Fill in here --)</span>
+
+<span class="c1"># Abosolute Vorticity</span>
+<span class="c1"># avor_500 = vor_500 + f</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><button data-toggle="collapse" data-target="#sol4" class="btn btn-primary">View Solution</button></p>
+<div id="sol4" class="collapse">
+<code><pre>
+# Vorticity and Absolute Vorticity Calculations
+
+\# Planetary Vorticity
+f = mpcalc.coriolis_parameter(np.deg2rad(lat)).to('1/s')
+
+\# Relative Vorticity
+vor_500 = mpcalc.vorticity(uwnd_500, vwnd_500, dx, dy,
+                           dim_order='yx')
+
+\# Abosolute Vorticity
+avor_500 = vor_500 + f
+</pre></code>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Vorticity-Advection">Vorticity Advection<a class="anchor-link" href="#Vorticity-Advection">¶</a>
+</h4>
+<p>We use the same MetPy function for temperature advection for our vorticity advection, we just have to change the scalar quantity (what is being advected) and have appropriate vector quantities for the level our scalar is from. So for vorticity advections well want our wind components from 500 hPa.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Vorticity Advection</span>
+<span class="n">f_adv</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">advection</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">[</span><span class="n">uwnd_500</span><span class="p">,</span> <span class="n">vwnd_500</span><span class="p">],</span> <span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">),</span> <span class="n">dim_order</span><span class="o">=</span><span class="s1">'yx'</span><span class="p">)</span>
+
+<span class="n">relvort_adv</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">advection</span><span class="p">(</span><span class="n">vor_500</span><span class="p">,</span> <span class="p">[</span><span class="n">uwnd_500</span><span class="p">,</span> <span class="n">vwnd_500</span><span class="p">],</span> <span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">),</span> <span class="n">dim_order</span><span class="o">=</span><span class="s1">'yx'</span><span class="p">)</span>
+
+<span class="n">absvort_adv</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">advection</span><span class="p">(</span><span class="n">avor_500</span><span class="p">,</span> <span class="p">[</span><span class="n">uwnd_500</span><span class="p">,</span> <span class="n">vwnd_500</span><span class="p">],</span> <span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">),</span> <span class="n">dim_order</span><span class="o">=</span><span class="s1">'yx'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Divergence-and-Stretching-Vorticity">Divergence and Stretching Vorticity<a class="anchor-link" href="#Divergence-and-Stretching-Vorticity">¶</a>
+</h4>
+<p>If we want to analyze another component of the vorticity tendency equation other than advection, we might want to assess the stretching forticity term.</p>
+<p><code>-(Abs. Vort.)*(Divergence)</code></p>
+<p>We already have absolute vorticity calculated, so now we need to calculate the divergence of the level, which MetPy has a function</p>
+<p><code>divergence(uwnd, vwnd, dx, dy)</code></p>
+<p>This function computes the horizontal divergence.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Stretching Vorticity</span>
+<span class="n">div_500</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">divergence</span><span class="p">(</span><span class="n">uwnd_500</span><span class="p">,</span> <span class="n">vwnd_500</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">dim_order</span><span class="o">=</span><span class="s1">'yx'</span><span class="p">)</span>
+
+<span class="n">stretch_vort</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">avor_500</span> <span class="o">*</span> <span class="n">div_500</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Wind-Speed,-Geostrophic-and-Ageostrophic-Wind">Wind Speed, Geostrophic and Ageostrophic Wind<a class="anchor-link" href="#Wind-Speed,-Geostrophic-and-Ageostrophic-Wind">¶</a>
+</h4>
+<p><strong>Wind Speed</strong></p>
+<p>Calculating wind speed is not a difficult calculation, but MetPy offers a function to calculate it easily keeping units so that it is easy to convert units for plotting purposes.</p>
+<p><a href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.wind_speed.html#metpy.calc.wind_speed"><code>wind_speed(uwnd, vwnd)</code></a></p>
+<p><strong>Geostrophic Wind</strong></p>
+<p>The geostrophic wind can be computed from a given height gradient and coriolis parameter</p>
+<p><a href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.geostrophic_wind.html#metpy.calc.geostrophic_wind"><code>geostrophic_wind(heights, coriolis parameter, dx, dy)</code></a></p>
+<p>This function will return the two geostrophic wind components in a tuple. On the left hand side you'll be able to put two variables to save them off separately, if desired.</p>
+<p><strong>Ageostrophic Wind</strong></p>
+<p>Currently, there is not a function in MetPy for calculating the ageostrophic wind, however, it is again a simple arithmatic operation to get it from the total wind (which comes from our data input) and out calculated geostrophic wind from above.</p>
+<p><code>Ageo Wind = Total Wind - Geo Wind</code></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Divergence 300 hPa, Ageostrophic Wind</span>
+<span class="n">wspd_300</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">wind_speed</span><span class="p">(</span><span class="n">uwnd_300</span><span class="p">,</span> <span class="n">vwnd_300</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'kts'</span><span class="p">)</span>
+
+<span class="n">div_300</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">divergence</span><span class="p">(</span><span class="n">uwnd_300</span><span class="p">,</span> <span class="n">vwnd_300</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">dim_order</span><span class="o">=</span><span class="s1">'yx'</span><span class="p">)</span>
+<span class="n">ugeo_300</span><span class="p">,</span> <span class="n">vgeo_300</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">geostrophic_wind</span><span class="p">(</span><span class="n">hght_300</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">dim_order</span><span class="o">=</span><span class="s1">'yx'</span><span class="p">)</span>
+
+<span class="n">uageo_300</span> <span class="o">=</span> <span class="n">uwnd_300</span> <span class="o">-</span> <span class="n">ugeo_300</span>
+<span class="n">vageo_300</span> <span class="o">=</span> <span class="n">vwnd_300</span> <span class="o">-</span> <span class="n">vgeo_300</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Maps-and-Projections">Maps and Projections<a class="anchor-link" href="#Maps-and-Projections">¶</a>
+</h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Data projection; NARR Data is Earth Relative</span>
+<span class="n">dataproj</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()</span>
+
+<span class="c1"># Plot projection</span>
+<span class="c1"># The look you want for the view, LambertConformal for mid-latitude view</span>
+<span class="n">plotproj</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">LambertConformal</span><span class="p">(</span><span class="n">central_longitude</span><span class="o">=-</span><span class="mf">100.</span><span class="p">,</span> <span class="n">central_latitude</span><span class="o">=</span><span class="mf">40.</span><span class="p">,</span>
+                                 <span class="n">standard_parallels</span><span class="o">=</span><span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">60</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">create_map_background</span><span class="p">():</span>
+    <span class="n">fig</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">plotproj</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">([</span><span class="o">-</span><span class="mi">125</span><span class="p">,</span> <span class="o">-</span><span class="mi">73</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">(</span><span class="s1">'50m'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">STATES</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="850-hPa-Temperature-Advection">850-hPa Temperature Advection<a class="anchor-link" href="#850-hPa-Temperature-Advection">¶</a>
+</h3>
+<ul>
+<li>Add one contour (Temperature in Celsius with a dotted linestyle</li>
+<li>Add one colorfill (Temperature Advection in C/hr)</li>
+</ul>
+<div class="alert alert-success">
+    <b>EXERCISE</b>:
+     <ul>
+<li>Add one contour (Temperature in Celsius with a dotted linestyle</li>
+      <li>Add one filled contour (Temperature Advection in C/hr)</li>
+    </ul>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">create_map_background</span><span class="p">()</span>
+
+<span class="c1"># Contour 1 - Temperature, dotted</span>
+<span class="c1"># Your code here!</span>
+
+<span class="c1"># Contour 2</span>
+<span class="n">clev850</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4000</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+<span class="n">cs</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">hght_850</span><span class="p">,</span> <span class="n">clev850</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span>
+                <span class="n">linewidths</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">'solid'</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">dataproj</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">'</span><span class="si">%i</span><span class="s1">'</span><span class="p">,</span>
+           <span class="n">rightside_up</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Filled contours - Temperature advection</span>
+<span class="n">contours</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">]</span>
+<span class="c1"># Your code here!</span>
+
+<span class="c1"># Vector</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">barbs</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">uwnd_850</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'kts'</span><span class="p">)</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">vwnd_850</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'kts'</span><span class="p">)</span><span class="o">.</span><span class="n">m</span><span class="p">,</span>
+         <span class="n">regrid_shape</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">dataproj</span><span class="p">)</span>
+
+<span class="c1"># Titles</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'850-hPa Geopotential Heights, Temperature (C), </span><span class="se">\</span>
+<span class="s1">          Temp Adv (C/h), and Wind Barbs (kts)'</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">f</span><span class="s1">'VALID: </span><span class="si">{vtime}</span><span class="s1">'</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'right'</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><button data-toggle="collapse" data-target="#sol5" class="btn btn-primary">View Solution</button></p>
+<div id="sol5" class="collapse">
+<code><pre>
+fig, ax = create_map_background()
+
+\# Contour 1 - Temperature, dotted
+cs2 = ax.contour(lon, lat, tmpk_850.to('degC'), range(-50, 50, 2),
+                 colors='grey', linestyles='dotted', transform=dataproj)
+
+plt.clabel(cs2, fontsize=10, inline=1, inline_spacing=10, fmt='%i',
+           rightside_up=True, use_clabeltext=True)
+
+\# Contour 2
+clev850 = np.arange(0, 4000, 30)
+cs = ax.contour(lon, lat, hght_850, clev850, colors='k',
+                linewidths=1.0, linestyles='solid', transform=dataproj)
+
+plt.clabel(cs, fontsize=10, inline=1, inline_spacing=10, fmt='%i',
+           rightside_up=True, use_clabeltext=True)
+
+\# Filled contours - Temperature advection
+contours = [-3, -2.2, -2, -1.5, -1, -0.5, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0]
+cf = ax.contourf(lon, lat, tmpc_adv_850*3600, contours,
+                 cmap='bwr', extend='both', transform=dataproj)
+plt.colorbar(cf, orientation='horizontal', pad=0, aspect=50,
+             extendrect=True, ticks=contours)
+
+\# Vector
+ax.barbs(lon, lat, uwnd_850.to('kts').m, vwnd_850.to('kts').m,
+         regrid_shape=15, transform=dataproj)
+
+\# Titles
+plt.title('850-hPa Geopotential Heights, Temperature (C), \
+          Temp Adv (C/h), and Wind Barbs (kts)', loc='left')
+plt.title(f'VALID: {vtime}', loc='right')
+
+plt.tight_layout()
+plt.show()
+</pre></code>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="500-hPa-Absolute-Vorticity">500-hPa Absolute Vorticity<a class="anchor-link" href="#500-hPa-Absolute-Vorticity">¶</a>
+</h3>
+<div class="alert alert-success">
+    <b>EXERCISE</b>:
+     <ul>
+<li>Add code for plotting vorticity as filled contours with given levels and colors.</li>
+    </ul>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">create_map_background</span><span class="p">()</span>
+
+<span class="c1"># Contour 1</span>
+<span class="n">clev500</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">7000</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+<span class="n">cs</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">hght_500</span><span class="p">,</span> <span class="n">clev500</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span>
+                <span class="n">linewidths</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">'solid'</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">dataproj</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+           <span class="n">fmt</span><span class="o">=</span><span class="s1">'</span><span class="si">%i</span><span class="s1">'</span><span class="p">,</span> <span class="n">rightside_up</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Filled contours</span>
+<span class="c1"># Set contour intervals for Absolute Vorticity</span>
+<span class="n">clevavor500</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span>
+               <span class="mi">22</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">43</span><span class="p">,</span> <span class="mi">46</span><span class="p">]</span>
+
+<span class="c1"># Set colorfill colors for absolute vorticity</span>
+<span class="c1"># purple negative</span>
+<span class="c1"># yellow to orange positive</span>
+<span class="n">colorsavor500</span> <span class="o">=</span> <span class="p">(</span><span class="s1">'#660066'</span><span class="p">,</span> <span class="s1">'#660099'</span><span class="p">,</span> <span class="s1">'#6600CC'</span><span class="p">,</span> <span class="s1">'#6600FF'</span><span class="p">,</span>
+                 <span class="s1">'#FFFFFF'</span><span class="p">,</span> <span class="s1">'#ffE800'</span><span class="p">,</span> <span class="s1">'#ffD800'</span><span class="p">,</span> <span class="s1">'#ffC800'</span><span class="p">,</span>
+                 <span class="s1">'#ffB800'</span><span class="p">,</span> <span class="s1">'#ffA800'</span><span class="p">,</span> <span class="s1">'#ff9800'</span><span class="p">,</span> <span class="s1">'#ff8800'</span><span class="p">,</span>
+                 <span class="s1">'#ff7800'</span><span class="p">,</span> <span class="s1">'#ff6800'</span><span class="p">,</span> <span class="s1">'#ff5800'</span><span class="p">,</span> <span class="s1">'#ff5000'</span><span class="p">,</span>
+                 <span class="s1">'#ff4000'</span><span class="p">,</span> <span class="s1">'#ff3000'</span><span class="p">)</span>
+
+<span class="c1"># YOUR CODE HERE!</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cf</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">'horizontal'</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+
+<span class="c1"># Vector</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">barbs</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">uwnd_500</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'kts'</span><span class="p">)</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">vwnd_500</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'kts'</span><span class="p">)</span><span class="o">.</span><span class="n">m</span><span class="p">,</span>
+         <span class="n">regrid_shape</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">dataproj</span><span class="p">)</span>
+
+<span class="c1"># Titles</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'500-hPa Geopotential Heights, Absolute Vorticity </span><span class="se">\</span>
+<span class="s1">          (1/s), and Wind Barbs (kts)'</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">f</span><span class="s1">'VALID: </span><span class="si">{vtime}</span><span class="s1">'</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'right'</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><button data-toggle="collapse" data-target="#sol6" class="btn btn-primary">View Solution</button></p>
+<div id="sol6" class="collapse">
+<code><pre>
+fig, ax = create_map_background()
+
+\# Contour 1
+clev500 = np.arange(0, 7000, 60)
+cs = ax.contour(lon, lat, hght_500, clev500, colors='k',
+                linewidths=1.0, linestyles='solid', transform=dataproj)
+plt.clabel(cs, fontsize=10, inline=1, inline_spacing=4,
+           fmt='%i', rightside_up=True, use_clabeltext=True)
+
+\# Filled contours
+\# Set contour intervals for Absolute Vorticity
+clevavor500 = [-4, -3, -2, -1, 0, 7, 10, 13, 16, 19,
+               22, 25, 28, 31, 34, 37, 40, 43, 46]
+
+\# Set colorfill colors for absolute vorticity
+\# purple negative
+\# yellow to orange positive
+colorsavor500 = ('#660066', '#660099', '#6600CC', '#6600FF',
+                 '#FFFFFF', '#ffE800', '#ffD800', '#ffC800',
+                 '#ffB800', '#ffA800', '#ff9800', '#ff8800',
+                 '#ff7800', '#ff6800', '#ff5800', '#ff5000',
+                 '#ff4000', '#ff3000')
+
+cf = ax.contourf(lon, lat, avor_500 * 10**5, clevavor500,
+                 colors=colorsavor500, transform=dataproj)
+plt.colorbar(cf, orientation='horizontal', pad=0, aspect=50)
+
+\# Vector
+ax.barbs(lon, lat, uwnd_500.to('kts').m, vwnd_500.to('kts').m,
+         regrid_shape=15, transform=dataproj)
+
+\# Titles
+plt.title('500-hPa Geopotential Heights, Absolute Vorticity \
+          (1/s), and Wind Barbs (kts)', loc='left')
+plt.title(f'VALID: {vtime}', loc='right')
+
+plt.tight_layout()
+plt.show()
+</pre></code>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="300-hPa-Wind-Speed,-Divergence,-and-Ageostrophic-Wind">300-hPa Wind Speed, Divergence, and Ageostrophic Wind<a class="anchor-link" href="#300-hPa-Wind-Speed,-Divergence,-and-Ageostrophic-Wind">¶</a>
+</h3>
+<div class="alert alert-success">
+    <b>EXERCISE</b>:
+     <ul>
+<li>Add code to plot 300-hPa Ageostrophic Wind vectors using matplotlib's quiver function.</li>
+    </ul>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">create_map_background</span><span class="p">()</span>
+
+<span class="c1"># Contour 1</span>
+<span class="n">clev300</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">11000</span><span class="p">,</span> <span class="mi">120</span><span class="p">)</span>
+<span class="n">cs2</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">div_300</span> <span class="o">*</span> <span class="mi">10</span><span class="o">**</span><span class="mi">5</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+                 <span class="n">colors</span><span class="o">=</span><span class="s1">'grey'</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">dataproj</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">cs2</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+           <span class="n">fmt</span><span class="o">=</span><span class="s1">'</span><span class="si">%i</span><span class="s1">'</span><span class="p">,</span> <span class="n">rightside_up</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Contour 2</span>
+<span class="n">cs</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">hght_300</span><span class="p">,</span> <span class="n">clev300</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span>
+                <span class="n">linewidths</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">'solid'</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">dataproj</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+           <span class="n">fmt</span><span class="o">=</span><span class="s1">'</span><span class="si">%i</span><span class="s1">'</span><span class="p">,</span> <span class="n">rightside_up</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Filled Contours</span>
+<span class="n">spd300</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">cf</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">wspd_300</span><span class="p">,</span> <span class="n">spd300</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">'BuPu'</span><span class="p">,</span>
+                 <span class="n">transform</span><span class="o">=</span><span class="n">dataproj</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cf</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">'horizontal'</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+
+<span class="c1"># Vector of 300-hPa Ageostrophic Wind Vectors</span>
+<span class="c1"># Your code goes here!</span>
+
+<span class="c1"># Titles</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'300-hPa Geopotential Heights, Divergence (1/s),</span><span class="se">\</span>
+<span class="s1">          Wind Speed (kts), Ageostrophic Wind Vector (m/s)'</span><span class="p">,</span>
+          <span class="n">loc</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">f</span><span class="s1">'VALID: </span><span class="si">{vtime}</span><span class="s1">'</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'right'</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><button data-toggle="collapse" data-target="#sol7" class="btn btn-primary">View Solution</button></p>
+<div id="sol7" class="collapse">
+<code><pre>
+fig, ax = create_map_background()
+
+\# Contour 1
+clev300 = np.arange(0, 11000, 120)
+cs2 = ax.contour(lon, lat, div_300 * 10**5, range(-10, 11, 2),
+                 colors='grey', transform=dataproj)
+plt.clabel(cs2, fontsize=10, inline=1, inline_spacing=4,
+           fmt='%i', rightside_up=True, use_clabeltext=True)
+
+\# Contour 2
+cs = ax.contour(lon, lat, hght_300, clev300, colors='k',
+                linewidths=1.0, linestyles='solid', transform=dataproj)
+plt.clabel(cs, fontsize=10, inline=1, inline_spacing=4,
+           fmt='%i', rightside_up=True, use_clabeltext=True)
+
+\# Filled Contours
+spd300 = np.arange(50, 250, 20)
+cf = ax.contourf(lon, lat, wspd_300, spd300, cmap='BuPu',
+                 transform=dataproj, zorder=0)
+plt.colorbar(cf, orientation='horizontal', pad=0.0, aspect=50)
+
+\# Vector of 300-hPa Ageostrophic Wind Vectors
+ax.quiver(lon, lat, uageo_300.m, vageo_300.m, regrid_shape=15,
+          pivot='mid', transform=dataproj, zorder=10)
+
+\# Titles
+plt.title('300-hPa Geopotential Heights, Divergence (1/s),\
+          Wind Speed (kts), Ageostrophic Wind Vector (m/s)',
+          loc='left')
+plt.title(f'VALID: {vtime}', loc='right')
+
+plt.tight_layout()
+plt.show()
+</pre></code>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Vorticity-Tendency-Terms">Vorticity Tendency Terms<a class="anchor-link" href="#Vorticity-Tendency-Terms">¶</a>
+</h3>
+<p>Here is an example of a four-panel plot for a couple of terms in the Vorticity Tendency equation</p>
+<p>Upper-left Panel: Planetary Vorticity Advection</p>
+<p>Upper-right Panel: Relative Vorticity Advection</p>
+<p>Lower-left Panel: Absolute Vorticity Advection</p>
+<p>Lower-right Panel: Stretching Vorticity</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">21.</span><span class="p">,</span><span class="mf">16.</span><span class="p">))</span>
+
+<span class="c1"># Upper-Left Panel</span>
+<span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">221</span><span class="p">,</span><span class="n">projection</span><span class="o">=</span><span class="n">plotproj</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">([</span><span class="o">-</span><span class="mf">125.</span><span class="p">,</span><span class="o">-</span><span class="mi">73</span><span class="p">,</span><span class="mf">25.</span><span class="p">,</span><span class="mf">50.</span><span class="p">],</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">(</span><span class="s1">'50m'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">STATES</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="c1"># Contour #1</span>
+<span class="n">clev500</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">7000</span><span class="p">,</span><span class="mi">60</span><span class="p">)</span>
+<span class="n">cs</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span><span class="n">lat</span><span class="p">,</span><span class="n">hght_500</span><span class="p">,</span><span class="n">clev500</span><span class="p">,</span><span class="n">colors</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span>
+                <span class="n">linewidths</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">linestyles</span><span class="o">=</span><span class="s1">'solid'</span><span class="p">,</span><span class="n">transform</span><span class="o">=</span><span class="n">dataproj</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">'</span><span class="si">%i</span><span class="s1">'</span><span class="p">,</span> <span class="n">rightside_up</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Contour #2</span>
+<span class="n">cs2</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span><span class="n">lat</span><span class="p">,</span><span class="n">f</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">4</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="o">.</span><span class="mi">05</span><span class="p">),</span><span class="n">colors</span><span class="o">=</span><span class="s1">'grey'</span><span class="p">,</span>
+                <span class="n">linewidths</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">linestyles</span><span class="o">=</span><span class="s1">'dashed'</span><span class="p">,</span><span class="n">transform</span><span class="o">=</span><span class="n">dataproj</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">cs2</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">'</span><span class="si">%.2f</span><span class="s1">'</span><span class="p">,</span> <span class="n">rightside_up</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Colorfill</span>
+<span class="n">cf</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span><span class="n">lat</span><span class="p">,</span><span class="n">f_adv</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">10</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mf">0.5</span><span class="p">),</span>
+                 <span class="n">cmap</span><span class="o">=</span><span class="s1">'PuOr_r'</span><span class="p">,</span><span class="n">extend</span><span class="o">=</span><span class="s1">'both'</span><span class="p">,</span><span class="n">transform</span><span class="o">=</span><span class="n">dataproj</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cf</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">'horizontal'</span><span class="p">,</span><span class="n">pad</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span><span class="n">aspect</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span><span class="n">extendrect</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Vector</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">barbs</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span><span class="n">lat</span><span class="p">,</span><span class="n">uwnd_500</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'kts'</span><span class="p">)</span><span class="o">.</span><span class="n">m</span><span class="p">,</span><span class="n">vwnd_500</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'kts'</span><span class="p">)</span><span class="o">.</span><span class="n">m</span><span class="p">,</span><span class="n">regrid_shape</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span><span class="n">transform</span><span class="o">=</span><span class="n">dataproj</span><span class="p">)</span>
+
+<span class="c1"># Titles</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">r</span><span class="s1">'500-hPa Geopotential Heights, Planetary Vorticity Advection ($*10^</span><span class="si">{10}</span><span class="s1">$ 1/s^2)'</span><span class="p">,</span><span class="n">loc</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'VALID: </span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span><span class="p">(</span><span class="n">vtime</span><span class="p">),</span><span class="n">loc</span><span class="o">=</span><span class="s1">'right'</span><span class="p">)</span>
+
+
+
+<span class="c1"># Upper-Right Panel</span>
+<span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">222</span><span class="p">,</span><span class="n">projection</span><span class="o">=</span><span class="n">plotproj</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">([</span><span class="o">-</span><span class="mf">125.</span><span class="p">,</span><span class="o">-</span><span class="mi">73</span><span class="p">,</span><span class="mf">25.</span><span class="p">,</span><span class="mf">50.</span><span class="p">],</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">(</span><span class="s1">'50m'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">STATES</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="c1"># Contour #1</span>
+<span class="n">clev500</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">7000</span><span class="p">,</span><span class="mi">60</span><span class="p">)</span>
+<span class="n">cs</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span><span class="n">lat</span><span class="p">,</span><span class="n">hght_500</span><span class="p">,</span><span class="n">clev500</span><span class="p">,</span><span class="n">colors</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span>
+                <span class="n">linewidths</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">linestyles</span><span class="o">=</span><span class="s1">'solid'</span><span class="p">,</span><span class="n">transform</span><span class="o">=</span><span class="n">dataproj</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">'</span><span class="si">%i</span><span class="s1">'</span><span class="p">,</span> <span class="n">rightside_up</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Contour #2</span>
+<span class="n">cs2</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span><span class="n">lat</span><span class="p">,</span><span class="n">vor_500</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">5</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">40</span><span class="p">,</span><span class="mi">41</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="n">colors</span><span class="o">=</span><span class="s1">'grey'</span><span class="p">,</span>
+                <span class="n">linewidths</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">transform</span><span class="o">=</span><span class="n">dataproj</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">cs2</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">'</span><span class="si">%d</span><span class="s1">'</span><span class="p">,</span> <span class="n">rightside_up</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Colorfill</span>
+<span class="n">cf</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span><span class="n">lat</span><span class="p">,</span><span class="n">relvort_adv</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">8</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="mf">5.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">),</span>
+                 <span class="n">cmap</span><span class="o">=</span><span class="s1">'BrBG'</span><span class="p">,</span><span class="n">extend</span><span class="o">=</span><span class="s1">'both'</span><span class="p">,</span><span class="n">transform</span><span class="o">=</span><span class="n">dataproj</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cf</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">'horizontal'</span><span class="p">,</span><span class="n">pad</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span><span class="n">aspect</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span><span class="n">extendrect</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Vector</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">barbs</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span><span class="n">lat</span><span class="p">,</span><span class="n">uwnd_500</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'kts'</span><span class="p">)</span><span class="o">.</span><span class="n">m</span><span class="p">,</span><span class="n">vwnd_500</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'kts'</span><span class="p">)</span><span class="o">.</span><span class="n">m</span><span class="p">,</span><span class="n">regrid_shape</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span><span class="n">transform</span><span class="o">=</span><span class="n">dataproj</span><span class="p">)</span>
+
+<span class="c1"># Titles</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">r</span><span class="s1">'500-hPa Geopotential Heights, Relative Vorticity Advection ($*10^</span><span class="si">{8}</span><span class="s1">$ 1/s^2)'</span><span class="p">,</span><span class="n">loc</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'VALID: </span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span><span class="p">(</span><span class="n">vtime</span><span class="p">),</span><span class="n">loc</span><span class="o">=</span><span class="s1">'right'</span><span class="p">)</span>
+
+
+
+<span class="c1"># Lower-Left Panel</span>
+<span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">223</span><span class="p">,</span><span class="n">projection</span><span class="o">=</span><span class="n">plotproj</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">([</span><span class="o">-</span><span class="mf">125.</span><span class="p">,</span><span class="o">-</span><span class="mi">73</span><span class="p">,</span><span class="mf">25.</span><span class="p">,</span><span class="mf">50.</span><span class="p">],</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">(</span><span class="s1">'50m'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">STATES</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="c1"># Contour #1</span>
+<span class="n">clev500</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">7000</span><span class="p">,</span><span class="mi">60</span><span class="p">)</span>
+<span class="n">cs</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span><span class="n">lat</span><span class="p">,</span><span class="n">hght_500</span><span class="p">,</span><span class="n">clev500</span><span class="p">,</span><span class="n">colors</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span>
+                <span class="n">linewidths</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">linestyles</span><span class="o">=</span><span class="s1">'solid'</span><span class="p">,</span><span class="n">transform</span><span class="o">=</span><span class="n">dataproj</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">'</span><span class="si">%i</span><span class="s1">'</span><span class="p">,</span> <span class="n">rightside_up</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Contour #2</span>
+<span class="n">cs2</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span><span class="n">lat</span><span class="p">,</span><span class="n">avor_500</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">5</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="mi">41</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="n">colors</span><span class="o">=</span><span class="s1">'grey'</span><span class="p">,</span>
+                <span class="n">linewidths</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">transform</span><span class="o">=</span><span class="n">dataproj</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">cs2</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">'</span><span class="si">%d</span><span class="s1">'</span><span class="p">,</span> <span class="n">rightside_up</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Colorfill</span>
+<span class="n">cf</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span><span class="n">lat</span><span class="p">,</span><span class="n">absvort_adv</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">8</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="mf">5.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">),</span>
+                 <span class="n">cmap</span><span class="o">=</span><span class="s1">'RdBu'</span><span class="p">,</span><span class="n">extend</span><span class="o">=</span><span class="s1">'both'</span><span class="p">,</span><span class="n">transform</span><span class="o">=</span><span class="n">dataproj</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cf</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">'horizontal'</span><span class="p">,</span><span class="n">pad</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span><span class="n">aspect</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span><span class="n">extendrect</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Vector</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">barbs</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span><span class="n">lat</span><span class="p">,</span><span class="n">uwnd_500</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'kts'</span><span class="p">)</span><span class="o">.</span><span class="n">m</span><span class="p">,</span><span class="n">vwnd_500</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'kts'</span><span class="p">)</span><span class="o">.</span><span class="n">m</span><span class="p">,</span><span class="n">regrid_shape</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span><span class="n">transform</span><span class="o">=</span><span class="n">dataproj</span><span class="p">)</span>
+
+<span class="c1"># Titles</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">r</span><span class="s1">'500-hPa Geopotential Heights, Absolute Vorticity Advection ($*10^</span><span class="si">{8}</span><span class="s1">$ 1/s^2)'</span><span class="p">,</span><span class="n">loc</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'VALID: </span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span><span class="p">(</span><span class="n">vtime</span><span class="p">),</span><span class="n">loc</span><span class="o">=</span><span class="s1">'right'</span><span class="p">)</span>
+
+
+
+<span class="c1"># Lower-Right Panel</span>
+<span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">224</span><span class="p">,</span><span class="n">projection</span><span class="o">=</span><span class="n">plotproj</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">([</span><span class="o">-</span><span class="mf">125.</span><span class="p">,</span><span class="o">-</span><span class="mi">73</span><span class="p">,</span><span class="mf">25.</span><span class="p">,</span><span class="mf">50.</span><span class="p">],</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">(</span><span class="s1">'50m'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">STATES</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="c1"># Contour #1</span>
+<span class="n">clev500</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">7000</span><span class="p">,</span><span class="mi">60</span><span class="p">)</span>
+<span class="n">cs</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span><span class="n">lat</span><span class="p">,</span><span class="n">hght_500</span><span class="p">,</span><span class="n">clev500</span><span class="p">,</span><span class="n">colors</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span>
+                <span class="n">linewidths</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">linestyles</span><span class="o">=</span><span class="s1">'solid'</span><span class="p">,</span><span class="n">transform</span><span class="o">=</span><span class="n">dataproj</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">'</span><span class="si">%i</span><span class="s1">'</span><span class="p">,</span> <span class="n">rightside_up</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Contour #2</span>
+<span class="n">cs2</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span><span class="n">lat</span><span class="p">,</span><span class="n">gaussian_filter</span><span class="p">(</span><span class="n">avor_500</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">5</span><span class="p">,</span><span class="n">sigma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="mi">41</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="n">colors</span><span class="o">=</span><span class="s1">'grey'</span><span class="p">,</span>
+                <span class="n">linewidths</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">transform</span><span class="o">=</span><span class="n">dataproj</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">cs2</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">'</span><span class="si">%d</span><span class="s1">'</span><span class="p">,</span> <span class="n">rightside_up</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Colorfill</span>
+<span class="n">cf</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span><span class="n">lat</span><span class="p">,</span><span class="n">gaussian_filter</span><span class="p">(</span><span class="n">stretch_vort</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="p">,</span><span class="n">sigma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span>
+                 <span class="n">cmap</span><span class="o">=</span><span class="s1">'PRGn'</span><span class="p">,</span><span class="n">extend</span><span class="o">=</span><span class="s1">'both'</span><span class="p">,</span><span class="n">transform</span><span class="o">=</span><span class="n">dataproj</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cf</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">'horizontal'</span><span class="p">,</span><span class="n">pad</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span><span class="n">aspect</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span><span class="n">extendrect</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Vector</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">barbs</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span><span class="n">lat</span><span class="p">,</span><span class="n">uwnd_500</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'kts'</span><span class="p">)</span><span class="o">.</span><span class="n">m</span><span class="p">,</span><span class="n">vwnd_500</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'kts'</span><span class="p">)</span><span class="o">.</span><span class="n">m</span><span class="p">,</span><span class="n">regrid_shape</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span><span class="n">transform</span><span class="o">=</span><span class="n">dataproj</span><span class="p">)</span>
+
+<span class="c1"># Titles</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">r</span><span class="s1">'500-hPa Geopotential Heights, Stretching Vorticity ($*10^</span><span class="si">{9}</span><span class="s1">$ 1/s^2)'</span><span class="p">,</span><span class="n">loc</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'VALID: </span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span><span class="p">(</span><span class="n">vtime</span><span class="p">),</span><span class="n">loc</span><span class="o">=</span><span class="s1">'right'</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Plotting-Data-for-Hand-Calculation">Plotting Data for Hand Calculation<a class="anchor-link" href="#Plotting-Data-for-Hand-Calculation">¶</a>
+</h3>
+<p>Calculating dynamic quantities with a computer is great and can allow for many different educational opportunities, but there are times when we want students to calculate those quantities by hand. So can we plot values of geopotential height, u-component of the wind, and v-component of the wind on a map? Yes! And its not too hard to do.</p>
+<p>Since we are using NARR data, we'll plot every third point to get a roughly 1 degree by 1 degree separation of grid points and thus an average grid spacing of 111 km (not exact, but close enough for back of the envelope calculations).</p>
+<p>To do our plotting we'll be using the functionality of MetPy to plot station plot data, but we'll use our gridded data to plot around our points. To do this we'll have to make or 2D data into 1D (which is made easy by the <code>ravel()</code> method associated with our data objects).</p>
+<p>First we'll want to set some bounds (so that we only plot what we want) and create a mask to make plotting easier.</p>
+<p>Second we'll set up our figure with a projection and then set up our "stations" at the grid points we desire using the MetPy class <code>StationPlot</code></p>
+<p><a href="https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.StationPlot.html#metpy.plots.StationPlot">https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.StationPlot.html#metpy.plots.StationPlot</a></p>
+<p>Third we'll plot our points using matplotlibs <code>scatter()</code> function and use our stationplot object to plot data around our "stations"</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Set lat/lon bounds for region to plot data</span>
+<span class="n">LLlon</span> <span class="o">=</span> <span class="o">-</span><span class="mi">104</span>
+<span class="n">LLlat</span> <span class="o">=</span> <span class="mi">33</span>
+<span class="n">URlon</span> <span class="o">=</span> <span class="o">-</span><span class="mi">94</span>
+<span class="n">URlat</span> <span class="o">=</span> <span class="mf">38.1</span>
+
+<span class="c1"># Set up mask so that you only plot what you want</span>
+<span class="n">skip_points</span> <span class="o">=</span> <span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">mask_lon</span> <span class="o">=</span> <span class="p">((</span><span class="n">lon</span><span class="p">[</span><span class="n">skip_points</span><span class="p">]</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">LLlon</span> <span class="o">+</span> <span class="mf">0.05</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">lon</span><span class="p">[</span><span class="n">skip_points</span><span class="p">]</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">URlon</span> <span class="o">+</span> <span class="mf">0.01</span><span class="p">))</span>
+<span class="n">mask_lat</span> <span class="o">=</span> <span class="p">((</span><span class="n">lat</span><span class="p">[</span><span class="n">skip_points</span><span class="p">]</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">URlat</span> <span class="o">-</span> <span class="mf">0.01</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">lat</span><span class="p">[</span><span class="n">skip_points</span><span class="p">]</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">LLlat</span> <span class="o">-</span> <span class="mf">0.01</span><span class="p">))</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">mask_lon</span> <span class="o">&amp;</span> <span class="n">mask_lat</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="alert alert-success">
+    <b>EXERCISE</b>:
+     <ul>
+<li>Plot markers and data around the markers.</li>
+    </ul>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Set up plot basics and use StationPlot class from MetPy to help with plotting</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">LambertConformal</span><span class="p">(</span><span class="n">central_latitude</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span><span class="n">central_longitude</span><span class="o">=-</span><span class="mi">107</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">([</span><span class="n">LLlon</span><span class="p">,</span><span class="n">URlon</span><span class="p">,</span><span class="n">LLlat</span><span class="p">,</span><span class="n">URlat</span><span class="p">],</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">(</span><span class="s1">'50m'</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'grey'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">STATES</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'grey'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="c1"># Set up station plotting using only every third element from arrays for plotting</span>
+<span class="n">stationplot</span> <span class="o">=</span> <span class="n">StationPlot</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">lon</span><span class="p">[</span><span class="n">skip_points</span><span class="p">]</span><span class="o">.</span><span class="n">ravel</span><span class="p">()[</span><span class="n">mask</span><span class="p">],</span>
+                          <span class="n">lat</span><span class="p">[</span><span class="n">skip_points</span><span class="p">]</span><span class="o">.</span><span class="n">ravel</span><span class="p">()[</span><span class="n">mask</span><span class="p">],</span>
+                          <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+
+<span class="c1"># Plot markers then data around marker for calculation purposes</span>
+<span class="c1"># Your code goes here!</span>
+
+<span class="c1"># Title</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Geopotential (m; top), U-wind (m/s; Lower Left), V-wind (m/s; Lower Right)'</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><button data-toggle="collapse" data-target="#sol8" class="btn btn-primary">View Solution</button></p>
+<div id="sol8" class="collapse">
+<code><pre>
+# Set up plot basics and use StationPlot class from MetPy to help with plotting
+fig = plt.figure(figsize=(14, 8))
+proj = ccrs.LambertConformal(central_latitude=50, central_longitude=-107)
+ax = plt.subplot(111, projection=proj)
+ax.coastlines('50m', edgecolor='grey', linewidth=0.75)
+ax.add_feature(cfeature.STATES, edgecolor='grey', linewidth=0.5)
+
+\# Set up station plotting using only every third
+\# element from arrays for plotting
+stationplot = StationPlot(ax, lon[::3, ::3].ravel()[mask],
+                          lat[::3, ::3].ravel()[mask],
+                          transform=ccrs.PlateCarree(), fontsize=12)
+
+\# Plot markers then data around marker for calculation purposes
+ax.scatter(lon[::3, ::3].ravel()[mask], lat[::3, ::3].ravel()[mask],
+           marker='o', transform=dataproj)
+stationplot.plot_parameter((0, 1), hght_500[::3, ::3].ravel()[mask])
+stationplot.plot_parameter((-1.5, -1), uwnd_500[::3, ::3].ravel()[mask],
+                           formatter='.1f')
+stationplot.plot_parameter((1.5, -1), vwnd_500[::3, ::3].ravel()[mask],
+                           formatter='.1f')
+
+\# Title
+plt.title('Geopotential (m; top), U-wind (m/s; Lower Left), \
+          V-wind (m/s; Lower Right)')
+
+plt.tight_layout()
+plt.show()
+</pre></code>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+    </div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha256-SDRP1VVYu+tgAGKhddBSl5+ezofHKZeI+OzxakbIe/Y=" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

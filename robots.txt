@@ -1,0 +1,4 @@
+Sitemap: https://unidata.github.io/python-training/sitemapindex.xml
+
+User-Agent: *
+Host: unidata.github.io

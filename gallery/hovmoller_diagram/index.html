@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hovmoller_Diagram | The Unidata Python Training Site</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/gallery/hovmoller_diagram/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="Hovmoller_Diagram">
+<meta property="og:url" content="https://unidata.github.io/python-training/gallery/hovmoller_diagram/">
+<meta property="og:description" content="In [ ]:
+
+    
+%matplotlib inline
+
+
+    
+
+
+
+
+
+
+
+Hovmoller Diagram Example¶By: Kevin Goebbert
+Northern Hemispheric v-wind component over the mid-latitudes in a
+Hovmoller diagram. This diagram can be use">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-08-30T15:02:20-06:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../python/intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop/workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.ipynb" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Hovmoller_Diagram</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Hovmoller-Diagram-Example">Hovmoller Diagram Example<a class="anchor-link" href="#Hovmoller-Diagram-Example">¶</a>
+</h2>
+<p>By: Kevin Goebbert</p>
+<p>Northern Hemispheric v-wind component over the mid-latitudes in a
+Hovmoller diagram. This diagram can be used to illustrate upper-level
+wave and energy propogation (e.g., downstream baroclinic development)</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
+<span class="kn">import</span> <span class="nn">matplotlib.gridspec</span> <span class="k">as</span> <span class="nn">gridspec</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="k">as</span> <span class="nn">mpcalc</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Get-the-data">Get the data<a class="anchor-link" href="#Get-the-data">¶</a>
+</h3>
+<p>Using NCEP/NCAR reanalysis data via xarray remote access using the
+OPeNDAP protocol.</p>
+<p>Set the time range, parameter, and level to desired values</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Create time slice from dates</span>
+<span class="n">start_time</span> <span class="o">=</span> <span class="s1">'2011-01-20'</span>
+<span class="n">end_time</span> <span class="o">=</span> <span class="s1">'2011-02-06'</span>
+
+<span class="c1"># Select NCEP/NCAR parameter and level</span>
+<span class="n">param</span> <span class="o">=</span> <span class="s1">'vwnd'</span>
+<span class="n">level</span> <span class="o">=</span> <span class="mi">250</span>
+
+<span class="c1"># Remote get dataset using OPeNDAP method via xarray</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">'http://www.esrl.noaa.gov/psd/thredds/dodsC/Datasets/'</span>
+                     <span class="s1">'ncep.reanalysis/pressure/</span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">.nc'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">start_time</span><span class="p">[:</span><span class="mi">4</span><span class="p">]))</span>
+
+<span class="c1"># Create slice variables subset domain</span>
+<span class="n">time_slice</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="p">)</span>
+<span class="n">lat_slice</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
+<span class="n">lon_slice</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">)</span>
+
+<span class="c1"># Get data, selecting time, level, lat/lon slice</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="n">param</span><span class="p">]</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">time_slice</span><span class="p">,</span>
+                     <span class="n">level</span><span class="o">=</span><span class="n">level</span><span class="p">,</span>
+                     <span class="n">lat</span><span class="o">=</span><span class="n">lat_slice</span><span class="p">,</span>
+                     <span class="n">lon</span><span class="o">=</span><span class="n">lon_slice</span><span class="p">)</span>
+
+<span class="c1"># Compute weights and take weighted average over latitude dimension</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
+<span class="n">avg_data</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span> <span class="o">*</span> <span class="n">weights</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">'lat'</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+
+<span class="c1"># Get times and make array of datetime objects</span>
+<span class="n">vtimes</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">'datetime64[ms]'</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">'O'</span><span class="p">)</span>
+
+<span class="c1"># Specify longitude values for chosen domain</span>
+<span class="n">lons</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Make-the-Hovmoller-Plot">Make the Hovmoller Plot<a class="anchor-link" href="#Make-the-Hovmoller-Plot">¶</a>
+</h3>
+<p>Pretty simple to use common matplotlib/cartopy to create the diagram.
+Cartopy is used to create a geographic reference map to highlight the
+area being averaged as well as the visual reference for longitude.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Start figure</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">13</span><span class="p">))</span>
+
+<span class="c1"># Use gridspec to help size elements of plot; small top plot and big bottom plot</span>
+<span class="n">gs</span> <span class="o">=</span> <span class="n">gridspec</span><span class="o">.</span><span class="n">GridSpec</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">height_ratios</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="n">hspace</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+
+<span class="c1"># Tick labels</span>
+<span class="n">x_tick_labels</span> <span class="o">=</span> <span class="p">[</span><span class="sa">u</span><span class="s1">'0</span><span class="se">\N{DEGREE SIGN}</span><span class="s1">E'</span><span class="p">,</span> <span class="sa">u</span><span class="s1">'90</span><span class="se">\N{DEGREE SIGN}</span><span class="s1">E'</span><span class="p">,</span>
+                 <span class="sa">u</span><span class="s1">'180</span><span class="se">\N{DEGREE SIGN}</span><span class="s1">E'</span><span class="p">,</span> <span class="sa">u</span><span class="s1">'90</span><span class="se">\N{DEGREE SIGN}</span><span class="s1">W'</span><span class="p">,</span>
+                 <span class="sa">u</span><span class="s1">'0</span><span class="se">\N{DEGREE SIGN}</span><span class="s1">E'</span><span class="p">]</span>
+
+<span class="c1"># Top plot for geographic reference (makes small map)</span>
+<span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(</span><span class="n">central_longitude</span><span class="o">=</span><span class="mi">180</span><span class="p">))</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_extent</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">357.5</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">65</span><span class="p">],</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(</span><span class="n">central_longitude</span><span class="o">=</span><span class="mi">180</span><span class="p">))</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([</span><span class="mi">40</span><span class="p">,</span> <span class="mi">60</span><span class="p">])</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([</span><span class="sa">u</span><span class="s1">'40</span><span class="se">\N{DEGREE SIGN}</span><span class="s1">N'</span><span class="p">,</span> <span class="sa">u</span><span class="s1">'60</span><span class="se">\N{DEGREE SIGN}</span><span class="s1">N'</span><span class="p">])</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">180</span><span class="p">])</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">x_tick_labels</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">linestyle</span><span class="o">=</span><span class="s1">'dotted'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Add geopolitical boundaries for map reference</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">COASTLINE</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">'50m'</span><span class="p">))</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">LAKES</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">'50m'</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="c1"># Set some titles</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Hovmoller Diagram'</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'NCEP/NCAR Reanalysis'</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'right'</span><span class="p">)</span>
+
+<span class="c1"># Bottom plot for Hovmoller diagram</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">invert_yaxis</span><span class="p">()</span>  <span class="c1"># Reverse the time order to do oldest first</span>
+
+<span class="c1"># Plot of chosen variable averaged over latitude and slightly smoothed</span>
+<span class="n">clevs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">cf</span> <span class="o">=</span> <span class="n">ax2</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">lons</span><span class="p">,</span> <span class="n">vtimes</span><span class="p">,</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">smooth_n_point</span><span class="p">(</span>
+    <span class="n">avg_data</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">clevs</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">bwr</span><span class="p">,</span> <span class="n">extend</span><span class="o">=</span><span class="s1">'both'</span><span class="p">)</span>
+<span class="n">cs</span> <span class="o">=</span> <span class="n">ax2</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">lons</span><span class="p">,</span> <span class="n">vtimes</span><span class="p">,</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">smooth_n_point</span><span class="p">(</span>
+    <span class="n">avg_data</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">clevs</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">cbar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cf</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">'horizontal'</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">extendrect</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">cbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">'m $s^{-1}$'</span><span class="p">)</span>
+
+<span class="c1"># Make some ticks and tick labels</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">270</span><span class="p">,</span> <span class="mf">357.5</span><span class="p">])</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">x_tick_labels</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">vtimes</span><span class="p">[</span><span class="mi">4</span><span class="p">::</span><span class="mi">8</span><span class="p">])</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="n">vtimes</span><span class="p">[</span><span class="mi">4</span><span class="p">::</span><span class="mi">8</span><span class="p">])</span>
+
+<span class="c1"># Set some titles</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'250-hPa V-wind'</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'left'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Time Range: {0:%Y%m</span><span class="si">%d</span><span class="s1"> %HZ} - {1:%Y%m</span><span class="si">%d</span><span class="s1"> %HZ}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vtimes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">vtimes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span>
+          <span class="n">loc</span><span class="o">=</span><span class="s1">'right'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+    </div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha256-SDRP1VVYu+tgAGKhddBSl5+ezofHKZeI+OzxakbIe/Y=" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

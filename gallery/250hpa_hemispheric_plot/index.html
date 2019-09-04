@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>250hPa_Hemispheric_Plot | The Unidata Python Training Site</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/gallery/250hpa_hemispheric_plot/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="250hPa_Hemispheric_Plot">
+<meta property="og:url" content="https://unidata.github.io/python-training/gallery/250hpa_hemispheric_plot/">
+<meta property="og:description" content="In [ ]:
+
+    
+%matplotlib inline
+
+
+    
+
+
+
+
+
+
+
+======================================
+A 250-hPa Hemispheric Map using Python¶This example plots a hemispheric plot of GFS 250-hPa Geopotential Heights a">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-08-30T15:02:20-06:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../python/intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop/workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.ipynb" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">250hPa_Hemispheric_Plot</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>======================================</p>
+<h2 id="A-250-hPa-Hemispheric-Map-using-Python">A 250-hPa Hemispheric Map using Python<a class="anchor-link" href="#A-250-hPa-Hemispheric-Map-using-Python">¶</a>
+</h2>
+<p>This example plots a hemispheric plot of GFS 250-hPa Geopotential Heights and
+wind speed in knots.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
+<span class="kn">import</span> <span class="nn">cartopy.util</span> <span class="k">as</span> <span class="nn">cutil</span>
+<span class="kn">import</span> <span class="nn">matplotlib.gridspec</span> <span class="k">as</span> <span class="nn">gridspec</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="k">as</span> <span class="nn">mpcalc</span>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="k">import</span> <span class="n">units</span>
+<span class="kn">from</span> <span class="nn">netCDF4</span> <span class="k">import</span> <span class="n">num2date</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy.ndimage</span> <span class="k">as</span> <span class="nn">ndimage</span>
+<span class="kn">from</span> <span class="nn">siphon.catalog</span> <span class="k">import</span> <span class="n">TDSCatalog</span>
+<span class="kn">from</span> <span class="nn">siphon.ncss</span> <span class="k">import</span> <span class="n">NCSS</span>
+
+<span class="c1"># Latest GFS Dataset</span>
+<span class="n">cat</span> <span class="o">=</span> <span class="n">TDSCatalog</span><span class="p">(</span><span class="s1">'http://thredds.ucar.edu/thredds/catalog/grib/'</span>
+                 <span class="s1">'NCEP/GFS/Global_0p5deg/latest.xml'</span><span class="p">)</span>
+<span class="n">best_ds</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cat</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">ncss</span> <span class="o">=</span> <span class="n">NCSS</span><span class="p">(</span><span class="n">best_ds</span><span class="o">.</span><span class="n">access_urls</span><span class="p">[</span><span class="s1">'NetcdfSubset'</span><span class="p">])</span>
+
+<span class="c1"># Set the time to current</span>
+<span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+
+<span class="c1"># Query for Latest GFS Run</span>
+<span class="n">gfsdata_hght</span> <span class="o">=</span> <span class="n">ncss</span><span class="o">.</span><span class="n">query</span><span class="p">()</span><span class="o">.</span><span class="n">time</span><span class="p">(</span><span class="n">now</span><span class="p">)</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="s1">'netcdf4'</span><span class="p">)</span>
+<span class="n">gfsdata_hght</span><span class="o">.</span><span class="n">variables</span><span class="p">(</span><span class="s1">'Geopotential_height_isobaric'</span><span class="p">)</span><span class="o">.</span><span class="n">add_lonlat</span><span class="p">()</span>
+
+<span class="c1"># Set the lat/lon box for the data you want to pull in.</span>
+<span class="c1"># lonlat_box(north_lat,south_lat,east_lon,west_lon)</span>
+<span class="n">gfsdata_hght</span><span class="o">.</span><span class="n">lonlat_box</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
+
+<span class="c1"># Set desired level 50000 = 50000 Pa = 500 hPa</span>
+<span class="n">gfsdata_hght</span><span class="o">.</span><span class="n">vertical_level</span><span class="p">(</span><span class="mi">25000</span><span class="p">)</span>
+
+<span class="c1"># Actually getting the data</span>
+<span class="n">data_hght</span> <span class="o">=</span> <span class="n">ncss</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="n">gfsdata_hght</span><span class="p">)</span>
+
+<span class="c1"># Query for Latest GFS Run</span>
+<span class="n">gfsdata_wind</span> <span class="o">=</span> <span class="n">ncss</span><span class="o">.</span><span class="n">query</span><span class="p">()</span><span class="o">.</span><span class="n">time</span><span class="p">(</span><span class="n">now</span><span class="p">)</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="s1">'netcdf4'</span><span class="p">)</span>
+<span class="n">gfsdata_wind</span><span class="o">.</span><span class="n">variables</span><span class="p">(</span><span class="s1">'u-component_of_wind_isobaric'</span><span class="p">,</span>
+                       <span class="s1">'v-component_of_wind_isobaric'</span><span class="p">)</span><span class="o">.</span><span class="n">add_lonlat</span><span class="p">()</span>
+
+<span class="c1"># Set the lat/lon box for the data you want to pull in.</span>
+<span class="c1"># lonlat_box(north_lat,south_lat,east_lon,west_lon)</span>
+<span class="n">gfsdata_wind</span><span class="o">.</span><span class="n">lonlat_box</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
+
+<span class="c1"># Set desired level 50000 = 50000 Pa = 500 hPa</span>
+<span class="n">gfsdata_wind</span><span class="o">.</span><span class="n">vertical_level</span><span class="p">(</span><span class="mi">25000</span><span class="p">)</span>
+
+<span class="c1"># Actually getting the data</span>
+<span class="n">data_wind</span> <span class="o">=</span> <span class="n">ncss</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="n">gfsdata_wind</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The next cell will take the downloaded data and parse it to different variables
+for use later on. Add a cyclic point using the cartopy utility add_cyclic_point
+to the longitudes (the cyclic dimension) as well as any data that is being
+contoured or filled.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dtime</span> <span class="o">=</span> <span class="n">data_hght</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Geopotential_height_isobaric'</span><span class="p">]</span><span class="o">.</span><span class="n">dimensions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">dlat</span> <span class="o">=</span> <span class="n">data_hght</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Geopotential_height_isobaric'</span><span class="p">]</span><span class="o">.</span><span class="n">dimensions</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">dlon</span> <span class="o">=</span> <span class="n">data_hght</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Geopotential_height_isobaric'</span><span class="p">]</span><span class="o">.</span><span class="n">dimensions</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+<span class="n">lat</span> <span class="o">=</span> <span class="n">data_hght</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">dlat</span><span class="p">][:]</span>
+<span class="n">lon</span> <span class="o">=</span> <span class="n">data_hght</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">dlon</span><span class="p">][:]</span>
+
+<span class="c1"># Converting times using the num2date function available through netCDF4</span>
+<span class="n">times</span> <span class="o">=</span> <span class="n">data_hght</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">dtime</span><span class="p">]</span>
+<span class="n">vtimes</span> <span class="o">=</span> <span class="n">num2date</span><span class="p">(</span><span class="n">times</span><span class="p">[:],</span> <span class="n">times</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+
+<span class="c1"># Smooth the 250-hPa heights using a gaussian filter from scipy.ndimage</span>
+<span class="n">hgt_250</span><span class="p">,</span> <span class="n">lon</span> <span class="o">=</span> <span class="n">cutil</span><span class="o">.</span><span class="n">add_cyclic_point</span><span class="p">(</span><span class="n">data_hght</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Geopotential_height_isobaric'</span><span class="p">][:],</span>
+                                      <span class="n">coord</span><span class="o">=</span><span class="n">lon</span><span class="p">)</span>
+<span class="n">Z_250</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">gaussian_filter</span><span class="p">(</span><span class="n">hgt_250</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">u250</span> <span class="o">=</span> <span class="p">(</span><span class="n">units</span><span class="p">(</span><span class="n">data_wind</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'u-component_of_wind_isobaric'</span><span class="p">]</span><span class="o">.</span><span class="n">units</span><span class="p">)</span> <span class="o">*</span>
+        <span class="n">data_wind</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'u-component_of_wind_isobaric'</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:])</span>
+<span class="n">v250</span> <span class="o">=</span> <span class="p">(</span><span class="n">units</span><span class="p">(</span><span class="n">data_wind</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'v-component_of_wind_isobaric'</span><span class="p">]</span><span class="o">.</span><span class="n">units</span><span class="p">)</span> <span class="o">*</span>
+        <span class="n">data_wind</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'v-component_of_wind_isobaric'</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:])</span>
+<span class="n">u250</span> <span class="o">=</span> <span class="n">u250</span><span class="o">.</span><span class="n">units</span> <span class="o">*</span> <span class="n">cutil</span><span class="o">.</span><span class="n">add_cyclic_point</span><span class="p">(</span><span class="n">u250</span><span class="p">)</span>
+<span class="n">v250</span> <span class="o">=</span> <span class="n">v250</span><span class="o">.</span><span class="n">units</span> <span class="o">*</span> <span class="n">cutil</span><span class="o">.</span><span class="n">add_cyclic_point</span><span class="p">(</span><span class="n">v250</span><span class="p">)</span>
+<span class="n">wspd250</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">wind_speed</span><span class="p">(</span><span class="n">u250</span><span class="p">,</span> <span class="n">v250</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'knots'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The next cell sets up the geographic details for the plot that we are going to do later.
+This is done using the Cartopy package. We will also bring in some geographic data to
+geo-reference the image for us.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">datacrs</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()</span>
+<span class="n">plotcrs</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">NorthPolarStereo</span><span class="p">(</span><span class="n">central_longitude</span><span class="o">=-</span><span class="mf">100.0</span><span class="p">)</span>
+
+<span class="c1"># Make a grid of lat/lon values to use for plotting with Basemap.</span>
+<span class="n">lons</span><span class="p">,</span> <span class="n">lats</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">12.</span><span class="p">,</span> <span class="mf">13.</span><span class="p">))</span>
+<span class="n">gs</span> <span class="o">=</span> <span class="n">gridspec</span><span class="o">.</span><span class="n">GridSpec</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">height_ratios</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">.</span><span class="mi">02</span><span class="p">],</span>
+                       <span class="n">bottom</span><span class="o">=.</span><span class="mi">07</span><span class="p">,</span> <span class="n">top</span><span class="o">=.</span><span class="mi">99</span><span class="p">,</span> <span class="n">hspace</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">wspace</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">projection</span><span class="o">=</span><span class="n">plotcrs</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'250-hPa Geopotential Heights (m)'</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'VALID: </span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vtimes</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'right'</span><span class="p">)</span>
+
+<span class="c1">#   ax.set_extent([west long, east long, south lat, north lat])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">([</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">90</span><span class="p">],</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">(</span><span class="s1">'50m'</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">STATES</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="n">clev250</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">9000</span><span class="p">,</span> <span class="mi">12000</span><span class="p">,</span> <span class="mi">120</span><span class="p">)</span>
+<span class="n">cs</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">Z_250</span><span class="p">,</span> <span class="n">clev250</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span>
+                <span class="n">linewidths</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">'solid'</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">datacrs</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">'</span><span class="si">%i</span><span class="s1">'</span><span class="p">,</span>
+           <span class="n">rightside_up</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">clevsped250</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">230</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s1">'BuPu'</span><span class="p">)</span>
+<span class="n">cf</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">wspd250</span><span class="p">,</span> <span class="n">clevsped250</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">datacrs</span><span class="p">)</span>
+<span class="n">cax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">cbar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cf</span><span class="p">,</span> <span class="n">cax</span><span class="o">=</span><span class="n">cax</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">'horizontal'</span><span class="p">,</span> <span class="n">extend</span><span class="o">=</span><span class="s1">'max'</span><span class="p">,</span> <span class="n">extendrect</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+    </div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha256-SDRP1VVYu+tgAGKhddBSl5+ezofHKZeI+OzxakbIe/Y=" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

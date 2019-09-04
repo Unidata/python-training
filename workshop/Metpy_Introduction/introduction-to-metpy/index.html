@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Introduction to MetPy | The Unidata Python Training Site</title>
+<link href="../../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/workshop/Metpy_Introduction/introduction-to-metpy/">
+<!--[if lt IE 9]><script src="../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="Introduction to MetPy">
+<meta property="og:url" content="https://unidata.github.io/python-training/workshop/Metpy_Introduction/introduction-to-metpy/">
+<meta property="og:description" content="Introduction to MetPy
+Unidata Python Workshop
+
+
+
+Overview:¶
+Teaching: 25 minutes
+Exercises: 20 minutes
+
+Questions¶
+What is MetPy?
+How is MetPy structured?
+How are units handled in MetPy?
+
+Objectives¶
+">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-08-30T15:02:20-06:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../../python/intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../../../gallery/gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.ipynb" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Introduction to MetPy</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div style="width:1000 px">
+
+<div style="float:right; width:98 px; height:98px;">
+<img src="https://raw.githubusercontent.com/Unidata/MetPy/master/metpy/plots/_static/unidata_150x150.png" alt="Unidata Logo" style="height: 98px;">
+</div>
+<p></p>
+<h2>Introduction to MetPy</h2>
+<h4>Unidata Python Workshop</h4>
+<div style="clear:both"></div>
+</div>
+<hr style="height:2px;">
+<h3 id="Overview:">Overview:<a class="anchor-link" href="#Overview:">¶</a>
+</h3>
+<ul>
+<li>
+<strong>Teaching:</strong> 25 minutes</li>
+<li>
+<strong>Exercises:</strong> 20 minutes</li>
+</ul>
+<h4 id="Questions">Questions<a class="anchor-link" href="#Questions">¶</a>
+</h4>
+<ol>
+<li>What is MetPy?</li>
+<li>How is MetPy structured?</li>
+<li>How are units handled in MetPy?</li>
+</ol>
+<h4 id="Objectives">Objectives<a class="anchor-link" href="#Objectives">¶</a>
+</h4>
+<ol>
+<li><a href="#whatis">What is MetPy?</a></li>
+<li><a href="#units">Units and MetPy</a></li>
+<li><a href="#constants">MetPy Constants</a></li>
+<li><a href="#calculations">MetPy Calculations</a></li>
+</ol>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a name="whatis"></a></p>
+<h3 id="What-is-MetPy?">What is MetPy?<a class="anchor-link" href="#What-is-MetPy?">¶</a>
+</h3>
+<p>MetPy is a modern meteorological toolkit for Python. It is now a maintained project of <a href="http://www.unidata.ucar.edu">Unidata</a> to serve the academic meteorological community. MetPy consists of three major areas of functionality:</p>
+<p><img src="MetPy_breakdown.png" alt=""></p>
+<h4 id="Plots">Plots<a class="anchor-link" href="#Plots">¶</a>
+</h4>
+<p>As meteorologists, we have many field specific plots that we make. Some of these, such as the Skew-T Log-p require non-standard axes and are difficult to plot in most plotting software. In MetPy we've baked in a lot of this specialized functionality to help you get your plots made and get back to doing science. We will go over making different kinds of plots during the workshop.</p>
+<h4 id="Calculations">Calculations<a class="anchor-link" href="#Calculations">¶</a>
+</h4>
+<p>Meteorology also has a common set of calculations that everyone ends up programming themselves. This is error-prone and a huge duplication of work! MetPy contains a set of well tested calculations that is continually growing in an effort to be at feature parity with other legacy packages such as GEMPAK.</p>
+<h4 id="File-I/O">File I/O<a class="anchor-link" href="#File-I/O">¶</a>
+</h4>
+<p>Finally, there are a number of odd file formats in the meteorological community. MetPy has incorporated a set of readers to help you deal with file formats that you may encounter during your research.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a name="units"></a></p>
+<h3 id="Units-and-MetPy">Units and MetPy<a class="anchor-link" href="#Units-and-MetPy">¶</a>
+</h3>
+<p>Early in our scientific careers we all learn about the importance of paying attention to units in our calculations. Unit conversions can still get the best of us and have caused more than one major technical disaster, including the crash and complete loss of the $327 million <a href="https://en.wikipedia.org/wiki/Mars_Climate_Orbiter">Mars Climate Orbiter</a>.</p>
+<p>In MetPy, we use the <a href="https://pint.readthedocs.io/en/latest/">pint</a> library and a custom unit registry to help prevent unit mistakes in calculations. That means that every quantity you pass to MetPy should have units attached, just like if you were doing the calculation on paper! Attaching units is easy:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Import the MetPy unit registry</span>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="k">import</span> <span class="n">units</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">length</span> <span class="o">=</span> <span class="mf">10.4</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">inches</span>
+<span class="n">width</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meters</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Don't forget that you can use tab completion to see what units are available! Just about every imaginable quantity is there, but if you find one that isn't, we're happy to talk about adding it.</p>
+<p>While it may seem like a lot of trouble, let's compute the area of a rectangle defined by our length and width variables above. Without units attached, you'd need to remember to perform a unit conversion before multiplying or you would end up with an area in inch-meters and likely forget about it. With units attached, the units are tracked for you.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">area</span> <span class="o">=</span> <span class="n">length</span> <span class="o">*</span> <span class="n">width</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">area</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>That's great, now we have an area, but it is not in a very useful unit still. Units can be converted using the <code>.to()</code> method. While you won't see m$^2$ in the units list, we can parse complex/compound units as strings:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">area</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'m^2'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Exercise">Exercise<a class="anchor-link" href="#Exercise">¶</a>
+</h4>
+<ul>
+<li>Create a variable named <code>speed</code> with a value of 25 knots.</li>
+<li>Create a variable named <code>time</code> with a value of 1 fortnight.</li>
+<li>Calculate how many furlongs you would travel in <code>time</code> at <code>speed</code>.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Your code goes here</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Solution">Solution<a class="anchor-link" href="#Solution">¶</a>
+</h5>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/distance.py</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Temperature">Temperature<a class="anchor-link" href="#Temperature">¶</a>
+</h4>
+<p>Temperature units are actually relatively tricky (more like absolutely tricky as you'll see). Temperature is a non-multiplicative unit - they are in a system with a reference point. That means that not only is there a scaling factor, but also an offset. This makes the math and unit book-keeping a little more complex. Imagine adding 10 degrees Celsius to 100 degrees Celsius. Is the answer 110 degrees Celsius or 383.15 degrees Celsius (283.15 K + 373.15 K)? That's why there are delta degrees units in the unit registry for offset units. For more examples and explanation you can watch <a href="https://www.youtube.com/watch?v=iveJCqxe3Z4">MetPy Monday #13</a>.</p>
+<p>Let's take a look at how this works and fails:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We would expect this to fail because we cannot add two offset units (and it does fail as an "Ambiguous operation with offset unit").</p>
+<pre style="color:#000000;background:#ffffff;"><span style="color:#008c00; ">10</span> <span style="color:#44aadd; ">*</span> units<span style="color:#808030; ">.</span>degC <span style="color:#44aadd; ">+</span> <span style="color:#008c00; ">5</span> <span style="color:#44aadd; ">*</span> units<span style="color:#808030; ">.</span>degC
+</pre>
+<p>On the other hand, we can subtract two offset quantities and get a delta:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="mi">10</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span> <span class="o">-</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can add a delta to an offset unit as well:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="mi">25</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span> <span class="o">+</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">delta_degF</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Absolute temperature scales like Kelvin and Rankine do not have an offset and therefore can be used in addition/subtraction without the need for a delta verion of the unit.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="mi">273</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">kelvin</span> <span class="o">+</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">kelvin</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="mi">273</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">kelvin</span> <span class="o">-</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">kelvin</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Exercise">Exercise<a class="anchor-link" href="#Exercise">¶</a>
+</h4>
+<p>A cold front is moving through, decreasing the ambient temperature of 25 degC at a rate of 2.3 degF every 10 minutes. What is the temperature after 1.5 hours?</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Your code goes here</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Solution">Solution<a class="anchor-link" href="#Solution">¶</a>
+</h5>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/temperature_change.py</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="#top">Top</a></p>
+<hr style="height:2px;">
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a name="constants"></a></p>
+<h3 id="MetPy-Constants">MetPy Constants<a class="anchor-link" href="#MetPy-Constants">¶</a>
+</h3>
+<p>Another common place that problems creep into scientific code is the value of constants. Can you reproduce someone else's computations from their paper? Probably not unless you know the value of all of their constants. Was the radius of the earth 6000 km, 6300km, 6371 km, or was it actually latitude dependent?</p>
+<p>MetPy has a set of constants that can be easily accessed and make your calculations reproducible. You can view a <a href="https://unidata.github.io/MetPy/latest/api/generated/metpy.constants.html#module-metpy.constants">full table</a> in the docs, look at the module docstring with <code>metpy.constants?</code> or checkout what's available with tab completion.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">metpy.constants</span> <span class="k">as</span> <span class="nn">mpconst</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mpconst</span><span class="o">.</span><span class="n">earth_avg_radius</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mpconst</span><span class="o">.</span><span class="n">dry_air_molecular_weight</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>You may also notice in the table that most constants have a short name as well that can be used:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mpconst</span><span class="o">.</span><span class="n">Re</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mpconst</span><span class="o">.</span><span class="n">Md</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="#top">Top</a></p>
+<hr style="height:2px;">
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a name="calculations"></a></p>
+<h3 id="MetPy-Calculations">MetPy Calculations<a class="anchor-link" href="#MetPy-Calculations">¶</a>
+</h3>
+<p>MetPy also encompasses a set of calculations that are common in meteorology (with the goal of have all of the functionality of legacy software like GEMPAK and more). The <a href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.html">calculations documentation</a> has a complete list of the calculations in MetPy.</p>
+<p>We'll scratch the surface and show off a few simple calculations here, but will be using many during the workshop.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="k">as</span> <span class="nn">mpcalc</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Make some fake data for us to work with</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">19990503</span><span class="p">)</span>  <span class="c1"># So we all have the same data</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">'m/s'</span><span class="p">)</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">'m/s'</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's use the <code>wind_direction</code> function from MetPy to calculate wind direction from these values. Remember you can look at the docstring or the website for help.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">direction</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">wind_direction</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">direction</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Exercise">Exercise<a class="anchor-link" href="#Exercise">¶</a>
+</h4>
+<ul>
+<li>Calculate the wind speed using the <code>wind_speed</code> function.</li>
+<li>Print the wind speed in m/s and mph.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Your code goes here</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Solution">Solution<a class="anchor-link" href="#Solution">¶</a>
+</h5>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/wind_speed.py</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As one final demonstration, we will calculation the dewpoint given the temperature and relative humidity:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mpcalc</span><span class="o">.</span><span class="n">dewpoint_rh</span><span class="p">(</span><span class="mi">25</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span><span class="p">,</span> <span class="mi">75</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">percent</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="#top">Top</a></p>
+<hr style="height:2px;">
+</div>
+</div>
+</div>
+</div>
+    </div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha256-SDRP1VVYu+tgAGKhddBSl5+ezofHKZeI+OzxakbIe/Y=" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

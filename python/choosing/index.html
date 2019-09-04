@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Where to Get Python | The Unidata Python Training Site</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/python/choosing/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="Where to Get Python">
+<meta property="og:url" content="https://unidata.github.io/python-training/python/choosing/">
+<meta property="og:description" content="While it's possible to install Python directly from python.org,
+we recommend using Conda instead.
+Conda is a package management system, from ContinuumIO, created specifically to
+assist working with Py">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-08-30T15:02:20-06:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../../gallery/gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop/workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.md" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Where to Get Python</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<p>While it's possible to install Python directly from <a href="https://wiki.python.org/moin/BeginnersGuide/Download">python.org</a>,
+we recommend using <a href="http://conda.pydata.org/docs/index.html">Conda</a> instead.
+Conda is a package management system, from ContinuumIO, created specifically to
+assist working with Python packages in a cross-platform fashion. Its real
+strength comes in handling Python packages which require compiled code--such
+packages are especially prevalent in the scientific Python ecosystem.</p>
+<p>Conda also has the concept of an environment, which is an independent,
+self-contained install of Python and packages. These environments make it easy
+to install different versions of Python side-by-side; this is especially useful
+when trying to test libraries on a variety of different Python versions. Other
+applications of environments:
+<em> Keeping a static install of Python with a known working set of packages for a
+  particular project (e.g. journal article or thesis)
+</em> A disposable environment for testing a new library without polluting the rest
+  of the Python install; this environment can easily be discarded when no
+  longer needed
+* Quick set up of a known set of libraries and programs for workshops and tutorials</p>
+<h3>Anaconda vs. Miniconda</h3>
+<p>There are two options for getting Conda:
+<a href="https://www.anaconda.com/distribution/">Anaconda</a> and
+<a href="https://conda.io/en/latest/miniconda.html">miniconda</a>. Anaconda is a full
+distribution of Python, and comes with over 150 packages in the download;
+consequently, this download is over 3GB. Anaconda is good if you want to have
+many packages downloaded and available in one shot; this is especially useful
+if you know you'll be working offline for awhile. Miniconda contains only
+Python and other libraries needed to run Conda itself; other packages will be
+downloaded and installed as requested. For more information, see
+<a href="https://conda.io/en/latest/miniconda.html">here</a>.</p>
+<h3>Python 2 vs. 3</h3>
+<p>In 2008, the core Python development team released Python 3.0; the goal of that
+release was to clean up a variety of issues with Python 2.x without worrying
+about complete backwards compatibility. At this point in time, Python 3.x
+represents the actively developed version of Python, with the 2.x series now
+"legacy", only seeing bug fixes. For scientific use, all major packages support
+Python 3. For information about what's new in Python 3, there are a variety of
+resources:</p>
+<ul>
+<li><a href="https://docs.python.org/3/whatsnew/">Official Python Docs</a></li>
+<li>Lexy Munroe's Detailed <a href="https://eev.ee/blog/2016/07/31/python-faq-why-should-i-use-python-3/">Why should I use Python 3?</a>
+</li>
+<li><a href="http://python-notes.curiousefficiency.org/en/latest/python3/index.html">Nick Coghlan's (core Python developer) Python Notes</a></li>
+<li><a href="http://www.snarky.ca/why-python-3-exists">Brett Cannon's (another core developer) Blog</a></li>
+</ul>
+<p>Our recommendation is to use Python 3 installed through Miniconda. All of the
+subsequent materials here will assume the use of Python 3; however, the use
+of features available <strong>only</strong> in Python 3 will be minimal (<em>if any</em>).</p>
+</div>
+    </div>
+    
+</article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

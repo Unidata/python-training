@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Upperair_Obs | The Unidata Python Training Site</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/gallery/upperair_obs/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="Upperair_Obs">
+<meta property="og:url" content="https://unidata.github.io/python-training/gallery/upperair_obs/">
+<meta property="og:description" content="In [ ]:
+
+    
+%matplotlib inline
+
+
+    
+
+
+
+
+
+
+
+DIFAX Replication¶This example replicates the traditional DIFAX images for upper-level
+observations.
+By: Kevin Goebbert
+Observation data comes from Iowa ">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-08-30T15:02:20-06:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../python/intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop/workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.ipynb" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Upperair_Obs</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="DIFAX-Replication">DIFAX Replication<a class="anchor-link" href="#DIFAX-Replication">¶</a>
+</h2>
+<p>This example replicates the traditional DIFAX images for upper-level
+observations.</p>
+<p>By: Kevin Goebbert</p>
+<p>Observation data comes from Iowa State Archive, accessed through the
+Siphon package. Contour data comes from the GFS 0.5 degree analysis.
+Classic upper-level data of Geopotential Height and Temperature are
+plotted.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">import</span> <span class="nn">urllib.request</span>
+
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="k">as</span> <span class="nn">mpcalc</span>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <span class="n">StationPlot</span>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="k">import</span> <span class="n">units</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">siphon.simplewebservice.iastate</span> <span class="k">import</span> <span class="n">IAStateUpperAir</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Plotting-High/Low-Symbols">Plotting High/Low Symbols<a class="anchor-link" href="#Plotting-High/Low-Symbols">¶</a>
+</h3>
+<p>A helper function to plot a text symbol (e.g., H, L) for relative
+maximum/minimum for a given field (e.g., geopotential height).</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">plot_maxmin_points</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">extrema</span><span class="p">,</span> <span class="n">nsize</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span>
+                       <span class="n">plotValue</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    This function will find and plot relative maximum and minimum for a 2D grid. The function</span>
+<span class="sd">    can be used to plot an H for maximum values (e.g., High pressure) and an L for minimum</span>
+<span class="sd">    values (e.g., low pressue). It is best to used filetered data to obtain  a synoptic scale</span>
+<span class="sd">    max/min value. The symbol text can be set to a string value and optionally the color of the</span>
+<span class="sd">    symbol and any plotted value can be set with the parameter color.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        lon : 2D array</span>
+<span class="sd">            Plotting longitude values</span>
+<span class="sd">        lat : 2D array</span>
+<span class="sd">            Plotting latitude values</span>
+<span class="sd">        data : 2D array</span>
+<span class="sd">            Data that you wish to plot the max/min symbol placement</span>
+<span class="sd">        extrema : str</span>
+<span class="sd">            Either a value of max for Maximum Values or min for Minimum Values</span>
+<span class="sd">        nsize : int</span>
+<span class="sd">            Size of the grid box to filter the max and min values to plot a reasonable number</span>
+<span class="sd">        symbol : str</span>
+<span class="sd">            Text to be placed at location of max/min value</span>
+<span class="sd">        color : str</span>
+<span class="sd">            Name of matplotlib colorname to plot the symbol (and numerical value, if plotted)</span>
+<span class="sd">        plot_value : Boolean (True/False)</span>
+<span class="sd">            Whether to plot the numeric value of max/min point</span>
+
+<span class="sd">    Return</span>
+<span class="sd">    ------</span>
+<span class="sd">        The max/min symbol will be plotted on the current axes within the bounding frame</span>
+<span class="sd">        (e.g., clip_on=True)</span>
+<span class="sd">    """</span>
+    <span class="kn">from</span> <span class="nn">scipy.ndimage.filters</span> <span class="k">import</span> <span class="n">maximum_filter</span><span class="p">,</span> <span class="n">minimum_filter</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">extrema</span> <span class="o">==</span> <span class="s1">'max'</span><span class="p">):</span>
+        <span class="n">data_ext</span> <span class="o">=</span> <span class="n">maximum_filter</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">nsize</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">'nearest'</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">extrema</span> <span class="o">==</span> <span class="s1">'min'</span><span class="p">):</span>
+        <span class="n">data_ext</span> <span class="o">=</span> <span class="n">minimum_filter</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">nsize</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">'nearest'</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Value for hilo must be either max or min'</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">lon</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span>
+
+    <span class="n">mxx</span><span class="p">,</span> <span class="n">mxy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">data_ext</span> <span class="o">==</span> <span class="n">data</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mxy</span><span class="p">)):</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">lon</span><span class="p">[</span><span class="n">mxx</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">mxy</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="n">lat</span><span class="p">[</span><span class="n">mxx</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">mxy</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">36</span><span class="p">,</span>
+                <span class="n">clip_on</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">'center'</span><span class="p">,</span> <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">'center'</span><span class="p">,</span>
+                <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">lon</span><span class="p">[</span><span class="n">mxx</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">mxy</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="n">lat</span><span class="p">[</span><span class="n">mxx</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">mxy</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span>
+                <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">mxx</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">mxy</span><span class="p">[</span><span class="n">i</span><span class="p">]])),</span>
+                <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">clip_on</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">,</span>
+                <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">'center'</span><span class="p">,</span> <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">'top'</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lon</span><span class="p">[</span><span class="n">mxx</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">mxy</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="n">lat</span><span class="p">[</span><span class="n">mxx</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">mxy</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">,</span> <span class="n">markeredgecolor</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span>
+                <span class="n">markerfacecolor</span><span class="o">=</span><span class="s1">'white'</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lon</span><span class="p">[</span><span class="n">mxx</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">mxy</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="n">lat</span><span class="p">[</span><span class="n">mxx</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">mxy</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span>
+                <span class="n">marker</span><span class="o">=</span><span class="s1">'x'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Station-Information">Station Information<a class="anchor-link" href="#Station-Information">¶</a>
+</h3>
+<p>A helper function for obtaining radiosonde station information (e.g.,
+latitude/longitude) requried to plot data obtained from each station.
+Original code by github user sgdecker.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">station_info</span><span class="p">(</span><span class="n">stid</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">"""Provide information about weather stations.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    stid: str or iterable object containing strs</span>
+<span class="sd">         The ICAO or IATA code(s) for which station information is requested.</span>
+<span class="sd">    with_units: bool</span>
+<span class="sd">         Whether to include units for values that have them. Default True.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    info: dict</span>
+<span class="sd">         Information about the station(s) within a dictionary with these keys:</span>
+<span class="sd">             'state': Two-character ID of the state/province where the station is located,</span>
+<span class="sd">                       if applicable</span>
+<span class="sd">             'name': The name of the station</span>
+<span class="sd">             'lat': The latitude of the station [deg]</span>
+<span class="sd">             'lon': The longitude of the station [deg]</span>
+<span class="sd">             'elevation': The elevation of the station [m]</span>
+<span class="sd">             'country': Two-character ID of the country where the station is located</span>
+
+<span class="sd">    Modified code from Steven Decker, Rutgers University</span>
+
+<span class="sd">    """</span>
+    <span class="c1"># Provide a helper function for later usage</span>
+    <span class="k">def</span> <span class="nf">str2latlon</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+        <span class="n">deg</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">mn</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'S'</span> <span class="ow">or</span> <span class="n">s</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'W'</span><span class="p">:</span>
+            <span class="n">deg</span> <span class="o">=</span> <span class="o">-</span><span class="n">deg</span>
+            <span class="n">mn</span> <span class="o">=</span> <span class="o">-</span><span class="n">mn</span>
+        <span class="k">return</span> <span class="n">deg</span> <span class="o">+</span> <span class="n">mn</span> <span class="o">/</span> <span class="mf">60.</span>
+
+    <span class="c1"># Various constants describing the underlying data</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s1">'https://www.aviationweather.gov/docs/metar/stations.txt'</span>
+    <span class="c1"># file = 'stations.txt'</span>
+    <span class="n">state_bnds</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">name_bnds</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">19</span><span class="p">)</span>
+    <span class="n">icao_bnds</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">24</span><span class="p">)</span>
+    <span class="n">iata_bnds</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">26</span><span class="p">,</span> <span class="mi">29</span><span class="p">)</span>
+    <span class="n">lat_bnds</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">39</span><span class="p">,</span> <span class="mi">45</span><span class="p">)</span>
+    <span class="n">lon_bnds</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">47</span><span class="p">,</span> <span class="mi">54</span><span class="p">)</span>
+    <span class="n">z_bnds</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">55</span><span class="p">,</span> <span class="mi">59</span><span class="p">)</span>
+    <span class="n">cntry_bnds</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">81</span><span class="p">,</span> <span class="mi">83</span><span class="p">)</span>
+
+    <span class="c1"># Generalize to any number of IDs</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stid</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">stid</span> <span class="o">=</span> <span class="p">[</span><span class="n">stid</span><span class="p">]</span>
+
+    <span class="c1"># Get the station dataset</span>
+    <span class="n">infile</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">infile</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+<span class="c1">#     infile = open(file, 'rb')</span>
+<span class="c1">#     data = infile.readlines()</span>
+
+    <span class="n">state</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">lat</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">lon</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">cntry</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">stid</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">line_bytes</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line_bytes</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">'UTF-8'</span><span class="p">)</span>
+            <span class="n">icao</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="n">icao_bnds</span><span class="p">]</span>
+            <span class="n">iata</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="n">iata_bnds</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">iata</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span> <span class="ow">and</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">icao</span><span class="p">:</span>
+                <span class="n">state</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="n">state_bnds</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                <span class="n">name</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="n">name_bnds</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                <span class="n">lat</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">str2latlon</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="n">lat_bnds</span><span class="p">]))</span>
+                <span class="n">lon</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">str2latlon</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="n">lon_bnds</span><span class="p">]))</span>
+                <span class="n">z</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="n">z_bnds</span><span class="p">]))</span>
+                <span class="n">cntry</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="n">cntry_bnds</span><span class="p">])</span>
+
+                <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">state</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'NA'</span><span class="p">)</span>
+            <span class="n">name</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'NA'</span><span class="p">)</span>
+            <span class="n">lat</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+            <span class="n">lon</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+            <span class="n">z</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+            <span class="n">cntry</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'NA'</span><span class="p">)</span>
+
+    <span class="n">infile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="s1">'state'</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">state</span><span class="p">),</span> <span class="s1">'name'</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="s1">'lat'</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lat</span><span class="p">),</span>
+            <span class="s1">'lon'</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lon</span><span class="p">),</span> <span class="s1">'elevation'</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">z</span><span class="p">),</span> <span class="s1">'country'</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cntry</span><span class="p">),</span>
+            <span class="s1">'units'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'lat'</span><span class="p">:</span> <span class="s1">'deg'</span><span class="p">,</span> <span class="s1">'lon'</span><span class="p">:</span> <span class="s1">'deg'</span><span class="p">,</span> <span class="s1">'z'</span><span class="p">:</span> <span class="s1">'m'</span><span class="p">}}</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Observation-Data">Observation Data<a class="anchor-link" href="#Observation-Data">¶</a>
+</h3>
+<p>Set a date and time for upper-air observations (should only be 00 or 12
+UTC for the hour).</p>
+<p>Request all data from Iowa State using the Siphon package. The result is
+a pandas DataFrame containing all of the sounding data from all
+available stations.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Set date for desired UPA data</span>
+<span class="n">today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+
+<span class="c1"># Go back one day to ensure data availability</span>
+<span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">today</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">today</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">today</span><span class="o">.</span><span class="n">day</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Request data using Siphon request for data from Iowa State Archive</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">IAStateUpperAir</span><span class="o">.</span><span class="n">request_all_data</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Subset-Observational-Data">Subset Observational Data<a class="anchor-link" href="#Subset-Observational-Data">¶</a>
+</h3>
+<p>From the request above will give all levels from all radisonde sites
+available through the service. For plotting a pressure surface map there
+is only need to have the data from that level. Below the data is subset
+and a few parameters set based on the level chosen. Additionally, the
+station information is obtained and latitude and longitude data is added
+to the DataFrame.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">level</span> <span class="o">=</span> <span class="mi">500</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">level</span> <span class="o">==</span> <span class="mi">925</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">level</span> <span class="o">==</span> <span class="mi">850</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">level</span> <span class="o">==</span> <span class="mi">700</span><span class="p">):</span>
+    <span class="n">cint</span> <span class="o">=</span> <span class="mi">30</span>
+    <span class="k">def</span> <span class="nf">hght_format</span><span class="p">(</span><span class="n">v</span><span class="p">):</span> <span class="k">return</span> <span class="nb">format</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">'.0f'</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
+<span class="k">elif</span> <span class="n">level</span> <span class="o">==</span> <span class="mi">500</span><span class="p">:</span>
+    <span class="n">cint</span> <span class="o">=</span> <span class="mi">60</span>
+    <span class="k">def</span> <span class="nf">hght_format</span><span class="p">(</span><span class="n">v</span><span class="p">):</span> <span class="k">return</span> <span class="nb">format</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">'.0f'</span><span class="p">)[:</span><span class="mi">3</span><span class="p">]</span>
+<span class="k">elif</span> <span class="n">level</span> <span class="o">==</span> <span class="mi">300</span><span class="p">:</span>
+    <span class="n">cint</span> <span class="o">=</span> <span class="mi">120</span>
+    <span class="k">def</span> <span class="nf">hght_format</span><span class="p">(</span><span class="n">v</span><span class="p">):</span> <span class="k">return</span> <span class="nb">format</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">'.0f'</span><span class="p">)[:</span><span class="mi">3</span><span class="p">]</span>
+<span class="k">elif</span> <span class="n">level</span> <span class="o">&lt;</span> <span class="mi">300</span><span class="p">:</span>
+    <span class="n">cint</span> <span class="o">=</span> <span class="mi">120</span>
+    <span class="k">def</span> <span class="nf">hght_format</span><span class="p">(</span><span class="n">v</span><span class="p">):</span> <span class="k">return</span> <span class="nb">format</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">'.0f'</span><span class="p">)[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+
+<span class="c1"># Create subset of all data for a given level</span>
+<span class="n">data_subset</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">pressure</span> <span class="o">==</span> <span class="n">level</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data_subset</span><span class="p">]</span>
+
+<span class="c1"># Get station lat/lon from look-up file; add to Dataframe</span>
+<span class="n">stn_info</span> <span class="o">=</span> <span class="n">station_info</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">station</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
+<span class="n">df</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s1">'latitude'</span><span class="p">,</span> <span class="n">stn_info</span><span class="p">[</span><span class="s1">'lat'</span><span class="p">])</span>
+<span class="n">df</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="s1">'longitude'</span><span class="p">,</span> <span class="n">stn_info</span><span class="p">[</span><span class="s1">'lon'</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Gridded-Data">Gridded Data<a class="anchor-link" href="#Gridded-Data">¶</a>
+</h3>
+<p>Obtain GFS gridded output for contour plotting. Specifically,
+geopotential height and temperature data for the given level and subset
+for over North America. Data are smoothed for aesthetic reasons.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Get GFS data and subset to North America for Geopotential Height and Temperature</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">'https://thredds.ucar.edu/thredds/dodsC/grib/NCEP/GFS/Global_0p5deg_ana/'</span>
+                     <span class="s1">'GFS_Global_0p5deg_ana_{0:%Y%m</span><span class="si">%d</span><span class="s1">}_{0:%H}00.grib2'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                         <span class="n">date</span><span class="p">))</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">parse_cf</span><span class="p">()</span>
+
+<span class="c1"># Geopotential height and smooth</span>
+<span class="n">hght</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">Geopotential_height_isobaric</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span>
+    <span class="n">vertical</span><span class="o">=</span><span class="n">level</span><span class="o">*</span><span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">date</span><span class="p">,</span> <span class="n">lat</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">70</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span> <span class="n">lon</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">360</span><span class="o">-</span><span class="mi">145</span><span class="p">,</span> <span class="mi">360</span><span class="o">-</span><span class="mi">50</span><span class="p">))</span>
+<span class="n">smooth_hght</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">smooth_n_point</span><span class="p">(</span><span class="n">hght</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># Temperature, smooth, and convert to Celsius</span>
+<span class="n">tmpk</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">Temperature_isobaric</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span>
+    <span class="n">vertical</span><span class="o">=</span><span class="n">level</span><span class="o">*</span><span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">date</span><span class="p">,</span> <span class="n">lat</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">70</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span> <span class="n">lon</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">360</span><span class="o">-</span><span class="mi">145</span><span class="p">,</span> <span class="mi">360</span><span class="o">-</span><span class="mi">50</span><span class="p">))</span>
+<span class="n">smooth_tmpc</span> <span class="o">=</span> <span class="p">(</span><span class="n">mpcalc</span><span class="o">.</span><span class="n">smooth_n_point</span><span class="p">(</span><span class="n">tmpk</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'degC'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Create-DIFAX-Replication">Create DIFAX Replication<a class="anchor-link" href="#Create-DIFAX-Replication">¶</a>
+</h3>
+<p>Plot the observational data and contours on a Lambert Conformal map and
+add features that resemble the historic DIFAX maps.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Set up map coordinate reference system</span>
+<span class="n">mapcrs</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">LambertConformal</span><span class="p">(</span>
+    <span class="n">central_latitude</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">central_longitude</span><span class="o">=-</span><span class="mi">100</span><span class="p">,</span> <span class="n">standard_parallels</span><span class="o">=</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">60</span><span class="p">))</span>
+
+<span class="c1"># Set up station locations for plotting observations</span>
+<span class="n">point_locs</span> <span class="o">=</span> <span class="n">mapcrs</span><span class="o">.</span><span class="n">transform_points</span><span class="p">(</span>
+    <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span> <span class="n">df</span><span class="p">[</span><span class="s1">'longitude'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="s1">'latitude'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
+<span class="c1"># Start figure and set graphics extent</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">mapcrs</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">([</span><span class="o">-</span><span class="mi">125</span><span class="p">,</span> <span class="o">-</span><span class="mi">70</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">55</span><span class="p">])</span>
+
+<span class="c1"># Add map features for geographic reference</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">COASTLINE</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">'50m'</span><span class="p">),</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'grey'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">LAND</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">'50m'</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">'white'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">'50m'</span><span class="p">),</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'grey'</span><span class="p">)</span>
+
+<span class="c1"># Plot plus signs every degree lat/lon</span>
+<span class="n">plus_lat</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">plus_lon</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">other_lat</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">other_lon</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">hght</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">[::</span><span class="mi">2</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">hght</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">[::</span><span class="mi">2</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">%</span> <span class="mi">5</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">y</span> <span class="o">%</span> <span class="mi">5</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">plus_lon</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">plus_lat</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">other_lon</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">other_lat</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">other_lon</span><span class="p">,</span> <span class="n">other_lat</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">,</span>
+           <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">'lightgrey'</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">plus_lon</span><span class="p">,</span> <span class="n">plus_lat</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'+'</span><span class="p">,</span>
+           <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">'lightgrey'</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Add gridlines for every 5 degree lat/lon</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">gridlines</span><span class="p">(</span><span class="n">linestyle</span><span class="o">=</span><span class="s1">'solid'</span><span class="p">,</span> <span class="n">ylocs</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">71</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">xlocs</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">150</span><span class="p">,</span> <span class="o">-</span><span class="mi">49</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="c1"># Start the station plot by specifying the axes to draw on, as well as the</span>
+<span class="c1"># lon/lat of the stations (with transform). We also the fontsize to 10 pt.</span>
+<span class="n">stationplot</span> <span class="o">=</span> <span class="n">StationPlot</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="s1">'longitude'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="s1">'latitude'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">clip_on</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                          <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># Plot the temperature and dew point to the upper and lower left, respectively, of</span>
+<span class="c1"># the center point.</span>
+<span class="n">stationplot</span><span class="o">.</span><span class="n">plot_parameter</span><span class="p">(</span><span class="s1">'NW'</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)</span>
+<span class="n">stationplot</span><span class="o">.</span><span class="n">plot_parameter</span><span class="p">(</span><span class="s1">'SW'</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="s1">'dewpoint'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)</span>
+
+<span class="c1"># A more complex example uses a custom formatter to control how the geopotential height</span>
+<span class="c1"># values are plotted. This is set in an earlier if-statement to work appropriate for</span>
+<span class="c1"># different levels.</span>
+<span class="n">stationplot</span><span class="o">.</span><span class="n">plot_parameter</span><span class="p">(</span><span class="s1">'NE'</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="s1">'height'</span><span class="p">],</span> <span class="n">formatter</span><span class="o">=</span><span class="n">hght_format</span><span class="p">)</span>
+
+<span class="c1"># Add wind barbs</span>
+<span class="n">stationplot</span><span class="o">.</span><span class="n">plot_barb</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'u_wind'</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">'v_wind'</span><span class="p">],</span> <span class="n">length</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">pivot</span><span class="o">=</span><span class="s1">'tip'</span><span class="p">)</span>
+
+<span class="c1"># Plot Solid Contours of Geopotential Height</span>
+<span class="n">cs</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">hght</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="n">hght</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="n">smooth_hght</span><span class="p">,</span>
+                <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20000</span><span class="p">,</span> <span class="n">cint</span><span class="p">),</span> <span class="n">colors</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">clabels</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">'</span><span class="si">%d</span><span class="s1">'</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">'white'</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Contour labels with black boxes and white text</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">clabels</span><span class="p">:</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">set_bbox</span><span class="p">({</span><span class="s1">'facecolor'</span><span class="p">:</span> <span class="s1">'black'</span><span class="p">,</span> <span class="s1">'pad'</span><span class="p">:</span> <span class="mi">4</span><span class="p">})</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">set_fontweight</span><span class="p">(</span><span class="s1">'heavy'</span><span class="p">)</span>
+
+<span class="c1"># Plot Dashed Contours of Temperature</span>
+<span class="n">cs2</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">hght</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="n">hght</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="n">smooth_tmpc</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">60</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+                 <span class="n">colors</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">clabels</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">cs2</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">'</span><span class="si">%d</span><span class="s1">'</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">'white'</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Set longer dashes than default</span>
+<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cs2</span><span class="o">.</span><span class="n">collections</span><span class="p">:</span>
+    <span class="n">c</span><span class="o">.</span><span class="n">set_dashes</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">))])</span>
+
+<span class="c1"># Contour labels with black boxes and white text</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">clabels</span><span class="p">:</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">set_bbox</span><span class="p">({</span><span class="s1">'facecolor'</span><span class="p">:</span> <span class="s1">'black'</span><span class="p">,</span> <span class="s1">'pad'</span><span class="p">:</span> <span class="mi">4</span><span class="p">})</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">set_fontweight</span><span class="p">(</span><span class="s1">'heavy'</span><span class="p">)</span>
+
+<span class="c1"># Plot filled circles for Radiosonde Obs</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'longitude'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="s1">'latitude'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+           <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+
+<span class="c1"># Use definition to plot H/L symbols</span>
+<span class="n">plot_maxmin_points</span><span class="p">(</span><span class="n">hght</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="n">hght</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="n">smooth_hght</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span>
+                   <span class="n">symbol</span><span class="o">=</span><span class="s1">'H'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">plot_maxmin_points</span><span class="p">(</span><span class="n">hght</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="n">hght</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="n">smooth_hght</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span>
+                   <span class="n">symbol</span><span class="o">=</span><span class="s1">'L'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+
+<span class="c1"># Add titles</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Upper-air Observations at </span><span class="si">{}</span><span class="s1">-hPa Analysis Heights/Temperature'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">level</span><span class="p">),</span>
+          <span class="n">loc</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Valid: </span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">date</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'right'</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+    </div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha256-SDRP1VVYu+tgAGKhddBSl5+ezofHKZeI+OzxakbIe/Y=" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

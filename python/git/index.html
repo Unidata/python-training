@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What Is Git, Github and Why Do You Care | The Unidata Python Training Site</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/python/git/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="What Is Git, Github and Why Do You Care">
+<meta property="og:url" content="https://unidata.github.io/python-training/python/git/">
+<meta property="og:description" content="Motivation
+When you start writing computer programs and Jupyter notebooks, you will need to save and keep track of your work as your code gains complexity. Moreover, you may want to share and collabor">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-08-30T15:02:20-06:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../../gallery/gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop/workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.md" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">What Is Git, Github and Why Do You Care</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<h3>Motivation</h3>
+<p>When you start writing computer programs and Jupyter notebooks, you will need to save and keep track of your work as your code gains complexity. Moreover, you may want to share and collaborate on projects with other developers in your office or around the world. Or perhaps you aim to contribute and improve someone else's program. Version control software and distributed version control software satisfies these objectives and are now an essential tool for any software developer beginner or expert alike. It will be to your advantage to learn about version control early on.</p>
+<h3>git</h3>
+<p>Version control has existed for decades and has gone through many incarnations. git is an implementation of distributed  version control technology that is currently popular and powerful. Git stands in contrast to centralized version control systems like SVN which you may have heard of. Git was originally developed by legendary programmer Linus Torvalds, creator the Linux operating system. Unhappy with the available choices, Linus wrote his own version control software to collaborate on the Linux operating system. Git gained popularity with developers enabling a huge number of contributions to Linux making it the most successful open source project today. The benefits of git were not isolated to the Linux operating system. Many projects such as the scientific plotting library <a href="http://matplotlib.org/">matplotlib</a> have adopted git and in doing so have seen a <a href="https://jakevdp.github.io/blog/2012/09/20/why-python-is-the-last/">marked increased in collaboration and contributions</a>. When you leverage the power of the community, an enormous amount of work can get done.</p>
+<h3>github</h3>
+<p><a href="https://github.com/">github</a> is a website that hosts git projects for free. There is a good chance your favorite open source software project is on github. It comes with value added tools to help you keep track of issues and collaborate with colleagues. <a href="https://github.com/Unidata/netcdf-c">Unidata has numerous projects on github</a>, including this website, and other Python related projects such as <a href="https://github.com/Unidata/netcdf4-python">netcdf4-python</a>, the <a href="https://github.com/Unidata/unidata-python-workshop">Unidata Python Workshop</a>, <a href="https://github.com/metpy/MetPy">Metpy</a>, <a href="https://github.com/Unidata/siphon">Siphon</a>. Incidentally, when using git, you are not forced to use github for your project hosting. It is one of many options for git hosting including <a href="https://bitbucket.org/">BitBucket</a>, <a href="https://gitlab.com">GitLab</a>, or simply self-hosting.</p>
+<h3>git in the Geosciences</h3>
+<p>Several projects in the geoscience community have adopted git for their software projects:</p>
+<ul>
+<li><a href="https://github.com/CESM-Development">Community Earth System Model (CESM)</a></li>
+<li><a href="https://github.com/MPAS-Dev">Model for Prediction Across Scales (MPAS)</a></li>
+<li><a href="https://github.com/Unidata/netcdf-c">netcdf</a></li>
+<li><a href="https://github.com/SciTools/cartopy">cartopy</a></li>
+</ul>
+<h3>Learning git</h3>
+<p>Now that you know all about the benefits of git, we must tell you that git does come with a downside of being complex and not always user friendly, especially for beginners. Therefore, the remainder of this section concerns curated resources to learn git. We also suggest you take some time in advance to learn git, rather than immediately start experimenting with git from the command line or a user interface. Having some understanding of how git works ahead of time will save you much frustration.</p>
+</div>
+    </div>
+    
+</article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

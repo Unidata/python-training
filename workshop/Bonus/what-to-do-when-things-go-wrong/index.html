@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What to do when things go wrong | The Unidata Python Training Site</title>
+<link href="../../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/workshop/Bonus/what-to-do-when-things-go-wrong/">
+<!--[if lt IE 9]><script src="../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="What to do when things go wrong">
+<meta property="og:url" content="https://unidata.github.io/python-training/workshop/Bonus/what-to-do-when-things-go-wrong/">
+<meta property="og:description" content="What to do when things go wrong
+Unidata Python Workshop
+
+
+This session is designed as both a workshop and group discussion.   We will examine basic failures in Python and how they manifest, followed b">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-08-30T15:02:20-06:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../../python/intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../../../gallery/gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.ipynb" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">What to do when things go wrong</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div style="width:1000 px">
+
+<div style="float:right; width:98 px; height:98px;">
+<img src="https://raw.githubusercontent.com/Unidata/MetPy/master/metpy/plots/_static/unidata_150x150.png" alt="Unidata Logo" style="height: 98px;">
+</div>
+<p></p>
+<h2>What to do when things go wrong</h2>
+<h4>Unidata Python Workshop</h4>
+<div style="clear:both"></div>
+</div>
+<hr style="height:2px;">
+<div style="float:right; width:250 px"><img src="https://regmedia.co.uk/2015/06/15/silicon-valley-fire.jpg" alt="Server on fire" style="height: 200px;"></div>
+<p>This session is designed as both a workshop and group discussion.   We will examine basic failures in Python and how they manifest, followed by a discussion of what sort of errors and failure cases plague <em>you</em>, the audience.  We will try to identify things that we (Unidata) can do differently to make the software development/usage process easier for our community.  We will also pool our python knowledge/experiences to try to identify common issues and potential solutions.</p>
+<p>This is useful because, eventually, problems will arise when programming with Python. Common issues include:</p>
+<ul>
+<li>Syntax Errors</li>
+<li>Runtime Errors</li>
+<li>Unexpected Results</li>
+</ul>
+<p>Identifying and correcting these issues can be difficult.  However, there are strategies for preventing and mitigating many of the problems a developer may encounter.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Syntax-Errors">Syntax Errors<a class="anchor-link" href="#Syntax-Errors">¶</a>
+</h2>
+<p>Syntax errors usually occur when python is translated from <code>source code</code> into <code>byte code</code>.  This is typically identified by a message similar to:</p>
+
+<pre><code>SyntaxError: invalid syntax</code></pre>
+<h3 id="Common-syntax-errors-include:">Common syntax errors include:<a class="anchor-link" href="#Common-syntax-errors-include:">¶</a>
+</h3>
+<ul>
+<li>Using a reserved python keyword for a variable name.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">while</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<hr>
+<ul>
+<li>Missing colon at the end of <code>for</code>, <code>while</code>, <code>if</code>, <code>def</code> statements.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span> <span class="nb">print</span><span class="p">(</span><span class="s1">'Hello world'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<hr>
+<ul>
+<li>Incorrect indentation. Don't mix spaces and tabs!</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">):</span>
+  <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">i</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<hr>
+<ul>
+<li>Mismatched quotation marks.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"Some python issues are easier to find than others ')</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<hr>
+<ul>
+<li>Unclosed brackets</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"Missing brackets can be difficult"</span> <span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"to find. probably not these ones however."</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Runtime-errors">Runtime errors<a class="anchor-link" href="#Runtime-errors">¶</a>
+</h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Once the program is syntactically correct, it can run and now nothing will go wrong!  Until it does.  There are multiple ways runtime errors may manifest:</p>
+<ol>
+<li>Nothing happens.</li>
+<li>The program hangs.</li>
+<li>Infinite loop or recursion.</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Debugging-Runtime-errors-in-Python-with-GDB">Debugging Runtime errors in Python with GDB<a class="anchor-link" href="#Debugging-Runtime-errors-in-Python-with-GDB">¶</a>
+</h3>
+<p>It's possible to debug python using <code>gdb</code>.  It requires the pythong debugging extensions be installed.</p>
+<p>Running <code>gdb</code> interactively:</p>
+
+<pre><code>   $ gdb python
+   ....
+   (gdb) run &lt;programname&gt;.py &lt;arguments&gt;</code></pre>
+<p>Running <code>gdb</code> Automatically:</p>
+
+<pre><code>   $ gdb -ex r --args python &lt;programname&gt;.py &lt;arguments&gt;</code></pre>
+<p>The latter case runs the program until it exits, segfaults or execution is stopped.</p>
+<p>You can get a stack trace or python stack trace via:</p>
+
+<pre><code>   (gdb) bt</code></pre>
+<p>or</p>
+
+<pre><code>   (gdb) py-bt</code></pre>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Handling-exceptions-with-try/except">Handling exceptions with <code>try/except</code><a class="anchor-link" href="#Handling-exceptions-with-try/except">¶</a>
+</h2>
+<p>Handling exceptions may done using <code>try/except</code> statements in python.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">"Please enter a number: "</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">"Please enter a number:"</span><span class="p">))</span>
+        <span class="k">break</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"oops!"</span><span class="p">)</span>
+            
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="User-defined-exceptions">User-defined exceptions<a class="anchor-link" href="#User-defined-exceptions">¶</a>
+</h3>
+<p>Developers can create thir own exceptions by creating new exception classes derived from the Exception class.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">MyInputError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">"""Exception raised for errors in the input.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        message -- explanation of the error</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="ne">Exception</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dError</span> <span class="o">=</span> <span class="s2">"Internal Error 10"</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">try</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="n">MyInputError</span><span class="p">(</span><span class="s2">"MyInputError"</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">"Sample Assertion Error"</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">MyInputError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span> 
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'InputError caught:'</span><span class="p">,</span><span class="n">err</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'dError:'</span><span class="p">,</span><span class="n">err</span><span class="o">.</span><span class="n">dError</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">AssertionError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'Assertion error caught:'</span><span class="p">,</span><span class="n">err</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">?</span>type
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Defining-Clean-up-Actions">Defining Clean-up Actions<a class="anchor-link" href="#Defining-Clean-up-Actions">¶</a>
+</h3>
+<p>The <code>try</code> statement has an optional cluase which lets you define a clean-up action; this is an action executed whether an action has occured or not.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">try</span><span class="p">:</span>
+    <span class="c1"># raise MyInputError("New error, test finally")</span>
+    <span class="c1"># </span>
+<span class="k">except</span> <span class="n">MyInputError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'MyInputError:'</span><span class="p">,</span><span class="n">err</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'dError:'</span><span class="p">,</span><span class="n">err</span><span class="o">.</span><span class="n">dError</span><span class="p">)</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'Graceful Cleanup: Goodbye, world!'</span><span class="p">)</span>
+    
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Unexpected-Results">Unexpected Results<a class="anchor-link" href="#Unexpected-Results">¶</a>
+</h2>
+<p>Just because a program runs, we shouldn't assume that the program has generated correct output.  It is important to, when possible, create software tests which test the output of your program against known good outputs.</p>
+<p>There are services, like <a href="http://travis-ci.org">http://travis-ci.org</a>, that can automate this process assuming you are using a remote repository like <strong>GitHub</strong>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="References">References<a class="anchor-link" href="#References">¶</a>
+</h4>
+<ul>
+<li><a href="https://wiki.python.org/moin/DebuggingWithGdb">https://wiki.python.org/moin/DebuggingWithGdb</a></li>
+<li><a href="http://www.openbookproject.net/thinkcs/python/english2e/app_a.html">http://www.openbookproject.net/thinkcs/python/english2e/app_a.html</a></li>
+<li><a href="https://docs.python.org/3/tutorial/errors.html">https://docs.python.org/3/tutorial/errors.html</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+    </div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha256-SDRP1VVYu+tgAGKhddBSl5+ezofHKZeI+OzxakbIe/Y=" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

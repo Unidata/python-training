@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex
+    xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+    xmlns:xhtml="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+                        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+ <sitemap>
+  <loc>https://unidata.github.io/python-training/galleries/rss.xml</loc>
+  <lastmod>2019-09-04T15:06:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://unidata.github.io/python-training/rss.xml</loc>
+  <lastmod>2019-09-04T15:07:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://unidata.github.io/python-training/sitemap.xml</loc>
+  <lastmod>2019-09-04T15:07:00Z</lastmod>
+ </sitemap>
+</sitemapindex>
