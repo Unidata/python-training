@@ -1,0 +1,8 @@
+.DS_Store
+.doit.db
+.idea/
+
+__pycache__
+cache/*
+output/*
+

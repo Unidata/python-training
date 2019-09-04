@@ -17,15 +17,15 @@ import time
 
 # Data about this site
 BLOG_AUTHOR = "UCAR/Unidata"  # (translatable)
-BLOG_TITLE = "Unidata Python Training"  # (translatable)
+BLOG_TITLE = "The Unidata Python Training Site"  # (translatable)
 # This is the main URL for your site. It will be used
 # in a prominent link. Don't forget the protocol (http/https)!
-SITE_URL = "https://zbruick.github.io/"
+SITE_URL = "https://unidata.github.io/python-training"
 # This is the URL where Nikola's output will be deployed.
 # If not set, defaults to SITE_URL
 # BASE_URL = "https://example.com/"
-BLOG_EMAIL = "zbruick@ucar.edu"
-BLOG_DESCRIPTION = "Demo site for the Unidata Python Training"  # (translatable)
+BLOG_EMAIL = "support-python@ucar.edu"
+BLOG_DESCRIPTION = "The Unidata Python Training Site for Atmospheric Science"  # (translatable)
 
 # Nikola is multilingual!
 #
@@ -630,11 +630,11 @@ REDIRECTIONS = []
 # For more details, read the manual:
 # https://getnikola.com/handbook.html#deploying-to-github
 # You will need to configure the deployment branch on GitHub.
-GITHUB_SOURCE_BRANCH = 'src'
-GITHUB_DEPLOY_BRANCH = 'master'
+GITHUB_SOURCE_BRANCH = 'master'
+GITHUB_DEPLOY_BRANCH = 'gh-pages'
 
 # The name of the remote where you wish to push to, using github_deploy.
-GITHUB_REMOTE_NAME = 'origin'
+GITHUB_REMOTE_NAME = 'unidata'
 
 # Whether or not github_deploy should commit to the source branch automatically
 # before deploying.
