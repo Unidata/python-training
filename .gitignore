@@ -6,3 +6,5 @@ __pycache__
 cache/*
 output/*
 
+id_rsa
+id_rsa.pub
