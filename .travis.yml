@@ -19,8 +19,8 @@ before_install:
 - ssh-add id_rsa
 - git remote rm origin
 - git remote add origin git@github.com:Unidata/python-training.git
-- git fetch origin master
-- git branch master FETCH_HEAD
+- git fetch origin gh-pages
+- git branch gh-pages FETCH_HEAD
 install:
 - pip install -U --upgrade-strategy=eager 'Nikola[extras]'
 script:
