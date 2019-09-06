@@ -20,7 +20,7 @@ BLOG_AUTHOR = "UCAR/Unidata"  # (translatable)
 BLOG_TITLE = "The Unidata Python Training Site"  # (translatable)
 # This is the main URL for your site. It will be used
 # in a prominent link. Don't forget the protocol (http/https)!
-SITE_URL = "https://unidata.github.io/python-training"
+SITE_URL = "https://unidata.github.io/python-training/"
 # This is the URL where Nikola's output will be deployed.
 # If not set, defaults to SITE_URL
 # BASE_URL = "https://example.com/"
@@ -634,7 +634,7 @@ GITHUB_SOURCE_BRANCH = 'master'
 GITHUB_DEPLOY_BRANCH = 'gh-pages'
 
 # The name of the remote where you wish to push to, using github_deploy.
-GITHUB_REMOTE_NAME = 'unidata'
+GITHUB_REMOTE_NAME = 'origin'
 
 # Whether or not github_deploy should commit to the source branch automatically
 # before deploying.
@@ -1275,7 +1275,7 @@ MARKDOWN_EXTENSIONS = ['markdown.extensions.fenced_code', 'markdown.extensions.c
 # USE_BUNDLES = True
 
 # Plugins you don't want to use. Be careful :-)
-# DISABLED_PLUGINS = ["render_galleries"]
+DISABLED_PLUGINS = ["robots"]
 
 # Special settings to disable only parts of the indexes plugin.
 # Use with care.
