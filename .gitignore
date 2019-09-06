@@ -1,10 +1,11 @@
 .DS_Store
 .doit.db
-.idea/
 
-__pycache__
+.idea/*
+__pycache__/*
 cache/*
 output/*
+plugins/import_jekyll/__pycache__/*
 
 id_rsa
 id_rsa.pub
