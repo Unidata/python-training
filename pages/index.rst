@@ -33,8 +33,9 @@ at our `support email`_.
 
    .. admonition:: Example Gallery
 
-    Looking for examples of how to use MetPy, Siphon, Xarray, or other useful Python packages?
-    Check out our example gallery for ideas on how to analyze and visualize your data!
+    Looking for examples of how to use MetPy, Siphon, Xarray, or other useful Python packages
+    with your meteorological data? Check out our example gallery for ideas on how to analyze
+    and visualize your data!
 
     .. raw:: html
 
