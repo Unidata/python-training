@@ -6,7 +6,7 @@
 .. link: 
 .. description: 
 
-Want some in-depth training on the scientific Python ecosystem for atmospheric science and meteorology?
+Would you like some in-depth training on the scientific Python ecosystem for atmospheric science and meteorology?
 Work through our workshop materials at your own pace to learn and practice the syntax, functionality,
 and utility of this powerful programming language, or return to the material after taking the workshop
 in-person to further your understanding of the material you were taught.
