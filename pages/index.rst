@@ -7,7 +7,7 @@
 .. description: A one-stop shop for Python in atmospheric science and meteorology
 .. type: text
 
-Welcome to Unidata's Python Training for atmospheric science and meteorology. This site is meant
+Welcome to Unidata's Python Training Site for atmospheric science and meteorology. This site is meant
 to be a one-stop website for learning how to use Python for earth-science education and research
 for any experience level. New Python users may find the :doc:`Introduction to Python <intro-to-python>`
 section a good place to start. Check out the :doc:`Example Gallery <gallery-home>` for detailed meteorology-specific
@@ -21,7 +21,7 @@ at our `support email`_.
 
    .. admonition:: Introduction to Python
 
-    New to Python? Learn the basics of this powerful programming language and how
+    New to Python? Learn the basics of this powerful programming language and see how
     you can use it for atmospheric science education and research.
 
     .. raw:: html
@@ -33,7 +33,7 @@ at our `support email`_.
 
    .. admonition:: Example Gallery
 
-    Looking for examples of how to use MetPy, Siphon, Xarray, or other useful Python packages
+    Looking for examples of how to use MetPy, Siphon, Xarray, Pandas, or other useful Python packages
     with your meteorological data? Check out our example gallery for ideas on how to analyze
     and visualize your data!
 
