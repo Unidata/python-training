@@ -18,4 +18,4 @@ git fetch origin gh-pages
 git branch gh-pages FETCH_HEAD
 
 echo github_deploy called
-nikola github_deploy -m 'Nikola auto deploy [ci skip]'
+nikola build && nikola github_deploy -m 'Nikola auto deploy [ci skip]'
