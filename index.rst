@@ -1,10 +1,10 @@
 .. title: The Unidata Python Training Site
 .. slug: index
 .. date: 2019-07-26 14:38:34 UTC-06:00
-.. tags: 
+.. tags: atmospheric science python meteorology training examples gallery
 .. category: 
 .. link: 
-.. description: atmospheric science python meteorology training examples gallery
+.. description: A one-stop shop for Python in atmospheric science and meteorology
 .. type: text
 
 Welcome to Unidata's Python Training for atmospheric science and meteorology. This site is meant
@@ -33,8 +33,9 @@ at our `support email`_.
 
    .. admonition:: Example Gallery
 
-    Looking for examples of how to use MetPy, Siphon, Xarray, or other useful Python packages?
-    Check out our example gallery for ideas on how to analyze and visualize your data!
+    Looking for examples of how to use MetPy, Siphon, Xarray, or other useful Python packages
+    with your meteorological data? Check out our example gallery for ideas on how to analyze
+    and visualize your data!
 
     .. raw:: html
 
