@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+python notebooks_preprocess.py
+python run_notebooks.py
+
 echo checking secure access
 openssl aes-256-cbc -K $encrypted_4d56ad91a2b0_key -iv $encrypted_4d56ad91a2b0_iv -in id_rsa.enc -out id_rsa -d
 git config --global user.name 'Travis CI'
