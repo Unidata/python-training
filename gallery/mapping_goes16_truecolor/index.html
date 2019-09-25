@@ -34,7 +34,7 @@ GOES-16: True Color Recipe¶By: Brian Blaylock
 with help from Julien Chastang (UCAR-Unidata).
 Additional notebooks analyzing GO">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2019-09-17T11:15:25-06:00">
+<meta property="article:published_time" content="2019-09-25T14:05:39-06:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -698,216 +698,188 @@ plt.title('{}'.format(scan_start.strftime('%H:%M UTC %d %B %Y'), loc='right'),
 <p>#</p>
 <h2 id="Note:-you-should-adjust-the-contrast-before-you-add-in-the-Clean-IR-channel.">Note: you should adjust the contrast <em>before</em> you add in the Clean IR channel.<a class="anchor-link" href="#Note:-you-should-adjust-the-contrast-before-you-add-in-the-Clean-IR-channel.">¶</a>
 </h2>
-<p>def contrast_correction(color, contrast):</p>
+<p>def contrast_correction(color, contrast):
+    """Modify the contrast of an RGB.
+    See:
+    <a href="https://www.dfstudios.co.uk/articles/programming/image-programming-algorithms/image-processing-algorithms-part-5-contrast-adjustment/">https://www.dfstudios.co.uk/articles/programming/image-programming-algorithms/image-processing-algorithms-part-5-contrast-adjustment/</a></p>
+
+<pre><code>Input:
+    color    - an array representing the R, G, and/or B channel
+    contrast - contrast correction level
+"""
+F = (259*(contrast + 255))/(255.*259-contrast)
+COLOR = F*(color-.5)+.5
+COLOR = np.clip(COLOR, 0, 1)  # Force value limits 0 through 1.
+return COLOR
+
+
+</code></pre>
+<h2 id="Amount-of-contrast">Amount of contrast<a class="anchor-link" href="#Amount-of-contrast">¶</a>
+</h2>
+<p>contrast_amount = 105</p>
+<h2 id="Apply-contrast-correction">Apply contrast correction<a class="anchor-link" href="#Apply-contrast-correction">¶</a>
+</h2>
+<p>RGB_contrast = contrast_correction(RGB, contrast_amount)</p>
+<h2 id="Add-in-clean-IR-to-the-contrast-corrected-True-Color-image">Add in clean IR to the contrast-corrected True Color image<a class="anchor-link" href="#Add-in-clean-IR-to-the-contrast-corrected-True-Color-image">¶</a>
+</h2>
+<p>RGB_contrast_IR = np.dstack([np.maximum(RGB_contrast[:, :, 0], cleanIR),
+                             np.maximum(RGB_contrast[:, :, 1], cleanIR),
+                             np.maximum(RGB_contrast[:, :, 2], cleanIR)])</p>
+<h6 id="#">#<a class="anchor-link" href="##">¶</a>
+</h6>
+<h2 id="Plot-on-map-with-Cartopy">Plot on map with Cartopy<a class="anchor-link" href="#Plot-on-map-with-Cartopy">¶</a>
+</h2>
+<p>fig = plt.figure(figsize=(15, 12))</p>
+<p>ax1 = fig.add_subplot(1, 2, 1, projection=geos)
+ax2 = fig.add_subplot(1, 2, 2, projection=geos)</p>
+<p>ax1.imshow(RGB_ColorIR, origin='upper',
+           extent=(x.min(), x.max(), y.min(), y.max()),
+           transform=geos)
+ax1.coastlines(resolution='50m', color='black', linewidth=2)
+ax1.add_feature(ccrs.cartopy.feature.BORDERS)
+ax1.set_title('True Color and Night IR')</p>
+<p>ax2.imshow(RGB_contrast_IR, origin='upper',
+           extent=(x.min(), x.max(), y.min(), y.max()),
+           transform=geos)
+ax2.coastlines(resolution='50m', color='black', linewidth=2)
+ax2.add_feature(ccrs.cartopy.feature.BORDERS)
+ax2.set_title('Contrast Correction = {}'.format(contrast_amount))</p>
+<p>plt.subplots_adjust(wspace=.02)</p>
+<h6 id="#">#<a class="anchor-link" href="##">¶</a>
+</h6>
+<h2 id="Can-we-make-plots-for-a-Mesoscale-scan?">Can we make plots for a Mesoscale scan?<a class="anchor-link" href="#Can-we-make-plots-for-a-Mesoscale-scan?">¶</a>
+</h2>
+<h2 id="---------------------------------------">---------------------------------------<a class="anchor-link" href="#---------------------------------------">¶</a>
+</h2>
+<p>#</p>
+<h2 id="Yes.-Yes-we-can.">Yes. Yes we can.<a class="anchor-link" href="#Yes.-Yes-we-can.">¶</a>
+</h2>
+<h2 id="M1-is-for-the-Mesoscale1-NetCDF-file">M1 is for the Mesoscale1 NetCDF file<a class="anchor-link" href="#M1-is-for-the-Mesoscale1-NetCDF-file">¶</a>
+</h2>
+<p>FILE = ('<a href="http://ramadda-jetstream.unidata.ucar.edu/repository/opendap">http://ramadda-jetstream.unidata.ucar.edu/repository/opendap</a>'
+        '/5e02eafa-5cee-4d00-9f58-6e201e69b014/entry.das#fillmismatch')
+M1 = xarray.open_dataset(FILE)</p>
+<h2 id="Load-the-RGB-arrays">Load the RGB arrays<a class="anchor-link" href="#Load-the-RGB-arrays">¶</a>
+</h2>
+<p>R = M1['CMI_C02'][:].data
+G = M1['CMI_C03'][:].data
+B = M1['CMI_C01'][:].data</p>
+<h2 id="Apply-range-limits-for-each-channel.-RGB-values-must-be-between-0-and-1">Apply range limits for each channel. RGB values must be between 0 and 1<a class="anchor-link" href="#Apply-range-limits-for-each-channel.-RGB-values-must-be-between-0-and-1">¶</a>
+</h2>
+<p>R = np.clip(R, 0, 1)
+G = np.clip(G, 0, 1)
+B = np.clip(B, 0, 1)</p>
+<h2 id="Apply-the-gamma-correction">Apply the gamma correction<a class="anchor-link" href="#Apply-the-gamma-correction">¶</a>
+</h2>
+<p>gamma = 2.2
+R = np.power(R, 1/gamma)
+G = np.power(G, 1/gamma)
+B = np.power(B, 1/gamma)</p>
+<h2 id='Calculate-the-"True"-Green'>Calculate the "True" Green<a class="anchor-link" href="#Calculate-the-%22True%22-Green">¶</a>
+</h2>
+<p>G_true = 0.45 <em> R + 0.1 </em> G + 0.45 * B
+G_true = np.clip(G_true, 0, 1)</p>
+<h2 id="The-final-RGB-array-:)">The final RGB array :)<a class="anchor-link" href="#The-final-RGB-array-:)">¶</a>
+</h2>
+<p>RGB = np.dstack([R, G_true, B])</p>
+<h2 id="Scan's-start-time,-converted-to-datetime-object">Scan's start time, converted to datetime object<a class="anchor-link" href="#Scan's-start-time,-converted-to-datetime-object">¶</a>
+</h2>
+<p>scan_start = datetime.strptime(M1.time_coverage_start, '%Y-%m-%dT%H:%M:%S.%fZ')</p>
+<h2 id="We'll-use-the-CMI_C02-variable-as-a-'hook'-to-get-the-CF-metadata.">We'll use the <code>CMI_C02</code> variable as a 'hook' to get the CF metadata.<a class="anchor-link" href="#We'll-use-the-CMI_C02-variable-as-a-'hook'-to-get-the-CF-metadata.">¶</a>
+</h2>
+<p>dat = M1.metpy.parse_cf('CMI_C02')</p>
+<h2 id="Need-the-satellite-sweep-x-and-y-values,-too.">Need the satellite sweep x and y values, too.<a class="anchor-link" href="#Need-the-satellite-sweep-x-and-y-values,-too.">¶</a>
+</h2>
+<p>x = dat.x
+y = dat.y</p>
+<h6 id="#">#<a class="anchor-link" href="##">¶</a>
+</h6>
+<p>fig = plt.figure(figsize=(10, 8))</p>
+<p>ax = fig.add_subplot(1, 1, 1, projection=lc)
+ax.set_extent([-125, -70, 25, 50], crs=ccrs.PlateCarree())</p>
+<p>ax.imshow(RGB, origin='upper',
+          extent=(x.min(), x.max(), y.min(), y.max()),
+          transform=geos)</p>
+<p>ax.coastlines(resolution='50m', color='black', linewidth=0.5)
+ax.add_feature(ccrs.cartopy.feature.STATES, linewidth=0.5)
+ax.add_feature(ccrs.cartopy.feature.BORDERS, linewidth=0.5)</p>
+<p>plt.title('GOES-16 True Color', fontweight='bold', fontsize=15, loc='left')
+plt.title('Mesoscale Section 1')
+plt.title('{}'.format(scan_start.strftime('%H:%M UTC %d %B %Y')), loc='right')</p>
+<p>plt.show()</p>
+<h6 id="#">#<a class="anchor-link" href="##">¶</a>
+</h6>
+<p>fig = plt.figure(figsize=(15, 12))</p>
+<p>ax = fig.add_subplot(1, 1, 1, projection=geos)</p>
+<p>ax.imshow(RGB, origin='upper',
+          extent=(x.min(), x.max(), y.min(), y.max()),
+          transform=geos)</p>
+<p>ax.coastlines(resolution='50m', color='black', linewidth=0.25)
+ax.add_feature(ccrs.cartopy.feature.STATES, linewidth=0.25)</p>
+<p>plt.title('GOES-16 True Color', fontweight='bold', fontsize=15, loc='left')
+plt.title('Mesoscale Section 1')
+plt.title('{}'.format(scan_start.strftime('%H:%M UTC %d %B %Y')), loc='right')</p>
+<p>plt.show()</p>
+<h6 id="#">#<a class="anchor-link" href="##">¶</a>
+</h6>
+<h2 id="Can-we-do-this-for-a-Full-Disk-Scan?-It's-possible...">Can we do this for a Full Disk Scan? It's possible...<a class="anchor-link" href="#Can-we-do-this-for-a-Full-Disk-Scan?-It's-possible...">¶</a>
+</h2>
+<h2 id="-----------------------------------------------------">-----------------------------------------------------<a class="anchor-link" href="#-----------------------------------------------------">¶</a>
+</h2>
+<p>#</p>
+<h2 id="but-data-files-are-so-large-that-plotting-is-very-slow.--Feel-free-to">but data files are so large that plotting is very slow.  Feel free to<a class="anchor-link" href="#but-data-files-are-so-large-that-plotting-is-very-slow.--Feel-free-to">¶</a>
+</h2>
+<h2 id="experiment.">experiment.<a class="anchor-link" href="#experiment.">¶</a>
+</h2>
+<p>FILE = ('<a href="http://ramadda-jetstream.unidata.ucar.edu/repository/opendap">http://ramadda-jetstream.unidata.ucar.edu/repository/opendap</a>'
+        '/deb91f58-f997-41a3-a077-987529bf02b3/entry.das#fillmismatch')
+F = xarray.open_dataset(FILE)</p>
+<h2 id="Load-the-RGB-arrays">Load the RGB arrays<a class="anchor-link" href="#Load-the-RGB-arrays">¶</a>
+</h2>
+<p>R = F['CMI_C02'][:].data
+G = F['CMI_C03'][:].data
+B = F['CMI_C01'][:].data</p>
+<h2 id="Apply-range-limits-for-each-channel.-RGB-values-must-be-between-0-and-1">Apply range limits for each channel. RGB values must be between 0 and 1<a class="anchor-link" href="#Apply-range-limits-for-each-channel.-RGB-values-must-be-between-0-and-1">¶</a>
+</h2>
+<p>R = np.clip(R, 0, 1)
+G = np.clip(G, 0, 1)
+B = np.clip(B, 0, 1)</p>
+<h2 id="Apply-the-gamma-correction">Apply the gamma correction<a class="anchor-link" href="#Apply-the-gamma-correction">¶</a>
+</h2>
+<p>gamma = 2.2
+R = np.power(R, 1/gamma)
+G = np.power(G, 1/gamma)
+B = np.power(B, 1/gamma)</p>
+<h2 id='Calculate-the-"True"-Green'>Calculate the "True" Green<a class="anchor-link" href="#Calculate-the-%22True%22-Green">¶</a>
+</h2>
+<p>G_true = 0.48358168 <em> R + 0.45706946 </em> B + 0.06038137 * G
+G_true = np.clip(G_true, 0, 1)</p>
+<h2 id="The-final-RGB-array-:)">The final RGB array :)<a class="anchor-link" href="#The-final-RGB-array-:)">¶</a>
+</h2>
+<p>RGB = np.dstack([R, G_true, B])</p>
+<h2 id="We'll-use-the-CMI_C02-variable-as-a-'hook'-to-get-the-CF-metadata.">We'll use the <code>CMI_C02</code> variable as a 'hook' to get the CF metadata.<a class="anchor-link" href="#We'll-use-the-CMI_C02-variable-as-a-'hook'-to-get-the-CF-metadata.">¶</a>
+</h2>
+<p>dat = F.metpy.parse_cf('CMI_C02')</p>
+<p>x = dat.x
+y = dat.y</p>
+<h6 id="#">#<a class="anchor-link" href="##">¶</a>
+</h6>
+<h2 id="Geostationary-projection-is-easy...">Geostationary projection is easy...<a class="anchor-link" href="#Geostationary-projection-is-easy...">¶</a>
+</h2>
+<p>fig = plt.figure(figsize=(10, 8))</p>
+<p>ax = fig.add_subplot(1, 1, 1, projection=geos)</p>
+<p>ax.imshow(RGB, origin='upper',
+          extent=(x.min(), x.max(), y.min(), y.max()),
+          transform=geos)</p>
+<p>ax.coastlines(resolution='50m', color='black', linewidth=1)
+ax.add_feature(ccrs.cartopy.feature.BORDERS, linewidth=1)</p>
+<p>plt.title('GOES-16 True Color', fontweight='bold', fontsize=15, loc='left')
+plt.title('Full Disk\n{}'.format(scan_start.strftime('%H:%M UTC %d %B %Y')),
+          loc='right')</p>
+<p>plt.show()</p>
 
 </div>
 </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span>    <span class="n">Modify</span> <span class="n">the</span> <span class="n">contrast</span> <span class="n">of</span> <span class="n">an</span> <span class="n">RGB</span>
-    <span class="n">See</span><span class="p">:</span>
-    <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">dfstudios</span><span class="o">.</span><span class="n">co</span><span class="o">.</span><span class="n">uk</span><span class="o">/</span><span class="n">articles</span><span class="o">/</span><span class="n">programming</span><span class="o">/</span><span class="n">image</span><span class="o">-</span><span class="n">programming</span><span class="o">-</span><span class="n">algorithms</span><span class="o">/</span><span class="n">image</span><span class="o">-</span><span class="n">processing</span><span class="o">-</span><span class="n">algorithms</span><span class="o">-</span><span class="n">part</span><span class="o">-</span><span class="mi">5</span><span class="o">-</span><span class="n">contrast</span><span class="o">-</span><span class="n">adjustment</span><span class="o">/</span>
-
-    <span class="n">Input</span><span class="p">:</span>
-        <span class="n">color</span>    <span class="o">-</span> <span class="n">an</span> <span class="n">array</span> <span class="n">representing</span> <span class="n">the</span> <span class="n">R</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="ow">and</span><span class="o">/</span><span class="ow">or</span> <span class="n">B</span> <span class="n">channel</span>
-        <span class="n">contrast</span> <span class="o">-</span> <span class="n">contrast</span> <span class="n">correction</span> <span class="n">level</span>
-    <span class="s2">"""</span>
-<span class="s2">    F = (259*(contrast + 255))/(255.*259-contrast)</span>
-<span class="s2">    COLOR = F*(color-.5)+.5</span>
-<span class="s2">    COLOR = np.clip(COLOR, 0, 1)  # Force value limits 0 through 1.</span>
-<span class="s2">    return COLOR</span>
-
-
-<span class="s2"># Amount of contrast</span>
-<span class="s2">contrast_amount = 105</span>
-
-<span class="s2"># Apply contrast correction</span>
-<span class="s2">RGB_contrast = contrast_correction(RGB, contrast_amount)</span>
-
-<span class="s2"># Add in clean IR to the contrast-corrected True Color image</span>
-<span class="s2">RGB_contrast_IR = np.dstack([np.maximum(RGB_contrast[:, :, 0], cleanIR),</span>
-<span class="s2">                             np.maximum(RGB_contrast[:, :, 1], cleanIR),</span>
-<span class="s2">                             np.maximum(RGB_contrast[:, :, 2], cleanIR)])</span>
-
-<span class="s2">######################################################################</span>
-
-<span class="s2"># Plot on map with Cartopy</span>
-
-<span class="s2">fig = plt.figure(figsize=(15, 12))</span>
-
-<span class="s2">ax1 = fig.add_subplot(1, 2, 1, projection=geos)</span>
-<span class="s2">ax2 = fig.add_subplot(1, 2, 2, projection=geos)</span>
-
-<span class="s2">ax1.imshow(RGB_ColorIR, origin='upper',</span>
-<span class="s2">           extent=(x.min(), x.max(), y.min(), y.max()),</span>
-<span class="s2">           transform=geos)</span>
-<span class="s2">ax1.coastlines(resolution='50m', color='black', linewidth=2)</span>
-<span class="s2">ax1.add_feature(ccrs.cartopy.feature.BORDERS)</span>
-<span class="s2">ax1.set_title('True Color and Night IR')</span>
-
-<span class="s2">ax2.imshow(RGB_contrast_IR, origin='upper',</span>
-<span class="s2">           extent=(x.min(), x.max(), y.min(), y.max()),</span>
-<span class="s2">           transform=geos)</span>
-<span class="s2">ax2.coastlines(resolution='50m', color='black', linewidth=2)</span>
-<span class="s2">ax2.add_feature(ccrs.cartopy.feature.BORDERS)</span>
-<span class="s2">ax2.set_title('Contrast Correction = </span><span class="si">{}</span><span class="s2">'.format(contrast_amount))</span>
-
-<span class="s2">plt.subplots_adjust(wspace=.02)</span>
-
-<span class="s2">######################################################################</span>
-<span class="s2"># Can we make plots for a Mesoscale scan?</span>
-<span class="s2"># ---------------------------------------</span>
-<span class="s2">#</span>
-<span class="s2"># Yes. Yes we can.</span>
-
-<span class="s2"># M1 is for the Mesoscale1 NetCDF file</span>
-
-<span class="s2">FILE = ('http://ramadda-jetstream.unidata.ucar.edu/repository/opendap'</span>
-<span class="s2">        '/5e02eafa-5cee-4d00-9f58-6e201e69b014/entry.das#fillmismatch')</span>
-<span class="s2">M1 = xarray.open_dataset(FILE)</span>
-
-<span class="s2"># Load the RGB arrays</span>
-<span class="s2">R = M1['CMI_C02'][:].data</span>
-<span class="s2">G = M1['CMI_C03'][:].data</span>
-<span class="s2">B = M1['CMI_C01'][:].data</span>
-
-<span class="s2"># Apply range limits for each channel. RGB values must be between 0 and 1</span>
-<span class="s2">R = np.clip(R, 0, 1)</span>
-<span class="s2">G = np.clip(G, 0, 1)</span>
-<span class="s2">B = np.clip(B, 0, 1)</span>
-
-<span class="s2"># Apply the gamma correction</span>
-<span class="s2">gamma = 2.2</span>
-<span class="s2">R = np.power(R, 1/gamma)</span>
-<span class="s2">G = np.power(G, 1/gamma)</span>
-<span class="s2">B = np.power(B, 1/gamma)</span>
-
-<span class="s2"># Calculate the "True" Green</span>
-<span class="s2">G_true = 0.45 * R + 0.1 * G + 0.45 * B</span>
-<span class="s2">G_true = np.clip(G_true, 0, 1)</span>
-
-<span class="s2"># The final RGB array :)</span>
-<span class="s2">RGB = np.dstack([R, G_true, B])</span>
-
-<span class="s2"># Scan's start time, converted to datetime object</span>
-<span class="s2">scan_start = datetime.strptime(M1.time_coverage_start, '%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S.</span><span class="si">%f</span><span class="s2">Z')</span>
-
-<span class="s2"># We'll use the `CMI_C02` variable as a 'hook' to get the CF metadata.</span>
-<span class="s2">dat = M1.metpy.parse_cf('CMI_C02')</span>
-
-<span class="s2"># Need the satellite sweep x and y values, too.</span>
-<span class="s2">x = dat.x</span>
-<span class="s2">y = dat.y</span>
-
-<span class="s2">######################################################################</span>
-
-<span class="s2">fig = plt.figure(figsize=(10, 8))</span>
-
-<span class="s2">ax = fig.add_subplot(1, 1, 1, projection=lc)</span>
-<span class="s2">ax.set_extent([-125, -70, 25, 50], crs=ccrs.PlateCarree())</span>
-
-<span class="s2">ax.imshow(RGB, origin='upper',</span>
-<span class="s2">          extent=(x.min(), x.max(), y.min(), y.max()),</span>
-<span class="s2">          transform=geos)</span>
-
-<span class="s2">ax.coastlines(resolution='50m', color='black', linewidth=0.5)</span>
-<span class="s2">ax.add_feature(ccrs.cartopy.feature.STATES, linewidth=0.5)</span>
-<span class="s2">ax.add_feature(ccrs.cartopy.feature.BORDERS, linewidth=0.5)</span>
-
-<span class="s2">plt.title('GOES-16 True Color', fontweight='bold', fontsize=15, loc='left')</span>
-<span class="s2">plt.title('Mesoscale Section 1')</span>
-<span class="s2">plt.title('</span><span class="si">{}</span><span class="s2">'.format(scan_start.strftime('%H:%M UTC </span><span class="si">%d</span><span class="s2"> %B %Y')), loc='right')</span>
-
-<span class="s2">plt.show()</span>
-
-<span class="s2">######################################################################</span>
-
-<span class="s2">fig = plt.figure(figsize=(15, 12))</span>
-
-<span class="s2">ax = fig.add_subplot(1, 1, 1, projection=geos)</span>
-
-<span class="s2">ax.imshow(RGB, origin='upper',</span>
-<span class="s2">          extent=(x.min(), x.max(), y.min(), y.max()),</span>
-<span class="s2">          transform=geos)</span>
-
-<span class="s2">ax.coastlines(resolution='50m', color='black', linewidth=0.25)</span>
-<span class="s2">ax.add_feature(ccrs.cartopy.feature.STATES, linewidth=0.25)</span>
-
-<span class="s2">plt.title('GOES-16 True Color', fontweight='bold', fontsize=15, loc='left')</span>
-<span class="s2">plt.title('Mesoscale Section 1')</span>
-<span class="s2">plt.title('</span><span class="si">{}</span><span class="s2">'.format(scan_start.strftime('%H:%M UTC </span><span class="si">%d</span><span class="s2"> %B %Y')), loc='right')</span>
-
-<span class="s2">plt.show()</span>
-
-<span class="s2">######################################################################</span>
-<span class="s2"># Can we do this for a Full Disk Scan? It's possible...</span>
-<span class="s2"># -----------------------------------------------------</span>
-<span class="s2">#</span>
-<span class="s2"># but data files are so large that plotting is very slow.  Feel free to</span>
-<span class="s2"># experiment.</span>
-
-<span class="s2">FILE = ('http://ramadda-jetstream.unidata.ucar.edu/repository/opendap'</span>
-<span class="s2">        '/deb91f58-f997-41a3-a077-987529bf02b3/entry.das#fillmismatch')</span>
-<span class="s2">F = xarray.open_dataset(FILE)</span>
-
-<span class="s2"># Load the RGB arrays</span>
-<span class="s2">R = F['CMI_C02'][:].data</span>
-<span class="s2">G = F['CMI_C03'][:].data</span>
-<span class="s2">B = F['CMI_C01'][:].data</span>
-
-<span class="s2"># Apply range limits for each channel. RGB values must be between 0 and 1</span>
-<span class="s2">R = np.clip(R, 0, 1)</span>
-<span class="s2">G = np.clip(G, 0, 1)</span>
-<span class="s2">B = np.clip(B, 0, 1)</span>
-
-<span class="s2"># Apply the gamma correction</span>
-<span class="s2">gamma = 2.2</span>
-<span class="s2">R = np.power(R, 1/gamma)</span>
-<span class="s2">G = np.power(G, 1/gamma)</span>
-<span class="s2">B = np.power(B, 1/gamma)</span>
-
-<span class="s2"># Calculate the "True" Green</span>
-<span class="s2">G_true = 0.48358168 * R + 0.45706946 * B + 0.06038137 * G</span>
-<span class="s2">G_true = np.clip(G_true, 0, 1)</span>
-
-<span class="s2"># The final RGB array :)</span>
-<span class="s2">RGB = np.dstack([R, G_true, B])</span>
-
-<span class="s2"># We'll use the `CMI_C02` variable as a 'hook' to get the CF metadata.</span>
-<span class="s2">dat = F.metpy.parse_cf('CMI_C02')</span>
-
-<span class="s2">x = dat.x</span>
-<span class="s2">y = dat.y</span>
-
-<span class="s2">######################################################################</span>
-<span class="s2"># Geostationary projection is easy...</span>
-
-<span class="s2">fig = plt.figure(figsize=(10, 8))</span>
-
-<span class="s2">ax = fig.add_subplot(1, 1, 1, projection=geos)</span>
-
-<span class="s2">ax.imshow(RGB, origin='upper',</span>
-<span class="s2">          extent=(x.min(), x.max(), y.min(), y.max()),</span>
-<span class="s2">          transform=geos)</span>
-
-<span class="s2">ax.coastlines(resolution='50m', color='black', linewidth=1)</span>
-<span class="s2">ax.add_feature(ccrs.cartopy.feature.BORDERS, linewidth=1)</span>
-
-<span class="s2">plt.title('GOES-16 True Color', fontweight='bold', fontsize=15, loc='left')</span>
-<span class="s2">plt.title('Full Disk</span><span class="se">\n</span><span class="si">{}</span><span class="s2">'.format(scan_start.strftime('%H:%M UTC </span><span class="si">%d</span><span class="s2"> %B %Y')),</span>
-<span class="s2">          loc='right')</span>
-
-<span class="s2">plt.show()</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
 </div>
 </div>
     </div>
