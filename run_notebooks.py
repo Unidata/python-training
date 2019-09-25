@@ -12,7 +12,8 @@ SKIP_NOTEBOOKS = [os.path.join('Bonus', 'What to do when things go wrong.ipynb')
                   os.path.join('AWIPS', 'NEXRAD_Level_3_Plot_with_Matplotlib.ipynb'),
                   os.path.join('AWIPS', 'Satellite_Imagery.ipynb'),
                   os.path.join('AWIPS', 'Upper_Air_BUFR_Soundings.ipynb'),
-                  os.path.join('AWIPS', 'Watch_and_Warning_Polygons.ipynb')]
+                  os.path.join('AWIPS', 'Watch_and_Warning_Polygons.ipynb'),
+                  os.path.join('Sounding_Plotter.ipynb')]
 
 
 def run_notebook(notebook):
@@ -37,8 +38,7 @@ if __name__ == '__main__':
 
     ret = 0
     notebooks = set(glob.glob(os.path.join(NOTEBOOKS_DIR, '**', '*.ipynb'), recursive=True))
-    notebooks -= set(os.path.join(NOTEBOOKS_DIR, s)
-                     for s in SKIP_NOTEBOOKS)
+    notebooks -= set(os.path.join(NOTEBOOKS_DIR, s) for s in SKIP_NOTEBOOKS)
 
     with mp.Pool(processes=6) as pool:
         for notebook in notebooks:

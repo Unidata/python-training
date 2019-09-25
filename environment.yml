@@ -1,0 +1,13 @@
+ name: training
+ channels:
+   - conda-forge
+ dependencies:
+   - python=3
+   - numpy
+   - matplotlib
+   - cartopy
+   - jupyter
+   - metpy
+   - siphon
+   - pandas
+   - xarray

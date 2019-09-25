@@ -6,11 +6,34 @@ branches:
   - master
 python:
 - 3.6
+env:
+  global:
+    - MINICONDA_DIR="$HOME/miniconda"
+
+before_install:
+  - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
+      export CONDA_OS_NAME="MacOSX";
+    else
+      export CONDA_OS_NAME="Linux";
+    fi;
+  - wget https://repo.continuum.io/miniconda/Miniconda3-latest-${CONDA_OS_NAME}-x86_64.sh -O miniconda.sh
+  - bash miniconda.sh -b -p $MINICONDA_DIR
+  - export PATH="$MINICONDA_DIR/bin:$PATH"
+  - hash -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update -q conda
+  - conda info -a
+  - sed -i -e "s/python=3/python=$Python/" environment.yml;
 
 install:
-- pip install -U --upgrade-strategy=eager 'Nikola[extras]'
+  - conda env create -q -f environment.yml
+  - source activate training
+  - pip install -U --upgrade-strategy=eager 'Nikola[extras]'
+  - conda list
 
 script:
+  - python notebooks_preprocess.py
+  - python run_notebooks.py
   - nikola build
 
 deploy:
