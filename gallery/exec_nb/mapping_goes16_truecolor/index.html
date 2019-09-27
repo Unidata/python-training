@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>mapping_GOES16_TrueColor | The Unidata Python Training Site</title>
+<link href="../../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/gallery/exec_nb/mapping_goes16_truecolor/">
+<!--[if lt IE 9]><script src="../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="mapping_GOES16_TrueColor">
+<meta property="og:url" content="https://unidata.github.io/python-training/gallery/exec_nb/mapping_goes16_truecolor/">
+<meta property="og:description" content="In [1]:
+
+    
+%matplotlib inline
+
+
+    
+
+
+
+
+
+
+
+==========================
+GOES-16: True Color Recipe¶By: Brian Blaylock
+with help from Julien Chastang (UCAR-Unidata).
+Additional notebooks analyzing GO">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-09-27T16:08:47-06:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../../python/intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../../gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../../workshop/workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.ipynb" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">mapping_GOES16_TrueColor</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>==========================</p>
+<h2 id="GOES-16:-True-Color-Recipe">GOES-16: True Color Recipe<a class="anchor-link" href="#GOES-16:-True-Color-Recipe">¶</a>
+</h2>
+<p>By: <a href="http://home.chpc.utah.edu/~u0553130/Brian_Blaylock/home.html">Brian Blaylock</a>
+with help from Julien Chastang (UCAR-Unidata).</p>
+<p>Additional notebooks analyzing GOES-16 and other data can be found in <a href="https://github.com/blaylockbk/pyBKB_v3/">Brian's
+GitHub repository</a>.</p>
+<p>This notebook shows how to make a true color image from the GOES-16
+Advanced Baseline Imager (ABI) level 2 data. We will plot the image with
+matplotlib and Cartopy. The methods shown here are stitched together from the
+following online resources:</p>
+<ul>
+<li><a href="http://cimss.ssec.wisc.edu/goes/OCLOFactSheetPDFs/ABIQuickGuide_CIMSSRGB_v2.pdf"><strong>CIMSS True Color RGB Quick Guide</strong></a></li>
+<li><a href="https://www.goes-r.gov/education/ABI-bands-quick-info.html">ABI Bands Quick Information Guides</a></li>
+<li><a href="http://edc.occ-data.org/goes16/python/">Open Commons Consortium</a></li>
+<li><a href="https://geonetcast.wordpress.com/2017/07/25/geonetclass-manipulating-goes-16-data-with-python-part-vi/">GeoNetCast Blog</a></li>
+<li><a href="https://proj4.org/operations/projections/geos.html?highlight=geostationary">Proj documentation</a></li>
+</ul>
+<p>True color images are an RGB composite of the following three channels:</p>
+<table>
+<thead><tr>
+<th>--</th>
+<th>Wavelength</th>
+<th>Channel</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><strong>Red</strong></td>
+<td>0.64 µm</td>
+<td>2</td>
+<td>Red Visible</td>
+</tr>
+<tr>
+<td><strong>Green</strong></td>
+<td>0.86 µm</td>
+<td>3</td>
+<td>Veggie Near-IR</td>
+</tr>
+<tr>
+<td><strong>Blue</strong></td>
+<td>0.47 µm</td>
+<td>1</td>
+<td>Blue Visible</td>
+</tr>
+</tbody>
+</table>
+<p>For this demo, we use the <strong>Level 2 Multichannel formated data</strong> (ABI-L2-MCMIP)
+for the CONUS domain. This file contains all sixteen channels on the ABI fixed
+grid (~2 km grid spacing).</p>
+<p>GOES-16 data is downloaded from Unidata, but you may also
+download GOES-16 or 17 files from NOAA's GOES archive on <a href="https://aws.amazon.com/public-datasets/goes/">Amazon S3</a>.
+I created a <a href="http://home.chpc.utah.edu/~u0553130/Brian_Blaylock/cgi-bin/goes16_download.cgi?source=aws&amp;satellite=noaa-goes16&amp;domain=C&amp;product=ABI-L2-MCMIP">web interface</a>
+to easily download files from the Amazon archive. For scripted or bulk
+downloads, you should use <code>rclone</code> or <code>AWS CLI</code>. You may also download files
+from the <a href="http://edc.occ-data.org/goes16/getdata/">Environmental Data Commons</a>
+and <a href="https://www.avl.class.noaa.gov/saa/products/search?sub_id=0&amp;datatype_family=GRABIPRD&amp;submit.x=25&amp;submit.y=9">NOAA
+CLASS</a>.</p>
+<p>File names have the following format...</p>
+<p><code>OR_ABI-L2-MCMIPC-M3_G16_s20181781922189_e20181781924562_c20181781925075.nc</code></p>
+<p><code>OR</code>     - Indicates the system is operational</p>
+<p><code>ABI</code>    - Instrument type</p>
+<p><code>L2</code>     - Level 2 Data</p>
+<p><code>MCMIP</code>  - Multichannel Cloud and Moisture Imagery products</p>
+<p><code>c</code>      - CONUS file (created every 5 minutes).</p>
+<p><code>M3</code>     - Scan mode</p>
+<p><code>G16</code>    - GOES-16</p>
+<p><code>sYYYYJJJHHMMSSZ</code> - Scan start: 4 digit year, 3 digit day of year (Julian day), hour, minute, second, tenth second</p>
+<p><code>eYYYYJJJHHMMSSZ</code> - Scan end</p>
+<p><code>cYYYYJJJHHMMSSZ</code> - File Creation
+<code>.nc</code>    - NetCDF file extension</p>
+<p>"""  # noqa: E501</p>
+<h6 id="#">#<a class="anchor-link" href="##">¶</a>
+</h6>
+<h2 id="First,-import-the-libraries-we-will-use">First, import the libraries we will use<a class="anchor-link" href="#First,-import-the-libraries-we-will-use">¶</a>
+</h2>
+<h2 id="---------------------------------------">---------------------------------------<a class="anchor-link" href="#---------------------------------------">¶</a>
+</h2>
+<p>from datetime import datetime</p>
+<p>import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
+import metpy  # noqa: F401
+import numpy as np
+import xarray</p>
+<h6 id="#">#<a class="anchor-link" href="##">¶</a>
+</h6>
+<h2 id="Open-the-GOES-16-NetCDF-File">Open the GOES-16 NetCDF File<a class="anchor-link" href="#Open-the-GOES-16-NetCDF-File">¶</a>
+</h2>
+<h2 id="----------------------------">----------------------------<a class="anchor-link" href="#----------------------------">¶</a>
+</h2>
+<h2 id="Open-the-file-with-xarray.">Open the file with xarray.<a class="anchor-link" href="#Open-the-file-with-xarray.">¶</a>
+</h2>
+<h2 id='The-opened-file-is-assigned-to-"C"-for-the-CONUS-domain.'>The opened file is assigned to "C" for the CONUS domain.<a class="anchor-link" href="#The-opened-file-is-assigned-to-%22C%22-for-the-CONUS-domain.">¶</a>
+</h2>
+<p>FILE = ('<a href="http://ramadda-jetstream.unidata.ucar.edu/repository/opendap">http://ramadda-jetstream.unidata.ucar.edu/repository/opendap</a>'
+        '/4ef52e10-a7da-4405-bff4-e48f68bb6ba2/entry.das#fillmismatch')
+C = xarray.open_dataset(FILE)</p>
+<h6 id="#">#<a class="anchor-link" href="##">¶</a>
+</h6>
+<h2 id="Date-and-Time-Information">Date and Time Information<a class="anchor-link" href="#Date-and-Time-Information">¶</a>
+</h2>
+<h2 id="----------------------------">----------------------------<a class="anchor-link" href="#----------------------------">¶</a>
+</h2>
+<h2 id="Each-file-represents-the-data-collected-during-one-scan-sequence-for-the">Each file represents the data collected during one scan sequence for the<a class="anchor-link" href="#Each-file-represents-the-data-collected-during-one-scan-sequence-for-the">¶</a>
+</h2>
+<h2 id="domain.-There-are-several-different-time-stamps-in-this-file,-which-are-also">domain. There are several different time stamps in this file, which are also<a class="anchor-link" href="#domain.-There-are-several-different-time-stamps-in-this-file,-which-are-also">¶</a>
+</h2>
+<h2 id="found-in-the-file's-name.">found in the file's name.<a class="anchor-link" href="#found-in-the-file's-name.">¶</a>
+</h2>
+<h2 id="I'm-not-a-fan-of-numpy-datetime,-so-I-convert-it-to-a-regular-datetime">I'm not a fan of numpy datetime, so I convert it to a regular datetime<a class="anchor-link" href="#I'm-not-a-fan-of-numpy-datetime,-so-I-convert-it-to-a-regular-datetime">¶</a>
+</h2>
+<h2 id="Scan's-start-time,-converted-to-datetime-object">Scan's start time, converted to datetime object<a class="anchor-link" href="#Scan's-start-time,-converted-to-datetime-object">¶</a>
+</h2>
+<p>scan_start = datetime.strptime(C.time_coverage_start, '%Y-%m-%dT%H:%M:%S.%fZ')</p>
+<h2 id="Scan's-end-time,-converted-to-datetime-object">Scan's end time, converted to datetime object<a class="anchor-link" href="#Scan's-end-time,-converted-to-datetime-object">¶</a>
+</h2>
+<p>scan_end = datetime.strptime(C.time_coverage_end, '%Y-%m-%dT%H:%M:%S.%fZ')</p>
+<h2 id="File-creation-time,-convert-to-datetime-object">File creation time, convert to datetime object<a class="anchor-link" href="#File-creation-time,-convert-to-datetime-object">¶</a>
+</h2>
+<p>file_created = datetime.strptime(C.date_created, '%Y-%m-%dT%H:%M:%S.%fZ')</p>
+<h2 id="The-'t'-variable-is-the-scan's-midpoint-time">The 't' variable is the scan's midpoint time<a class="anchor-link" href="#The-'t'-variable-is-the-scan's-midpoint-time">¶</a>
+</h2>
+<p>midpoint = str(C['t'].data)[:-8]
+scan_mid = datetime.strptime(midpoint, '%Y-%m-%dT%H:%M:%S.%f')</p>
+<p>print('Scan Start    : {}'.format(scan_start))
+print('Scan midpoint : {}'.format(scan_mid))
+print('Scan End      : {}'.format(scan_end))
+print('File Created  : {}'.format(file_created))
+print('Scan Duration : {:.2f} minutes'.format((scan_end-scan_start).seconds/60))</p>
+<h6 id="#">#<a class="anchor-link" href="##">¶</a>
+</h6>
+<h2 id="True-Color-RGB-Recipe">True Color RGB Recipe<a class="anchor-link" href="#True-Color-RGB-Recipe">¶</a>
+</h2>
+<h2 id="---------------------">---------------------<a class="anchor-link" href="#---------------------">¶</a>
+</h2>
+<p>#</p>
+<h2 id="Color-images-are-a-Red-Green-Blue-(RGB)-composite-of-three-different">Color images are a Red-Green-Blue (RGB) composite of three different<a class="anchor-link" href="#Color-images-are-a-Red-Green-Blue-(RGB)-composite-of-three-different">¶</a>
+</h2>
+<h2 id='channels.-To-make-a-"Natural-True-Color"-image-we-assign-the-following'>channels. To make a "Natural True Color" image we assign the following<a class="anchor-link" href="#channels.-To-make-a-%22Natural-True-Color%22-image-we-assign-the-following">¶</a>
+</h2>
+<h2 id="channels-as-our-R,-G,-and-B-values:">channels as our R, G, and B values:<a class="anchor-link" href="#channels-as-our-R,-G,-and-B-values:">¶</a>
+</h2>
+<p>#</p>
+<h2 id="|----------------------|-RED---------|-GREEN----------|-BLUE---------|">| --                   | RED         | GREEN          | BLUE         |<a class="anchor-link" href="#%7C----------------------%7C-RED---------%7C-GREEN----------%7C-BLUE---------%7C">¶</a>
+</h2>
+<h2 id="|----------------------|-------------|----------------|--------------|">|----------------------|-------------|----------------|--------------|<a class="anchor-link" href="#%7C----------------------%7C-------------%7C----------------%7C--------------%7C">¶</a>
+</h2>
+<h2 id="|-Name-------------|-Red-Visible-|-Near-IR-Veggie-|-Blue-Visible-|">| <strong>Name</strong>             | Red Visible | Near-IR Veggie | Blue Visible |<a class="anchor-link" href="#%7C-Name-------------%7C-Red-Visible-%7C-Near-IR-Veggie-%7C-Blue-Visible-%7C">¶</a>
+</h2>
+<h2 id="|-Wavelength-------|-0.64-µm-----|-0.86-µm--------|-0.47-µm------|">| <strong>Wavelength</strong>       | 0.64 µm     | 0.86 µm        | 0.47 µm      |<a class="anchor-link" href="#%7C-Wavelength-------%7C-0.64-%C2%B5m-----%7C-0.86-%C2%B5m--------%7C-0.47-%C2%B5m------%7C">¶</a>
+</h2>
+<h2 id="|-Channel----------|-2-----------|-3--------------|-1------------|">| <strong>Channel</strong>          | 2           | 3              | 1            |<a class="anchor-link" href="#%7C-Channel----------%7C-2-----------%7C-3--------------%7C-1------------%7C">¶</a>
+</h2>
+<h2 id="|-Units------------|-Reflectance-|-Reflectance----|-Reflectance--|">| <strong>Units</strong>            | Reflectance | Reflectance    | Reflectance  |<a class="anchor-link" href="#%7C-Units------------%7C-Reflectance-%7C-Reflectance----%7C-Reflectance--%7C">¶</a>
+</h2>
+<h2 id="|-Range-of-Values--|-0-1---------|-0-1------------|-0-1----------|">| <strong>Range of Values</strong>  | 0-1         | 0-1            | 0-1          |<a class="anchor-link" href="#%7C-Range-of-Values--%7C-0-1---------%7C-0-1------------%7C-0-1----------%7C">¶</a>
+</h2>
+<h2 id="|-Gamma-Correction-|-2.2---------|-2.2------------|-2.2----------|">| <strong>Gamma Correction</strong> | 2.2         | 2.2            | 2.2          |<a class="anchor-link" href="#%7C-Gamma-Correction-%7C-2.2---------%7C-2.2------------%7C-2.2----------%7C">¶</a>
+</h2>
+<p>#
+#</p>
+<h2 id="Some-important-details-to-know-about...">Some important details to know about...<a class="anchor-link" href="#Some-important-details-to-know-about...">¶</a>
+</h2>
+<p>#</p>
+<h2 id="Value-Range:-The-data-units-of-channel-1,-2,-and-3-are-in-reflectance-and">
+<strong>Value Range</strong>: The data units of channel 1, 2, and 3 are in reflectance and<a class="anchor-link" href="#Value-Range:-The-data-units-of-channel-1,-2,-and-3-are-in-reflectance-and">¶</a>
+</h2>
+<h2 id="have-a-range-of-values-between-0-and-1.-RGB-values-must-also-be-between-0-and">have a range of values between 0 and 1. RGB values must also be between 0 and<a class="anchor-link" href="#have-a-range-of-values-between-0-and-1.-RGB-values-must-also-be-between-0-and">¶</a>
+</h2>
+<h2 id="1.">1.<a class="anchor-link" href="#1.">¶</a>
+</h2>
+<p>#</p>
+<h2 id="Gamma-Correction:-A-gamma-correction-is-applied-to-control-the-brightness">
+<strong>Gamma Correction</strong>: A gamma correction is applied to control the brightness<a class="anchor-link" href="#Gamma-Correction:-A-gamma-correction-is-applied-to-control-the-brightness">¶</a>
+</h2>
+<h2 id="and-make-the-image-not-look-too-dark.">and make the image not look too dark.<a class="anchor-link" href="#and-make-the-image-not-look-too-dark.">¶</a>
+</h2>
+<h2 id="corrected_value-=-value^(1/gamma).">
+<code>corrected_value = value^(1/gamma)</code>.<a class="anchor-link" href="#corrected_value-=-value%5E(1/gamma).">¶</a>
+</h2>
+<h2 id="Most-displays-have-a-decoding-gamma-of-2.2.-Read-more-about-gamma-correction">Most displays have a decoding gamma of 2.2. Read more about gamma correction<a class="anchor-link" href="#Most-displays-have-a-decoding-gamma-of-2.2.-Read-more-about-gamma-correction">¶</a>
+</h2>
+<h2 id="at-the-following-links...">at the following links...<a class="anchor-link" href="#at-the-following-links...">¶</a>
+</h2>
+<h2 id="source1-and">
+<a href="https://en.wikipedia.org/wiki/Gamma_correction">source1</a> and<a class="anchor-link" href="#source1-and">¶</a>
+</h2>
+<h2 id="source2).">
+<a href="https://www.cambridgeincolour.com/tutorials/gamma-correction.htm">source2</a>).<a class="anchor-link" href="#source2).">¶</a>
+</h2>
+<p>#</p>
+<h2 id='True-Green:-The-GREEN-"veggie"-channel-on-GOES-16-does-not-measure'>
+<strong>True Green</strong>: The GREEN "veggie" channel on GOES-16 does not measure<a class="anchor-link" href="#True-Green:-The-GREEN-%22veggie%22-channel-on-GOES-16-does-not-measure">¶</a>
+</h2>
+<h2 id="visible-green-light.-Instead,-it-measures-a-near-infrared-band-sensitive-to">visible green light. Instead, it measures a near-infrared band sensitive to<a class="anchor-link" href="#visible-green-light.-Instead,-it-measures-a-near-infrared-band-sensitive-to">¶</a>
+</h2>
+<h2 id="chlorophyll.-We-could-use-that-channel-in-place-of-green,-but-it-would-make">chlorophyll. We could use that channel in place of green, but it would make<a class="anchor-link" href="#chlorophyll.-We-could-use-that-channel-in-place-of-green,-but-it-would-make">¶</a>
+</h2>
+<h2 id="the-green-in-our-image-appear-too-vibrant.-Instead,-we-will-tone-down-the">the green in our image appear too vibrant. Instead, we will tone-down the<a class="anchor-link" href="#the-green-in-our-image-appear-too-vibrant.-Instead,-we-will-tone-down-the">¶</a>
+</h2>
+<h2 id="green-channel-by-interpolating-the-value-to-simulate-a-natural-green-color.">green channel by interpolating the value to simulate a natural green color.<a class="anchor-link" href="#green-channel-by-interpolating-the-value-to-simulate-a-natural-green-color.">¶</a>
+</h2>
+<p>#</p>
+<h2 id="TrueGreen-=-(0.45*RED)-+-(0.1*GREEN)-+-(0.45*BLUE)">
+<code>TrueGreen = (0.45*RED) + (0.1*GREEN) + (0.45*BLUE)</code><a class="anchor-link" href="#TrueGreen-=-(0.45*RED)-+-(0.1*GREEN)-+-(0.45*BLUE)">¶</a>
+</h2>
+<p>#</p>
+<h2 id="Now-we-can-begin-putting-the-pieces-together...">Now we can begin putting the pieces together...<a class="anchor-link" href="#Now-we-can-begin-putting-the-pieces-together...">¶</a>
+</h2>
+<h2 id="Confirm-that-each-band-is-the-wavelength-we-are-interested-in">Confirm that each band is the wavelength we are interested in<a class="anchor-link" href="#Confirm-that-each-band-is-the-wavelength-we-are-interested-in">¶</a>
+</h2>
+<p>for band in [2, 3, 1]:
+    print('{} is {:.2f} {}'.format(
+        C['band_wavelength_C{:02d}'.format(band)].long_name,
+        float(C['band_wavelength_C{:02d}'.format(band)][0]),
+        C['band_wavelength_C{:02d}'.format(band)].units))</p>
+<h6 id="#">#<a class="anchor-link" href="##">¶</a>
+</h6>
+<h2 id="Load-the-three-channels-into-appropriate-R,-G,-and-B-variables">Load the three channels into appropriate R, G, and B variables<a class="anchor-link" href="#Load-the-three-channels-into-appropriate-R,-G,-and-B-variables">¶</a>
+</h2>
+<p>R = C['CMI_C02'].data
+G = C['CMI_C03'].data
+B = C['CMI_C01'].data</p>
+<h6 id="#">#<a class="anchor-link" href="##">¶</a>
+</h6>
+<h2 id="Apply-range-limits-for-each-channel.-RGB-values-must-be-between-0-and-1">Apply range limits for each channel. RGB values must be between 0 and 1<a class="anchor-link" href="#Apply-range-limits-for-each-channel.-RGB-values-must-be-between-0-and-1">¶</a>
+</h2>
+<p>R = np.clip(R, 0, 1)
+G = np.clip(G, 0, 1)
+B = np.clip(B, 0, 1)</p>
+<h6 id="#">#<a class="anchor-link" href="##">¶</a>
+</h6>
+<h2 id="Apply-a-gamma-correction-to-the-image-to-correct-ABI-detector-brightness">Apply a gamma correction to the image to correct ABI detector brightness<a class="anchor-link" href="#Apply-a-gamma-correction-to-the-image-to-correct-ABI-detector-brightness">¶</a>
+</h2>
+<p>gamma = 2.2
+R = np.power(R, 1/gamma)
+G = np.power(G, 1/gamma)
+B = np.power(B, 1/gamma)</p>
+<h6 id="#">#<a class="anchor-link" href="##">¶</a>
+</h6>
+<h2 id='Calculate-the-"True"-Green'>Calculate the "True" Green<a class="anchor-link" href="#Calculate-the-%22True%22-Green">¶</a>
+</h2>
+<p>G_true = 0.45 <em> R + 0.1 </em> G + 0.45 * B
+G_true = np.clip(G_true, 0, 1)  # apply limits again, just in case.</p>
+<h6 id="#">#<a class="anchor-link" href="##">¶</a>
+</h6>
+<h2 id="Simple-Image">Simple Image<a class="anchor-link" href="#Simple-Image">¶</a>
+</h2>
+<h2 id="-----------------">-----------------<a class="anchor-link" href="#-----------------">¶</a>
+</h2>
+<p>#</p>
+<h2 id="Use-plt.imshow-to-get-a-quick-look-at-the-channels-and-RGB-composite-we">Use <code>plt.imshow</code> to get a quick look at the channels and RGB composite we<a class="anchor-link" href="#Use-plt.imshow-to-get-a-quick-look-at-the-channels-and-RGB-composite-we">¶</a>
+</h2>
+<h2 id="created.">created.<a class="anchor-link" href="#created.">¶</a>
+</h2>
+<p>#</p>
+<h2 id="First,-plot-each-channel-individually.-The-deeper-the-color-means-the">First, plot each channel individually. The deeper the color means the<a class="anchor-link" href="#First,-plot-each-channel-individually.-The-deeper-the-color-means-the">¶</a>
+</h2>
+<h2 id="satellite-is-observing-more-light-in-that-channel.-Clouds-appear-white-because">satellite is observing more light in that channel. Clouds appear white because<a class="anchor-link" href="#satellite-is-observing-more-light-in-that-channel.-Clouds-appear-white-because">¶</a>
+</h2>
+<h2 id="they-reflect-lots-of-red,-green,-and-blue-light.-Notice-that-the-land-reflects">they reflect lots of red, green, and blue light. Notice that the land reflects<a class="anchor-link" href="#they-reflect-lots-of-red,-green,-and-blue-light.-Notice-that-the-land-reflects">¶</a>
+</h2>
+<h2 id='a-lot-of-"green"-in-the-veggie-channel-because-this-channel-is-sensitive-to'>a lot of "green" in the veggie channel because this channel is sensitive to<a class="anchor-link" href="#a-lot-of-%22green%22-in-the-veggie-channel-because-this-channel-is-sensitive-to">¶</a>
+</h2>
+<h2 id="the-chlorophyll.">the chlorophyll.<a class="anchor-link" href="#the-chlorophyll.">¶</a>
+</h2>
+<p>fig, ([ax1, ax2, ax3, ax4]) = plt.subplots(1, 4, figsize=(16, 3))</p>
+<p>ax1.imshow(R, cmap='Reds', vmax=1, vmin=0)
+ax1.set_title('Red', fontweight='bold')
+ax1.axis('off')</p>
+<p>ax2.imshow(G, cmap='Greens', vmax=1, vmin=0)
+ax2.set_title('Veggie', fontweight='bold')
+ax2.axis('off')</p>
+<p>ax3.imshow(G_true, cmap='Greens', vmax=1, vmin=0)
+ax3.set_title('"True" Green', fontweight='bold')
+ax3.axis('off')</p>
+<p>ax4.imshow(B, cmap='Blues', vmax=1, vmin=0)
+ax4.set_title('Blue', fontweight='bold')
+ax4.axis('off')</p>
+<p>plt.subplots_adjust(wspace=.02)</p>
+<h6 id="#">#<a class="anchor-link" href="##">¶</a>
+</h6>
+<h2 id="The-addition-of-the-three-channels-results-in-a-color-image.-Combine-the-three">The addition of the three channels results in a color image. Combine the three<a class="anchor-link" href="#The-addition-of-the-three-channels-results-in-a-color-image.-Combine-the-three">¶</a>
+</h2>
+<h2 id="channels-with-a-stacked-array-and-display-the-image-with-imshow.">channels with a stacked array and display the image with <code>imshow</code>.<a class="anchor-link" href="#channels-with-a-stacked-array-and-display-the-image-with-imshow.">¶</a>
+</h2>
+<h2 id="The-RGB-array-with-the-raw-veggie-band">The RGB array with the raw veggie band<a class="anchor-link" href="#The-RGB-array-with-the-raw-veggie-band">¶</a>
+</h2>
+<p>RGB_veggie = np.dstack([R, G, B])</p>
+<h2 id="The-RGB-array-for-the-true-color-image">The RGB array for the true color image<a class="anchor-link" href="#The-RGB-array-for-the-true-color-image">¶</a>
+</h2>
+<p>RGB = np.dstack([R, G_true, B])</p>
+<p>fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))</p>
+<h2 id="The-RGB-using-the-raw-veggie-band">The RGB using the raw veggie band<a class="anchor-link" href="#The-RGB-using-the-raw-veggie-band">¶</a>
+</h2>
+<p>ax1.imshow(RGB_veggie)
+ax1.set_title('GOES-16 RGB Raw Veggie', fontweight='bold', loc='left',
+              fontsize=12)
+ax1.set_title('{}'.format(scan_start.strftime('%d %B %Y %H:%M UTC ')),
+              loc='right')
+ax1.axis('off')</p>
+<h2 id="The-RGB-for-the-true-color-image">The RGB for the true color image<a class="anchor-link" href="#The-RGB-for-the-true-color-image">¶</a>
+</h2>
+<p>ax2.imshow(RGB)
+ax2.set_title('GOES-16 RGB True Color', fontweight='bold', loc='left',
+              fontsize=12)
+ax2.set_title('{}'.format(scan_start.strftime('%d %B %Y %H:%M UTC ')),
+              loc='right')
+ax2.axis('off')</p>
+<h6 id="#">#<a class="anchor-link" href="##">¶</a>
+</h6>
+<h2 id="Plot-with-Cartopy-Geostationary-Projection">Plot with <code>Cartopy</code> Geostationary Projection<a class="anchor-link" href="#Plot-with-Cartopy-Geostationary-Projection">¶</a>
+</h2>
+<h2 id="----------------------------------------------">----------------------------------------------<a class="anchor-link" href="#----------------------------------------------">¶</a>
+</h2>
+<p>#</p>
+<h2 id="The-image-above-is-not-georeferenced.-You-can-see-the-land-and-oceans,-but-we">The image above is not georeferenced. You can see the land and oceans, but we<a class="anchor-link" href="#The-image-above-is-not-georeferenced.-You-can-see-the-land-and-oceans,-but-we">¶</a>
+</h2>
+<h2 id="do-have-enough-information-to-draw-state-and-country-boundaries.-Use-the">do have enough information to draw state and country boundaries. Use the<a class="anchor-link" href="#do-have-enough-information-to-draw-state-and-country-boundaries.-Use-the">¶</a>
+</h2>
+<h2 id="metpy.io-package-to-obtain-the-projection-information-from-the-file.--Then">
+<code>metpy.io</code> package to obtain the projection information from the file.  Then<a class="anchor-link" href="#metpy.io-package-to-obtain-the-projection-information-from-the-file.--Then">¶</a>
+</h2>
+<h2 id="use-Cartopy-to-plot-the-image-on-a-map.-The-GOES-data-and-image-is-on-a">use <code>Cartopy</code> to plot the image on a map. The GOES data and image is on a<a class="anchor-link" href="#use-Cartopy-to-plot-the-image-on-a-map.-The-GOES-data-and-image-is-on-a">¶</a>
+</h2>
+<h2 id="[geostationary-projection">[geostationary projection<a class="anchor-link" href="#%5Bgeostationary-projection">¶</a>
+</h2>
+<h2 id="](https://proj4.org/operations/projections/geos.html?highlight=geostationary).">](<a href="https://proj4.org/operations/projections/geos.html?highlight=geostationary">https://proj4.org/operations/projections/geos.html?highlight=geostationary</a>).<a class="anchor-link" href="#%5D(https://proj4.org/operations/projections/geos.html?highlight=geostationary).">¶</a>
+</h2>
+<h2 id="We'll-use-the-CMI_C02-variable-as-a-'hook'-to-get-the-CF-metadata.">We'll use the <code>CMI_C02</code> variable as a 'hook' to get the CF metadata.<a class="anchor-link" href="#We'll-use-the-CMI_C02-variable-as-a-'hook'-to-get-the-CF-metadata.">¶</a>
+</h2>
+<p>dat = C.metpy.parse_cf('CMI_C02')</p>
+<p>geos = dat.metpy.cartopy_crs</p>
+<h2 id="We-also-need-the-x-(north/south)-and-y-(east/west)-axis-sweep-of-the-ABI-data">We also need the x (north/south) and y (east/west) axis sweep of the ABI data<a class="anchor-link" href="#We-also-need-the-x-(north/south)-and-y-(east/west)-axis-sweep-of-the-ABI-data">¶</a>
+</h2>
+<p>x = dat.x
+y = dat.y</p>
+<h6 id="#">#<a class="anchor-link" href="##">¶</a>
+</h6>
+<h2 id="The-geostationary-projection-is-the-easiest-way-to-plot-the-image-on-a">The geostationary projection is the easiest way to plot the image on a<a class="anchor-link" href="#The-geostationary-projection-is-the-easiest-way-to-plot-the-image-on-a">¶</a>
+</h2>
+<h2 id="map.-Essentially,-we-are-stretching-the-image-across-a-map-with-the-same">map. Essentially, we are stretching the image across a map with the same<a class="anchor-link" href="#map.-Essentially,-we-are-stretching-the-image-across-a-map-with-the-same">¶</a>
+</h2>
+<h2 id="projection-and-dimensions-as-the-data.">projection and dimensions as the data.<a class="anchor-link" href="#projection-and-dimensions-as-the-data.">¶</a>
+</h2>
+<p>fig = plt.figure(figsize=(15, 12))</p>
+<h2 id="Create-axis-with-Geostationary-projection">Create axis with Geostationary projection<a class="anchor-link" href="#Create-axis-with-Geostationary-projection">¶</a>
+</h2>
+<p>ax = fig.add_subplot(1, 1, 1, projection=geos)</p>
+<h2 id="Add-the-RGB-image-to-the-figure.-The-data-is-in-the-same-projection-as-the">Add the RGB image to the figure. The data is in the same projection as the<a class="anchor-link" href="#Add-the-RGB-image-to-the-figure.-The-data-is-in-the-same-projection-as-the">¶</a>
+</h2>
+<h2 id="axis-we-just-created.">axis we just created.<a class="anchor-link" href="#axis-we-just-created.">¶</a>
+</h2>
+<p>ax.imshow(RGB, origin='upper',
+          extent=(x.min(), x.max(), y.min(), y.max()), transform=geos)</p>
+<h2 id="Add-Coastlines-and-States">Add Coastlines and States<a class="anchor-link" href="#Add-Coastlines-and-States">¶</a>
+</h2>
+<p>ax.coastlines(resolution='50m', color='black', linewidth=0.25)
+ax.add_feature(ccrs.cartopy.feature.STATES, linewidth=0.25)</p>
+<p>plt.title('GOES-16 True Color', loc='left', fontweight='bold', fontsize=15)
+plt.title('{}'.format(scan_start.strftime('%d %B %Y %H:%M UTC ')), loc='right')</p>
+<p>plt.show()</p>
+<h6 id="#">#<a class="anchor-link" href="##">¶</a>
+</h6>
+<h2 id="Using-other-projections">Using other projections<a class="anchor-link" href="#Using-other-projections">¶</a>
+</h2>
+<h2 id="----------------------------------------------">----------------------------------------------<a class="anchor-link" href="#----------------------------------------------">¶</a>
+</h2>
+<p>#</p>
+<h2 id="Changing-the-projections-with-Cartopy-is-straightforward.-Here-we-display">Changing the projections with <code>Cartopy</code> is straightforward. Here we display<a class="anchor-link" href="#Changing-the-projections-with-Cartopy-is-straightforward.-Here-we-display">¶</a>
+</h2>
+<h2 id="the-GOES-16-data-on-a-Lambert-Conformal-projection.">the GOES-16 data on a Lambert Conformal projection.<a class="anchor-link" href="#the-GOES-16-data-on-a-Lambert-Conformal-projection.">¶</a>
+</h2>
+<p>fig = plt.figure(figsize=(15, 12))</p>
+<h2 id="Generate-an-Cartopy-projection">Generate an Cartopy projection<a class="anchor-link" href="#Generate-an-Cartopy-projection">¶</a>
+</h2>
+<p>lc = ccrs.LambertConformal(central_longitude=-97.5, standard_parallels=(38.5,
+                                                                        38.5))</p>
+<p>ax = fig.add_subplot(1, 1, 1, projection=lc)
+ax.set_extent([-135, -60, 10, 65], crs=ccrs.PlateCarree())</p>
+<p>ax.imshow(RGB, origin='upper',
+          extent=(x.min(), x.max(), y.min(), y.max()),
+          transform=geos,
+          interpolation='none')
+ax.coastlines(resolution='50m', color='black', linewidth=0.5)
+ax.add_feature(ccrs.cartopy.feature.STATES, linewidth=0.5)</p>
+<p>plt.title('GOES-16 True Color', loc='left', fontweight='bold', fontsize=15)
+plt.title('{}'.format(scan_start.strftime('%d %B %Y %H:%M UTC ')), loc='right')</p>
+<p>plt.show()</p>
+<h6 id="#">#<a class="anchor-link" href="##">¶</a>
+</h6>
+<h2 id="Plot-with-Cartopy:-Plate-Carrée--Cylindrical-Projection">Plot with <code>Cartopy</code>: Plate Carrée  Cylindrical Projection<a class="anchor-link" href="#Plot-with-Cartopy:-Plate-Carr%C3%A9e--Cylindrical-Projection">¶</a>
+</h2>
+<h2 id="---------------------------------------------------------">---------------------------------------------------------<a class="anchor-link" href="#---------------------------------------------------------">¶</a>
+</h2>
+<p>#</p>
+<h2 id="It-is-often-useful-to-zoom-on-a-specific-location.-This-image-will-zoom-in-on">It is often useful to zoom on a specific location. This image will zoom in on<a class="anchor-link" href="#It-is-often-useful-to-zoom-on-a-specific-location.-This-image-will-zoom-in-on">¶</a>
+</h2>
+<h2 id="Utah.">Utah.<a class="anchor-link" href="#Utah.">¶</a>
+</h2>
+<p>fig = plt.figure(figsize=(8, 8))</p>
+<p>pc = ccrs.PlateCarree()</p>
+<p>ax = fig.add_subplot(1, 1, 1, projection=pc)
+ax.set_extent([-114.75, -108.25, 36, 43], crs=pc)</p>
+<p>ax.imshow(RGB, origin='upper',
+          extent=(x.min(), x.max(), y.min(), y.max()),
+          transform=geos,
+          interpolation='none')</p>
+<p>ax.coastlines(resolution='50m', color='black', linewidth=1)
+ax.add_feature(ccrs.cartopy.feature.STATES)</p>
+<p>plt.title('GOES-16 True Color', loc='left', fontweight='bold', fontsize=15)
+plt.title('{}'.format(scan_start.strftime('%d %B %Y %H:%M UTC ')), loc='right')</p>
+<p>plt.show()</p>
+<h6 id="#">#<a class="anchor-link" href="##">¶</a>
+</h6>
+<h2 id="Overlay-Nighttime-IR-when-dark">Overlay Nighttime IR when dark<a class="anchor-link" href="#Overlay-Nighttime-IR-when-dark">¶</a>
+</h2>
+<h2 id="------------------------------">------------------------------<a class="anchor-link" href="#------------------------------">¶</a>
+</h2>
+<p>#</p>
+<h2 id="At-nighttime,-the-visible-wavelengths-do-not-measure-anything-and-is-just">At nighttime, the visible wavelengths do not measure anything and is just<a class="anchor-link" href="#At-nighttime,-the-visible-wavelengths-do-not-measure-anything-and-is-just">¶</a>
+</h2>
+<h2 id="black.-There-is-information,-however,-from-other-channels-we-can-use-to-see">black. There is information, however, from other channels we can use to see<a class="anchor-link" href="#black.-There-is-information,-however,-from-other-channels-we-can-use-to-see">¶</a>
+</h2>
+<h2 id="clouds-at-night.-To-view-clouds-in-portions-of-the-domain-experiencing">clouds at night. To view clouds in portions of the domain experiencing<a class="anchor-link" href="#clouds-at-night.-To-view-clouds-in-portions-of-the-domain-experiencing">¶</a>
+</h2>
+<h2 id="nighttime,-we-will-overlay-the-clean-infrared-(IR)-channel-over-the-true-color">nighttime, we will overlay the clean infrared (IR) channel over the true color<a class="anchor-link" href="#nighttime,-we-will-overlay-the-clean-infrared-(IR)-channel-over-the-true-color">¶</a>
+</h2>
+<h2 id="image.">image.<a class="anchor-link" href="#image.">¶</a>
+</h2>
+<p>#</p>
+<h2 id="First,-open-a-file-where-the-scan-shows-partial-night-area-and-create-the-true">First, open a file where the scan shows partial night area and create the true<a class="anchor-link" href="#First,-open-a-file-where-the-scan-shows-partial-night-area-and-create-the-true">¶</a>
+</h2>
+<h2 id="color-RGB-as-before.">color RGB as before.<a class="anchor-link" href="#color-RGB-as-before.">¶</a>
+</h2>
+<h2 id="A-GOES-16-file-with-half-day-and-half-night">A GOES-16 file with half day and half night<a class="anchor-link" href="#A-GOES-16-file-with-half-day-and-half-night">¶</a>
+</h2>
+<p>FILE = ('<a href="http://ramadda-jetstream.unidata.ucar.edu/repository/opendap">http://ramadda-jetstream.unidata.ucar.edu/repository/opendap</a>'
+        '/85da3304-b910-472b-aedf-a6d8c1148131/entry.das#fillmismatch')
+C = xarray.open_dataset(FILE)</p>
+<h2 id="Scan's-start-time,-converted-to-datetime-object">Scan's start time, converted to datetime object<a class="anchor-link" href="#Scan's-start-time,-converted-to-datetime-object">¶</a>
+</h2>
+<p>scan_start = datetime.strptime(C.time_coverage_start, '%Y-%m-%dT%H:%M:%S.%fZ')</p>
+<h2 id="Create-the-RGB-like-we-did-before">Create the RGB like we did before<a class="anchor-link" href="#Create-the-RGB-like-we-did-before">¶</a>
+</h2>
+<h2 id="Load-the-three-channels-into-appropriate-R,-G,-and-B">Load the three channels into appropriate R, G, and B<a class="anchor-link" href="#Load-the-three-channels-into-appropriate-R,-G,-and-B">¶</a>
+</h2>
+<p>R = C['CMI_C02'].data
+G = C['CMI_C03'].data
+B = C['CMI_C01'].data</p>
+<h2 id="Apply-range-limits-for-each-channel.-RGB-values-must-be-between-0-and-1">Apply range limits for each channel. RGB values must be between 0 and 1<a class="anchor-link" href="#Apply-range-limits-for-each-channel.-RGB-values-must-be-between-0-and-1">¶</a>
+</h2>
+<p>R = np.clip(R, 0, 1)
+G = np.clip(G, 0, 1)
+B = np.clip(B, 0, 1)</p>
+<h2 id="Apply-the-gamma-correction">Apply the gamma correction<a class="anchor-link" href="#Apply-the-gamma-correction">¶</a>
+</h2>
+<p>gamma = 2.2
+R = np.power(R, 1/gamma)
+G = np.power(G, 1/gamma)
+B = np.power(B, 1/gamma)</p>
+<h2 id='Calculate-the-"True"-Green'>Calculate the "True" Green<a class="anchor-link" href="#Calculate-the-%22True%22-Green">¶</a>
+</h2>
+<p>G_true = 0.45 <em> R + 0.1 </em> G + 0.45 * B
+G_true = np.clip(G_true, 0, 1)</p>
+<h2 id="The-final-RGB-array-:)">The final RGB array :)<a class="anchor-link" href="#The-final-RGB-array-:)">¶</a>
+</h2>
+<p>RGB = np.dstack([R, G_true, B])</p>
+<h6 id="#">#<a class="anchor-link" href="##">¶</a>
+</h6>
+<h2 id="Load-the-Clear-IR--10.3-µm-channel-(Band-13)">Load the Clear IR  10.3 µm channel (Band 13)<a class="anchor-link" href="#Load-the-Clear-IR--10.3-%C2%B5m-channel-(Band-13)">¶</a>
+</h2>
+<h2 id="-------------------------------------------------------">-------------------------------------------------------<a class="anchor-link" href="#-------------------------------------------------------">¶</a>
+</h2>
+<p>#</p>
+<h2 id="When-you-print-the-contents-of-channel-13,-notice-that-the-unit-of-the-clean">When you print the contents of channel 13, notice that the unit of the clean<a class="anchor-link" href="#When-you-print-the-contents-of-channel-13,-notice-that-the-unit-of-the-clean">¶</a>
+</h2>
+<h2 id="IR-channel-is-brightness-temperature,-NOT-reflectance.-We-need-to-normalize">IR channel is <em>brightness temperature</em>, NOT reflectance. We need to normalize<a class="anchor-link" href="#IR-channel-is-brightness-temperature,-NOT-reflectance.-We-need-to-normalize">¶</a>
+</h2>
+<h2 id="the-values-between-0-and-1-before-we-can-use-it-in-our-RGB-image.--In-this">the values between 0 and 1 before we can use it in our RGB image.  In this<a class="anchor-link" href="#the-values-between-0-and-1-before-we-can-use-it-in-our-RGB-image.--In-this">¶</a>
+</h2>
+<h2 id="case,-we-normalize-the-values-between-90-Kelvin-and-313-Kelvin.">case, we normalize the values between 90 Kelvin and 313 Kelvin.<a class="anchor-link" href="#case,-we-normalize-the-values-between-90-Kelvin-and-313-Kelvin.">¶</a>
+</h2>
+<p>print(C['CMI_C13'])</p>
+<h6 id="#">#<a class="anchor-link" href="##">¶</a>
+</h6>
+<h2 id="Apply-the-normalization...">Apply the normalization...<a class="anchor-link" href="#Apply-the-normalization...">¶</a>
+</h2>
+<p>cleanIR = C['CMI_C13'].data</p>
+<h2 id="Normalize-the-channel-between-a-range.">Normalize the channel between a range.<a class="anchor-link" href="#Normalize-the-channel-between-a-range.">¶</a>
+</h2>
+<h2 id="cleanIR-=-(cleanIR-minimumValue)/(maximumValue-minimumValue)">cleanIR = (cleanIR-minimumValue)/(maximumValue-minimumValue)<a class="anchor-link" href="#cleanIR-=-(cleanIR-minimumValue)/(maximumValue-minimumValue)">¶</a>
+</h2>
+<p>cleanIR = (cleanIR-90)/(313-90)</p>
+<h2 id="Apply-range-limits-to-make-sure-values-are-between-0-and-1">Apply range limits to make sure values are between 0 and 1<a class="anchor-link" href="#Apply-range-limits-to-make-sure-values-are-between-0-and-1">¶</a>
+</h2>
+<p>cleanIR = np.clip(cleanIR, 0, 1)</p>
+<h2 id="Invert-colors-so-that-cold-clouds-are-white">Invert colors so that cold clouds are white<a class="anchor-link" href="#Invert-colors-so-that-cold-clouds-are-white">¶</a>
+</h2>
+<p>cleanIR = 1 - cleanIR</p>
+<h2 id="Lessen-the-brightness-of-the-coldest-clouds-so-they-don't-appear-so-bright">Lessen the brightness of the coldest clouds so they don't appear so bright<a class="anchor-link" href="#Lessen-the-brightness-of-the-coldest-clouds-so-they-don't-appear-so-bright">¶</a>
+</h2>
+<h2 id="when-we-overlay-it-on-the-true-color-image.">when we overlay it on the true color image.<a class="anchor-link" href="#when-we-overlay-it-on-the-true-color-image.">¶</a>
+</h2>
+<p>cleanIR = cleanIR/1.4</p>
+<h2 id="Yes,-we-still-need-3-channels-as-RGB-values.-This-will-be-a-grey-image.">Yes, we still need 3 channels as RGB values. This will be a grey image.<a class="anchor-link" href="#Yes,-we-still-need-3-channels-as-RGB-values.-This-will-be-a-grey-image.">¶</a>
+</h2>
+<p>RGB_cleanIR = np.dstack([cleanIR, cleanIR, cleanIR])</p>
+<h6 id="#">#<a class="anchor-link" href="##">¶</a>
+</h6>
+<h2 id="Show-the-true-color-and-clean-IR-images">Show the true color and clean IR images<a class="anchor-link" href="#Show-the-true-color-and-clean-IR-images">¶</a>
+</h2>
+<h2 id="---------------------------------------">---------------------------------------<a class="anchor-link" href="#---------------------------------------">¶</a>
+</h2>
+<p>#</p>
+<h2 id="We-want-to-overlay-these-two-images,-so-the-clean-IR-fills-in-the-night-sky">We want to overlay these two images, so the clean IR fills in the night sky<a class="anchor-link" href="#We-want-to-overlay-these-two-images,-so-the-clean-IR-fills-in-the-night-sky">¶</a>
+</h2>
+<h2 id="on-the-True-Color-image.-This-way-we-can-still-see-the-clouds-at-night.">on the True Color image. This way we can still see the clouds at night.<a class="anchor-link" href="#on-the-True-Color-image.-This-way-we-can-still-see-the-clouds-at-night.">¶</a>
+</h2>
+<p>fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))</p>
+<p>ax1.set_title('True Color', fontweight='bold')
+ax1.imshow(RGB)
+ax1.axis('off')</p>
+<p>ax2.set_title('Clean IR', fontweight='bold')
+ax2.imshow(RGB_cleanIR)
+ax2.axis('off')</p>
+<p>plt.show()</p>
+<h6 id="#">#<a class="anchor-link" href="##">¶</a>
+</h6>
+<p>#</p>
+<h2 id="To-fill-in-the-dark-area-on-the-true-color-image,-we-will-set-each-RGB-channel">To fill in the dark area on the true color image, we will set each RGB channel<a class="anchor-link" href="#To-fill-in-the-dark-area-on-the-true-color-image,-we-will-set-each-RGB-channel">¶</a>
+</h2>
+<h2 id="to-equal-the-maximum-value-between-the-visible-channels-and-the-IR">to equal the maximum value between the visible channels and the IR<a class="anchor-link" href="#to-equal-the-maximum-value-between-the-visible-channels-and-the-IR">¶</a>
+</h2>
+<h2 id="channels.-When-this-is-done,-where-RGB-values-are-black-in-the-true-color">channels. When this is done, where RGB values are black in the true color<a class="anchor-link" href="#channels.-When-this-is-done,-where-RGB-values-are-black-in-the-true-color">¶</a>
+</h2>
+<h2 id="image-RGB-=-(0,0,0),-it-will-be-replaced-with-a-higher-value-of-the-`cleanIR">image RGB = (0,0,0), it will be replaced with a higher value of the `cleanIR<a class="anchor-link" href="#image-RGB-=-(0,0,0),-it-will-be-replaced-with-a-higher-value-of-the-%60cleanIR">¶</a>
+</h2>
+<h2 id="RGB`.">RGB`.<a class="anchor-link" href="#RGB%60.">¶</a>
+</h2>
+<p>#</p>
+<h2 id="Note-that-if-the-clean-IR-has-really-bright,-cold-clouds-in-the-daylight,-they">Note that if the clean IR has really bright, cold clouds in the daylight, they<a class="anchor-link" href="#Note-that-if-the-clean-IR-has-really-bright,-cold-clouds-in-the-daylight,-they">¶</a>
+</h2>
+<h2 id="will-replace-the-color-values-in-the-true-color-image-making-the-clouds-appear">will replace the color values in the true color image making the clouds appear<a class="anchor-link" href="#will-replace-the-color-values-in-the-true-color-image-making-the-clouds-appear">¶</a>
+</h2>
+<h2 id="more-white.-Still,-it-makes-a-nice-plot-and-let's-you-see-clouds-when-it-is">more white. Still, it makes a nice plot and let's you see clouds when it is<a class="anchor-link" href="#more-white.-Still,-it-makes-a-nice-plot-and-let's-you-see-clouds-when-it-is">¶</a>
+</h2>
+<h2 id="night.">night.<a class="anchor-link" href="#night.">¶</a>
+</h2>
+<h2 id="Maximize-the-RGB-values-between-the-True-Color-Image-and-Clean-IR-image">Maximize the RGB values between the True Color Image and Clean IR image<a class="anchor-link" href="#Maximize-the-RGB-values-between-the-True-Color-Image-and-Clean-IR-image">¶</a>
+</h2>
+<p>RGB_ColorIR = np.dstack([np.maximum(R, cleanIR), np.maximum(G_true, cleanIR),
+                         np.maximum(B, cleanIR)])</p>
+<h6 id="#">#<a class="anchor-link" href="##">¶</a>
+</h6>
+<p>fig = plt.figure(figsize=(15, 12))</p>
+<p>ax = fig.add_subplot(1, 1, 1, projection=geos)</p>
+<p>ax.imshow(RGB_ColorIR, origin='upper',
+          extent=(x.min(), x.max(), y.min(), y.max()),
+          transform=geos)</p>
+<p>ax.coastlines(resolution='50m', color='black', linewidth=2)
+ax.add_feature(ccrs.cartopy.feature.STATES)</p>
+<p>plt.title('GOES-16 True Color and Night IR', loc='left', fontweight='bold',
+          fontsize=15)
+plt.title('{}'.format(scan_start.strftime('%H:%M UTC %d %B %Y'), loc='right'),
+          loc='right')</p>
+<p>plt.show()</p>
+<h6 id="#">#<a class="anchor-link" href="##">¶</a>
+</h6>
+<h2 id="Adjust-Image-Contrast">Adjust Image Contrast<a class="anchor-link" href="#Adjust-Image-Contrast">¶</a>
+</h2>
+<h2 id="---------------------">---------------------<a class="anchor-link" href="#---------------------">¶</a>
+</h2>
+<p>#</p>
+<h2 id="I-think-the-color-looks-a-little-dull.-We-could-get-complicated-and-make-a">I think the color looks a little dull. We could get complicated and make a<a class="anchor-link" href="#I-think-the-color-looks-a-little-dull.-We-could-get-complicated-and-make-a">¶</a>
+</h2>
+<h2 id="Rayleigh-correction-to-the-data-to-fix-the-blue-light-scattering,-but-that-can">Rayleigh correction to the data to fix the blue light scattering, but that can<a class="anchor-link" href="#Rayleigh-correction-to-the-data-to-fix-the-blue-light-scattering,-but-that-can">¶</a>
+</h2>
+<h2 id="be-intense.-More-simply,-we-can-make-the-colors-pop-out-by-adjusting-the-image">be intense. More simply, we can make the colors pop out by adjusting the image<a class="anchor-link" href="#be-intense.-More-simply,-we-can-make-the-colors-pop-out-by-adjusting-the-image">¶</a>
+</h2>
+<h2 id="contrast.-Adjusting-image-contrast-is-easy-to-do-in-Photoshop,-and-also-easy">contrast. Adjusting image contrast is easy to do in Photoshop, and also easy<a class="anchor-link" href="#contrast.-Adjusting-image-contrast-is-easy-to-do-in-Photoshop,-and-also-easy">¶</a>
+</h2>
+<h2 id="to-do-in-Python.">to do in Python.<a class="anchor-link" href="#to-do-in-Python.">¶</a>
+</h2>
+<p>#</p>
+<h2 id="We-are-still-using-the-RGB-values-from-the-day/night-GOES-16-ABI-scan.">We are still using the RGB values from the day/night GOES-16 ABI scan.<a class="anchor-link" href="#We-are-still-using-the-RGB-values-from-the-day/night-GOES-16-ABI-scan.">¶</a>
+</h2>
+<p>#</p>
+<h2 id="Note:-you-should-adjust-the-contrast-before-you-add-in-the-Clean-IR-channel.">Note: you should adjust the contrast <em>before</em> you add in the Clean IR channel.<a class="anchor-link" href="#Note:-you-should-adjust-the-contrast-before-you-add-in-the-Clean-IR-channel.">¶</a>
+</h2>
+<p>def contrast_correction(color, contrast):
+    """Modify the contrast of an RGB.
+    See:
+    <a href="https://www.dfstudios.co.uk/articles/programming/image-programming-algorithms/image-processing-algorithms-part-5-contrast-adjustment/">https://www.dfstudios.co.uk/articles/programming/image-programming-algorithms/image-processing-algorithms-part-5-contrast-adjustment/</a></p>
+
+<pre><code>Input:
+    color    - an array representing the R, G, and/or B channel
+    contrast - contrast correction level
+"""
+F = (259*(contrast + 255))/(255.*259-contrast)
+COLOR = F*(color-.5)+.5
+COLOR = np.clip(COLOR, 0, 1)  # Force value limits 0 through 1.
+return COLOR
+
+
+</code></pre>
+<h2 id="Amount-of-contrast">Amount of contrast<a class="anchor-link" href="#Amount-of-contrast">¶</a>
+</h2>
+<p>contrast_amount = 105</p>
+<h2 id="Apply-contrast-correction">Apply contrast correction<a class="anchor-link" href="#Apply-contrast-correction">¶</a>
+</h2>
+<p>RGB_contrast = contrast_correction(RGB, contrast_amount)</p>
+<h2 id="Add-in-clean-IR-to-the-contrast-corrected-True-Color-image">Add in clean IR to the contrast-corrected True Color image<a class="anchor-link" href="#Add-in-clean-IR-to-the-contrast-corrected-True-Color-image">¶</a>
+</h2>
+<p>RGB_contrast_IR = np.dstack([np.maximum(RGB_contrast[:, :, 0], cleanIR),
+                             np.maximum(RGB_contrast[:, :, 1], cleanIR),
+                             np.maximum(RGB_contrast[:, :, 2], cleanIR)])</p>
+<h6 id="#">#<a class="anchor-link" href="##">¶</a>
+</h6>
+<h2 id="Plot-on-map-with-Cartopy">Plot on map with Cartopy<a class="anchor-link" href="#Plot-on-map-with-Cartopy">¶</a>
+</h2>
+<p>fig = plt.figure(figsize=(15, 12))</p>
+<p>ax1 = fig.add_subplot(1, 2, 1, projection=geos)
+ax2 = fig.add_subplot(1, 2, 2, projection=geos)</p>
+<p>ax1.imshow(RGB_ColorIR, origin='upper',
+           extent=(x.min(), x.max(), y.min(), y.max()),
+           transform=geos)
+ax1.coastlines(resolution='50m', color='black', linewidth=2)
+ax1.add_feature(ccrs.cartopy.feature.BORDERS)
+ax1.set_title('True Color and Night IR')</p>
+<p>ax2.imshow(RGB_contrast_IR, origin='upper',
+           extent=(x.min(), x.max(), y.min(), y.max()),
+           transform=geos)
+ax2.coastlines(resolution='50m', color='black', linewidth=2)
+ax2.add_feature(ccrs.cartopy.feature.BORDERS)
+ax2.set_title('Contrast Correction = {}'.format(contrast_amount))</p>
+<p>plt.subplots_adjust(wspace=.02)</p>
+<h6 id="#">#<a class="anchor-link" href="##">¶</a>
+</h6>
+<h2 id="Can-we-make-plots-for-a-Mesoscale-scan?">Can we make plots for a Mesoscale scan?<a class="anchor-link" href="#Can-we-make-plots-for-a-Mesoscale-scan?">¶</a>
+</h2>
+<h2 id="---------------------------------------">---------------------------------------<a class="anchor-link" href="#---------------------------------------">¶</a>
+</h2>
+<p>#</p>
+<h2 id="Yes.-Yes-we-can.">Yes. Yes we can.<a class="anchor-link" href="#Yes.-Yes-we-can.">¶</a>
+</h2>
+<h2 id="M1-is-for-the-Mesoscale1-NetCDF-file">M1 is for the Mesoscale1 NetCDF file<a class="anchor-link" href="#M1-is-for-the-Mesoscale1-NetCDF-file">¶</a>
+</h2>
+<p>FILE = ('<a href="http://ramadda-jetstream.unidata.ucar.edu/repository/opendap">http://ramadda-jetstream.unidata.ucar.edu/repository/opendap</a>'
+        '/5e02eafa-5cee-4d00-9f58-6e201e69b014/entry.das#fillmismatch')
+M1 = xarray.open_dataset(FILE)</p>
+<h2 id="Load-the-RGB-arrays">Load the RGB arrays<a class="anchor-link" href="#Load-the-RGB-arrays">¶</a>
+</h2>
+<p>R = M1['CMI_C02'][:].data
+G = M1['CMI_C03'][:].data
+B = M1['CMI_C01'][:].data</p>
+<h2 id="Apply-range-limits-for-each-channel.-RGB-values-must-be-between-0-and-1">Apply range limits for each channel. RGB values must be between 0 and 1<a class="anchor-link" href="#Apply-range-limits-for-each-channel.-RGB-values-must-be-between-0-and-1">¶</a>
+</h2>
+<p>R = np.clip(R, 0, 1)
+G = np.clip(G, 0, 1)
+B = np.clip(B, 0, 1)</p>
+<h2 id="Apply-the-gamma-correction">Apply the gamma correction<a class="anchor-link" href="#Apply-the-gamma-correction">¶</a>
+</h2>
+<p>gamma = 2.2
+R = np.power(R, 1/gamma)
+G = np.power(G, 1/gamma)
+B = np.power(B, 1/gamma)</p>
+<h2 id='Calculate-the-"True"-Green'>Calculate the "True" Green<a class="anchor-link" href="#Calculate-the-%22True%22-Green">¶</a>
+</h2>
+<p>G_true = 0.45 <em> R + 0.1 </em> G + 0.45 * B
+G_true = np.clip(G_true, 0, 1)</p>
+<h2 id="The-final-RGB-array-:)">The final RGB array :)<a class="anchor-link" href="#The-final-RGB-array-:)">¶</a>
+</h2>
+<p>RGB = np.dstack([R, G_true, B])</p>
+<h2 id="Scan's-start-time,-converted-to-datetime-object">Scan's start time, converted to datetime object<a class="anchor-link" href="#Scan's-start-time,-converted-to-datetime-object">¶</a>
+</h2>
+<p>scan_start = datetime.strptime(M1.time_coverage_start, '%Y-%m-%dT%H:%M:%S.%fZ')</p>
+<h2 id="We'll-use-the-CMI_C02-variable-as-a-'hook'-to-get-the-CF-metadata.">We'll use the <code>CMI_C02</code> variable as a 'hook' to get the CF metadata.<a class="anchor-link" href="#We'll-use-the-CMI_C02-variable-as-a-'hook'-to-get-the-CF-metadata.">¶</a>
+</h2>
+<p>dat = M1.metpy.parse_cf('CMI_C02')</p>
+<h2 id="Need-the-satellite-sweep-x-and-y-values,-too.">Need the satellite sweep x and y values, too.<a class="anchor-link" href="#Need-the-satellite-sweep-x-and-y-values,-too.">¶</a>
+</h2>
+<p>x = dat.x
+y = dat.y</p>
+<h6 id="#">#<a class="anchor-link" href="##">¶</a>
+</h6>
+<p>fig = plt.figure(figsize=(10, 8))</p>
+<p>ax = fig.add_subplot(1, 1, 1, projection=lc)
+ax.set_extent([-125, -70, 25, 50], crs=ccrs.PlateCarree())</p>
+<p>ax.imshow(RGB, origin='upper',
+          extent=(x.min(), x.max(), y.min(), y.max()),
+          transform=geos)</p>
+<p>ax.coastlines(resolution='50m', color='black', linewidth=0.5)
+ax.add_feature(ccrs.cartopy.feature.STATES, linewidth=0.5)
+ax.add_feature(ccrs.cartopy.feature.BORDERS, linewidth=0.5)</p>
+<p>plt.title('GOES-16 True Color', fontweight='bold', fontsize=15, loc='left')
+plt.title('Mesoscale Section 1')
+plt.title('{}'.format(scan_start.strftime('%H:%M UTC %d %B %Y')), loc='right')</p>
+<p>plt.show()</p>
+<h6 id="#">#<a class="anchor-link" href="##">¶</a>
+</h6>
+<p>fig = plt.figure(figsize=(15, 12))</p>
+<p>ax = fig.add_subplot(1, 1, 1, projection=geos)</p>
+<p>ax.imshow(RGB, origin='upper',
+          extent=(x.min(), x.max(), y.min(), y.max()),
+          transform=geos)</p>
+<p>ax.coastlines(resolution='50m', color='black', linewidth=0.25)
+ax.add_feature(ccrs.cartopy.feature.STATES, linewidth=0.25)</p>
+<p>plt.title('GOES-16 True Color', fontweight='bold', fontsize=15, loc='left')
+plt.title('Mesoscale Section 1')
+plt.title('{}'.format(scan_start.strftime('%H:%M UTC %d %B %Y')), loc='right')</p>
+<p>plt.show()</p>
+<h6 id="#">#<a class="anchor-link" href="##">¶</a>
+</h6>
+<h2 id="Can-we-do-this-for-a-Full-Disk-Scan?-It's-possible...">Can we do this for a Full Disk Scan? It's possible...<a class="anchor-link" href="#Can-we-do-this-for-a-Full-Disk-Scan?-It's-possible...">¶</a>
+</h2>
+<h2 id="-----------------------------------------------------">-----------------------------------------------------<a class="anchor-link" href="#-----------------------------------------------------">¶</a>
+</h2>
+<p>#</p>
+<h2 id="but-data-files-are-so-large-that-plotting-is-very-slow.--Feel-free-to">but data files are so large that plotting is very slow.  Feel free to<a class="anchor-link" href="#but-data-files-are-so-large-that-plotting-is-very-slow.--Feel-free-to">¶</a>
+</h2>
+<h2 id="experiment.">experiment.<a class="anchor-link" href="#experiment.">¶</a>
+</h2>
+<p>FILE = ('<a href="http://ramadda-jetstream.unidata.ucar.edu/repository/opendap">http://ramadda-jetstream.unidata.ucar.edu/repository/opendap</a>'
+        '/deb91f58-f997-41a3-a077-987529bf02b3/entry.das#fillmismatch')
+F = xarray.open_dataset(FILE)</p>
+<h2 id="Load-the-RGB-arrays">Load the RGB arrays<a class="anchor-link" href="#Load-the-RGB-arrays">¶</a>
+</h2>
+<p>R = F['CMI_C02'][:].data
+G = F['CMI_C03'][:].data
+B = F['CMI_C01'][:].data</p>
+<h2 id="Apply-range-limits-for-each-channel.-RGB-values-must-be-between-0-and-1">Apply range limits for each channel. RGB values must be between 0 and 1<a class="anchor-link" href="#Apply-range-limits-for-each-channel.-RGB-values-must-be-between-0-and-1">¶</a>
+</h2>
+<p>R = np.clip(R, 0, 1)
+G = np.clip(G, 0, 1)
+B = np.clip(B, 0, 1)</p>
+<h2 id="Apply-the-gamma-correction">Apply the gamma correction<a class="anchor-link" href="#Apply-the-gamma-correction">¶</a>
+</h2>
+<p>gamma = 2.2
+R = np.power(R, 1/gamma)
+G = np.power(G, 1/gamma)
+B = np.power(B, 1/gamma)</p>
+<h2 id='Calculate-the-"True"-Green'>Calculate the "True" Green<a class="anchor-link" href="#Calculate-the-%22True%22-Green">¶</a>
+</h2>
+<p>G_true = 0.48358168 <em> R + 0.45706946 </em> B + 0.06038137 * G
+G_true = np.clip(G_true, 0, 1)</p>
+<h2 id="The-final-RGB-array-:)">The final RGB array :)<a class="anchor-link" href="#The-final-RGB-array-:)">¶</a>
+</h2>
+<p>RGB = np.dstack([R, G_true, B])</p>
+<h2 id="We'll-use-the-CMI_C02-variable-as-a-'hook'-to-get-the-CF-metadata.">We'll use the <code>CMI_C02</code> variable as a 'hook' to get the CF metadata.<a class="anchor-link" href="#We'll-use-the-CMI_C02-variable-as-a-'hook'-to-get-the-CF-metadata.">¶</a>
+</h2>
+<p>dat = F.metpy.parse_cf('CMI_C02')</p>
+<p>x = dat.x
+y = dat.y</p>
+<h6 id="#">#<a class="anchor-link" href="##">¶</a>
+</h6>
+<h2 id="Geostationary-projection-is-easy...">Geostationary projection is easy...<a class="anchor-link" href="#Geostationary-projection-is-easy...">¶</a>
+</h2>
+<p>fig = plt.figure(figsize=(10, 8))</p>
+<p>ax = fig.add_subplot(1, 1, 1, projection=geos)</p>
+<p>ax.imshow(RGB, origin='upper',
+          extent=(x.min(), x.max(), y.min(), y.max()),
+          transform=geos)</p>
+<p>ax.coastlines(resolution='50m', color='black', linewidth=1)
+ax.add_feature(ccrs.cartopy.feature.BORDERS, linewidth=1)</p>
+<p>plt.title('GOES-16 True Color', fontweight='bold', fontsize=15, loc='left')
+plt.title('Full Disk\n{}'.format(scan_start.strftime('%H:%M UTC %d %B %Y')),
+          loc='right')</p>
+<p>plt.show()</p>
+
+</div>
+</div>
+</div>
+</div>
+    </div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha256-SDRP1VVYu+tgAGKhddBSl5+ezofHKZeI+OzxakbIe/Y=" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>
