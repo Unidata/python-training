@@ -11,3 +11,6 @@
    - siphon
    - pandas
    - xarray
+   - ipywidgets
+   - pip:
+      - python-awips
