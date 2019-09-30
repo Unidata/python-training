@@ -53,3 +53,56 @@ at our `support email`_.
     .. raw:: html
 
        <a href="/workshop/workshop-intro" class="btn btn-primary btn-lg">Start the workshop</a>
+
+
+Installation Instructions
+-------------------------
+
+To set up the Python environment used in the notebooks contained in this repository, follow
+these instructions:
+
+1. `Install Miniconda (Python 3.7) from Continuum Analytics <http://conda.pydata.org/miniconda.html>`_.
+`Determine if your OS 32 or 64 bit <http://www.akaipro.com/kb/article/1616#os_32_or_64_bit>`_.
+
+2. Once Miniconda is installed, from the command line (e.g., OS X terminal,
+cmd.exe), run these instructions to clone the repository and create the environment:
+
+.. code-block::
+
+    git clone https://github.com/Unidata/python-training
+
+    cd python-gallery
+
+    conda env create -f environment.yml
+
+From a Unix command line (e.g., OS X terminal)
+If your default shell is NOT bash, first type `bash`.
+To activate or switch to a conda environment, you can `conda activate
+<environment>`. For example,
+
+.. code-block::
+
+    conda activate training
+
+To switch and/or deactivate environments:
+
+.. code-block::
+
+    conda deactivate
+    conda activate <environment>
+
+From a Windows command line (e.g., cmd.exe)
+
+To activate or switch to a conda environment, you can `activate
+<environment>`. For example,
+
+.. code-block::
+
+    activate training
+
+To switch and/or deactivate environments:
+
+.. code-block::
+
+    deactivate
+    activate <environment>

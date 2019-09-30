@@ -103,6 +103,40 @@ notebooks at your own pace, or come back to the material after attending on of o
 in-person workshops.</p>
 <div class="last"><a href="workshop/workshop-intro" class="btn btn-primary btn-lg">Start the workshop</a></div>
 </div>
+<div class="section" id="installation-instructions">
+<h2>Installation Instructions</h2>
+<p>To set up the Python environment used in the notebooks contained in this repository, follow
+these instructions:</p>
+<p>1. <a class="reference external" href="http://conda.pydata.org/miniconda.html">Install Miniconda (Python 3.7) from Continuum Analytics</a>.
+<a class="reference external" href="http://www.akaipro.com/kb/article/1616#os_32_or_64_bit">Determine if your OS 32 or 64 bit</a>.</p>
+<p>2. Once Miniconda is installed, from the command line (e.g., OS X terminal,
+cmd.exe), run these instructions to clone the repository and create the environment:</p>
+<pre class="code text"><a name="rest_code_1a820b94847448e096ae2e6ac705b8f5-1"></a>git clone https://github.com/Unidata/python-training
+<a name="rest_code_1a820b94847448e096ae2e6ac705b8f5-2"></a>
+<a name="rest_code_1a820b94847448e096ae2e6ac705b8f5-3"></a>cd python-gallery
+<a name="rest_code_1a820b94847448e096ae2e6ac705b8f5-4"></a>
+<a name="rest_code_1a820b94847448e096ae2e6ac705b8f5-5"></a>conda env create -f environment.yml
+</pre>
+<p>From a Unix command line (e.g., OS X terminal)
+If your default shell is NOT bash, first type <cite>bash</cite>.
+To activate or switch to a conda environment, you can <cite>conda activate
+&lt;environment&gt;</cite>. For example,</p>
+<pre class="code text"><a name="rest_code_8dac1698e9b940f2b5c946fb3df8fc02-1"></a>conda activate training
+</pre>
+<p>To switch and/or deactivate environments:</p>
+<pre class="code text"><a name="rest_code_fe983315b76e4dc1b4365c4e2a6f2804-1"></a>conda deactivate
+<a name="rest_code_fe983315b76e4dc1b4365c4e2a6f2804-2"></a>conda activate &lt;environment&gt;
+</pre>
+<p>From a Windows command line (e.g., cmd.exe)</p>
+<p>To activate or switch to a conda environment, you can <cite>activate
+&lt;environment&gt;</cite>. For example,</p>
+<pre class="code text"><a name="rest_code_29d84c584da049c1856de2f234b6c4d0-1"></a>activate training
+</pre>
+<p>To switch and/or deactivate environments:</p>
+<pre class="code text"><a name="rest_code_84aae88f83b14102983a0900c626215c-1"></a>deactivate
+<a name="rest_code_84aae88f83b14102983a0900c626215c-2"></a>activate &lt;environment&gt;
+</pre>
+</div>
 </div>
     </div>
     
