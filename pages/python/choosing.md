@@ -47,6 +47,7 @@ resources:
 - [Nick Coghlan's (core Python developer) Python Notes](http://python-notes.curiousefficiency.org/en/latest/python3/index.html)
 - [Brett Cannon's (another core developer) Blog](http://www.snarky.ca/why-python-3-exists)
 
-Our recommendation is to use Python 3 installed through Miniconda. All of the
+Our recommendation is to use Python 3 installed through Miniconda. Most new releases of packages in 
+the scientific Python stack are now only supporting Python 3. All of the
 subsequent materials here will assume the use of Python 3; however, the use
-of features available **only** in Python 3 will be minimal (*if any*).
+of features available **only** in Python 3 will be minimal.
