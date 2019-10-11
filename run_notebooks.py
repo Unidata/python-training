@@ -3,7 +3,7 @@
 import subprocess
 import os.path
 
-NOTEBOOKS_DIR = 'pages/gallery'
+NOTEBOOKS_DIR = 'pages/'
 SKIP_NOTEBOOKS = [os.path.join('Bonus', 'What to do when things go wrong.ipynb'),
                   os.path.join('AWIPS', 'AWIPS_Grids_and_Cartopy.ipynb'),
                   os.path.join('AWIPS', 'Grid_Levels_and_Parameters.ipynb'),
