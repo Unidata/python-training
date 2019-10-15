@@ -21,7 +21,7 @@ before_install:
   - export PATH="$MINICONDA_DIR/bin:$PATH"
   - hash -r
   - conda config --set always_yes yes --set changeps1 no
-  - conda update -q conda
+  - conda update -q conda setuptools
   - conda info -a
   - sed -i -e "s/python=3/python=$Python/" environment.yml;
 
