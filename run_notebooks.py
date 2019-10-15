@@ -14,7 +14,9 @@ SKIP_NOTEBOOKS = [os.path.join('workshop/Bonus', 'What to do when things go wron
                   os.path.join('workshop/AWIPS', 'Satellite_Imagery.ipynb'),
                   os.path.join('workshop/AWIPS', 'Upper_Air_BUFR_Soundings.ipynb'),
                   os.path.join('workshop/AWIPS', 'Watch_and_Warning_Polygons.ipynb'),
-                  os.path.join('Sounding_Plotter.ipynb')]
+                  os.path.join('gallery', 'Sounding_Plotter.ipynb'),
+                  os.path.join('gallery', 'Precipitation_Map.ipynb'),
+                  os.path.join('workshop/MetPy_Advanced', 'QG Analysis.ipynb')]
 
 
 def run_notebook(notebook):
