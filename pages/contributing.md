@@ -1,5 +1,3 @@
-# Contributors Guide
-
 Interested in sharing how you use Python in atmospheric science research or education? 
 Have code from your research that you believe others will
 find useful? Have a few minutes to tackle an issue? In this guide we will get you setup and
@@ -51,10 +49,10 @@ Other items:
   generally proportional to the size of the pull request.
 
 ## Reporting a bug
-The easiest way to get involved is to report issues you encounter when using MetPy or by
+The easiest way to get involved is to report issues you encounter when using the training site or by
 requesting something you think is missing.
 
-* Head over to the [issues](https://github.com/Unidata/MetPy/issues) page.
+* Head over to the [issues](https://github.com/Unidata/python-training/issues) page.
 * Search to see if your issue already exists or has even been solved previously.
 * If you indeed have a new issue or request, click the "New Issue" button.
 * Fill in as much of the issue template as is relevant. Please be as specific as possible.
@@ -62,36 +60,12 @@ requesting something you think is missing.
   are running. If possible, include complete, minimal example code that reproduces the problem.
 
 ## Setting up your development environment
-We recommend using the [conda](https://conda.io/docs/) package manager for your Python
-environments. Our recommended setup for contributing is:
-
-* Install [miniconda](https://docs.conda.io/en/latest/miniconda.html) on your system.
-* Install git on your system if it is not already there (install XCode command line tools on
-  a Mac or git bash on Windows)
-* Login to your GitHub account and make a fork of the
-  [MetPy repository](https://github.com/unidata/metpy/) by clicking the "Fork" button.
-* Clone your fork of the MetPy repository (in terminal on Mac/Linux or git shell/
-  GUI on Windows) in the location you'd like to keep it. We are partial to creating a
-  ``git_repos`` directory in our home folder.
-  ``git clone https://github.com/your-user-name/metpy.git``
-* Navigate to that folder in the terminal or in Anaconda Prompt if you're on Windows.
-  ``cd metpy``
-* Connect your repository to the upstream (main project).
-  ``git remote add unidata https://github.com/unidata/metpy.git``
-* Create the development environment by running ``conda env create``. This will install
-  all of the packages in the ``environment.yml`` file.
-* Activate our new development environment ``source activate devel`` on Mac/Linux or
-  ``activate devel`` on Windows.
-* Make an editable install of MetPy by running ``pip install -e .``
-
-Now you're all set! You have an environment called ``devel`` that you can work in. You'll need
-to make sure to activate that environment next time you want to use it after closing the
-terminal or your system. If you want to get back to the root environment, just run
-``source deactivate`` (just ``deactivate`` on Windows).
+To set up your environment, follow the installation instructions on the 
+[home page](index.rst).
 
 ## Pull Requests
 
-The changes to the MetPy source (and documentation) should be made via GitHub pull requests
+The changes to the Python Training source (and documentation) should be made via GitHub pull requests
 against ``master``, even for those with administration rights. While it's tempting to
 make changes directly to ``master`` and push them up, it is better to make a pull request so
 that others can give feedback. If nothing else, this gives a chance for the automated tests to
