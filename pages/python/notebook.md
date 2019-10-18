@@ -36,7 +36,7 @@ and press Shift-Enter to actually run the cell yielding
     hello world
 
 <!-- Cannot handle in pure markdown b/c of onclick -->
-<img src="images/jupyter.gif" alt="Starting Jupyter" onclick='this.src=this.src'/>
+<img src="/images/jupyter.gif" alt="Starting Jupyter" onclick='this.src=this.src'/>
 
 For more information on the basics of using the Jupyter Notebook, we recommend starting with this notebook on [Notebook Basics](https://nbviewer.jupyter.org/github/jupyter/notebook/blob/master/docs/source/examples/Notebook/Notebook%20Basics.ipynb).
 

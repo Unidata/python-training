@@ -18,7 +18,7 @@ Download the Python 3.5 version by clicking on the "Mac OS X 64 bit Graphical In
 
 This action will guide you through the [conda installation on your Mac](https://docs.continuum.io/anaconda/install#anaconda-for-os-x-graphical-install). The second "Read Me" step is important, as the installation will make some modifications that the OS X Terminal application can make use of. We cover the OS X Terminal next.
 
-<img src="images/conda.gif" alt="Anaconda Installer" onclick='this.src=this.src'/>
+<img src="/images/conda.gif" alt="Anaconda Installer" onclick='this.src=this.src'/>
 
 ## OS X Terminal Application
 

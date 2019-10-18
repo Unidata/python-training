@@ -103,7 +103,7 @@ def process_buttons(path, cell):
 
 
 # Recursively grab all notebooks and process them
-notebooks = Path('notebooks').rglob('*.ipynb')
+notebooks = Path('pages').rglob('*.ipynb')
 notebooks_that_have_run = []
 for notebook in notebooks:
     if not str(notebook.parts[-2]).startswith('.'):

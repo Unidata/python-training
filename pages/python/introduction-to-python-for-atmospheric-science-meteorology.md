@@ -69,7 +69,7 @@ Here are some good sources for learning the basics of Python's Syntax:
 ## Beginning Python Concepts
 What follows is a series of Jupyter notebooks on learning Python with geoscience objectives. You can either peruse this material with the nbviewer links below or [run the Jupyter notebooks interactively](notebook.html#how-to-run-opt-notebooks).
 
-- [Control Flow](./controlflowintro)
+- [Control Flow](/python/controlflowintro)
     * [Conditional Statements](http://nbviewer.jupyter.org/github/Unidata/online-python-training/blob/master/notebooks/Conditionals.ipynb)
     * [Loops](http://nbviewer.jupyter.org/github/Unidata/online-python-training/blob/master/notebooks/Loops.ipynb)
     * [Functions](http://nbviewer.jupyter.org/github/Unidata/online-python-training/blob/master/notebooks/Functions.ipynb)
@@ -86,7 +86,7 @@ What follows is a series of Jupyter notebooks on learning Python with geoscience
 - [CartoPy](https://scitools.org.uk/cartopy/docs/latest/)
 - [Pandas](https://pandas.pydata.org/pandas-docs/stable/)
 
-## Python Packages for Meteorology
+## Python Packages for Meteorology & Atmospheric Science
 - [MetPy](https://unidata.github.io/MetPy/latest/)
 - [Siphon](https://unidata.github.io/siphon/)
 
