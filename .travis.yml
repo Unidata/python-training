@@ -8,39 +8,34 @@ python:
 - 3.6
 env:
   global:
-    - MINICONDA_DIR="$HOME/miniconda"
-
+  - MINICONDA_DIR="$HOME/miniconda"
+  - secure: N8cafTybcKLAZiCXv6FjK4rFAj2SSPiCJofu1i0el58/KQoLGU9iYCZTzb2ZJFk3em7u1AT6e3EiF7RbRiYjG/AcyOMcYgbsv3k0M1Ov8Dorp4eVLfepnkX/x/cSjutiMCxnouQusjnSh1ff+PL/TRjNY53n9DseVlb7tB7dc5wgTOSPb7dISpfbGksfRdw+0m/mhaJ3cSaK44CJm6VJ/ohpZ2GMYa26Msi3gRu/JF4KvEVpZtKpAO9WlEjPx59VijufnzGyMWd1aHAZo3yT9s+x7je6GMBVATsdVWWARV7LAm+vNxgP51mJMghTYvuATC6iYGGn3nvPwRNdVgLfw/ybO8nnMMOllvk15180gv8veHxwoMSFrBZcwvQ6S/TCzvfF1NAng3dyDJQSpKIBYkqRad/SG3zOaE8UWCYIa7ovJ7ugwaipIcSc+jWDy4JNpuQh7mOX8U3lL61BktRz0rUct4p3EKumdW74XG68yz75UjFWcqKQEzj1GUe/m/k26EHcRjS5NCl/EVsaZ0eT2nwyiOs1pDHa16haZX7eru5PywNICszIIZWJWxT2B5V90hQk4bDozr1zKESOCeJ9PXcllJ2YNws5WXGV6Ty2GhYxNXB6/LOtiOw5RbohVyd33bYD2KdfiP1+T7EZLmYNwik0DOPhrWG5lOLp7kMMrKw=
 before_install:
-  - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
-      export CONDA_OS_NAME="MacOSX";
-    else
-      export CONDA_OS_NAME="Linux";
-    fi;
-  - wget https://repo.continuum.io/miniconda/Miniconda3-latest-${CONDA_OS_NAME}-x86_64.sh -O miniconda.sh
-  - bash miniconda.sh -b -p $MINICONDA_DIR
-  - export PATH="$MINICONDA_DIR/bin:$PATH"
-  - hash -r
-  - conda config --set always_yes yes --set changeps1 no
-  - conda update -q conda setuptools
-  - conda info -a
-  - sed -i -e "s/python=3/python=$Python/" environment.yml;
-
+- if [[ $TRAVIS_OS_NAME == 'osx' ]]; then export CONDA_OS_NAME="MacOSX"; else export
+  CONDA_OS_NAME="Linux"; fi;
+- wget https://repo.continuum.io/miniconda/Miniconda3-latest-${CONDA_OS_NAME}-x86_64.sh
+  -O miniconda.sh
+- bash miniconda.sh -b -p $MINICONDA_DIR
+- export PATH="$MINICONDA_DIR/bin:$PATH"
+- hash -r
+- conda config --set always_yes yes --set changeps1 no
+- conda update -q conda setuptools
+- conda info -a
+- sed -i -e "s/python=3/python=$Python/" environment.yml;
 install:
-  - conda env create -q -f environment.yml
-  - source activate training
-  - pip install -U --upgrade-strategy=eager 'Nikola[extras]'
-  - conda list
-
+- conda env create -q -f environment.yml
+- source activate training
+- pip install -U --upgrade-strategy=eager 'Nikola[extras]'
+- conda list
 script:
-  - if test -d pages/gallery/exec_nb; then rm -r pages/gallery/exec_nb; fi
-  - python notebooks_preprocess.py
-  - python run_notebooks.py
-  - cd pages/gallery
-  - mkdir exec_nb
-  - python ../../execute_notebooks.py *.ipynb
-  - cd ../..
-  - nikola build
-
+- if test -d pages/gallery/exec_nb; then rm -r pages/gallery/exec_nb; fi
+- python notebooks_preprocess.py
+- python run_notebooks.py
+- cd pages/gallery
+- mkdir exec_nb
+- python ../../execute_notebooks.py *.ipynb
+- cd ../..
+- nikola build
 deploy:
   provider: script
   skip_cleanup: true
