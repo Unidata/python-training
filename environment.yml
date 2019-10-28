@@ -12,5 +12,6 @@
    - pandas
    - xarray
    - ipywidgets
+   - ffmpeg
    - pip:
       - python-awips
