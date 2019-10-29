@@ -54,6 +54,13 @@ at our `support email`_.
 
        <a href="/workshop/workshop-intro" class="btn btn-primary btn-lg">Start the workshop</a>
 
+Contributing
+------------
+
+Have an example of how you use Python for atmospheric science research or education? Share it with
+the community by contributing it to our gallery. Confused about something you read here? Add more
+documentation where you find it lacking! Check out our `contributor's guide <contributing>`_
+for information on how to help build this site!
 
 Installation Instructions
 -------------------------

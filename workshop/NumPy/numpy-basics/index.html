@@ -30,7 +30,7 @@ How can arrays be manipulated effectively in Python?
 Objectives¶
 Create an ar">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2019-09-30T12:41:08-06:00">
+<meta property="article:published_time" content="2019-10-29T15:50:39-06:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -94,7 +94,7 @@ Create an ar">
 <div style="width:1000 px">
 
 <div style="float:right; width:98 px; height:98px;">
-<img src="https://raw.githubusercontent.com/Unidata/MetPy/master/metpy/plots/_static/unidata_150x150.png" alt="Unidata Logo" style="height: 98px;">
+<img src="https://raw.githubusercontent.com/Unidata/MetPy/master/src/metpy/plots/_static/unidata_150x150.png" alt="Unidata Logo" style="height: 98px;">
 </div>
 <p></p>
 <h2>NumPy Basics</h2>
@@ -943,37 +943,39 @@ Please go to <a href="http://www.PollEv.com/johnleeman205">http://www.PollEv.com
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [0]:</div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><button data-toggle="collapse" data-target="#sol1" class="btn btn-primary">View Solution</button></p>
-<div id="sol1" class="collapse">
-<code><pre>
-data = np.array([1, 3, 5, 7, 9, 11])
-out = (data[:-1] + data[1:]) / 2
-print(out)
-</pre></code>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Replaced by notebook preprocessor</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">])</span>
+<span class="n">out</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+</pre></div>
+
+    </div>
 </div>
 </div>
+
 </div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [0]:</div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><button data-toggle="collapse" data-target="#sol2" class="btn btn-primary">View Bonus Solution</button></p>
-<div id="sol2" class="collapse">
-<code><pre>
-data = np.array([1, 3, 5, 7, 9, 11])
-out = (data[2:] + data[1:-1] + data[:-2]) / 3
-print(out)
-</pre></code>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Replaced by notebook preprocessor</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">])</span>
+<span class="n">out</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span> <span class="o">+</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">data</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="mi">3</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+</pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -1004,22 +1006,23 @@ print(out)
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [0]:</div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><button data-toggle="collapse" data-target="#sol3" class="btn btn-primary">View Solution</button></p>
-<div id="sol3" class="collapse">
-<code><pre>
-print(data[0] + data[1] + data[2])
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Replaced by notebook preprocessor</span>
 
-\# Or we can use numpy's sum and use the "axis" argument
-print(np.sum(data, axis=0))
-</pre></code>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+<span class="c1"># Or we can use numpy's sum and use the "axis" argument</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+</pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">

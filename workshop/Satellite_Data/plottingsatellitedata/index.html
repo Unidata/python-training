@@ -27,7 +27,7 @@ Questions¶
 Where are current GOES data available?
 How can satellite data be obtained with Sipho">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2019-09-30T12:41:08-06:00">
+<meta property="article:published_time" content="2019-10-29T15:50:39-06:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -205,6 +205,26 @@ How can satellite data be obtained with Sipho">
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/data_url.py</span>
+
+
+<span class="c1"># Cell content replaced by load magic replacement.</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+
+<span class="c1"># Create variables for URL generation</span>
+<span class="n">image_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+<span class="n">region</span> <span class="o">=</span> <span class="s1">'Mesoscale-1'</span>
+<span class="n">channel</span> <span class="o">=</span> <span class="mi">8</span>
+
+<span class="c1"># We want to match something like:</span>
+<span class="c1"># https://thredds-test.unidata.ucar.edu/thredds/catalog/satellite/goes16/GOES16/Mesoscale-1/Channel08/20181113/catalog.html</span>
+
+<span class="c1"># Construct the data_url string</span>
+<span class="n">data_url</span> <span class="o">=</span> <span class="p">(</span><span class="s1">'https://thredds.ucar.edu/thredds/catalog/satellite/goes/east/products/'</span>
+            <span class="n">f</span><span class="s1">'CloudAndMoistureImagery/</span><span class="si">{region}</span><span class="s1">/Channel</span><span class="si">{channel:02d}</span><span class="s1">/'</span>
+            <span class="n">f</span><span class="s1">'{image_date:%Y%m</span><span class="si">%d</span><span class="s1">}/catalog.xml'</span><span class="p">)</span>
+
+<span class="c1"># Print out your URL and verify it works!</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data_url</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -629,6 +649,32 @@ How can satellite data be obtained with Sipho">
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/sat_map.py</span>
+
+
+<span class="c1"># Cell content replaced by load magic replacement.</span>
+<span class="c1"># Import for the bonus exercise</span>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <span class="n">add_timestamp</span>
+
+<span class="c1"># Make the image plot</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">ImagePlot</span><span class="p">()</span>
+<span class="n">img</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">ds</span>
+<span class="n">img</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="s1">'Sectorized_CMI'</span>
+<span class="n">img</span><span class="o">.</span><span class="n">colormap</span> <span class="o">=</span> <span class="s1">'WVCIMSS_r'</span>
+
+<span class="c1"># Make the map panel and add the image to it</span>
+<span class="n">panel</span> <span class="o">=</span> <span class="n">MapPanel</span><span class="p">()</span>
+<span class="n">panel</span><span class="o">.</span><span class="n">plots</span> <span class="o">=</span> <span class="p">[</span><span class="n">img</span><span class="p">]</span>
+
+<span class="c1"># Make the panel container and add the panel to it</span>
+<span class="n">pc</span> <span class="o">=</span> <span class="n">PanelContainer</span><span class="p">()</span>
+<span class="n">pc</span><span class="o">.</span><span class="n">panels</span> <span class="o">=</span> <span class="p">[</span><span class="n">panel</span><span class="p">]</span>
+
+<span class="c1"># Bonus</span>
+<span class="n">start_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">start_date_time</span><span class="p">,</span> <span class="s1">'%Y%j%H%M%S'</span><span class="p">)</span>
+<span class="n">add_timestamp</span><span class="p">(</span><span class="n">panel</span><span class="o">.</span><span class="n">ax</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">start_time</span><span class="p">)</span>
+
+<span class="c1"># Show the plot</span>
+<span class="n">pc</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
     </div>

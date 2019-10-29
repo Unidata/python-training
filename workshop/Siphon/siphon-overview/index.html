@@ -30,7 +30,7 @@ How can I use Siphon to access a TDS?
 Objectives¶
 Use ">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2019-09-30T12:41:08-06:00">
+<meta property="article:published_time" content="2019-10-29T15:50:39-06:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -95,7 +95,7 @@ Use ">
 <div style="width:1000 px">
 
 <div style="float:right; width:98 px; height:98px;">
-<img src="https://raw.githubusercontent.com/Unidata/MetPy/master/metpy/plots/_static/unidata_150x150.png" alt="Unidata Logo" style="height: 98px;">
+<img src="https://raw.githubusercontent.com/Unidata/MetPy/master/src/metpy/plots/_static/unidata_150x150.png" alt="Unidata Logo" style="height: 98px;">
 </div>
 <p></p>
 <h2>Siphon Overview</h2>
@@ -310,6 +310,14 @@ Use ">
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/datasets.py</span>
+
+
+<span class="c1"># Cell content replaced by load magic replacement.</span>
+<span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">cat</span> <span class="o">=</span> <span class="n">TDSCatalog</span><span class="p">(</span><span class="n">f</span><span class="s1">'http://thredds.ucar.edu/thredds/catalog/satellite/SFC-T/SUPER-NATIONAL_1km/{date:%Y%m</span><span class="si">%d</span><span class="s1">}/catalog.xml'</span><span class="p">)</span>
+<span class="n">request_time</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">second</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">microsecond</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">datasets</span> <span class="o">=</span> <span class="n">cat</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">filter_time_range</span><span class="p">(</span><span class="n">request_time</span><span class="p">,</span> <span class="n">request_time</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">6</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">datasets</span><span class="p">)</span>
 </pre></div>
 
     </div>

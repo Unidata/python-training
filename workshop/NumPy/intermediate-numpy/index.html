@@ -27,7 +27,7 @@ Questions¶
 How do we work with the multiple dimensions in a NumPy Array?
 How can we extract irregula">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2019-09-30T12:41:08-06:00">
+<meta property="article:published_time" content="2019-10-29T15:50:39-06:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -92,7 +92,7 @@ How can we extract irregula">
 <div style="width:1000 px">
 
 <div style="float:right; width:98 px; height:98px;">
-<img src="https://raw.githubusercontent.com/Unidata/MetPy/master/metpy/plots/_static/unidata_150x150.png" alt="Unidata Logo" style="height: 98px;">
+<img src="https://raw.githubusercontent.com/Unidata/MetPy/master/src/metpy/plots/_static/unidata_150x150.png" alt="Unidata Logo" style="height: 98px;">
 </div>
 <p></p>
 <h2>Intermediate NumPy</h2>
@@ -272,20 +272,21 @@ How can we extract irregula">
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [0]:</div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><button data-toggle="collapse" data-target="#sol4" class="btn btn-primary">View Solution</button></p>
-<div id="sol4" class="collapse">
-<code><pre>
-advec = (wind_vec * -grad_vec).sum(axis=-1)
-print(advec.shape)
-</pre></code>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Replaced by notebook preprocessor</span>
+
+<span class="n">advec</span> <span class="o">=</span> <span class="p">(</span><span class="n">wind_vec</span> <span class="o">*</span> <span class="o">-</span><span class="n">grad_vec</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">advec</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -503,40 +504,41 @@ NumPy array and retrieve the values where the result was true</p>
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [0]:</div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><button data-toggle="collapse" data-target="#sol5" class="btn btn-primary">View Solution</button></p>
-<div id="sol5" class="collapse">
-<code><pre>
-import numpy as np
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Replaced by notebook preprocessor</span>
 
-\# Here's the "data"
-np.random.seed(19990503)  # Make sure we all have the same data
-temp = (20 * np.cos(np.linspace(0, 2 * np.pi, 100)) +
-        80 + 2 * np.random.randn(100))
-rh = (np.abs(20 * np.cos(np.linspace(0, 4 * np.pi, 100)) +
-              50 + 5 * np.random.randn(100)))
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-
-\# Create a mask for the two conditions described above
-good_heat_index = (temp &gt;= 80) &amp; (rh &gt;= 0.4)
+<span class="c1"># Here's the "data"</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">19990503</span><span class="p">)</span>  <span class="c1"># Make sure we all have the same data</span>
+<span class="n">temp</span> <span class="o">=</span> <span class="p">(</span><span class="mi">20</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span> <span class="o">+</span>
+        <span class="mi">80</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span>
+<span class="n">rh</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="mi">20</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span> <span class="o">+</span>
+              <span class="mi">50</span> <span class="o">+</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">)))</span>
 
 
-\# Use this mask to grab the temperature and relative humidity values that together
-\# will give good heat index values
-print(temp[good_heat_index]) 
+<span class="c1"># Create a mask for the two conditions described above</span>
+<span class="n">good_heat_index</span> <span class="o">=</span> <span class="p">(</span><span class="n">temp</span> <span class="o">&gt;=</span> <span class="mi">80</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">rh</span> <span class="o">&gt;=</span> <span class="mf">0.4</span><span class="p">)</span>
 
-\# BONUS POINTS: Plot only the data where heat index is defined by
-\# inverting the mask (using `~mask`) and setting invalid values to np.nan
-temp[~good_heat_index] = np.nan
-plt.plot(temp, 'tab:red')
-</pre></code>
+
+<span class="c1"># Use this mask to grab the temperature and relative humidity values that together</span>
+<span class="c1"># will give good heat index values</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="n">good_heat_index</span><span class="p">])</span> 
+
+<span class="c1"># BONUS POINTS: Plot only the data where heat index is defined by</span>
+<span class="c1"># inverting the mask (using `~mask`) and setting invalid values to np.nan</span>
+<span class="n">temp</span><span class="p">[</span><span class="o">~</span><span class="n">good_heat_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">temp</span><span class="p">,</span> <span class="s1">'tab:red'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">

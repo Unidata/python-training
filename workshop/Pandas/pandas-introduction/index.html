@@ -29,7 +29,7 @@ What is Pandas?
 What are the basic Pandas data structures?
 How can I read data into ">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2019-09-30T12:41:08-06:00">
+<meta property="article:published_time" content="2019-10-29T15:50:39-06:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -93,7 +93,7 @@ How can I read data into ">
 <div style="width:1000 px">
 
 <div style="float:right; width:98 px; height:98px;">
-<img src="https://raw.githubusercontent.com/Unidata/MetPy/master/metpy/plots/_static/unidata_150x150.png" alt="Unidata Logo" style="height: 98px;">
+<img src="https://raw.githubusercontent.com/Unidata/MetPy/master/src/metpy/plots/_static/unidata_150x150.png" alt="Unidata Logo" style="height: 98px;">
 </div>
 <p></p>
 <h2>Introduction to Pandas</h2>
@@ -402,6 +402,13 @@ How can I read data into ">
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/make_series.py</span>
+
+
+<span class="c1"># Cell content replaced by load magic replacement.</span>
+<span class="n">pressures</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mf">1012.1</span><span class="p">,</span> <span class="mf">1010.6</span><span class="p">,</span> <span class="mf">1008.8</span><span class="p">,</span> <span class="mf">1011.2</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">'TOP'</span><span class="p">,</span> <span class="s1">'OUN'</span><span class="p">,</span> <span class="s1">'DEN'</span><span class="p">,</span> <span class="s1">'DAL'</span><span class="p">])</span>
+<span class="n">pressures</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'pressure'</span>
+<span class="n">pressures</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'station'</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pressures</span><span class="p">[</span><span class="n">dewpoints</span> <span class="o">&lt;</span> <span class="mi">15</span><span class="p">])</span>
 </pre></div>
 
     </div>
@@ -709,6 +716,12 @@ How can I read data into ">
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/rain_obs.py</span>
+
+
+<span class="c1"># Cell content replaced by load magic replacement.</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'rain'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">df</span><span class="o">.</span><span class="n">dewpoint</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dewpoint</span> <span class="o">-</span> <span class="mi">2</span>
+<span class="n">df</span>
 </pre></div>
 
     </div>
@@ -1006,6 +1019,11 @@ How can I read data into ">
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/drop_obs.py</span>
+
+
+<span class="c1"># Cell content replaced by load magic replacement.</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">'any'</span><span class="p">)</span>
+<span class="n">df2</span>
 </pre></div>
 
     </div>
@@ -1198,6 +1216,12 @@ How can I read data into ">
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/calc_stats.py</span>
+
+
+<span class="c1"># Cell content replaced by load magic replacement.</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'station'</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'station'</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'station'</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">())</span>
 </pre></div>
 
     </div>
@@ -1294,6 +1318,11 @@ How can I read data into ">
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/temperature_count.py</span>
+
+
+<span class="c1"># Cell content replaced by load magic replacement.</span>
+<span class="n">df</span><span class="o">.</span><span class="n">temperature</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">temperature</span><span class="o">.</span><span class="n">round</span><span class="p">()</span>
+<span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'temperature'</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
 </pre></div>
 
     </div>

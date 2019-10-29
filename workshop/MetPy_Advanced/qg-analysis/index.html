@@ -27,7 +27,7 @@ Download NARR output from TDS
 Calculate QG-Omega Forcing Terms
 Create a four-panel plot ">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2019-09-30T12:41:08-06:00">
+<meta property="article:published_time" content="2019-10-29T15:50:39-06:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -92,7 +92,7 @@ Create a four-panel plot ">
 <div style="width:1000 px">
 
 <div style="float:right; width:98 px; height:98px;">
-<img src="https://raw.githubusercontent.com/Unidata/MetPy/master/metpy/plots/_static/unidata_150x150.png" alt="Unidata Logo" style="height: 98px;">
+<img src="https://raw.githubusercontent.com/Unidata/MetPy/master/src/metpy/plots/_static/unidata_150x150.png" alt="Unidata Logo" style="height: 98px;">
 </div>
 <h2>Advanced MetPy: Quasi-Geostrophic Analysis</h2>
 <div style="clear:both"></div>
@@ -383,6 +383,19 @@ Create a four-panel plot ">
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/QG_data.py</span>
+
+<span class="c1"># Cell content replaced by load magic replacement.</span>
+<span class="c1"># Remaining variables needed to compute QG Omega forcing terms</span>
+<span class="n">hght_500</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">Geopotential_height_isobaric</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">vertical</span><span class="o">=</span><span class="mi">500</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">,</span>
+                                                     <span class="n">time</span><span class="o">=</span><span class="n">vtime</span><span class="p">)</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">unit_array</span>
+<span class="n">uwnd_500</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s1">'u-component_of_wind_isobaric'</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">vertical</span><span class="o">=</span><span class="mi">500</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">,</span>
+                                                        <span class="n">time</span><span class="o">=</span><span class="n">vtime</span><span class="p">)</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">unit_array</span>
+<span class="n">vwnd_500</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s1">'v-component_of_wind_isobaric'</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">vertical</span><span class="o">=</span><span class="mi">500</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">,</span>
+                                                        <span class="n">time</span><span class="o">=</span><span class="n">vtime</span><span class="p">)</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">unit_array</span>
+<span class="n">uwnd_900</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s1">'u-component_of_wind_isobaric'</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">vertical</span><span class="o">=</span><span class="mi">900</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">,</span>
+                                                        <span class="n">time</span><span class="o">=</span><span class="n">vtime</span><span class="p">)</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">unit_array</span>
+<span class="n">vwnd_900</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s1">'v-component_of_wind_isobaric'</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">vertical</span><span class="o">=</span><span class="mi">900</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">,</span>
+                                                        <span class="n">time</span><span class="o">=</span><span class="n">vtime</span><span class="p">)</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">unit_array</span>
 </pre></div>
 
     </div>
@@ -562,6 +575,17 @@ $$\left(\nabla_p ^2 + \frac{f^2}{\sigma}\frac{\partial ^2}{\partial p^2}\right)\
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/term_B_calc.py</span>
+
+<span class="c1"># Cell content replaced by load magic replacement.</span>
+<span class="c1"># 700-hPa Temperature Advection</span>
+<span class="n">tadv_700</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">advection</span><span class="p">(</span><span class="n">tmpk_700s</span><span class="p">,</span> <span class="p">(</span><span class="n">uwnd_700s</span><span class="p">,</span> <span class="n">vwnd_700s</span><span class="p">),</span> <span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">),</span>
+                            <span class="n">dim_order</span><span class="o">=</span><span class="s1">'yx'</span><span class="p">)</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span>
+<span class="c1"># Laplacian of Temperature Advection</span>
+<span class="n">lap_tadv_700</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">laplacian</span><span class="p">(</span><span class="n">tadv_700</span><span class="p">,</span> <span class="n">deltas</span><span class="o">=</span><span class="p">(</span><span class="n">dy</span><span class="p">,</span> <span class="n">dx</span><span class="p">))</span>
+
+<span class="c1"># Final term B calculation with constants</span>
+<span class="n">term_B</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">Rd</span> <span class="o">/</span> <span class="p">(</span><span class="n">sigma</span> <span class="o">*</span> <span class="p">(</span><span class="mi">700</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">))</span> <span class="o">*</span> <span class="n">lap_tadv_700</span><span class="p">)</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">term_B</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -835,6 +859,44 @@ $$\left(\nabla_p ^2 + \frac{f^2}{\sigma}\frac{\partial ^2}{\partial p^2}\right)\
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/qg_omega_total_fig.py</span>
+
+
+<span class="c1"># Cell content replaced by load magic replacement.</span>
+<span class="n">fig</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">15.</span><span class="p">,</span><span class="mf">12.</span><span class="p">))</span>
+
+<span class="c1"># Upper-Left Panel</span>
+<span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span><span class="n">projection</span><span class="o">=</span><span class="n">plotproj</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">([</span><span class="o">-</span><span class="mf">125.</span><span class="p">,</span><span class="o">-</span><span class="mi">73</span><span class="p">,</span><span class="mf">25.</span><span class="p">,</span><span class="mf">50.</span><span class="p">],</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">(</span><span class="s1">'50m'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">STATES</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="c1"># Contour #1</span>
+<span class="n">cs</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">hght_700s</span><span class="p">,</span> <span class="n">clev_hght_700</span><span class="p">,</span><span class="n">colors</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span>
+                <span class="n">linewidths</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">'solid'</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">dataproj</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">'</span><span class="si">%i</span><span class="s1">'</span><span class="p">,</span>
+           <span class="n">rightside_up</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Contour #2</span>
+<span class="n">cs2</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">tmpc_700s</span><span class="p">,</span> <span class="n">clev_tmpc_700</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">'grey'</span><span class="p">,</span>
+                <span class="n">linewidths</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">'dotted'</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">dataproj</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">cs2</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">'</span><span class="si">%d</span><span class="s1">'</span><span class="p">,</span>
+           <span class="n">rightside_up</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Colorfill</span>
+<span class="n">cf</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="p">(</span><span class="n">term_A</span><span class="o">+</span><span class="n">term_B</span><span class="p">)</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">12</span><span class="p">,</span> <span class="n">clev_omega</span><span class="p">,</span>
+                 <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">RdYlBu_r</span><span class="p">,</span> <span class="n">extend</span><span class="o">=</span><span class="s1">'both'</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">dataproj</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cf</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">'horizontal'</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">extendrect</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Vector</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">barbs</span><span class="p">(</span><span class="n">lons</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">lats</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">uwnd_700s</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'kts'</span><span class="p">)</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">vwnd_700s</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'kts'</span><span class="p">)</span><span class="o">.</span><span class="n">m</span><span class="p">,</span>
+         <span class="n">regrid_shape</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">dataproj</span><span class="p">)</span>
+
+<span class="c1"># Titles</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'700-hPa Geopotential Heights, Temperature (C),</span><span class="se">\n</span><span class="s1">'</span>
+          <span class="s1">'Winds (kt), and QG Omega Forcings ($*10^</span><span class="si">{12}</span><span class="s1">$ kg m$^{-3}$ s$^{-3}$)'</span><span class="p">,</span><span class="n">loc</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'VALID: '</span> <span class="o">+</span> <span class="n">vtime_str</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'right'</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
     </div>

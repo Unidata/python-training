@@ -32,7 +32,7 @@ How are units handled in MetPy?
 Objectives¶
 ">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2019-09-30T12:41:08-06:00">
+<meta property="article:published_time" content="2019-10-29T15:50:39-06:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -96,7 +96,7 @@ Objectives¶
 <div style="width:1000 px">
 
 <div style="float:right; width:98 px; height:98px;">
-<img src="https://raw.githubusercontent.com/Unidata/MetPy/master/metpy/plots/_static/unidata_150x150.png" alt="Unidata Logo" style="height: 98px;">
+<img src="https://raw.githubusercontent.com/Unidata/MetPy/master/src/metpy/plots/_static/unidata_150x150.png" alt="Unidata Logo" style="height: 98px;">
 </div>
 <p></p>
 <h2>Introduction to MetPy</h2>
@@ -288,6 +288,13 @@ Objectives¶
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/distance.py</span>
+
+
+<span class="c1"># Cell content replaced by load magic replacement.</span>
+<span class="n">speed</span> <span class="o">=</span> <span class="mi">25</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">knots</span>
+<span class="n">time</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">fortnight</span>
+<span class="n">distance</span> <span class="o">=</span> <span class="n">speed</span> <span class="o">*</span> <span class="n">time</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">distance</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'furlongs'</span><span class="p">))</span>
 </pre></div>
 
     </div>
@@ -434,6 +441,13 @@ Objectives¶
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/temperature_change.py</span>
+
+
+<span class="c1"># Cell content replaced by load magic replacement.</span>
+<span class="n">temperature_change_rate</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.3</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">delta_degF</span> <span class="o">/</span> <span class="p">(</span><span class="mi">10</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">minutes</span><span class="p">)</span>
+<span class="n">temperature</span> <span class="o">=</span> <span class="mi">25</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hours</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">temperature</span> <span class="o">+</span> <span class="n">temperature_change_rate</span> <span class="o">*</span> <span class="n">dt</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -664,6 +678,12 @@ Objectives¶
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/wind_speed.py</span>
+
+
+<span class="c1"># Cell content replaced by load magic replacement.</span>
+<span class="n">speed</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">wind_speed</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">speed</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">speed</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'mph'</span><span class="p">))</span>
 </pre></div>
 
     </div>
