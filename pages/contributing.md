@@ -31,6 +31,8 @@ Python Training contributions. We're glad you're here!
 
 * File a new issue if you run into problems!
 
+* Improve the visual appearance by editing the template and CSS files.
+
 ## Ground Rules
 The goal is to maintain a diverse community that's pleasant for everyone. Please
 be considerate and respectful of others by following our
@@ -94,7 +96,15 @@ The Python Training Site's source code is located in the `pages/` directory in t
 `pages/` are the main top-level subpackages of the training site:
 - `python`: Introduction to Python, how to download from Anaconda, version control, and introductory notebooks
 - `gallery`: Example gallery of atmospheric science workflows, as Jupyter notebooks
-- `workshop`: The Unidata Python workshop materials 
+- `workshop`: The Unidata Python workshop materials
+
+To change the theme (via CSS or template files), see the `templates/` folder. The current theme used
+by this repository is `bootstrap3-jinja`. Nikola uses template inheritance, so `bootstrap3-jinja` inherits
+from `base-jinja`. If you do not see a template file you want to modify in this repository, it is likely 
+housed currently in the `base-jinja` template, which does not explicity reside within the repository. To pull
+it into this repository, you can enter ``nikola theme -c template_name.tmpl`` where you replace `template_name`
+with the name of the template you want to modify. You will see the new template appear within the 
+`theme/bootstrap3-jinja/templates` folder. CSS files are within the `themes/bootstrap3-jinja/assets/css` folder.
 
 ## Documentation
 Now that you've made your awesome contribution, it's time to tell the world how to use it.
