@@ -19,7 +19,7 @@
 Have code from your research that you believe others will
 find useful? Have a few minutes to tackle an issue? In">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2019-10-29T15:46:33-06:00">
+<meta property="article:published_time" content="2019-10-30T12:51:56-06:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -110,6 +110,9 @@ Python Training contributions. We're glad you're here!</p>
 <li>
 <p>File a new issue if you run into problems!</p>
 </li>
+<li>
+<p>Improve the visual appearance by editing the template and CSS files.</p>
+</li>
 </ul>
 <h3>Ground Rules</h3>
 <p>The goal is to maintain a diverse community that's pleasant for everyone. Please
@@ -166,7 +169,14 @@ explanation and rationale behind the Python Training Site's CLA.</p>
 <code>pages/</code> are the main top-level subpackages of the training site:
 - <code>python</code>: Introduction to Python, how to download from Anaconda, version control, and introductory notebooks
 - <code>gallery</code>: Example gallery of atmospheric science workflows, as Jupyter notebooks
-- <code>workshop</code>: The Unidata Python workshop materials </p>
+- <code>workshop</code>: The Unidata Python workshop materials</p>
+<p>To change the theme (via CSS or template files), see the <code>templates/</code> folder. The current theme used
+by this repository is <code>bootstrap3-jinja</code>. Nikola uses template inheritance, so <code>bootstrap3-jinja</code> inherits
+from <code>base-jinja</code>. If you do not see a template file you want to modify in this repository, it is likely 
+housed currently in the <code>base-jinja</code> template, which does not explicity reside within the repository. To pull
+it into this repository, you can enter <code>nikola theme -c template_name.tmpl</code> where you replace <code>template_name</code>
+with the name of the template you want to modify. You will see the new template appear within the 
+<code>theme/bootstrap3-jinja/templates</code> folder. CSS files are within the <code>themes/bootstrap3-jinja/assets/css</code> folder.</p>
 <h3>Documentation</h3>
 <p>Now that you've made your awesome contribution, it's time to tell the world how to use it.
 Make sure that notebooks have appropriate markdown sections telling users what each block of
