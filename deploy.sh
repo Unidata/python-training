@@ -2,7 +2,7 @@
 set -e
 
 echo checking secure access
-openssl aes-256-cbc -K $encrypted_4d56ad91a2b0_key -iv $encrypted_4d56ad91a2b0_iv -in id_rsa.enc -out id_rsa -d
+- openssl aes-256-cbc -K $encrypted_4d56ad91a2b0_key -iv $encrypted_4d56ad91a2b0_iv -in id_rsa.enc -out id_rsa -d
 git config --global user.name 'Travis CI'
 git config --global user.email 'travis@nobody.org'
 git config --global push.default 'simple'
