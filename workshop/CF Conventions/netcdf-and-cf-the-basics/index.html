@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NetCDF and CF - The Basics | The Unidata Python Training Site</title>
+<link href="../../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/workshop/CF%20Conventions/netcdf-and-cf-the-basics/">
+<!--[if lt IE 9]><script src="../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="NetCDF and CF - The Basics">
+<meta property="og:url" content="https://unidata.github.io/python-training/workshop/CF%20Conventions/netcdf-and-cf-the-basics/">
+<meta property="og:description" content="NetCDF and CF: The Basics
+
+
+
+Overview¶This workshop will teach some of the basics of Climate and Forecasting metadata for netCDF data files with some hands-on work available in Jupyter Notebooks using">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-11-01T14:26:16-06:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../../python/intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../../../gallery/gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="../../CF%20Conventions/netcdf-and-cf-the-basics/index.ipynb" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="../../CF%20Conventions/netcdf-and-cf-the-basics/" class="u-url">NetCDF and CF - The Basics</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div style="width:1000 px">
+
+<div style="float:left; width:98 px; height:98px;">
+<img src="https://www.unidata.ucar.edu/images/logos/netcdf-150x150.png" alt="netCDF Logo" style="height: 98px;">
+</div>
+<div style="float:right; width:98 px; height:98px;">
+<img src="https://raw.githubusercontent.com/Unidata/MetPy/master/metpy/plots/_static/unidata_150x150.png" alt="Unidata Logo" style="height: 98px;">
+</div>
+<div style="text-align:center;">
+<h2>NetCDF and CF: The Basics</h2>
+</div>
+<div style="clear:both"></div>
+</div>
+<hr style="height:2px;">
+<h4 id="Overview">Overview<a class="anchor-link" href="../../CF%20Conventions/netcdf-and-cf-the-basics/#Overview">¶</a>
+</h4>
+<p>This workshop will teach some of the basics of Climate and Forecasting metadata for netCDF data files with some hands-on work available in Jupyter Notebooks using Python. Along with introduction to netCDF and CF, we will introduce the CF data model and discuss some netCDF implementation details to consider when deciding how to write data with CF and netCDF. We will cover gridded data as well as in situ data (stations, soundings, etc.) and touch on storing geometries data in CF.</p>
+<p>This assumes a basic understanding of netCDF.</p>
+<h4 id="Outline">Outline<a class="anchor-link" href="../../CF%20Conventions/netcdf-and-cf-the-basics/#Outline">¶</a>
+</h4>
+<ol>
+<li><a href="../../CF%20Conventions/netcdf-and-cf-the-basics/#gridded">Gridded Data</a></li>
+<li><a href="../../CF%20Conventions/netcdf-and-cf-the-basics/#obs">Observation Data</a></li>
+<li><a href="../../CF%20Conventions/netcdf-and-cf-the-basics/#exercises">Exercises</a></li>
+<li><a href="../../CF%20Conventions/netcdf-and-cf-the-basics/#references">References</a></li>
+</ol>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a name="gridded"></a></p>
+<h3 id="Gridded-Data">Gridded Data<a class="anchor-link" href="../../CF%20Conventions/netcdf-and-cf-the-basics/#Gridded-Data">¶</a>
+</h3>
+<p>Let's say we're working with some numerical weather forecast model output. Let's walk through the steps necessary to store this data in netCDF, using the Climate and Forecasting metadata conventions to ensure that our data are available to as many tools as possible.</p>
+<p>To start, let's assume the following about our data:</p>
+<ul>
+<li>It corresponds to forecast three dimensional temperature at several times</li>
+<li>The native coordinate system of the model is on a regular grid that represents the Earth on a Lambert conformal projection.</li>
+</ul>
+<p>We'll also go ahead and generate some arrays of data below to get started:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Import some useful Python tools</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Twelve hours of hourly output starting at 22Z today</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">22</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">second</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">microsecond</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">start</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="n">h</span><span class="p">)</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">13</span><span class="p">)])</span>
+
+<span class="c1"># 3km spacing in x and y</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">150</span><span class="p">,</span> <span class="mi">153</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># Standard pressure levels in hPa</span>
+<span class="n">press</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">925</span><span class="p">,</span> <span class="mi">850</span><span class="p">,</span> <span class="mi">700</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">250</span><span class="p">])</span>
+
+<span class="n">temps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">times</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">press</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Creating-the-file-and-dimensions">Creating the file and dimensions<a class="anchor-link" href="../../CF%20Conventions/netcdf-and-cf-the-basics/#Creating-the-file-and-dimensions">¶</a>
+</h4>
+<p>The first step is to create a new file and set up the shared dimensions we'll be using in the file. We'll be using the netCDF4-python library to do all of the requisite netCDF API calls.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">netCDF4</span> <span class="k">import</span> <span class="n">Dataset</span>
+<span class="n">nc</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s1">'forecast_model.nc'</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">'NETCDF4_CLASSIC'</span><span class="p">,</span> <span class="n">diskless</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We're going to start by adding some global attribute metadata. These are recommendations from the standard (not required), but they're easy to add and help users keep the data straight, so let's go ahead and do it.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">nc</span><span class="o">.</span><span class="n">Conventions</span> <span class="o">=</span> <span class="s1">'CF-1.7'</span>
+<span class="n">nc</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">'Forecast model run'</span>
+<span class="n">nc</span><span class="o">.</span><span class="n">institution</span> <span class="o">=</span> <span class="s1">'Unidata'</span>
+<span class="n">nc</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="s1">'WRF-1.5'</span>
+<span class="n">nc</span><span class="o">.</span><span class="n">history</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">())</span> <span class="o">+</span> <span class="s1">' Python'</span>
+<span class="n">nc</span><span class="o">.</span><span class="n">references</span> <span class="o">=</span> <span class="s1">''</span>
+<span class="n">nc</span><span class="o">.</span><span class="n">comment</span> <span class="o">=</span> <span class="s1">''</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>At this point, this is the CDL representation of this dataset:</p>
+
+<pre><code>netcdf forecast_model {
+  attributes:
+    :Conventions = "CF-1.7" ;
+    :title = "Forecast model run" ;
+    :institution = "Unidata" ;
+    :source = "WRF-1.5" ;
+    :history = "2019-07-16 02:21:52.005718 Python" ;
+    :references = "" ;
+    :comment = "" ;
+}</code></pre>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Next, before adding variables to the file to define each of the data fields in this file, we need to define the dimensions that exist in this data set. We set each of <code>x</code>, <code>y</code>, and <code>pressure</code> to the size of the corresponding array. We set <code>forecast_time</code> to be an "unlimited" dimension, which allows the dataset to grow along that dimension if we write additional data to it later.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">nc</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">'forecast_time'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="n">nc</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">'x'</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+<span class="n">nc</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">'y'</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+<span class="n">nc</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">'pressure'</span><span class="p">,</span> <span class="n">press</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+<span class="n">nc</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The CDL representation now shows our dimensions:</p>
+
+<pre><code>netcdf forecast_model {
+  dimensions:
+    forecast_time = UNLIMITED (currently 13) ;
+    x = 101 ;
+    y = 67 ;
+    pressure = 7 ;
+  attributes:
+    :Conventions = "CF-1.7" ;
+    :title = "Forecast model run" ;
+    :institution = "Unidata" ;
+    :source = "WRF-1.5" ;
+    :history = "2019-07-16 02:21:52.005718 Python" ;
+    :references = "" ;
+    :comment = "" ;
+}</code></pre>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Creating-and-filling-a-variable">Creating and filling a variable<a class="anchor-link" href="../../CF%20Conventions/netcdf-and-cf-the-basics/#Creating-and-filling-a-variable">¶</a>
+</h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>So far, all we've done is outlined basic information about our dataset: broad metadata and the dimensions of our dataset. Now we create a variable to hold one particular data field for our dataset, in this case the forecast air temperature. When defining this variable, we specify the datatype for the values being stored, the relevant dimensions, as well as enable optional compression.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">temps_var</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">'Temperature'</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
+                              <span class="n">dimensions</span><span class="o">=</span><span class="p">(</span><span class="s1">'forecast_time'</span><span class="p">,</span> <span class="s1">'pressure'</span><span class="p">,</span> <span class="s1">'y'</span><span class="p">,</span> <span class="s1">'x'</span><span class="p">),</span>
+                              <span class="n">zlib</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now that we have the variable, we tell python to write our array of data to it.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">temps_var</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">temps</span>
+<span class="n">temps_var</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>If instead we wanted to write data sporadically, like once per time step, we could do that instead (though the for loop below might actually be at a higher level in the program:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">next_slice</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">temp_slice</span> <span class="ow">in</span> <span class="n">temps</span><span class="p">:</span>
+    <span class="n">temps_var</span><span class="p">[</span><span class="n">next_slice</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp_slice</span>
+    <span class="n">next_slice</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>At this point, this is the CDL representation of our dataset:</p>
+
+<pre><code>netcdf forecast_model {
+  dimensions:
+    forecast_time = UNLIMITED (currently 13) ;
+    x = 101 ;
+    y = 67 ;
+    pressure = 7 ;
+  variables:
+    float Temperature(forecast_time, pressure, y, x) ;
+  attributes:
+    :Conventions = "CF-1.7" ;
+    :title = "Forecast model run" ;
+    :institution = "Unidata" ;
+    :source = "WRF-1.5" ;
+    :history = "2019-07-16 02:21:52.005718 Python" ;
+    :references = "" ;
+    :comment = "" ;
+}</code></pre>
+<p>We can also add attributes to this variable to define metadata. The CF conventions require a <code>units</code> attribute to be set for all variables that represent a dimensional quantity. The value of this attribute needs to be parsable by the UDUNITS library. Here we set it to a value of <code>'Kelvin'</code>. We also set the standard (optional) attributes of <code>long_name</code> and <code>standard_name</code>. The former contains a longer description of the variable, while the latter comes from a controlled vocabulary in the CF conventions. This allows users of data to understand, in a standard fashion, what a variable represents. If we had missing values, we could also set the <code>missing_value</code> attribute to an appropriate value.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<blockquote>
+<p><strong>NASA Dataset Interoperability Recommendations:</strong></p>
+<p>Section 2.2 - Include Basic CF Attributes</p>
+<p>Include where applicable: <code>units</code>, <code>long_name</code>, <code>standard_name</code>, <code>valid_min</code> / <code>valid_max</code>, <code>scale_factor</code> / <code>add_offset</code> and others.</p>
+</blockquote>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">temps_var</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">'Kelvin'</span>
+<span class="n">temps_var</span><span class="o">.</span><span class="n">standard_name</span> <span class="o">=</span> <span class="s1">'air_temperature'</span>
+<span class="n">temps_var</span><span class="o">.</span><span class="n">long_name</span> <span class="o">=</span> <span class="s1">'Forecast air temperature'</span>
+<span class="n">temps_var</span><span class="o">.</span><span class="n">missing_value</span> <span class="o">=</span> <span class="o">-</span><span class="mi">9999</span>
+<span class="n">temps_var</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The resulting CDL (truncated to the variables only) looks like:</p>
+
+<pre><code>  variables:
+    float Temperature(forecast_time, pressure, y, x) ;
+      Temperature:units = "Kelvin" ;
+      Temperature:standard_name = "air_temperature" ;
+      Temperature:long_name = "Forecast air temperature" ;
+      Temperature:missing_value = -9999.0 ;</code></pre>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Coordinate-variables">Coordinate variables<a class="anchor-link" href="../../CF%20Conventions/netcdf-and-cf-the-basics/#Coordinate-variables">¶</a>
+</h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>To properly orient our data in time and space, we need to go beyond dimensions (which define common sizes and alignment) and include values along these dimensions, which are called "Coordinate Variables". Generally, these are defined by creating a one dimensional variable with the same name as the respective dimension.</p>
+<p>To start, we define variables which define our <code>x</code> and <code>y</code> coordinate values. These variables include <code>standard_name</code>s which allow associating them with projections (more on this later) as well as an optional <code>axis</code> attribute to make clear what standard direction this coordinate refers to.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">x_var</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">'x'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="p">(</span><span class="s1">'x'</span><span class="p">,))</span>
+<span class="n">x_var</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">x</span>
+<span class="n">x_var</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">'km'</span>
+<span class="n">x_var</span><span class="o">.</span><span class="n">axis</span> <span class="o">=</span> <span class="s1">'X'</span> <span class="c1"># Optional</span>
+<span class="n">x_var</span><span class="o">.</span><span class="n">standard_name</span> <span class="o">=</span> <span class="s1">'projection_x_coordinate'</span>
+<span class="n">x_var</span><span class="o">.</span><span class="n">long_name</span> <span class="o">=</span> <span class="s1">'x-coordinate in projected coordinate system'</span>
+
+<span class="n">y_var</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">'y'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="p">(</span><span class="s1">'y'</span><span class="p">,))</span>
+<span class="n">y_var</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">y</span>
+<span class="n">y_var</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">'km'</span>
+<span class="n">y_var</span><span class="o">.</span><span class="n">axis</span> <span class="o">=</span> <span class="s1">'Y'</span> <span class="c1"># Optional</span>
+<span class="n">y_var</span><span class="o">.</span><span class="n">standard_name</span> <span class="o">=</span> <span class="s1">'projection_y_coordinate'</span>
+<span class="n">y_var</span><span class="o">.</span><span class="n">long_name</span> <span class="o">=</span> <span class="s1">'y-coordinate in projected coordinate system'</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We also define a coordinate variable <code>pressure</code> to reference our data in the vertical dimension. The <code>standard_name</code> of <code>'air_pressure'</code> is sufficient to identify this coordinate variable as the vertical axis, but let's go ahead and specify the <code>axis</code> as well. We also specify the attribute <code>positive</code> to indicate whether the variable increases when going up or down. In the case of pressure, this is technically optional.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">press_var</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">'pressure'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="p">(</span><span class="s1">'pressure'</span><span class="p">,))</span>
+<span class="n">press_var</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">press</span>
+<span class="n">press_var</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">'hPa'</span>
+<span class="n">press_var</span><span class="o">.</span><span class="n">axis</span> <span class="o">=</span> <span class="s1">'Z'</span>  <span class="c1"># Optional</span>
+<span class="n">press_var</span><span class="o">.</span><span class="n">standard_name</span> <span class="o">=</span> <span class="s1">'air_pressure'</span>
+<span class="n">press_var</span><span class="o">.</span><span class="n">positive</span> <span class="o">=</span> <span class="s1">'down'</span>  <span class="c1"># Optional</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Time coordinates must contain a <code>units</code> attribute with a string value with a form similar to <code>'seconds since 2019-01-06 12:00:00.00'</code>. 'seconds', 'minutes', 'hours', and 'days' are the most commonly used units for time. Due to the variable length of months and years, they are not recommended.</p>
+<p>Before we can write data, we need to first need to convert our list of Python <code>datetime</code> instances to numeric values. We can use the <code>cftime</code> library to make this easy to convert using the unit string as defined above.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">cftime</span> <span class="k">import</span> <span class="n">date2num</span>
+<span class="n">time_units</span> <span class="o">=</span> <span class="s1">'hours since {:%Y-%m-</span><span class="si">%d</span><span class="s1"> 00:00}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">times</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">time_vals</span> <span class="o">=</span> <span class="n">date2num</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">time_units</span><span class="p">)</span>
+<span class="n">time_vals</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now we can create the <code>forecast_time</code> variable just as we did before for the other coordinate variables:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">time_var</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">'forecast_time'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="p">(</span><span class="s1">'forecast_time'</span><span class="p">,))</span>
+<span class="n">time_var</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">time_vals</span>
+<span class="n">time_var</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">time_units</span>
+<span class="n">time_var</span><span class="o">.</span><span class="n">axis</span> <span class="o">=</span> <span class="s1">'T'</span>  <span class="c1"># Optional</span>
+<span class="n">time_var</span><span class="o">.</span><span class="n">standard_name</span> <span class="o">=</span> <span class="s1">'time'</span>  <span class="c1"># Optional</span>
+<span class="n">time_var</span><span class="o">.</span><span class="n">long_name</span> <span class="o">=</span> <span class="s1">'time'</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The CDL representation of the variables now contains much more information:</p>
+
+<pre><code>  dimensions:
+    forecast_time = UNLIMITED (currently 13) ;
+    x = 101 ;
+    y = 67 ;
+    pressure = 7 ;
+  variables:
+    float x(x) ;
+      x:units = "km" ;
+      x:axis = "X" ;
+      x:standard_name = "projection_x_coordinate" ;
+      x:long_name = "x-coordinate in projected coordinate system" ;
+    float y(y) ;
+      y:units = "km" ;
+      y:axis = "Y" ;
+      y:standard_name = "projection_y_coordinate" ;
+      y:long_name = "y-coordinate in projected coordinate system" ;
+    float pressure(pressure) ;
+      pressure:units = "hPa" ;
+      pressure:axis = "Z" ;
+      pressure:standard_name = "air_pressure" ;
+      pressure:positive = "down" ;
+    float forecast_time(forecast_time) ;
+      forecast_time:units = "hours since 2019-07-16 00:00" ;
+      forecast_time:axis = "T" ;
+      forecast_time:standard_name = "time" ;
+      forecast_time:long_name = "time" ;
+    float Temperature(forecast_time, pressure, y, x) ;
+      Temperature:units = "Kelvin" ;
+      Temperature:standard_name = "air_temperature" ;
+      Temperature:long_name = "Forecast air temperature" ;
+      Temperature:missing_value = -9999.0 ;</code></pre>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Auxilliary-Coordinates">Auxilliary Coordinates<a class="anchor-link" href="../../CF%20Conventions/netcdf-and-cf-the-basics/#Auxilliary-Coordinates">¶</a>
+</h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Our data are still not CF-compliant because they do not contain latitude and longitude information, which is needed to properly locate the data. To solve this, we need to add variables with latitude and longitude. These are called "auxillary coordinate variables", not because they are extra, but because they are not simple one dimensional variables.</p>
+<p>Below, we first generate longitude and latitude values from our projected coordinates using the <code>pyproj</code> library.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pyproj</span> <span class="k">import</span> <span class="n">Proj</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">lcc</span> <span class="o">=</span> <span class="n">Proj</span><span class="p">({</span><span class="s1">'proj'</span><span class="p">:</span><span class="s1">'lcc'</span><span class="p">,</span> <span class="s1">'lon_0'</span><span class="p">:</span><span class="o">-</span><span class="mi">105</span><span class="p">,</span> <span class="s1">'lat_0'</span><span class="p">:</span><span class="mi">40</span><span class="p">,</span> <span class="s1">'a'</span><span class="p">:</span><span class="mf">6371000.</span><span class="p">,</span>
+            <span class="s1">'lat_1'</span><span class="p">:</span><span class="mi">25</span><span class="p">})</span>
+<span class="n">lon</span><span class="p">,</span> <span class="n">lat</span> <span class="o">=</span> <span class="n">lcc</span><span class="p">(</span><span class="n">X</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">Y</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now we can create the needed variables. Both are dimensioned on <code>y</code> and <code>x</code> and are two-dimensional. The longitude variable is identified as actually containing such information by its required units of <code>'degrees_east'</code>, as well as the optional <code>'longitude'</code> <code>standard_name</code> attribute. The case is the same for latitude, except the units are <code>'degrees_north'</code> and the <code>standard_name</code> is <code>'latitude'</code>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">lon_var</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">'lon'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="s1">'y'</span><span class="p">,</span> <span class="s1">'x'</span><span class="p">))</span>
+<span class="n">lon_var</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">lon</span>
+<span class="n">lon_var</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">'degrees_east'</span>
+<span class="n">lon_var</span><span class="o">.</span><span class="n">standard_name</span> <span class="o">=</span> <span class="s1">'longitude'</span>  <span class="c1"># Optional</span>
+<span class="n">lon_var</span><span class="o">.</span><span class="n">long_name</span> <span class="o">=</span> <span class="s1">'longitude'</span>
+
+<span class="n">lat_var</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">'lat'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="s1">'y'</span><span class="p">,</span> <span class="s1">'x'</span><span class="p">))</span>
+<span class="n">lat_var</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">lat</span>
+<span class="n">lat_var</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">'degrees_north'</span>
+<span class="n">lat_var</span><span class="o">.</span><span class="n">standard_name</span> <span class="o">=</span> <span class="s1">'latitude'</span>  <span class="c1"># Optional</span>
+<span class="n">lat_var</span><span class="o">.</span><span class="n">long_name</span> <span class="o">=</span> <span class="s1">'latitude'</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>With the variables created, we identify these variables as containing coordinates for the <code>Temperature</code> variable by setting the <code>coordinates</code> value to a space-separated list of the names of the auxilliary coordinate variables:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">temps_var</span><span class="o">.</span><span class="n">coordinates</span> <span class="o">=</span> <span class="s1">'lon lat'</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This yields the following CDL:</p>
+
+<pre><code>  double lon(y, x);
+    lon:units = "degrees_east";
+    lon:long_name = "longitude coordinate";
+    lon:standard_name = "longitude";
+  double lat(y, x);
+    lat:units = "degrees_north";
+    lat:long_name = "latitude coordinate";
+    lat:standard_name = "latitude";
+  float Temperature(time, y, x);
+    Temperature:units = "Kelvin" ;
+    Temperature:standard_name = "air_temperature" ;
+    Temperature:long_name = "Forecast air temperature" ;
+    Temperature:missing_value = -9999.0 ;
+    Temperature:coordinates = "lon lat";</code></pre>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Coordinate-System-Information">Coordinate System Information<a class="anchor-link" href="../../CF%20Conventions/netcdf-and-cf-the-basics/#Coordinate-System-Information">¶</a>
+</h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>With our data specified on a Lambert conformal projected grid, it would be good to include this information in our metadata. We can do this using a "grid mapping" variable. This uses a dummy scalar variable as a namespace for holding all of the required information. Relevant variables then reference the dummy variable with their <code>grid_mapping</code> attribute.</p>
+<p>Below we create a variable and set it up for a Lambert conformal conic projection on a spherical earth. The <code>grid_mapping_name</code> attribute describes which of the CF-supported grid mappings we are specifying. The names of additional attributes vary between the mappings.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">proj_var</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">'lambert_projection'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="p">())</span>
+<span class="n">proj_var</span><span class="o">.</span><span class="n">grid_mapping_name</span> <span class="o">=</span> <span class="s1">'lambert_conformal_conic'</span>
+<span class="n">proj_var</span><span class="o">.</span><span class="n">standard_parallel</span> <span class="o">=</span> <span class="mf">25.</span>
+<span class="n">proj_var</span><span class="o">.</span><span class="n">latitude_of_projection_origin</span> <span class="o">=</span> <span class="mf">40.</span>
+<span class="n">proj_var</span><span class="o">.</span><span class="n">longitude_of_central_meridian</span> <span class="o">=</span> <span class="o">-</span><span class="mf">105.</span>
+<span class="n">proj_var</span><span class="o">.</span><span class="n">semi_major_axis</span> <span class="o">=</span> <span class="mf">6371000.0</span>
+<span class="n">proj_var</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now that we created the variable, all that's left is to set the <code>grid_mapping</code> attribute on our <code>Temperature</code> variable to the name of our dummy variable:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">temps_var</span><span class="o">.</span><span class="n">grid_mapping</span> <span class="o">=</span> <span class="s1">'lambert_projection'</span>  <span class="c1"># or proj_var.name</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This yields the CDL:</p>
+
+<pre><code>  variables:
+    int lambert_projection ;
+      lambert_projection:grid_mapping_name = "lambert_conformal_conic ;
+      lambert_projection:standard_parallel = 25.0 ;
+      lambert_projection:latitude_of_projection_origin = 40.0 ;
+      lambert_projection:longitude_of_central_meridian = -105.0 ;
+      lambert_projection:semi_major_axis = 6371000.0 ;
+    float Temperature(forecast_time, pressure, y, x) ;
+      Temperature:units = "Kelvin" ;
+      Temperature:standard_name = "air_temperature" ;
+      Temperature:long_name = "Forecast air temperature" ;
+      Temperature:missing_value = -9999.0 ;
+      Temperature:coordinates = "lon lat" ;
+      Temperature:grid_mapping = "lambert_projection" ;</code></pre>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Cell-Bounds">Cell Bounds<a class="anchor-link" href="../../CF%20Conventions/netcdf-and-cf-the-basics/#Cell-Bounds">¶</a>
+</h4>
+<blockquote>
+<p><strong>NASA Dataset Interoperability Recommendations:</strong></p>
+<p>Section 2.3 - Use CF “bounds” attributes</p>
+<p>CF conventions state: “When gridded data does not represent the point values of a field but instead represents some characteristic of the field within cells of finite ‘volume,’ a complete description of the variable should include metadata that describes the domain or extent of each cell, and the characteristic of the field that the cell values represent.”</p>
+</blockquote>
+<p>For example, if a rain guage is read every 3 hours but only dumped every six hours, it might look like this</p>
+
+<pre><code>netcdf precip_bucket_bounds {
+  dimensions:
+      lat = 12 ;
+      lon = 19 ;
+      time = 8 ;
+      tbv = 2;
+  variables:
+      float lat(lat) ;
+      float lon(lon) ;
+      float time(time) ;
+        time:units = "hours since 2019-07-12 00:00:00.00";
+        time:bounds = "time_bounds" ;
+      float time_bounds(time,tbv)
+      float precip(time, lat, lon) ;
+        precip:units = "inches" ;
+  data:
+    time = 3, 6, 9, 12, 15, 18, 21, 24;
+    time_bounds = 0, 3, 0, 6, 6, 9, 6, 12, 12, 15, 12, 18, 18, 21, 18, 24;
+}</code></pre>
+<p>So the time coordinate looks like</p>
+
+<pre><code>|---X
+|-------X
+        |---X
+        |-------X
+                |---X
+                |-------X
+                        |---X
+                        |-------X
+0   3   6   9  12  15  18  21  24</code></pre>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a name="obs"></a></p>
+<h3 id="Observational-Data">Observational Data<a class="anchor-link" href="../../CF%20Conventions/netcdf-and-cf-the-basics/#Observational-Data">¶</a>
+</h3>
+<p>So far we've focused on how to handle storing data that are arranged in a grid. What about observation data? The CF conventions describe this as conventions for Discrete Sampling Geometeries (DSG).</p>
+<p>For data that are regularly sampled (say, all at the same heights) this is straightforward. First, let's define some sample profile data, all at a few heights less than 1000m:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">lons</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">97.1</span><span class="p">,</span> <span class="o">-</span><span class="mi">105</span><span class="p">,</span> <span class="o">-</span><span class="mi">80</span><span class="p">])</span>
+<span class="n">lats</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">35.25</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">27</span><span class="p">])</span>
+<span class="n">heights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">temps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">lats</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">heights</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+<span class="n">stids</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'KBOU'</span><span class="p">,</span> <span class="s1">'KOUN'</span><span class="p">,</span> <span class="s1">'KJUP'</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Creation-and-basic-setup">Creation and basic setup<a class="anchor-link" href="../../CF%20Conventions/netcdf-and-cf-the-basics/#Creation-and-basic-setup">¶</a>
+</h4>
+<p>First we create a new file and define some dimensions. Since this is profile data, heights will be one dimension. We use station as our other dimension. We also set the global <code>featureType</code> attribute to <code>'profile'</code> to indicate that this file holds "an ordered set of data points along a vertical line at a fixed horizontal position and fixed time". We also add a dimension to assist in storing our string station ids.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">nc</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">nc</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s1">'obs_data.nc'</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">'NETCDF4_CLASSIC'</span><span class="p">,</span> <span class="n">diskless</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">nc</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">'station'</span><span class="p">,</span> <span class="n">lats</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+<span class="n">nc</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">'heights'</span><span class="p">,</span> <span class="n">heights</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+<span class="n">nc</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">'str_len'</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">nc</span><span class="o">.</span><span class="n">Conventions</span> <span class="o">=</span> <span class="s1">'CF-1.7'</span>
+<span class="n">nc</span><span class="o">.</span><span class="n">featureType</span> <span class="o">=</span> <span class="s1">'profile'</span>
+<span class="n">nc</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Which gives this CDL:</p>
+
+<pre><code>netcdf obs_data {
+  dimensions:
+    station = 3 ;
+    heights = 10 ;
+    str_len = 4 ;
+  attributes:
+    :Conventions = "CF-1.7" ;
+    :featureType = "profile" ;
+}</code></pre>
+<p>We can create our coordinates with:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">lon_var</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">'lon'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="s1">'station'</span><span class="p">,))</span>
+<span class="n">lon_var</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">'degrees_east'</span>
+<span class="n">lon_var</span><span class="o">.</span><span class="n">standard_name</span> <span class="o">=</span> <span class="s1">'longitude'</span>
+
+<span class="n">lat_var</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">'lat'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="s1">'station'</span><span class="p">,))</span>
+<span class="n">lat_var</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">'degrees_north'</span>
+<span class="n">lat_var</span><span class="o">.</span><span class="n">standard_name</span> <span class="o">=</span> <span class="s1">'latitude'</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The standard refers to these as "instance variables" because each one refers to an instance of a feature. From here we can create our <code>height</code> coordinate variable:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">heights_var</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">'heights'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="p">(</span><span class="s1">'heights'</span><span class="p">,))</span>
+<span class="n">heights_var</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">'meters'</span>
+<span class="n">heights_var</span><span class="o">.</span><span class="n">standard_name</span> <span class="o">=</span> <span class="s1">'altitude'</span>
+<span class="n">heights_var</span><span class="o">.</span><span class="n">positive</span> <span class="o">=</span> <span class="s1">'up'</span>
+<span class="n">heights_var</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">heights</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Station-IDs">Station IDs<a class="anchor-link" href="../../CF%20Conventions/netcdf-and-cf-the-basics/#Station-IDs">¶</a>
+</h4>
+<p>Now we can also write our station IDs to a variable. This is a 2D variable, but one of the dimensions is simply there to facilitate treating strings as character arrays. We also assign this an attribute <code>cf_role</code> with a value of <code>'profile_id'</code> to facilitate software to identify individual profiles:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">stid_var</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">'stid'</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">,</span> <span class="p">(</span><span class="s1">'station'</span><span class="p">,</span> <span class="s1">'str_len'</span><span class="p">))</span>
+<span class="n">stid_var</span><span class="o">.</span><span class="n">cf_role</span> <span class="o">=</span> <span class="s1">'profile_id'</span>
+<span class="n">stid_var</span><span class="o">.</span><span class="n">long_name</span> <span class="o">=</span> <span class="s1">'Station identifier'</span>
+<span class="n">stid_var</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">stids</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now our CDL looks like:</p>
+
+<pre><code>netcdf obs_data {
+  dimensions:
+    station = 3 ;
+    heights = 10 ;
+    str_len = 4 ;
+  variables:
+    double lon(station) ;
+      lon:units = "degrees_east" ;
+      lon:standard_name = "longitude" ;
+    double lat(station) ;
+      lat:units = "degrees_north" ;
+      lat:standard_name = "latitude" ;
+    float heights(heights) ;
+      heights:units = "meters" ;
+      heights:standard_name = "altitude";
+      heights:positive = "up" ;
+    char stid(station, str_len) ;
+      stid:cf_role = "profile_id" ;
+      stid:long_name = "Station identifier" ;
+  attributes:
+    :Conventions = "CF-1.7" ;
+    :featureType = "profile" ;
+}</code></pre>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Writing-the-field">Writing the field<a class="anchor-link" href="../../CF%20Conventions/netcdf-and-cf-the-basics/#Writing-the-field">¶</a>
+</h4>
+<p>Now all that's left is to write our profile data, which looks fairly standard. We also add a scalar variable for the time at which these profiles were captured:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">time_var</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">'time'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="p">())</span>
+<span class="n">time_var</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">'minutes since 2019-07-16 17:00'</span>
+<span class="n">time_var</span><span class="o">.</span><span class="n">standard_name</span> <span class="o">=</span> <span class="s1">'time'</span>
+<span class="n">time_var</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">5.</span><span class="p">]</span>
+
+<span class="n">temp_var</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">'temperature'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="p">(</span><span class="s1">'station'</span><span class="p">,</span> <span class="s1">'heights'</span><span class="p">))</span>
+<span class="n">temp_var</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">'celsius'</span>
+<span class="n">temp_var</span><span class="o">.</span><span class="n">standard_name</span> <span class="o">=</span> <span class="s1">'air_temperature'</span>
+<span class="n">temp_var</span><span class="o">.</span><span class="n">coordinates</span> <span class="o">=</span> <span class="s1">'lon lat heights time'</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Note the use of the <code>coordinates</code> attribute to store the names of the auxilliary coordinate variables since they're all dimensioned on <code>station</code> and not proper coordinate variables. This yields the CDL for the variables:</p>
+
+<pre><code>  variables:
+    double lon(station) ;
+      lon:units = "degrees_east" ;
+      lon:standard_name = "longitude" ;
+    double lat(station) ;
+      lat:units = "degrees_north" ;
+      lat:standard_name = "latitude" ;
+    float heights(heights) ;
+      heights:units = "meters" ;
+      heights:standard_name = "altitude";
+      heights:positive = "up" ;
+    char stid(station, str_len) ;
+      stid:cf_role = "profile_id" ;
+      stid:long_name = "Station identifier" ;
+    float time ;
+      time:units = "minutes since 2019-07-16 17:00" ;
+      time:standard_name = "time" ;
+    float temperature(station, heights) ;
+      temperature:units = "celsius" ;
+      temperature:standard_name = "air_temperature" ;
+      temperature:coordinates = "lon lat heights time" ;</code></pre>
+<p>These standards for storing DSG extend to time series, trajectories, and combinations of them. They also can extend for differing amounts of data  per feature using ragged arrays. For more information see the <a href="http://cfconventions.org/Data/cf-conventions/cf-conventions-1.7/cf-conventions.html#discrete-sampling-geometries">main document</a> or the <a href="http://cfconventions.org/Data/cf-conventions/cf-conventions-1.7/cf-conventions.html#appendix-examples-discrete-geometries">annotated DSG examples</a>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a name="exercises"></a></p>
+<h3 id="Exercises">Exercises<a class="anchor-link" href="../../CF%20Conventions/netcdf-and-cf-the-basics/#Exercises">¶</a>
+</h3>
+<ol>
+<li>Create another 3D variable representing relative humidity</li>
+<li>Createa another variable for surface precipitation</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a name="references"></a></p>
+<h3 id="References">References<a class="anchor-link" href="../../CF%20Conventions/netcdf-and-cf-the-basics/#References">¶</a>
+</h3>
+<ul>
+<li>See CF Conventions doc (<a href="http://cfconventions.org/Data/cf-conventions/cf-conventions-1.7/cf-conventions.html">1.7</a>)</li>
+<li>See Jonathan Gregory's old <a href="http://cfconventions.org/Data/cf-documents/overview/viewgraphs.pdf">CF presentation</a>
+</li>
+<li>See <a href="https://docs.google.com/presentation/d/1OImxWBNxyj-zdreIarH5GSIuDyREGB62rDah19g6M94/edit#">CF presentation</a> I gave at Oct 2018 nc training workshop</li>
+<li>See  NASA ESDS “Dataset Interoperability Recommendations for Earth Science” (<a href="https://earthdata.nasa.gov/user-resources/standards-and-references/dataset-interoperability-recommendations-for-earth-science">web page</a>)</li>
+<li>See CF Data Model (cfdm) python package <a href="https://ncas-cms.github.io/cfdm/tutorial.html">tutorial</a>
+</li>
+<li>See Tim Whiteaker's cfgeom python package (GitHub <a href="https://github.com/twhiteaker/CFGeom">repo</a>)(<a href="https://twhiteaker.github.io/CFGeom/tutorial.html">tutorial</a>)</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+    </div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha256-SDRP1VVYu+tgAGKhddBSl5+ezofHKZeI+OzxakbIe/Y=" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

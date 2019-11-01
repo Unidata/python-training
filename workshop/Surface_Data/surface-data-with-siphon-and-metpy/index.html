@@ -26,7 +26,7 @@ Exercises: 20 minutes
 Questions¶
 What's the best way to get surface station data from a">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2019-11-01T09:07:35-06:00">
+<meta property="article:published_time" content="2019-11-01T14:30:35-06:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -91,7 +91,7 @@ What's the best way to get surface station data from a">
 <div style="width:1000 px">
 
 <div style="float:right; width:98 px; height:98px;">
-<img src="https://raw.githubusercontent.com/Unidata/MetPy/master/src/metpy/plots/_static/unidata_150x150.png" alt="Unidata Logo" style="height: 98px;">
+<img src="https://raw.githubusercontent.com/Unidata/MetPy/master/metpy/plots/_static/unidata_150x150.png" alt="Unidata Logo" style="height: 98px;">
 </div>
 <p></p>
 <h2>Working with Surface Observations in Siphon and MetPy</h2>
@@ -455,8 +455,8 @@ What's the best way to get surface station data from a">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>More examples for MetPy Station Plots:</p>
 <ul>
-<li><a href="https://unidata.github.io/MetPy/examples/index.html">MetPy Examples</a></li>
-<li><a href="https://unidata.github.io/MetPy/api/generated/metpy.plots.StationPlot.html#metpy.plots.StationPlot.plot_symbol">MetPy Symbol list</a></li>
+<li><a href="https://unidata.github.io/MetPy/latest/examples/index.html">MetPy Examples</a></li>
+<li><a href="https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.StationPlot.html#metpy.plots.StationPlot.plot_symbol">MetPy Symbol list</a></li>
 </ul>
 </div>
 </div>
@@ -507,11 +507,13 @@ What's the best way to get surface station data from a">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [0]:</div>
+<div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Replaced by notebook preprocessor</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/reduce_density.py</span>
 
+
+<span class="c1"># Cell content replaced by load magic replacement.</span>
 <span class="c1"># Use reduce_point_density</span>
 <span class="n">mask</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">reduce_point_density</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="mi">75000</span><span class="p">)</span>
 
@@ -793,11 +795,12 @@ What's the best way to get surface station data from a">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [0]:</div>
+<div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Replaced by notebook preprocessor</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/time_series.py</span>
 
+<span class="c1"># Cell content replaced by load magic replacement.</span>
 <span class="c1"># define the time range we are interested in</span>
 <span class="n">end_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="n">start_time</span> <span class="o">=</span> <span class="n">end_time</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>

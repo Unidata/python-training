@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scientific_Python_Ecosystem_Overview | The Unidata Python Training Site</title>
+<link href="../../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/workshop/Python_Ecosystem/scientific_python_ecosystem_overview/">
+<!--[if lt IE 9]><script src="../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="Scientific_Python_Ecosystem_Overview">
+<meta property="og:url" content="https://unidata.github.io/python-training/workshop/Python_Ecosystem/scientific_python_ecosystem_overview/">
+<meta property="og:description" content="The Scientific Python Ecosystem¶
+
+
+
+
+
+
+Python¶Python is a interpreted, high-level programming language that is meant to be easily understandable and usable for a multitude of purposes. It is composed ">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-11-01T14:26:16-06:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../../python/intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../../../gallery/gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.ipynb" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Scientific_Python_Ecosystem_Overview</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="The-Scientific-Python-Ecosystem">The Scientific Python Ecosystem<a class="anchor-link" href="#The-Scientific-Python-Ecosystem">¶</a>
+</h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Python">Python<a class="anchor-link" href="#Python">¶</a>
+</h3>
+<p>Python is a interpreted, high-level programming language that is meant to be easily understandable and usable for a multitude of purposes. It is composed of libraries that contain useful tools for you to do quick and efficient data analysis and visualization. These libraries are like Lego blocks - you can pick and choose which ones you want to build your end product. The Scientific Python Ecosystem is composed of key libraries (i.e. NumPy, SciPy, Pandas, Matplotlib) that serve as a basis for most other libraries (i.e. MetPy). In this notebook, we'll briefly touch on several of these foundational libraries of the SciPy Ecosystem.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Getting-Python:-Anaconda">Getting Python: Anaconda<a class="anchor-link" href="#Getting-Python:-Anaconda">¶</a>
+</h4>
+<p>Anaconda provides distributions of Python and the main third-party packages either as a full distribution or as a lighter-weight verison, "Miniconda". We recommend using Anaconda to build and maintain your Python stack, as it provides command line tools to download and update Python libraries. You can check it out at <a href="https://www.anaconda.com/distribution/">https://www.anaconda.com/distribution/</a>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Jupyter">Jupyter<a class="anchor-link" href="#Jupyter">¶</a>
+</h4>
+<p>The Jupyter library provides "literate programming" interfaces for Python and other programming languages. This file is displayed using the Jupyter library, either within Jupyter Notebook or Lab. It incorporates code, prose, and other text (equations, HTML) to make a seamless document for your analysis or presentation by working in small blocks. This also allows for quick prototyping and debugging of code as you write!</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="The-Building-Blocks-of-the-SciPy-World">The Building Blocks of the SciPy World<a class="anchor-link" href="#The-Building-Blocks-of-the-SciPy-World">¶</a>
+</h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="https://github.com/Unidata/python-workshop/raw/gh-pages/images/MetPy_Stack.png" alt="SciPy Ecosystem"></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>While Python is the basis for everything, this figure demonstrates how packages build on top of each other (causing dependencies). Additionally, packages are constantly under development, so this structure does have some transient nature to it, as the SciPy world continue to expand (see Dask as a recent addition to this framework).</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Data-Analysis/Computation-Libraries">Data Analysis/Computation Libraries<a class="anchor-link" href="#Data-Analysis/Computation-Libraries">¶</a>
+</h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="NumPy">NumPy<a class="anchor-link" href="#NumPy">¶</a>
+</h4>
+<p>NumPy is the primary numerical computation library in Python. It works with N-dimensional arrays and matrices and performs basic computations on them.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">110</span><span class="p">)</span>
+<span class="n">mean_x_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mean_x_y</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Pandas">Pandas<a class="anchor-link" href="#Pandas">¶</a>
+</h4>
+<p>Pandas is an excellent library for handling tabular data and quickly performing data analysis on it. It can handle many textfile types.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../Pandas/Jan17_CO_ASOS.txt'</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">'</span><span class="se">\t</span><span class="s1">'</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="xarray">xarray<a class="anchor-link" href="#xarray">¶</a>
+</h4>
+<p>xarray is a Python library meant to handle N-dimensional arrays with metadata (think netCDF files). With the Dask library, it can work with Big Data efficiently in a Python framework.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">'../../data/NARR_19930313_0000.nc'</span><span class="p">)</span>
+<span class="n">ds</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Dask">Dask<a class="anchor-link" href="#Dask">¶</a>
+</h4>
+<p>Dask is a parallel-computing library in Python. You can use it on your laptop, cloud environment, or on a high-performance computer (NCAR's Cheyenne for example). It allows for lazy evaluations so that computations only occur after you've chained all of your operations together. Additionally, it has a built-in scheduler to scale with your computational demand to optimize your parellel resources.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="SciPy">SciPy<a class="anchor-link" href="#SciPy">¶</a>
+</h4>
+<p>The SciPy library has a lot of advanced mathematical functions that are not contained in Numpy, including Fast Fourier Transforms, interpolation methods, and linear algebra operations.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Scikit-learn">Scikit-learn<a class="anchor-link" href="#Scikit-learn">¶</a>
+</h4>
+<p>Scikit-learn is the primary machine learning library for Python. It can do simple things like regressions and classifications, or more advanced techniques like random forests. It can perform some neural network operations, but for big data implementations, check out the <code>keras</code> library.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Scikit-image">Scikit-image<a class="anchor-link" href="#Scikit-image">¶</a>
+</h4>
+<p>An image processing library built on NumPy</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Visualization-Libraries">Visualization Libraries<a class="anchor-link" href="#Visualization-Libraries">¶</a>
+</h3>
+<h4 id="Matplotlib">Matplotlib<a class="anchor-link" href="#Matplotlib">¶</a>
+</h4>
+<p>Matplotlib is one of the core visualization libraries in Python and produces publication-quality figures without much configuration.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Demo of Matplotlib'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="CartoPy">CartoPy<a class="anchor-link" href="#CartoPy">¶</a>
+</h4>
+<p>CartoPy is the primary geographical mapping and visualization library in Python, as support for Basemap has been discontinued. It can handle various projections and transformation to/from projections to map data accurately for your problem.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Atmospheric-Science-Libraries">Atmospheric Science Libraries<a class="anchor-link" href="#Atmospheric-Science-Libraries">¶</a>
+</h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="MetPy">MetPy<a class="anchor-link" href="#MetPy">¶</a>
+</h4>
+<p>MetPy is developed at Unidata with support from the user community as a replacement for GEMPAK. Its primary functions are to read in data, perform meteorological calculations on it, and visualize it in useful way for education and research.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Pint">Pint<a class="anchor-link" href="#Pint">¶</a>
+</h4>
+<p>Pint is a unit-handling library, which MetPy relies upon for its calculations. Pint allow units to be attached to NumPy arrays, which allows for unit-aware calculations and easy conversions to reduce unit-based errors.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="netcdf4-python">netcdf4-python<a class="anchor-link" href="#netcdf4-python">¶</a>
+</h4>
+<p>This is another Unidata package that serves as an interface from Python to the netCDF-C library. As a result, netCDF files can easily be read and written in Python.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Siphon">Siphon<a class="anchor-link" href="#Siphon">¶</a>
+</h4>
+<p>The Siphon library, developed at Unidata, is a remote access library, built for accessing data on THREDDS servers, but also has hooks into the Wyoming, IGRA, and Iowa State upper air databases, the National Buoy Data Center, and the NHC and SPC storm reports as well.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>For more information on the SciPy Ecosystem, check out these links: <a href="https://www.scipy.org/about.html">https://www.scipy.org/about.html</a> and <a href="https://scipy-lectures.org/intro/intro.html">https://scipy-lectures.org/intro/intro.html</a></p>
+
+</div>
+</div>
+</div>
+</div>
+    </div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha256-SDRP1VVYu+tgAGKhddBSl5+ezofHKZeI+OzxakbIe/Y=" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

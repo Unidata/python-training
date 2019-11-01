@@ -33,7 +33,7 @@
 NWS Precipitation Map¶Plot a 1-day precipitation map using a netCDF file from the National Weather Service.
 This opens the data dir">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2019-11-01T09:03:41-06:00">
+<meta property="article:published_time" content="2019-11-01T14:26:16-06:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -168,7 +168,7 @@ a custom colortable as well as MetPy's unit support.</p>
 <span class="n">url</span> <span class="o">=</span> <span class="s1">'http://water.weather.gov/precip/downloads/{dt:%Y/%m/</span><span class="si">%d</span><span class="s1">}/nws_precip_1day_'</span>\
       <span class="s1">'{dt:%Y%m</span><span class="si">%d</span><span class="s1">}_conus.nc'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="n">nc</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s1">''</span><span class="p">,</span> <span class="n">memory</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+<span class="n">nc</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s1">'data'</span><span class="p">,</span> <span class="n">memory</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 
     </div>

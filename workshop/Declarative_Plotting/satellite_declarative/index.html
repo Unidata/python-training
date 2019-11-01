@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Satellite_Declarative | The Unidata Python Training Site</title>
+<link href="../../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/workshop/Declarative_Plotting/satellite_declarative/">
+<!--[if lt IE 9]><script src="../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="Satellite_Declarative">
+<meta property="og:url" content="https://unidata.github.io/python-training/workshop/Declarative_Plotting/satellite_declarative/">
+<meta property="og:description" content="Declarative Plotting with Satellite Data
+Unidata Python Workshop
+
+
+Overview:¶
+Teaching: 20 minutes
+Exercises: 15 minutes
+
+Questions¶
+How can satellite data be accessed with siphon?
+How can maps of sat">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-11-01T14:30:35-06:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../../python/intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../../../gallery/gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.ipynb" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Satellite_Declarative</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a name="pagetop"></a></p>
+<div style="width:1000 px">
+
+<div style="float:right; width:98 px; height:98px;"><img src="https://pbs.twimg.com/profile_images/1187259618/unidata_logo_rgb_sm_400x400.png" alt="Unidata Logo" style="height: 98px;"></div>
+<p></p>
+<h2>Declarative Plotting with Satellite Data</h2>
+<h4>Unidata Python Workshop</h4>
+<div style="clear:both"></div>
+</div>
+<hr style="height:2px;">
+<div style="float:right; width:300 px"><img src="https://unidata.github.io/MetPy/latest/_images/sphx_glr_GINI_Water_Vapor_001.png" alt="Example Satellite Image" style="height: 350px;"></div>
+<h3 id="Overview:">Overview:<a class="anchor-link" href="#Overview:">¶</a>
+</h3>
+<ul>
+<li>
+<strong>Teaching:</strong> 20 minutes</li>
+<li>
+<strong>Exercises:</strong> 15 minutes</li>
+</ul>
+<h4 id="Questions">Questions<a class="anchor-link" href="#Questions">¶</a>
+</h4>
+<ol>
+<li>How can satellite data be accessed with siphon?</li>
+<li>How can maps of satellite data be made using the declarative plotting interface?</li>
+</ol>
+<h4 id="Table-of-Contents">Table of Contents<a class="anchor-link" href="#Table-of-Contents">¶</a>
+</h4>
+<ol>
+<li><a href="#dataaccess">Accessing data with Siphon</a></li>
+<li><a href="#plotting">Plotting the data</a></li>
+</ol>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a name="dataaccess"></a></p>
+<h3 id="Accessing-data-with-Siphon">Accessing data with Siphon<a class="anchor-link" href="#Accessing-data-with-Siphon">¶</a>
+</h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As we saw with the PlottingSatelliteData notebook, GOES 16/17 data is available via the Unidata THREDDS server and can be accessed with siphon. We make use of fstrings in order to provide date, region, and channel variables to the URL string.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">siphon.catalog</span> <span class="k">import</span> <span class="n">TDSCatalog</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Create variables for URL generation</span>
+<span class="n">image_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+<span class="n">region</span> <span class="o">=</span> <span class="s1">'Mesoscale-1'</span>
+<span class="n">channel</span> <span class="o">=</span> <span class="mi">8</span>
+
+<span class="c1"># Create the URL to provide to siphon</span>
+<span class="n">data_url</span> <span class="o">=</span>  <span class="p">(</span><span class="s1">'https://thredds.ucar.edu/thredds/catalog/satellite/goes/east/products/'</span>
+            <span class="n">f</span><span class="s1">'CloudAndMoistureImagery/</span><span class="si">{region}</span><span class="s1">/Channel</span><span class="si">{channel:02d}</span><span class="s1">/'</span>
+            <span class="n">f</span><span class="s1">'{image_date:%Y%m</span><span class="si">%d</span><span class="s1">}/catalog.xml'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cat</span> <span class="o">=</span> <span class="n">TDSCatalog</span><span class="p">(</span><span class="n">data_url</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dataset</span> <span class="o">=</span> <span class="n">cat</span><span class="o">.</span><span class="n">datasets</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ds</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">remote_access</span><span class="p">(</span><span class="n">use_xarray</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a name="plotting"></a></p>
+<h3 id="Plotting-the-Data">Plotting the Data<a class="anchor-link" href="#Plotting-the-Data">¶</a>
+</h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>To plot our data we'll be using MetPy's new declarative plotting functionality. You can write lots of matplotlib based code, but this interface greatly reduces the number of lines you need to write to get a great starting plot and then lets you customize it. The declarative plotting interface consists of three fundamental objects/concepts:</p>
+<ul>
+<li>
+<strong>Plot</strong> - This is the actual representation of the data and can be <code>ImagePlot</code>, <code>ContourPlot</code>, or <code>Plot2D</code>.</li>
+<li>
+<strong>Panel</strong> - This is a single panel (i.e. coordinate system). Panels contain plots. Currently the <code>MapPanel</code> is the only panel type available.</li>
+<li>
+<strong>Panel Container</strong> - The container can hold multiple panels to make a multi-pane figure. Panel Containers can be thought of as the whole figure object in matplotlib.</li>
+</ul>
+<p>So containers have panels which have plots. It takes a second to get that straight in your mind, but it makes setting up complex figures very simple.</p>
+<p>For this plot we need a single panel and we want to plot the satellite image, so we'll use the <code>ImagePlot</code>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <span class="n">ImagePlot</span><span class="p">,</span> <span class="n">MapPanel</span><span class="p">,</span> <span class="n">PanelContainer</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's start out with the smallest element, the plot, and build up to the largest, the panel container.</p>
+<p>First, we'll make the <code>ImagePlot</code>:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">ImagePlot</span><span class="p">()</span>
+<span class="n">img</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">ds</span>
+<span class="n">img</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="s1">'Sectorized_CMI'</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Next, we'll make the panel that our image will go into, the <code>MapPanel</code> object and add the image to the plots on the panel.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">panel</span> <span class="o">=</span> <span class="n">MapPanel</span><span class="p">()</span>
+<span class="n">panel</span><span class="o">.</span><span class="n">plots</span> <span class="o">=</span> <span class="p">[</span><span class="n">img</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Finally, we make the <code>PanelContainer</code> and add the panel to its container. Remember that since we can have multiple plots on a panel and multiple panels on a plot, we use lists. In this case is just happens to be a list of length 1.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pc</span> <span class="o">=</span> <span class="n">PanelContainer</span><span class="p">()</span>
+<span class="n">pc</span><span class="o">.</span><span class="n">panels</span> <span class="o">=</span> <span class="p">[</span><span class="n">panel</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Unlike working with matplotlib directly in the notebooks, this figure hasn't actually been rendered yet. Calling the <code>show</code> method of the panel container builds up everything, renders, and shows it to us.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pc</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Exercise">Exercise<a class="anchor-link" href="#Exercise">¶</a>
+</h4>
+<ul>
+<li>Look at the documentation for the <code>ImagePlot</code> <a href="https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.ImagePlot.html#metpy.plots.ImagePlot">here</a> and figure out how to set the colormap of the image. For this image, let's go with the <code>WVCIMSS_r</code> colormap as this is a mid-level water vapor image. Set the range for the colormap to 195-265 K.</li>
+<li>BONUS: Use the MetPy <code>add_timestamp</code> method from <code>metpy.plots</code> to add a timestamp to the plot. You can get the axes object to plot on from the <code>ImagePlot</code>. The call will look something like <code>img.ax</code>. This needs to happen after the panels have been added to the <code>PanelContainer</code>.</li>
+<li>DAILY DOUBLE: Using the <code>start_date_time</code> attribute on the dataset <code>ds</code>, change the call to <code>add_timestamp</code> to use that date and time and the pretext to say <code>GOES 16 Channel X</code>.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Import for the bonus exercise</span>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <span class="n">add_timestamp</span>
+
+<span class="c1"># Make the image plot</span>
+<span class="c1"># YOUR CODE GOES HERE</span>
+
+<span class="c1"># Make the map panel and add the image to it</span>
+<span class="c1"># YOUR CODE GOES HERE</span>
+
+<span class="c1"># Make the panel container and add the panel to it</span>
+<span class="c1"># YOUR CODE GOES HERE</span>
+
+<span class="c1"># Show the plot</span>
+<span class="c1"># YOUR CODE GOES HERE</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Solution">Solution<a class="anchor-link" href="#Solution">¶</a>
+</h5>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/sat_map.py</span>
+
+
+<span class="c1"># Cell content replaced by load magic replacement.</span>
+<span class="c1"># Import for the bonus exercise</span>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <span class="n">add_timestamp</span>
+
+<span class="c1"># Make the image plot</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">ImagePlot</span><span class="p">()</span>
+<span class="n">img</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">ds</span>
+<span class="n">img</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="s1">'Sectorized_CMI'</span>
+<span class="n">img</span><span class="o">.</span><span class="n">colormap</span> <span class="o">=</span> <span class="s1">'WVCIMSS_r'</span>
+<span class="n">img</span><span class="o">.</span><span class="n">image_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">195</span><span class="p">,</span> <span class="mi">265</span><span class="p">)</span>
+
+<span class="c1"># Make the map panel and add the image to it</span>
+<span class="n">panel</span> <span class="o">=</span> <span class="n">MapPanel</span><span class="p">()</span>
+<span class="n">panel</span><span class="o">.</span><span class="n">plots</span> <span class="o">=</span> <span class="p">[</span><span class="n">img</span><span class="p">]</span>
+
+<span class="c1"># Make the panel container and add the panel to it</span>
+<span class="n">pc</span> <span class="o">=</span> <span class="n">PanelContainer</span><span class="p">()</span>
+<span class="n">pc</span><span class="o">.</span><span class="n">panels</span> <span class="o">=</span> <span class="p">[</span><span class="n">panel</span><span class="p">]</span>
+
+<span class="c1"># Bonus</span>
+<span class="n">start_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">start_date_time</span><span class="p">,</span> <span class="s1">'%Y%j%H%M%S'</span><span class="p">)</span>
+<span class="n">add_timestamp</span><span class="p">(</span><span class="n">panel</span><span class="o">.</span><span class="n">ax</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">start_time</span><span class="p">)</span>
+
+<span class="c1"># Show the plot</span>
+<span class="n">pc</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+    </div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha256-SDRP1VVYu+tgAGKhddBSl5+ezofHKZeI+OzxakbIe/Y=" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

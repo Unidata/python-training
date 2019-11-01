@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Declarative_300hPa | The Unidata Python Training Site</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/gallery/declarative_300hpa/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="Declarative_300hPa">
+<meta property="og:url" content="https://unidata.github.io/python-training/gallery/declarative_300hpa/">
+<meta property="og:description" content="In [ ]:
+
+    
+%matplotlib inline
+
+
+    
+
+
+
+
+
+
+
+MetPy Declarative - 300 hPa¶By: Kevin Goebbert
+This example uses the declarative syntax available through the MetPy
+package to allow a more convenient me">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-11-01T14:26:16-06:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../python/intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop/workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.ipynb" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Declarative_300hPa</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="MetPy-Declarative---300-hPa">MetPy Declarative - 300 hPa<a class="anchor-link" href="#MetPy-Declarative---300-hPa">¶</a>
+</h2>
+<p>By: Kevin Goebbert</p>
+<p>This example uses the declarative syntax available through the MetPy
+package to allow a more convenient method for creating simple maps of
+atmospheric data. The key thing the declarative language does is to
+reduce the number of packages that users will need to know in detail and
+instead allow them to set key parameters to get the map they desire. One
+key element is the use of xarray as the data object, which allows
+coordinate information to be associated with atmospheric variables.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+
+<span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="k">as</span> <span class="nn">mpcalc</span>
+<span class="kn">import</span> <span class="nn">metpy.plots</span> <span class="k">as</span> <span class="nn">mpplots</span>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="k">import</span> <span class="n">units</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Open dataset using xarray module and subset global GFS to be over the
+CONUS.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">'https://thredds.ucar.edu/thredds/dodsC/casestudies/python-gallery/'</span>
+                     <span class="s1">'GFS_20101026_1200.nc'</span><span class="p">)</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">lon</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">360</span><span class="o">-</span><span class="mi">150</span><span class="p">,</span> <span class="mi">360</span><span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+                                                 <span class="n">lat</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Calculate-Variable-and-Add-to-Dataset">Calculate Variable and Add to Dataset<a class="anchor-link" href="#Calculate-Variable-and-Add-to-Dataset">¶</a>
+</h3>
+<p>Here it is demonstrated how you can calculate a new variable and add it
+to the xarray dataset (ds) so that it can be plotted with the
+declarative syntax. The key to adding a variable to an xarray dataset
+for use in the declarative syntax is the need to add a <code>grid_mapping</code>
+and <code>units</code> attribute.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Calculate New Variables and place into Xarray Dataset</span>
+<span class="n">uwnd</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s1">'u-component_of_wind_isobaric'</span><span class="p">]</span>
+<span class="n">vwnd</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s1">'v-component_of_wind_isobaric'</span><span class="p">]</span>
+
+<span class="c1"># Compute wind speed using MetPy</span>
+<span class="n">wspd</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">wind_speed</span><span class="p">(</span><span class="n">uwnd</span><span class="p">,</span> <span class="n">vwnd</span><span class="p">)</span>
+
+<span class="c1"># Place wind speed (wspd) into xarray dataset and attach needed attributes</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">wind_speed</span><span class="o">=</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">uwnd</span><span class="o">.</span><span class="n">coords</span><span class="p">)[:</span><span class="mi">4</span><span class="p">],</span> <span class="n">wspd</span><span class="o">.</span><span class="n">m</span><span class="p">,</span>
+                           <span class="p">{</span><span class="s1">'grid_mapping'</span><span class="p">:</span> <span class="n">uwnd</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'grid_mapping'</span><span class="p">],</span>
+                            <span class="s1">'units'</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">wspd</span><span class="o">.</span><span class="n">units</span><span class="p">)}))</span>
+
+<span class="c1"># Convert wind speed units to knots within the dataset</span>
+<span class="n">ds</span><span class="o">.</span><span class="n">wind_speed</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">convert_units</span><span class="p">(</span><span class="s1">'kt'</span><span class="p">)</span>
+<span class="n">ds</span><span class="p">[</span><span class="s1">'u-component_of_wind_isobaric'</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">convert_units</span><span class="p">(</span><span class="s1">'kt'</span><span class="p">)</span>
+<span class="n">ds</span><span class="p">[</span><span class="s1">'v-component_of_wind_isobaric'</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">convert_units</span><span class="p">(</span><span class="s1">'kt'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Declarative-Plot">Declarative Plot<a class="anchor-link" href="#Declarative-Plot">¶</a>
+</h3>
+<p>The following settings create a single panel map plot of 300 hPa
+geopotential heights, wind speed, and wind barbs.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Countour Plot of Geopotential Heights</span>
+<span class="n">contour</span> <span class="o">=</span> <span class="n">mpplots</span><span class="o">.</span><span class="n">ContourPlot</span><span class="p">()</span>
+<span class="n">contour</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">ds</span>
+<span class="n">contour</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2010</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+<span class="n">contour</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="s1">'Geopotential_height_isobaric'</span>
+<span class="n">contour</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="mi">300</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span>
+<span class="n">contour</span><span class="o">.</span><span class="n">linecolor</span> <span class="o">=</span> <span class="s1">'black'</span>
+<span class="n">contour</span><span class="o">.</span><span class="n">linestyle</span> <span class="o">=</span> <span class="s1">'-'</span>
+<span class="n">contour</span><span class="o">.</span><span class="n">linewidth</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">contour</span><span class="o">.</span><span class="n">clabels</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">contour</span><span class="o">.</span><span class="n">contours</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20000</span><span class="p">,</span> <span class="mi">120</span><span class="p">))</span>
+
+<span class="c1"># Colorfilled Plot of Wind Speed</span>
+<span class="n">cfill</span> <span class="o">=</span> <span class="n">mpplots</span><span class="o">.</span><span class="n">FilledContourPlot</span><span class="p">()</span>
+<span class="n">cfill</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">ds</span>
+<span class="n">cfill</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="s1">'wind_speed'</span>
+<span class="n">cfill</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="mi">300</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span>
+<span class="n">cfill</span><span class="o">.</span><span class="n">colormap</span> <span class="o">=</span> <span class="s1">'BuPu'</span>
+<span class="n">cfill</span><span class="o">.</span><span class="n">contours</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">171</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+<span class="n">cfill</span><span class="o">.</span><span class="n">colorbar</span> <span class="o">=</span> <span class="s1">'vertical'</span>
+
+<span class="c1"># Plot wind barbs</span>
+<span class="n">barb</span> <span class="o">=</span> <span class="n">mpplots</span><span class="o">.</span><span class="n">BarbPlot</span><span class="p">()</span>
+<span class="n">barb</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">ds</span>
+<span class="n">barb</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="mi">300</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span>
+<span class="n">barb</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'u-component_of_wind_isobaric'</span><span class="p">,</span> <span class="s1">'v-component_of_wind_isobaric'</span><span class="p">]</span>
+<span class="n">barb</span><span class="o">.</span><span class="n">skip</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">barb</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="s1">'black'</span>
+<span class="n">barb</span><span class="o">.</span><span class="n">barblength</span> <span class="o">=</span> <span class="mf">6.5</span>
+<span class="n">barb</span><span class="o">.</span><span class="n">earth_relative</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="c1"># Panel for plot with Map features</span>
+<span class="n">panel</span> <span class="o">=</span> <span class="n">mpplots</span><span class="o">.</span><span class="n">MapPanel</span><span class="p">()</span>
+<span class="n">panel</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">panel</span><span class="o">.</span><span class="n">area</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">124</span><span class="p">,</span> <span class="o">-</span><span class="mi">72</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">53</span><span class="p">)</span>
+<span class="n">panel</span><span class="o">.</span><span class="n">projection</span> <span class="o">=</span> <span class="s1">'lcc'</span>
+<span class="n">panel</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'coastline'</span><span class="p">,</span> <span class="s1">'borders'</span><span class="p">,</span> <span class="s1">'states'</span><span class="p">,</span> <span class="s1">'land'</span><span class="p">]</span>
+<span class="n">panel</span><span class="o">.</span><span class="n">plots</span> <span class="o">=</span> <span class="p">[</span><span class="n">cfill</span><span class="p">,</span> <span class="n">contour</span><span class="p">,</span> <span class="n">barb</span><span class="p">]</span>
+
+<span class="c1"># Bringing it all together</span>
+<span class="n">pc</span> <span class="o">=</span> <span class="n">mpplots</span><span class="o">.</span><span class="n">PanelContainer</span><span class="p">()</span>
+<span class="n">pc</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+<span class="n">pc</span><span class="o">.</span><span class="n">panels</span> <span class="o">=</span> <span class="p">[</span><span class="n">panel</span><span class="p">]</span>
+
+<span class="n">pc</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+    </div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha256-SDRP1VVYu+tgAGKhddBSl5+ezofHKZeI+OzxakbIe/Y=" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

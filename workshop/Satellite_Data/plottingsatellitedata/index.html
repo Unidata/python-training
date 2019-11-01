@@ -27,7 +27,7 @@ Questions¶
 Where are current GOES data available?
 How can satellite data be obtained with Sipho">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2019-11-01T09:07:35-06:00">
+<meta property="article:published_time" content="2019-11-01T14:30:35-06:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -145,7 +145,7 @@ How can satellite data be obtained with Sipho">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The first step is to find the satellite data. Normally, we would browse over to <a href="http://thredds.ucar.edu/thredds/">http://thredds.ucar.edu/thredds/</a> and find the top-level <a href="https://www.unidata.ucar.edu/software/thredds/current/tds/TDS.html">THREDDS Data Server (TDS)</a> catalog. From there we can drill down to find satellite data products.</p>
-<p>For current data, you could navigate to the <code>Satellite</code> directory, then <code>GOES East Products</code> and <code>CloudAndMoistureImagery</code>. There are subfolders for the CONUS, full disk, mesoscale sector images, and other products. In each of these is a folder for each <a href="http://www.goes-r.gov/education/ABI-bands-quick-info.html">channel of the ABI</a>. In each channel there is a folder for every day in the approximately month-long rolling archive. As you can see, there are a massive amount of data coming down from GOES-16!</p>
+<p>For current data, you could navigate to the <code>Satellite Data</code> directory, then <code>GOES East Products</code> and <code>CloudAndMoistureImagery</code>. There are subfolders for the CONUS, full disk, mesoscale sector images, and other products. In each of these is a folder for each <a href="http://www.goes-r.gov/education/ABI-bands-quick-info.html">channel of the ABI</a>. In each channel there is a folder for every day in the approximately month-long rolling archive. As you can see, there are a massive amount of data coming down from GOES-16!</p>
 <p>In the next section we'll be downloading the data in a pythonic way, so our first task is to build a URL that matches the URL we manually navigated to in the web browser. To make it as flexible as possible, we'll want to use variables for the sector name (CONUS, full-disk, mesoscale-1, etc.), the date, and the ABI channel number.</p>
 
 </div>
@@ -259,7 +259,7 @@ How can satellite data be obtained with Sipho">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We could download the files to our computers from the THREDDS web interface, but that can become tedious for downloading many files, requires us to store them on our computer, and does not lend itself to automation.</p>
-<p>We can use <a href="https://github.com/Unidata/siphon">Siphon</a> parse the catalog from the TDS. This provides us a nice programmatic way of accessing the data. We start by importing the <code>TDSCatalog</code> class from siphon and giving it the URL to the catalog we just surfed to manually. <strong>Note:</strong> Instead of giving it the link to the HTML catalog, we change the extension to XML, which asks the TDS for the XML version of the catalog. This is much better to work with in code. If you forget, the extension will be changed for you with a warning being issued from siphon.</p>
+<p>We can use <a href="https://github.com/Unidata/siphon">Siphon</a> to parse the catalog from the TDS. This provides us a nice programmatic way of accessing the data. We start by importing the <code>TDSCatalog</code> class from siphon and giving it the URL to the catalog we just surfed to manually. <strong>Note:</strong> Instead of giving it the link to the HTML catalog, we change the extension to XML, which asks the TDS for the XML version of the catalog. This is much better to work with in code. If you forget, the extension will be changed for you with a warning being issued from siphon.</p>
 <p>We want to create a <code>TDSCatalog</code> object called <code>cat</code> that we can examine and use to get handles to work with the data.</p>
 
 </div>
@@ -435,10 +435,27 @@ How can satellite data be obtained with Sipho">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Great, so we have an XArray Dataset object, something we've dealt with before! We also see that we have the coordinates <code>time</code>, <code>y</code>, and <code>x</code> as well as the data variables of <code>Sectorized_CMI</code> and the projection information.</p>
+<p>Great, so we have an XArray Dataset object, something we've dealt with before! We also see that we have the coordinates <code>time</code>, <code>y</code>, and <code>x</code> as well as the data variables of <code>Sectorized_CMI</code> and the projection information. Using the MetPy accessor for xarray, we can pull out the data we need for plotting.</p>
 
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">metpy</span>
+<span class="n">dat</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">parse_cf</span><span class="p">(</span><span class="s1">'Sectorized_CMI'</span><span class="p">)</span>
+<span class="n">proj</span> <span class="o">=</span> <span class="n">dat</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">dat</span><span class="p">[</span><span class="s1">'x'</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">dat</span><span class="p">[</span><span class="s1">'y'</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -466,17 +483,7 @@ How can satellite data be obtained with Sipho">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>To plot our data we'll be using MetPy's new declarative plotting functionality. You can write lots of matplotlib based code, but this interface greatly reduces the number of lines you need to write to get a great starting plot and then lets you customize it. The declarative plotting interface consists of three fundamental objects/concepts:</p>
-<ul>
-<li>
-<strong>Plot</strong> - This is the actual representation of the data and can be <code>ImagePlot</code>, <code>ContourPlot</code>, or <code>Plot2D</code>.</li>
-<li>
-<strong>Panel</strong> - This is a single panel (i.e. coordinate system). Panels contain plots. Currently the <code>MapPanel</code> is the only panel type available.</li>
-<li>
-<strong>Panel Container</strong> - The container can hold multiple panels to make a multi-pane figure. Panel Containers can be thought of as the whole figure object in matplotlib.</li>
-</ul>
-<p>So containers have panels which have plots. It takes a second to get that straight in your mind, but it makes setting up complex figures very simple.</p>
-<p>For this plot we need a single panel and we want to plot the satellite image, so we'll use the <code>ImagePlot</code>.</p>
+<p>To plot our data we'll be using CartoPy and matplotlib:</p>
 
 </div>
 </div>
@@ -486,7 +493,9 @@ How can satellite data be obtained with Sipho">
 <div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <span class="n">ImagePlot</span><span class="p">,</span> <span class="n">MapPanel</span><span class="p">,</span> <span class="n">PanelContainer</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 
@@ -500,8 +509,7 @@ How can satellite data be obtained with Sipho">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Let's start out with the smalles element, the plot, and build up to the largest, the panel container.</p>
-<p>First, we'll make the <code>ImagePlot</code>:</p>
+<p>Let's first make a simple plot using CartoPy's built-in shapefiles.</p>
 
 </div>
 </div>
@@ -511,80 +519,13 @@ How can satellite data be obtained with Sipho">
 <div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">ImagePlot</span><span class="p">()</span>
-<span class="n">img</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">ds</span>
-<span class="n">img</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="s1">'Sectorized_CMI'</span>
-</pre></div>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">proj</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">COASTLINE</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">'50m'</span><span class="p">),</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">'50m'</span><span class="p">),</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">':'</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">BORDERS</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">'50m'</span><span class="p">),</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)</span>
 
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Next, we'll make the panel that our image will go into, the <code>MapPanel</code> objecet and add the image to the plots on the panel.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">panel</span> <span class="o">=</span> <span class="n">MapPanel</span><span class="p">()</span>
-<span class="n">panel</span><span class="o">.</span><span class="n">plots</span> <span class="o">=</span> <span class="p">[</span><span class="n">img</span><span class="p">]</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Finally, we make the <code>PanelContainer</code> and add the panel to it's panels. Remember that since we can have multiple plots on a panel and multiple panels on a plot, we use lists. In this case is just happens to be a list of length 1.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pc</span> <span class="o">=</span> <span class="n">PanelContainer</span><span class="p">()</span>
-<span class="n">pc</span><span class="o">.</span><span class="n">panels</span> <span class="o">=</span> <span class="p">[</span><span class="n">panel</span><span class="p">]</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Unlike working with matplotlib directly in the notebooks, this figure hasn't actually been rendered yet. Calling the <code>show</code> method of the panel container builds up everything, renders, and shows it to us.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pc</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span> <span class="n">origin</span><span class="o">=</span><span class="s1">'upper'</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -600,8 +541,9 @@ How can satellite data be obtained with Sipho">
 <h4 id="Exercise">Exercise<a class="anchor-link" href="#Exercise">¶</a>
 </h4>
 <ul>
-<li>Look at the documentation for the <code>ImagePlot</code> <a href="https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.ImagePlot.html#metpy.plots.ImagePlot">here</a> and figure out how to set the colormap of the image. For this image, let's go with the <code>WVCIMMS_r</code> colormap as this is a mid-level water vapor image.</li>
-<li>BONUS: Use the metpy <code>add_timestamp</code> method from <code>metpy.plots</code> to add a timestamp to the plot. You can get the axes object to plot on from the <code>ImagePlot</code>. The call will look something like <code>img.ax</code>. This needs to happen after the panels have been added to the <code>PanelContainer</code>.</li>
+<li>Look at the documentation for <code>metpy.plots.colortables</code> <a href="https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.ctables.ColortableRegistry.html#colortableregistry">here</a> and figure out how to set the colormap of the image. For this image, let's go with the <code>WVCIMSS_r</code> colormap as this is a mid-level water vapor image. To see all of the colortables that MetPy supports, check out this <a href="https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.ctables.html">page</a>
+</li>
+<li>BONUS: Use the MetPy <code>add_timestamp</code> method from <code>metpy.plots</code> to add a timestamp to the plot.</li>
 <li>DAILY DOUBLE: Using the <code>start_date_time</code> attribute on the dataset <code>ds</code>, change the call to <code>add_timestamp</code> to use that date and time and the pretext to say <code>GOES 16 Channel X</code>.</li>
 </ul>
 </div>
@@ -612,19 +554,13 @@ How can satellite data be obtained with Sipho">
 <div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Import for the bonus exercise</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Import for colortables</span>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <span class="n">colortables</span>
+
+<span class="c1"># Import for the bonus exercise</span>
 <span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <span class="n">add_timestamp</span>
 
 <span class="c1"># Make the image plot</span>
-<span class="c1"># YOUR CODE GOES HERE</span>
-
-<span class="c1"># Make the map panel and add the image to it</span>
-<span class="c1"># YOUR CODE GOES HERE</span>
-
-<span class="c1"># Make the panel container and add the panel to it</span>
-<span class="c1"># YOUR CODE GOES HERE</span>
-
-<span class="c1"># Show the plot</span>
 <span class="c1"># YOUR CODE GOES HERE</span>
 </pre></div>
 
@@ -652,29 +588,29 @@ How can satellite data be obtained with Sipho">
 
 
 <span class="c1"># Cell content replaced by load magic replacement.</span>
+<span class="c1">#Import for colortables</span>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <span class="n">colortables</span>
+
 <span class="c1"># Import for the bonus exercise</span>
 <span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <span class="n">add_timestamp</span>
 
-<span class="c1"># Make the image plot</span>
-<span class="n">img</span> <span class="o">=</span> <span class="n">ImagePlot</span><span class="p">()</span>
-<span class="n">img</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">ds</span>
-<span class="n">img</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="s1">'Sectorized_CMI'</span>
-<span class="n">img</span><span class="o">.</span><span class="n">colormap</span> <span class="o">=</span> <span class="s1">'WVCIMSS_r'</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">proj</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">COASTLINE</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">'50m'</span><span class="p">),</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">'50m'</span><span class="p">),</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">':'</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">BORDERS</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">'50m'</span><span class="p">),</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)</span>
 
-<span class="c1"># Make the map panel and add the image to it</span>
-<span class="n">panel</span> <span class="o">=</span> <span class="n">MapPanel</span><span class="p">()</span>
-<span class="n">panel</span><span class="o">.</span><span class="n">plots</span> <span class="o">=</span> <span class="p">[</span><span class="n">img</span><span class="p">]</span>
+<span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span> <span class="n">origin</span><span class="o">=</span><span class="s1">'upper'</span><span class="p">)</span>
 
-<span class="c1"># Make the panel container and add the panel to it</span>
-<span class="n">pc</span> <span class="o">=</span> <span class="n">PanelContainer</span><span class="p">()</span>
-<span class="n">pc</span><span class="o">.</span><span class="n">panels</span> <span class="o">=</span> <span class="p">[</span><span class="n">panel</span><span class="p">]</span>
+<span class="n">wv_cmap</span> <span class="o">=</span> <span class="n">colortables</span><span class="o">.</span><span class="n">get_colortable</span><span class="p">(</span><span class="s1">'WVCIMSS_r'</span><span class="p">)</span>
+<span class="n">im</span><span class="o">.</span><span class="n">set_cmap</span><span class="p">(</span><span class="n">wv_cmap</span><span class="p">)</span>
 
-<span class="c1"># Bonus</span>
+<span class="c1">#Bonus</span>
 <span class="n">start_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">start_date_time</span><span class="p">,</span> <span class="s1">'%Y%j%H%M%S'</span><span class="p">)</span>
-<span class="n">add_timestamp</span><span class="p">(</span><span class="n">panel</span><span class="o">.</span><span class="n">ax</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">start_time</span><span class="p">)</span>
+<span class="n">add_timestamp</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span> <span class="n">pretext</span><span class="o">=</span><span class="n">f</span><span class="s1">'GOES-16 Ch. </span><span class="si">{channel}</span><span class="s1"> '</span><span class="p">,</span>
+              <span class="n">high_contrast</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
 
-<span class="c1"># Show the plot</span>
-<span class="n">pc</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -695,7 +631,7 @@ How can satellite data be obtained with Sipho">
 <li>The colormap controls how values are converted from floating point values in the range [0, 1] to colors (think colortable)</li>
 </ul>
 <p>Let's try to determine a good range of values for the normalization. We'll make a histogram to see the distribution of values in the data, then clip that range down to enhance contrast in the data visualization.</p>
-<p>We use <code>compressed</code> to remove any masked elements before making our histogram.</p>
+<p>We use <code>compressed</code> to remove any masked elements before making our histogram (areas of space that are in the view of the satellite).</p>
 
 </div>
 </div>
@@ -714,47 +650,12 @@ How can satellite data be obtained with Sipho">
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Make the image plot</span>
-<span class="n">img</span> <span class="o">=</span> <span class="n">ImagePlot</span><span class="p">()</span>
-<span class="n">img</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">ds</span>
-<span class="n">img</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="s1">'Sectorized_CMI'</span>
-<span class="n">img</span><span class="o">.</span><span class="n">colormap</span> <span class="o">=</span> <span class="s1">'WVCIMSS_r'</span>
-<span class="n">img</span><span class="o">.</span><span class="n">image_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
-
-<span class="c1"># Make the map panel and add the image to it</span>
-<span class="n">panel</span> <span class="o">=</span> <span class="n">MapPanel</span><span class="p">()</span>
-<span class="n">panel</span><span class="o">.</span><span class="n">plots</span> <span class="o">=</span> <span class="p">[</span><span class="n">img</span><span class="p">]</span>
-
-<span class="c1"># Make the panel container and add the panel to it</span>
-<span class="n">pc</span> <span class="o">=</span> <span class="n">PanelContainer</span><span class="p">()</span>
-<span class="n">pc</span><span class="o">.</span><span class="n">panels</span> <span class="o">=</span> <span class="p">[</span><span class="n">panel</span><span class="p">]</span>
-<span class="n">pc</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
-
-<span class="c1"># Bonus</span>
-<span class="n">start_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">start_date_time</span><span class="p">,</span> <span class="s1">'%Y%j%H%M%S'</span><span class="p">)</span>
-<span class="n">add_timestamp</span><span class="p">(</span><span class="n">panel</span><span class="o">.</span><span class="n">ax</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">start_time</span><span class="p">)</span>
-
-<span class="c1"># Show the plot</span>
-<span class="n">pc</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>In meteorology, we have many ‘standard’ colortables that have been used for certain types of data. We have included these in Metpy in the <code>metpy.plots.ctables</code> module. The <code>WVCIMSS</code> colormap is a direct conversion of a GEMPAK colormap. Let's remake that image with a range of 195 to 265. This was empirically determined to closely match other displays of water vapor data.</p>
-<p>We'll also dress up the plot a bit more to show a few other features.</p>
+<p>In meteorology, we have many ‘standard’ colortables that have been used for certain types of data. We have included these in Metpy in the <code>metpy.plots.ctables</code> module. The <code>WVCIMSS</code> colormap is a direct conversion of a GEMPAK colormap. Let's remake that image with a range of 195 to 265 K. This was empirically determined to closely match other displays of water vapor data.</p>
 
 </div>
 </div>
@@ -764,31 +665,22 @@ How can satellite data be obtained with Sipho">
 <div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Make the image plot</span>
-<span class="n">img</span> <span class="o">=</span> <span class="n">ImagePlot</span><span class="p">()</span>
-<span class="n">img</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">ds</span>
-<span class="n">img</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="s1">'Sectorized_CMI'</span>
-<span class="n">img</span><span class="o">.</span><span class="n">colormap</span> <span class="o">=</span> <span class="s1">'WVCIMSS_r'</span>
-<span class="n">img</span><span class="o">.</span><span class="n">image_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">195</span><span class="p">,</span> <span class="mi">265</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">proj</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">COASTLINE</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">'50m'</span><span class="p">),</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">'50m'</span><span class="p">),</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">':'</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">BORDERS</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">'50m'</span><span class="p">),</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)</span>
 
-<span class="c1"># Make the map panel and add the image to it</span>
-<span class="n">panel</span> <span class="o">=</span> <span class="n">MapPanel</span><span class="p">()</span>
-<span class="n">panel</span><span class="o">.</span><span class="n">plots</span> <span class="o">=</span> <span class="p">[</span><span class="n">img</span><span class="p">]</span>
-<span class="n">panel</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">f</span><span class="s1">'GOES-16 Ch.</span><span class="si">{channel}</span><span class="s1">'</span>
+<span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span> <span class="n">origin</span><span class="o">=</span><span class="s1">'upper'</span><span class="p">)</span>
 
-<span class="c1"># Make the panel container and add the panel to it</span>
-<span class="n">pc</span> <span class="o">=</span> <span class="n">PanelContainer</span><span class="p">()</span>
-<span class="n">pc</span><span class="o">.</span><span class="n">panels</span> <span class="o">=</span> <span class="p">[</span><span class="n">panel</span><span class="p">]</span>
-<span class="n">pc</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="n">wv_norm</span><span class="p">,</span> <span class="n">wv_cmap</span> <span class="o">=</span> <span class="n">colortables</span><span class="o">.</span><span class="n">get_with_range</span><span class="p">(</span><span class="s1">'WVCIMSS_r'</span><span class="p">,</span> <span class="mi">195</span><span class="p">,</span> <span class="mi">265</span><span class="p">)</span>
+<span class="n">im</span><span class="o">.</span><span class="n">set_cmap</span><span class="p">(</span><span class="n">wv_cmap</span><span class="p">)</span>
+<span class="n">im</span><span class="o">.</span><span class="n">set_norm</span><span class="p">(</span><span class="n">wv_norm</span><span class="p">)</span>
 
-<span class="c1"># Bonus</span>
 <span class="n">start_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">start_date_time</span><span class="p">,</span> <span class="s1">'%Y%j%H%M%S'</span><span class="p">)</span>
-<span class="n">add_timestamp</span><span class="p">(</span><span class="n">panel</span><span class="o">.</span><span class="n">ax</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span> 
-              <span class="n">pretext</span><span class="o">=</span><span class="s1">'Mid-level Water Vapor '</span><span class="p">,</span>
+<span class="n">add_timestamp</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span> <span class="n">pretext</span><span class="o">=</span><span class="n">f</span><span class="s1">'GOES-16 Ch. </span><span class="si">{channel}</span><span class="s1"> '</span><span class="p">,</span>
               <span class="n">high_contrast</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
-
-<span class="c1"># Show the plot</span>
-<span class="n">pc</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -852,10 +744,8 @@ This is just a quick taste of producing an animation using matplotlib. The anima
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os.path</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
 <span class="kn">from</span> <span class="nn">matplotlib.animation</span> <span class="k">import</span> <span class="n">ArtistAnimation</span>
-<span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
-<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
-<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <span class="n">colortables</span>
 </pre></div>
 
     </div>
@@ -878,8 +768,7 @@ This is just a quick taste of producing an animation using matplotlib. The anima
 <div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
-<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">'animation.embed_limit'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">50</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">'animation.embed_limit'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">50</span>
 
 <span class="c1"># List used to store the contents of all frames. Each item in the list is a tuple of</span>
 <span class="c1"># (image, text)</span>
@@ -903,7 +792,7 @@ This is just a quick taste of producing an animation using matplotlib. The anima
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">proj</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="mf">0.005</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="mf">0.005</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mf">0.995</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mf">0.995</span><span class="p">,</span> <span class="n">wspace</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">hspace</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">(</span><span class="n">resolution</span><span class="o">=</span><span class="s1">'50m'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">COASTLINE</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">BORDERS</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
 <span class="n">wv_norm</span><span class="p">,</span> <span class="n">wv_cmap</span> <span class="o">=</span> <span class="n">colortables</span><span class="o">.</span><span class="n">get_with_range</span><span class="p">(</span><span class="s1">'WVCIMSS_r'</span><span class="p">,</span> <span class="mi">195</span><span class="p">,</span> <span class="mi">265</span><span class="p">)</span>

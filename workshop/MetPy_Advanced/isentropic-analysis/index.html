@@ -27,7 +27,7 @@ Download GFS output from TDS
 Interpolate GFS output to an isentropic level
 Calculate regions of">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2019-11-01T09:07:35-06:00">
+<meta property="article:published_time" content="2019-11-01T14:30:35-06:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -92,7 +92,7 @@ Calculate regions of">
 <div style="width:1000 px">
 
 <div style="float:right; width:98 px; height:98px;">
-<img src="https://raw.githubusercontent.com/Unidata/MetPy/master/src/metpy/plots/_static/unidata_150x150.png" alt="Unidata Logo" style="height: 98px;">
+<img src="https://raw.githubusercontent.com/Unidata/MetPy/master/metpy/plots/_static/unidata_150x150.png" alt="Unidata Logo" style="height: 98px;">
 </div>
 <h2>Advanced MetPy: Isentropic Analysis</h2>
 <div style="clear:both"></div>
@@ -303,7 +303,7 @@ Calculate regions of">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Let's parse out the metadata for the isobaric temperature and get the projection information.</p>
+<p>Let's parse out the metadata for the isobaric temperature and get the projection information. We also index with 0 to get the first, and only, time:</p>
 
 </div>
 </div>
@@ -313,7 +313,8 @@ Calculate regions of">
 <div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dat</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">parse_cf</span><span class="p">(</span><span class="s1">'Temperature_isobaric'</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">parse_cf</span><span class="p">()</span>
+<span class="n">temperature</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s1">'Temperature_isobaric'</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
 
     </div>
@@ -326,7 +327,7 @@ Calculate regions of">
 <div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data_proj</span> <span class="o">=</span> <span class="n">dat</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data_proj</span> <span class="o">=</span> <span class="n">temperature</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span>
 </pre></div>
 
     </div>
@@ -339,7 +340,7 @@ Calculate regions of">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Let's pull out the grids out into some shorter variable names. We also index with 0 to get the first, and only, time:</p>
+<p>Let's pull out the grids out into some shorter variable names.</p>
 
 </div>
 </div>
@@ -349,27 +350,38 @@ Calculate regions of">
 <div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">lat</span> <span class="o">=</span> <span class="n">dat</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">y</span>
-<span class="n">lon</span> <span class="o">=</span> <span class="n">dat</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">x</span>
-<span class="n">press</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">parse_cf</span><span class="p">(</span><span class="s1">'isobaric'</span><span class="p">)</span>
-<span class="n">temperature</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">parse_cf</span><span class="p">(</span><span class="s1">'Temperature_isobaric'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">lat</span> <span class="o">=</span> <span class="n">temperature</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">y</span>
+<span class="n">lon</span> <span class="o">=</span> <span class="n">temperature</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">x</span>
 
 <span class="c1"># Need to adjust units on humidity because '%' causes problems</span>
 <span class="n">ds</span><span class="p">[</span><span class="s1">'Relative_humidity_isobaric'</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'units'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'percent'</span>
 
-<span class="n">rh</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">parse_cf</span><span class="p">(</span><span class="s1">'Relative_humidity_isobaric'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">height</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">parse_cf</span><span class="p">(</span><span class="s1">'Geopotential_height_isobaric'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">u</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">parse_cf</span><span class="p">(</span><span class="s1">'u-component_of_wind_isobaric'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">v</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">parse_cf</span><span class="p">(</span><span class="s1">'v-component_of_wind_isobaric'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">rh</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s1">'Relative_humidity_isobaric'</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">height</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s1">'Geopotential_height_isobaric'</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s1">'u-component_of_wind_isobaric'</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s1">'v-component_of_wind_isobaric'</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
 
-<span class="c1"># Due to a different number of vertical levels find where they are common</span>
-<span class="n">lev_hght</span> <span class="o">=</span> <span class="n">temperature</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">'isobaric4'</span><span class="p">]</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">Pa</span>
-<span class="n">lev_uwnd</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">'isobaric'</span><span class="p">]</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">Pa</span>
-<span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">common_ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">lev_uwnd</span><span class="p">,</span> <span class="n">lev_hght</span><span class="p">,</span> <span class="n">return_indices</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">temperature</span> <span class="o">=</span> <span class="n">temperature</span><span class="p">[</span><span class="n">common_ind</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
-<span class="c1"># Reassign units to variables</span>
-<span class="n">temperature</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'units'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'kelvin'</span>
-<span class="n">lev_uwnd</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'units'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'Pa'</span>
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Can have different vertical levels for wind and thermodynamic variables</span>
+<span class="c1"># Find and select the common levels</span>
+<span class="n">press</span> <span class="o">=</span> <span class="n">temperature</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">vertical</span>
+<span class="n">common_levels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">press</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">vertical</span><span class="p">)</span>
+<span class="n">temperature</span> <span class="o">=</span> <span class="n">temperature</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">vertical</span><span class="o">=</span><span class="n">common_levels</span><span class="p">)</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">vertical</span><span class="o">=</span><span class="n">common_levels</span><span class="p">)</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">vertical</span><span class="o">=</span><span class="n">common_levels</span><span class="p">)</span>
+
+<span class="c1"># Get common pressure levels as a data array</span>
+<span class="n">press</span> <span class="o">=</span> <span class="n">press</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">vertical</span><span class="o">=</span><span class="n">common_levels</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -393,7 +405,7 @@ Calculate regions of">
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">isen_level</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">320</span><span class="p">])</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">kelvin</span>
-<span class="n">isen_press</span><span class="p">,</span> <span class="n">isen_u</span><span class="p">,</span> <span class="n">isen_v</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">isentropic_interpolation</span><span class="p">(</span><span class="n">isen_level</span><span class="p">,</span> <span class="n">lev_uwnd</span><span class="p">,</span>
+<span class="n">isen_press</span><span class="p">,</span> <span class="n">isen_u</span><span class="p">,</span> <span class="n">isen_v</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">isentropic_interpolation</span><span class="p">(</span><span class="n">isen_level</span><span class="p">,</span> <span class="n">press</span><span class="p">,</span>
                                                              <span class="n">temperature</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
 </pre></div>
 
@@ -655,35 +667,9 @@ Calculate regions of">
 <div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">isen_press</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="n">isen_u</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="n">isen_v</span><span class="o">.</span><span class="n">units</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
-<div class="inner_cell">
-    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">isen_press</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">smooth_gaussian</span><span class="p">(</span><span class="n">isen_press</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(),</span> <span class="mi">9</span><span class="p">)</span>
 <span class="n">isen_u</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">smooth_gaussian</span><span class="p">(</span><span class="n">isen_u</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(),</span> <span class="mi">9</span><span class="p">)</span>
 <span class="n">isen_v</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">smooth_gaussian</span><span class="p">(</span><span class="n">isen_v</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(),</span> <span class="mi">9</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">isen_press</span><span class="o">.</span><span class="n">units</span>
 </pre></div>
 
     </div>

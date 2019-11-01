@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Advanced StationPlots with Mesonet Data | The Unidata Python Training Site</title>
+<link href="../../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/workshop/Surface_Data/advanced-stationplots-with-mesonet-data/">
+<!--[if lt IE 9]><script src="../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="Advanced StationPlots with Mesonet Data">
+<meta property="og:url" content="https://unidata.github.io/python-training/workshop/Surface_Data/advanced-stationplots-with-mesonet-data/">
+<meta property="og:description" content="Advanced Surface Observations: Working with Mesonet Data
+Unidata Python Workshop
+
+
+Overview:¶
+Teaching: 30 minutes
+Exercises: 35 minutes
+
+Questions¶
+How do I read in complicated mesonet data with Pand">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-11-01T14:30:35-06:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../../python/intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../../../gallery/gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.ipynb" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Advanced StationPlots with Mesonet Data</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a name="top"></a></p>
+<div style="width:1000 px">
+
+<div style="float:right; width:98 px; height:98px;">
+<img src="https://raw.githubusercontent.com/Unidata/MetPy/master/metpy/plots/_static/unidata_150x150.png" alt="Unidata Logo" style="height: 98px;">
+</div>
+<p></p>
+<h2>Advanced Surface Observations: Working with Mesonet Data</h2>
+<h4>Unidata Python Workshop</h4>
+<div style="clear:both"></div>
+</div>
+<hr style="height:2px;">
+<div style="float:right; width:250 px"><img src="http://weather-geek.net/images/metar_what.png" alt="METAR" style="height: 200px;"></div>
+<h3 id="Overview:">Overview:<a class="anchor-link" href="#Overview:">¶</a>
+</h3>
+<ul>
+<li>
+<strong>Teaching:</strong> 30 minutes</li>
+<li>
+<strong>Exercises:</strong> 35 minutes</li>
+</ul>
+<h4 id="Questions">Questions<a class="anchor-link" href="#Questions">¶</a>
+</h4>
+<ol>
+<li>How do I read in complicated mesonet data with Pandas?</li>
+<li>How do I merge multiple Pandas DataFrames?</li>
+<li>What's the best way to make a station plot of data?</li>
+<li>How can I make a time series of data from one station?</li>
+</ol>
+<h4 id="Objectives">Objectives<a class="anchor-link" href="#Objectives">¶</a>
+</h4>
+<ol>
+<li><a href="#reading">Read Mesonet data with Pandas</a></li>
+<li><a href="#merge">Merge multiple Pandas DataFrames together </a></li>
+<li><a href="#plot">Plot mesonet data with MetPy and CartoPy</a></li>
+<li><a href="#timeseries">Create time series plots of station data</a></li>
+</ol>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a name="reading"></a></p>
+<h2 id="Reading-Mesonet-Data">Reading Mesonet Data<a class="anchor-link" href="#Reading-Mesonet-Data">¶</a>
+</h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In this notebook, we're going to use the Pandas library to read text-based data. Pandas is excellent at handling text, csv, and other files. However, you have to help Pandas figure out how your data is formatted sometimes. Lucky for you, mesonet data frequently comes in forms that are not the most user-friendly. Through this notebook, we'll see how these complicated datasets can be handled nicely by Pandas to create useful station plots for hand analysis or publication.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Import Pandas</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="West-Texas-Mesonet">West Texas Mesonet<a class="anchor-link" href="#West-Texas-Mesonet">¶</a>
+</h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The <a href="http://www.depts.ttu.edu/nwi/research/facilities/wtm/index.php">West Texas Mesonet</a> is a wonderful data source for researchers and storm chasers alike! We have some 5-minute observations from the entire network on 22 March 2019 that we'll analyze in this notebook.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Pandas can parse time into a nice internal storage format as we read in the file. If the time is specified in the file in a somewhat standard form, pandas will even guess at the format if you tell it which column to use. However, in this case the time is reported in a horrible format: between one and four characters that, if there are four characters, represent hours and minutes as HHMM. Let's turn take a charater string, turn it into an integer, and then use integer string formatting to write out a four character string.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'0'</span><span class="p">,</span> <span class="s1">'05'</span><span class="p">,</span> <span class="s1">'100'</span><span class="p">,</span> <span class="s1">'1005'</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="si">{0:04d}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="p">)))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Pandas can be told how to parse non-standard dates formats by writing an arbitrary function that takes a string and returns a datetime. Here's what that function looks like in this case. We can use timedelta to convert hours and minutes, and then add them to the start date using date math.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">parse_tx_date</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="s1">'</span><span class="si">{0:04d}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">))</span> <span class="c1"># regularize the data to a four character string</span>
+    <span class="n">hour</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_timedelta</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]),</span> <span class="s1">'hour'</span><span class="p">)</span> 
+    <span class="n">minute</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_timedelta</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">]),</span> <span class="s1">'minute'</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">start_date</span> <span class="o">+</span> <span class="n">hour</span> <span class="o">+</span> <span class="n">minute</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Read in the data and handle the lines that cause issues</span>
+
+<span class="c1"># Get a nice date variable cooresponding to the start time</span>
+<span class="n">start_date</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="s1">'2019-03-22'</span><span class="p">,</span> <span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1">'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">start_date</span><span class="p">)</span>
+
+<span class="c1"># Pre-apply the start date to our date parsing function, so that pandas only passes one value</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">partial</span>
+<span class="n">date_parser</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">parse_tx_date</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="n">start_date</span><span class="p">)</span>
+
+<span class="n">filename</span> <span class="o">=</span> <span class="s1">'West_Texas_data/FIVEMIN_82.txt'</span>
+<span class="n">tx_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">','</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">error_bad_lines</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">warn_bad_lines</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                     <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">date_parser</span><span class="o">=</span><span class="n">date_parser</span>
+                     <span class="p">)</span>
+<span class="n">tx_data</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Rename columns to be understandable</span>
+<span class="n">tx_data</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'Array_ID'</span><span class="p">,</span> <span class="s1">'QC_flag'</span><span class="p">,</span> <span class="s1">'Time'</span><span class="p">,</span> <span class="s1">'Station_ID'</span><span class="p">,</span> <span class="s1">'10m_scalar_wind_speed'</span><span class="p">,</span>
+                 <span class="s1">'10m_vector_wind_speed'</span><span class="p">,</span> <span class="s1">'10m_wind_direction'</span><span class="p">,</span>
+                 <span class="s1">'10m_wind_direction_std'</span><span class="p">,</span> <span class="s1">'10m_wind_speed_std'</span><span class="p">,</span> 
+                 <span class="s1">'10m_gust_wind_speed'</span><span class="p">,</span> <span class="s1">'1.5m_temperature'</span><span class="p">,</span> 
+                 <span class="s1">'9m_temperature'</span><span class="p">,</span> <span class="s1">'2m_temperature'</span><span class="p">,</span> 
+                 <span class="s1">'1.5m_relative_humidity'</span><span class="p">,</span> <span class="s1">'station_pressure'</span><span class="p">,</span> <span class="s1">'rainfall'</span><span class="p">,</span> 
+                 <span class="s1">'dewpoint'</span><span class="p">,</span> <span class="s1">'2m_wind_speed'</span><span class="p">,</span> <span class="s1">'solar_radiation'</span><span class="p">]</span>
+<span class="n">tx_data</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The West Texas mesonet provides data on weather, agriculture, and radiation. These different observations are encoded 1, 2, and 3, respectively in the Array ID column. Let's parse out only the meteorological data for this exercise.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Remove non-meteorological rows</span>
+<span class="n">tx_data</span> <span class="o">=</span> <span class="n">tx_data</span><span class="p">[</span><span class="n">tx_data</span><span class="p">[</span><span class="s1">'Array_ID'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">tx_data</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Station pressure is 600 hPa lower than it should be, so let's correct that as well!</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Correct presssure </span>
+<span class="n">tx_data</span><span class="p">[</span><span class="s1">'station_pressure'</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">600</span>
+<span class="n">tx_data</span><span class="p">[</span><span class="s1">'station_pressure'</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Finally, let's read in the station metadata file for the West Texas mesonet, so that we can have coordinates to plot data later on.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">tx_stations</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'WestTexas_stations.csv'</span><span class="p">)</span>
+<span class="n">tx_stations</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Oklahoma-Data">Oklahoma Data<a class="anchor-link" href="#Oklahoma-Data">¶</a>
+</h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Try reading in the Oklahoma Mesonet data located in the <code>201903222300.mdf</code> file using Pandas. Check out the documentation on Pandas if you run into issues! Make sure to handle missing values as well. Also read in the Oklahoma station data from the <code>Oklahoma_stations.csv</code> file. Only read in the station ID, latitude, and longitude columns from that file.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">parse_ok_date</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="s1">'</span><span class="si">{0:04d}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">))</span> <span class="c1"># regularize the data to a four character string</span>
+    <span class="n">minute</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_timedelta</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="s1">'minute'</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">start_date</span> <span class="o">+</span> <span class="n">minute</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/read_ok.py</span>
+
+
+<span class="c1"># Cell content replaced by load magic replacement.</span>
+<span class="n">ok_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'201903222300.mdf'</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">delim_whitespace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">na_values</span><span class="o">=-</span><span class="mi">999</span><span class="p">,</span>
+                                          <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">date_parser</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span><span class="n">parse_ok_date</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="n">start_date</span><span class="p">))</span>
+<span class="n">ok_stations</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'Oklahoma_stations.csv'</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ok_data</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ok_stations</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a name="merge"></a></p>
+<h2 id="Merging-DataFrames">Merging DataFrames<a class="anchor-link" href="#Merging-DataFrames">¶</a>
+</h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We now have two data files per mesonet - one for the data itself and one for the metadata. It would be really nice to combine these DataFrames together into one for each mesonet. Pandas has some built in methods to do this - see <a href="https://pandas.pydata.org/pandas-docs/stable/user_guide/merging.html">here</a>. For this example, we'll be using the <code>merge</code> method. First, let's rename columns in the Oklahoma station DataFrame to be more understandable.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Rename columns so merging can occur</span>
+<span class="n">ok_stations</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'STID'</span><span class="p">,</span> <span class="s1">'LAT'</span><span class="p">,</span> <span class="s1">'LON'</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Conveniently, we have a <code>STID</code> column in both DataFrames. Let's base our merge on that and see what we get!</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Merge the two data frames based on the Station ID</span>
+<span class="n">ok_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">ok_data</span><span class="p">,</span> <span class="n">ok_stations</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">'STID'</span><span class="p">)</span>
+<span class="n">ok_data</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>That was nice! But what if our DataFrames don't have the same column name, and we want to avoid renaming columns? Check out the documentation for <code>pd.merge</code> and see how we can merge the West Texas DataFrames together. Also, subset the data to only be from 2300 UTC, which is when our Oklahoma data was taken. Call the new DataFrame <code>tx_one_time</code>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/merge_texas.py</span>
+
+
+<span class="c1"># Cell content replaced by load magic replacement.</span>
+<span class="c1"># Find common time between TX and OK data</span>
+<span class="n">tx_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">tx_data</span><span class="p">,</span> <span class="n">tx_stations</span><span class="p">,</span> <span class="n">left_on</span><span class="o">=</span><span class="s1">'Station_ID'</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="s1">'Logger ID'</span><span class="p">)</span>
+<span class="n">tx_one_time</span> <span class="o">=</span> <span class="n">tx_data</span><span class="p">[</span><span class="n">tx_data</span><span class="p">[</span><span class="s1">'Time'</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'2019-3-22 23:00'</span><span class="p">]</span>
+<span class="n">tx_one_time</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a name="plot"></a></p>
+<h2 id="Creating-a-Station-Plot">Creating a Station Plot<a class="anchor-link" href="#Creating-a-Station-Plot">¶</a>
+</h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's say we want to plot temperature, dewpoint, and wind barbs. Given our data from the two mesonets, do we have what we need? If not, use MetPy to calculate what you need!</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="k">as</span> <span class="nn">mpcalc</span>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="k">import</span> <span class="n">units</span>
+
+<span class="c1"># Your code here</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/data_conversion.py</span>
+
+
+<span class="c1"># Cell content replaced by load magic replacement.</span>
+<span class="n">ok_dewpoint</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">dewpoint_rh</span><span class="p">(</span><span class="n">ok_data</span><span class="p">[</span><span class="s1">'TAIR'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span><span class="p">,</span> <span class="n">ok_data</span><span class="p">[</span><span class="s1">'RELH'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">percent</span><span class="p">)</span>
+<span class="n">ok_u</span><span class="p">,</span> <span class="n">ok_v</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">wind_components</span><span class="p">(</span><span class="n">ok_data</span><span class="p">[</span><span class="s1">'WSPD'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">mph</span><span class="p">,</span> <span class="n">ok_data</span><span class="p">[</span><span class="s1">'WDIR'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degrees</span><span class="p">)</span>
+<span class="n">tx_u</span><span class="p">,</span> <span class="n">tx_v</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">wind_components</span><span class="p">(</span><span class="n">tx_one_time</span><span class="p">[</span><span class="s1">'10m_scalar_wind_speed'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">mph</span><span class="p">,</span> <span class="n">tx_one_time</span><span class="p">[</span><span class="s1">'10m_wind_direction'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degrees</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now, let's make a Station Plot with our data using MetPy and CartoPy.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <span class="n">StationPlot</span>
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Set up a plot with map features</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+<span class="n">proj</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">Stereographic</span><span class="p">(</span><span class="n">central_longitude</span><span class="o">=-</span><span class="mi">100</span><span class="p">,</span> <span class="n">central_latitude</span><span class="o">=</span><span class="mi">35</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">proj</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">'50m'</span><span class="p">),</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">gridlines</span><span class="p">()</span>
+
+
+<span class="c1"># Create a station plot pointing to an Axes to draw on as well as the location of points</span>
+<span class="n">stationplot</span> <span class="o">=</span> <span class="n">StationPlot</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">ok_data</span><span class="p">[</span><span class="s1">'LON'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">ok_data</span><span class="p">[</span><span class="s1">'LAT'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
+                          <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">stationplot</span><span class="o">.</span><span class="n">plot_parameter</span><span class="p">(</span><span class="s1">'NW'</span><span class="p">,</span> <span class="n">ok_data</span><span class="p">[</span><span class="s1">'TAIR'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
+<span class="n">stationplot</span><span class="o">.</span><span class="n">plot_parameter</span><span class="p">(</span><span class="s1">'SW'</span><span class="p">,</span> <span class="n">ok_dewpoint</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'green'</span><span class="p">)</span>
+<span class="n">stationplot</span><span class="o">.</span><span class="n">plot_barb</span><span class="p">(</span><span class="n">ok_u</span><span class="p">,</span> <span class="n">ok_v</span><span class="p">)</span>
+
+<span class="c1"># Texas Data</span>
+<span class="n">stationplot</span> <span class="o">=</span> <span class="n">StationPlot</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">tx_one_time</span><span class="p">[</span><span class="s1">'Long'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">tx_one_time</span><span class="p">[</span><span class="s1">'Lat'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
+                          <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">stationplot</span><span class="o">.</span><span class="n">plot_parameter</span><span class="p">(</span><span class="s1">'NW'</span><span class="p">,</span> <span class="n">tx_one_time</span><span class="p">[</span><span class="s1">'2m_temperature'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
+<span class="n">stationplot</span><span class="o">.</span><span class="n">plot_parameter</span><span class="p">(</span><span class="s1">'SW'</span><span class="p">,</span> <span class="n">tx_one_time</span><span class="p">[</span><span class="s1">'dewpoint'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'green'</span><span class="p">)</span>
+<span class="n">stationplot</span><span class="o">.</span><span class="n">plot_barb</span><span class="p">(</span><span class="n">tx_u</span><span class="p">,</span> <span class="n">tx_v</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This is an informative plot, but is rather crowded. Using MetPy's <code>reduce_point_density</code> function, try cleaning up this plot to something that would be presentable/publishable. This function will return a mask, which you'll apply to all arrays in the plotting commands to filter down the data.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Oklahoma</span>
+<span class="n">xy</span> <span class="o">=</span> <span class="n">proj</span><span class="o">.</span><span class="n">transform_points</span><span class="p">(</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span> <span class="n">ok_data</span><span class="p">[</span><span class="s1">'LON'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">ok_data</span><span class="p">[</span><span class="s1">'LAT'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="c1"># Reduce point density so that there's only one point within a 50km circle</span>
+<span class="n">ok_mask</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">reduce_point_density</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="mi">50000</span><span class="p">)</span>
+
+<span class="c1"># Texas</span>
+
+<span class="c1"># Your code here</span>
+
+<span class="c1"># Plot</span>
+
+<span class="c1"># Your code here</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/reduce_and_plot.py</span>
+
+
+<span class="c1"># Cell content replaced by load magic replacement.</span>
+<span class="n">xy</span> <span class="o">=</span> <span class="n">proj</span><span class="o">.</span><span class="n">transform_points</span><span class="p">(</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span> <span class="n">tx_one_time</span><span class="p">[</span><span class="s1">'Long'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">tx_one_time</span><span class="p">[</span><span class="s1">'Lat'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">tx_mask</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">reduce_point_density</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="mi">50000</span><span class="p">)</span>
+
+<span class="c1">#Plot</span>
+
+<span class="c1"># Set up a plot with map features</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+<span class="n">proj</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">Stereographic</span><span class="p">(</span><span class="n">central_longitude</span><span class="o">=-</span><span class="mi">100</span><span class="p">,</span> <span class="n">central_latitude</span><span class="o">=</span><span class="mi">35</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">proj</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">'50m'</span><span class="p">),</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">gridlines</span><span class="p">()</span>
+
+<span class="c1"># Create a station plot pointing to an Axes to draw on as well as the location of points</span>
+<span class="n">stationplot</span> <span class="o">=</span> <span class="n">StationPlot</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">ok_data</span><span class="p">[</span><span class="s1">'LON'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">ok_mask</span><span class="p">],</span> <span class="n">ok_data</span><span class="p">[</span><span class="s1">'LAT'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">ok_mask</span><span class="p">],</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
+                          <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">stationplot</span><span class="o">.</span><span class="n">plot_parameter</span><span class="p">(</span><span class="s1">'NW'</span><span class="p">,</span> <span class="n">ok_data</span><span class="p">[</span><span class="s1">'TAIR'</span><span class="p">][</span><span class="n">ok_mask</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
+<span class="n">stationplot</span><span class="o">.</span><span class="n">plot_parameter</span><span class="p">(</span><span class="s1">'SW'</span><span class="p">,</span> <span class="n">ok_dewpoint</span><span class="p">[</span><span class="n">ok_mask</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'green'</span><span class="p">)</span>
+<span class="n">stationplot</span><span class="o">.</span><span class="n">plot_barb</span><span class="p">(</span><span class="n">ok_u</span><span class="p">[</span><span class="n">ok_mask</span><span class="p">],</span> <span class="n">ok_v</span><span class="p">[</span><span class="n">ok_mask</span><span class="p">])</span>
+
+<span class="c1"># Texas Data</span>
+<span class="n">stationplot</span> <span class="o">=</span> <span class="n">StationPlot</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">tx_one_time</span><span class="p">[</span><span class="s1">'Long'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">tx_mask</span><span class="p">],</span> <span class="n">tx_one_time</span><span class="p">[</span><span class="s1">'Lat'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">tx_mask</span><span class="p">],</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
+                          <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">stationplot</span><span class="o">.</span><span class="n">plot_parameter</span><span class="p">(</span><span class="s1">'NW'</span><span class="p">,</span> <span class="n">tx_one_time</span><span class="p">[</span><span class="s1">'2m_temperature'</span><span class="p">][</span><span class="n">tx_mask</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
+<span class="n">stationplot</span><span class="o">.</span><span class="n">plot_parameter</span><span class="p">(</span><span class="s1">'SW'</span><span class="p">,</span> <span class="n">tx_one_time</span><span class="p">[</span><span class="s1">'dewpoint'</span><span class="p">][</span><span class="n">tx_mask</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'green'</span><span class="p">)</span>
+<span class="n">stationplot</span><span class="o">.</span><span class="n">plot_barb</span><span class="p">(</span><span class="n">tx_u</span><span class="p">[</span><span class="n">tx_mask</span><span class="p">],</span> <span class="n">tx_v</span><span class="p">[</span><span class="n">tx_mask</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a name="timeseries"></a></p>
+<h2 id="Creating-Time-Series-for-Stations">Creating Time Series for Stations<a class="anchor-link" href="#Creating-Time-Series-for-Stations">¶</a>
+</h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>What if we want to take data from all times from a single station to make a time series (or meteogram) plot? How can we easily do that with Pandas without having to aggregate the data by hand?</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Select daylight hours</span>
+<span class="n">tx_daytime</span> <span class="o">=</span> <span class="n">tx_data</span><span class="p">[(</span><span class="n">tx_data</span><span class="p">[</span><span class="s1">'Time'</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="s1">'2019-03-22 06:00'</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">tx_data</span><span class="p">[</span><span class="s1">'Time'</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="s1">'2019-03-22 20:00'</span><span class="p">)]</span>
+
+<span class="c1"># Create sub-tables for each station</span>
+<span class="n">tx_grp</span> <span class="o">=</span> <span class="n">tx_daytime</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'ID'</span><span class="p">)</span>
+
+<span class="c1"># Get data from station DIMM</span>
+<span class="n">station_data</span> <span class="o">=</span> <span class="n">tx_grp</span><span class="o">.</span><span class="n">get_group</span><span class="p">(</span><span class="s1">'DIMM'</span><span class="p">)</span>
+
+<span class="c1"># Create hourly averaged data</span>
+<span class="c1"># time_bins = pd.cut(station_data['Time'], np.arange(600, 2100, 100))</span>
+<span class="c1"># xarray has groupby_bins, but pandas has cut</span>
+<span class="n">station_data</span><span class="o">.</span><span class="n">index</span><span class="o">=</span><span class="n">station_data</span><span class="p">[</span><span class="s1">'Time'</span><span class="p">]</span>
+<span class="n">station_hourly</span> <span class="o">=</span> <span class="n">station_data</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">'H'</span><span class="p">)</span>
+
+
+<span class="c1"># station_hourly = station_data.groupby(time_bins)</span>
+<span class="n">station_hourly_mean</span> <span class="o">=</span> <span class="n">station_hourly</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">station_hourly_mean</span> <span class="o">=</span> <span class="n">station_hourly_mean</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span> <span class="c1"># no longer index by time so that we get it back as a regular variable.</span>
+
+<span class="c1"># The times are reported at the beginning of the interval, but really represent </span>
+<span class="c1"># the mean symmetric about the half hour. Let's fix that.</span>
+<span class="c1"># from datetime import timedelta timedelta(minutes=30) #</span>
+<span class="n">station_hourly_mean</span><span class="p">[</span><span class="s1">'Time'</span><span class="p">]</span> <span class="o">+=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_timedelta</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="s1">'minutes'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">station_hourly_mean</span><span class="p">[</span><span class="s1">'Time'</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">station_data</span><span class="p">[</span><span class="s1">'Time'</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Use the data above to make a time series plot of the instantaneous data and the hourly averaged data:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/mesonet_timeseries.py</span>
+
+
+<span class="c1"># Cell content replaced by load magic replacement.</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">station_hourly_mean</span><span class="p">[</span><span class="s1">'Time'</span><span class="p">],</span> <span class="n">station_hourly_mean</span><span class="p">[</span><span class="s1">'solar_radiation'</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">station_data</span><span class="p">[</span><span class="s1">'Time'</span><span class="p">],</span> <span class="n">station_data</span><span class="p">[</span><span class="s1">'solar_radiation'</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+    </div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha256-SDRP1VVYu+tgAGKhddBSl5+ezofHKZeI+OzxakbIe/Y=" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>
