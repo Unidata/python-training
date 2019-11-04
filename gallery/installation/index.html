@@ -99,87 +99,80 @@ packages and cannot be used.</strong></p>
 <div class="section" id="id1">
 <h3>Windows</h3>
 <ul class="simple">
-<li>After downloading the installer, open it and click through the graphical
-install utility. Accept all of the default installation settings.</li>
-<li>You should now have a program called "Anaconda Prompt" installed. Open it
-(this will be your Python command prompt).</li>
+<li><p>After downloading the installer, open it and click through the graphical
+install utility. Accept all of the default installation settings.</p></li>
+<li><p>You should now have a program called "Anaconda Prompt" installed. Open it
+(this will be your Python command prompt).</p></li>
 </ul>
 </div>
 <div class="section" id="id2">
 <h3>Mac/Linux</h3>
 <ul class="simple">
-<li>After downloading the bash installer, open a command prompt (terminal program
-on the Mac).</li>
-<li>Change the directory at the terminal to wherever the installer was downloaded.
+<li><p>After downloading the bash installer, open a command prompt (terminal program
+on the Mac).</p></li>
+<li><p>Change the directory at the terminal to wherever the installer was downloaded.
 On most systems, this will default to the downloads directory in your user
 account. If that's the case, <cite>cd ~/Downloads</cite> will get you there, or replace
-the path with wherever you saved the file.</li>
-<li>Run the installer script by typing <cite>bash Miniconda3-latest-MacOSX-x86_64.sh</cite>.</li>
-<li>Note: Your file name may be different depending upon your operating system!
+the path with wherever you saved the file.</p></li>
+<li><p>Run the installer script by typing <cite>bash Miniconda3-latest-MacOSX-x86_64.sh</cite>.</p></li>
+<li><p>Note: Your file name may be different depending upon your operating system!
 replace Miniconda3-latest-MacOSX-x86_64.sh with whatever the name of the file
-you downloaded was.</li>
-<li>Accept the defaults.</li>
-<li>After the installer has completed completely close and restart your terminal
-program (this sources the newly modified path).</li>
-<li>Verify that your install is working by typing <cite>conda --version</cite> into the terminal.
+you downloaded was.</p></li>
+<li><p>Accept the defaults.</p></li>
+<li><p>After the installer has completed completely close and restart your terminal
+program (this sources the newly modified path).</p></li>
+<li><p>Verify that your install is working by typing <cite>conda --version</cite> into the terminal.
 You should see a response like <cite>conda 4.5.11</cite> or similar (though yours may be a
-different version number).</li>
+different version number).</p></li>
 </ul>
 </div>
 </div>
 <div class="section" id="setting-up-the-environment">
 <h2>Setting up the environment</h2>
 <ul class="simple">
-<li>We'll be using conda environments for the workshop (again, we'll explain more
+<li><p>We'll be using conda environments for the workshop (again, we'll explain more
 during the course or checkout <a class="reference external" href="https://www.youtube.com/watch?v=15DNH25UCi0">this MetPy Monday</a>
 if you can't wait). After installing conda, open a terminal (or the Anaconda Prompt
-if you're on a Windows machine).</li>
-<li>Download the <cite>environment.yml</cite> file that will tell your system what all we need for the
+if you're on a Windows machine).</p></li>
+<li><p>Download the <cite>environment.yml</cite> file that will tell your system what all we need for the
 workshop. Note where you download it, this will be the <cite>Downloads</cite> directory by default on
 most systems, which is fine. Right click and "save"
 <a class="reference external" href="https://raw.githubusercontent.com/Unidata/python-gallery/master/environment.yml">this link</a>
-to download.</li>
-<li>Open a terminal (Anaconda prompt on Windows) and navigate to whatever directory the <cite>environment.yml</cite>
-file was saved in. Generally <cite>cd ~/Downloads</cite>.</li>
-<li>Run the command <cite>conda env create</cite> and wait for the installation to finish.</li>
-<li>Run the command <cite>conda activate gallery</cite> to activate the unidata environment and
-verify that everything is ready.</li>
+to download.</p></li>
+<li><p>Open a terminal (Anaconda prompt on Windows) and navigate to whatever directory the <cite>environment.yml</cite>
+file was saved in. Generally <cite>cd ~/Downloads</cite>.</p></li>
+<li><p>Run the command <cite>conda env create</cite> and wait for the installation to finish.</p></li>
+<li><p>Run the command <cite>conda activate gallery</cite> to activate the unidata environment and
+verify that everything is ready.</p></li>
 </ul>
 </div>
 <div class="section" id="running-an-example">
 <h2>Running an example</h2>
 <ul class="simple">
-<li>Find the example you wish to run and download the example as a python script
-or jupyter notebook, depending on how you wish to run it.</li>
-<li>Ensure that the <cite>gallery</cite> environment is activated.</li>
-<li>If you are running the example as a script, run <cite>python the_script_name.py</cite>
-</li>
-<li>If you are running the example as a notebook start the jupyter environment
-with <cite>jupyter notebook</cite> or <cite>jupyter lab</cite>
-</li>
-<li>When you want to return to the root environment, run the command <cite>conda deactivate</cite>
-to exit the <cite>gallery</cite> environment.</li>
+<li><p>Find the example you wish to run and download the example as a python script
+or jupyter notebook, depending on how you wish to run it.</p></li>
+<li><p>Ensure that the <cite>gallery</cite> environment is activated.</p></li>
+<li><p>If you are running the example as a script, run <cite>python the_script_name.py</cite></p></li>
+<li><p>If you are running the example as a notebook start the jupyter environment
+with <cite>jupyter notebook</cite> or <cite>jupyter lab</cite></p></li>
+<li><p>When you want to return to the root environment, run the command <cite>conda deactivate</cite>
+to exit the <cite>gallery</cite> environment.</p></li>
 </ul>
 </div>
 <div class="section" id="contact-us">
 <h2>Contact Us</h2>
 <ul class="simple">
-<li>For questions and discussion, join Unidata's <a class="reference external" href="https://www.unidata.ucar.edu/support/#mailinglists">python-users</a>
-mailing list</li>
-<li>To submit questions to Unidata developers, <a class="reference external" href="mailto:support-python@unidata.ucar.edu">email us</a>!</li>
+<li><p>For questions and discussion, join Unidata's <a class="reference external" href="https://www.unidata.ucar.edu/support/#mailinglists">python-users</a>
+mailing list</p></li>
+<li><p>To submit questions to Unidata developers, <a class="reference external" href="mailto:support-python@unidata.ucar.edu">email us</a>!</p></li>
 </ul>
 </div>
 <div class="section" id="related-projects">
 <h2>Related Projects</h2>
 <ul class="simple">
-<li>
-<a class="reference external" href="https://unidata.github.io/MetPy">MetPy</a> is a Python toolkit for meteorology</li>
-<li>
-<a class="reference external" href="https://unidata.github.io/netcdf4-python/">netCDF4-python</a> is the officially blessed Python API for <a class="reference external" href="https://www.unidata.ucar.edu/software/netcdf/">netCDF</a>
-</li>
-<li>
-<a class="reference external" href="https://unidata.github.io/siphon">siphon</a> is an API for accessing remote data on <a class="reference external" href="https://www.unidata.ucar.edu/software/thredds/current/tds/">THREDDS Data Server</a>
-</li>
+<li><p><a class="reference external" href="https://unidata.github.io/MetPy">MetPy</a> is a Python toolkit for meteorology</p></li>
+<li><p><a class="reference external" href="https://unidata.github.io/netcdf4-python/">netCDF4-python</a> is the officially blessed Python API for <a class="reference external" href="https://www.unidata.ucar.edu/software/netcdf/">netCDF</a></p></li>
+<li><p><a class="reference external" href="https://unidata.github.io/siphon">siphon</a> is an API for accessing remote data on <a class="reference external" href="https://www.unidata.ucar.edu/software/thredds/current/tds/">THREDDS Data Server</a></p></li>
 </ul>
 </div>
 </div>
