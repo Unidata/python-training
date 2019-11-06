@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Times_and_Dates | The Unidata Python Training Site</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/python/times_and_dates/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="Times_and_Dates">
+<meta property="og:url" content="https://unidata.github.io/python-training/python/times_and_dates/">
+<meta property="og:description" content="Times and Dates¶Time is an essential component of nearly all geoscience data. Timescales span orders of magnitude from microseconds for lightning, hours for a supercell thunderstorm, days for a global">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-11-06T13:31:26-07:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../../gallery/gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop/workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.ipynb" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Times_and_Dates</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Times-and-Dates">Times and Dates<a class="anchor-link" href="#Times-and-Dates">¶</a>
+</h2>
+<p>Time is an essential component of nearly all geoscience data. Timescales span orders of magnitude from microseconds for lightning, hours for a supercell thunderstorm, days for a global weather model, millenia and beyond for the earth's climate. To properly analyze geoscience data, you must have a firm understanding of how to handle time in Python. In this notebook, we will examine the Python Standard Library for handling dates and times. We will also briefly make use of the <a href="https://pypi.python.org/pypi/pytz">pytz</a> module to handle some thorny time zone issues in Python.</p>
+<h3 id="Time-Versus-Datetime-Modules-and-Some-Core-Concepts">
+<code>Time</code> Versus <code>Datetime</code> Modules and Some Core Concepts<a class="anchor-link" href="#Time-Versus-Datetime-Modules-and-Some-Core-Concepts">¶</a>
+</h3>
+<p>Python comes with <a href="https://docs.python.org/3/library/time.html">time</a> and <a href="https://docs.python.org/3/library/datetime.html">datetime</a> modules. Unfortunately, Python can be initially disorienting because of the heavily overlapping terminology concerning dates and times:</p>
+<ul>
+<li>
+<code>datetime</code> <strong>module</strong> has a <code>datetime</code> <strong>class</strong>
+</li>
+<li>
+<code>datetime</code> <strong>module</strong> has a <code>time</code> <strong>class</strong>
+</li>
+<li>
+<code>datetime</code> <strong>module</strong> has a <code>date</code> <strong>class</strong>
+</li>
+<li>
+<code>time</code> <strong>module</strong> has a <code>time</code> function which returns (almost always) <a href="#What-is-Unix-Time?">Unix time</a>
+</li>
+<li>
+<code>datetime</code> <strong>class</strong> has a <code>date</code> method which returns a <code>date</code> object</li>
+<li>
+<code>datetime</code> <strong>class</strong> has a <code>time</code> method which returns a <code>time</code> object</li>
+</ul>
+<p>This confusion can be partially alleviated by aliasing our imported modules:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
+<span class="c1"># we can now reference the datetime module (alaised to 'dt') and datetime</span>
+<span class="c1"># object unambiguously</span>
+<span class="n">pisecond</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2016</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">26</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pisecond</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">time</span> <span class="k">as</span> <span class="nn">tm</span>
+<span class="n">now</span> <span class="o">=</span> <span class="n">tm</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">now</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="time-module">
+<code>time</code> module<a class="anchor-link" href="#time-module">¶</a>
+</h4>
+<p>The <code>time</code> module is well-suited for measuring <a href="#What-is-Unix-Time?">Unix time</a>. For example, when you are calculating how long it takes a Python function to run (so-called "benchmarking"), you can employ the <code>time()</code> function from the <code>time</code> module to obtain Unix time before and after the function completes and take the difference of those two times.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">time</span> <span class="k">as</span> <span class="nn">tm</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">tm</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">tm</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># The sleep function will stop the program for n seconds</span>
+<span class="n">end</span> <span class="o">=</span> <span class="n">tm</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">diff</span> <span class="o">=</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"The benchmark took </span><span class="si">{}</span><span class="s2"> seconds"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">diff</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>(For more accurate benchmarking, see the <a href="https://docs.python.org/3/library/timeit.html">timeit</a> module.)</p>
+<h4 id="datetime-module">
+<code>datetime</code> module<a class="anchor-link" href="#datetime-module">¶</a>
+</h4>
+<p>The <code>datetime</code> module handles time with the Gregorian calendar (the calendar we are all familiar with) and is independent of Unix time. The <code>datetime</code> module has an <a href="#The-Thirty-Second-Introduction-to-Object-Oriented-Programming">object-oriented</a> approach with the <code>date</code>, <code>time</code>, <code>datetime</code>, <code>timedelta</code>, and <code>tzinfo</code> classes.</p>
+<ul>
+<li>
+<code>date</code> class represents the day, month and year</li>
+<li>
+<code>time</code> class represents the time of day</li>
+<li>
+<code>datetime</code> class is a combination of the <code>date</code> and <code>time</code> classes</li>
+<li>
+<code>timedelta</code> class represents a time duration</li>
+<li>
+<code>tzinfo</code> (abstract) class represents time zones</li>
+</ul>
+<p>The <code>datetime</code> module is effective for:</p>
+<ul>
+<li>performing date and time arithmetic and calculating time duration</li>
+<li>reading and writing date and time strings in a particular format</li>
+<li>handling time zones (with the help of third-party libraries)</li>
+</ul>
+<p>The <code>time</code> and <code>datetime</code> modules overlap in functionality, but in your geoscientific work, you will probably be using the <code>datetime</code> module more than the <code>time</code> module.</p>
+<h4 id="What-is-Unix-Time?">What is Unix Time?<a class="anchor-link" href="#What-is-Unix-Time?">¶</a>
+</h4>
+<p>Unix time is an example of system time which is the computer's notion of passing time. It is measured in seconds from the the start of the epoch which is January 1, 1970 00:00 <a href="#What-is-UTC?">UTC</a>. It is represented "under the hood" as a <a href="https://en.wikipedia.org/wiki/Floating_point">floating point number</a> which is how computers represent real (ℝ) numbers .</p>
+<h4 id="The-Thirty-Second-Introduction-to-Object-Oriented-Programming">The Thirty Second Introduction to Object-Oriented Programming<a class="anchor-link" href="#The-Thirty-Second-Introduction-to-Object-Oriented-Programming">¶</a>
+</h4>
+<p>We have been talking about object-oriented (OO) programming by mentioning terms like "class", "object", and "method", but never really explaining what they mean. A class is a collection of related variables, similar to a <a href="https://en.wikipedia.org/wiki/Struct_&amp;#40;C_programming_language&amp;#41;">struct</a>, in the C programming language or even a tuple in Python) coupled with functions, or "methods" in OO parlance, that can act on those variables. An object is a concrete example of a class.</p>
+<p>For example, if you have a <code>Coord</code> class that represents an earth location with latitude, and longitude, you may have a method that returns the distance between two locations, <code>distancekm()</code> in this example.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
+<span class="k">class</span> <span class="nc">Coord</span><span class="p">:</span>
+    <span class="sd">"""Earth location identified by (latitude, longitude) coordinates.</span>
+<span class="sd">    distancekm  -- distance between two points in kilometers</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">latitude</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lat</span> <span class="o">=</span> <span class="n">latitude</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lon</span> <span class="o">=</span> <span class="n">longitude</span>
+
+    <span class="k">def</span> <span class="nf">distancekm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+        <span class="sd">"""Distance between two points in kilometers."""</span>
+        <span class="n">DEGREES_TO_RADIANS</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">180.0</span>
+        <span class="n">EARTH_RADIUS</span> <span class="o">=</span> <span class="mi">6373</span>  <span class="c1"># in KMs</span>
+        <span class="n">phi1</span> <span class="o">=</span> <span class="p">(</span><span class="mf">90.0</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">)</span> <span class="o">*</span> <span class="n">DEGREES_TO_RADIANS</span>
+        <span class="n">phi2</span> <span class="o">=</span> <span class="p">(</span><span class="mf">90.0</span> <span class="o">-</span> <span class="n">p</span><span class="o">.</span><span class="n">lat</span><span class="p">)</span> <span class="o">*</span> <span class="n">DEGREES_TO_RADIANS</span>
+        <span class="n">theta1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lon</span> <span class="o">*</span> <span class="n">DEGREES_TO_RADIANS</span>
+        <span class="n">theta2</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">lon</span> <span class="o">*</span> <span class="n">DEGREES_TO_RADIANS</span>
+        <span class="n">cos</span> <span class="o">=</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi1</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi2</span><span class="p">)</span> <span class="o">*</span>
+               <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta1</span> <span class="o">-</span> <span class="n">theta2</span><span class="p">)</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi1</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi2</span><span class="p">))</span>
+        <span class="n">arc</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">acos</span><span class="p">(</span><span class="n">cos</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">arc</span> <span class="o">*</span> <span class="n">EARTH_RADIUS</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>To create a concrete example of a <strong>class</strong>, also known as an <strong>object</strong>, initialize the object with data:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">timbuktu</span> <span class="o">=</span> <span class="n">Coord</span><span class="p">(</span><span class="mf">16.77</span><span class="p">,</span> <span class="mf">3.00</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Here, <code>timbuktu</code> is an <strong>object</strong> of the <strong>class</strong> <code>Coord</code> initialized with a latitude of <code>16.77</code> and a longitude of <code>3.00</code>.
+Next, we create two <code>Coord</code> objects: <code>ny</code> and <code>paris</code>. We will invoke the <code>distancekm()</code> method on the <code>ny</code> object and pass the <code>paris</code> object as an argument to determine the distance between New York and Paris in kilometers.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ny</span> <span class="o">=</span> <span class="n">Coord</span><span class="p">(</span><span class="mf">40.71</span><span class="p">,</span> <span class="mf">74.01</span><span class="p">)</span>
+<span class="n">paris</span> <span class="o">=</span> <span class="n">Coord</span><span class="p">(</span><span class="mf">48.86</span><span class="p">,</span> <span class="mf">2.35</span><span class="p">)</span>
+<span class="n">distance</span> <span class="o">=</span> <span class="n">ny</span><span class="o">.</span><span class="n">distancekm</span><span class="p">(</span><span class="n">paris</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"The distance from New York to Paris is </span><span class="si">{:.1f}</span><span class="s2"> kilometers."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="n">distance</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The old joke about OO programming is that they simply moved the struct that the function takes as an argument and put it first because it is special. So instead of having <code>distancekm(ny, paris)</code>, you have <code>ny.distancekm(paris)</code>. We have not talked about inheritance or polymorphism but that is OO in a nutshell.</p>
+<h3 id="Reading-and-Writing-Dates-and-Times">Reading and Writing Dates and Times<a class="anchor-link" href="#Reading-and-Writing-Dates-and-Times">¶</a>
+</h3>
+<h4 id="Parsing-Lightning-Data-Timestamps-with-the-datetime.strptime-Method">Parsing Lightning Data Timestamps with the <code>datetime.strptime</code> Method<a class="anchor-link" href="#Parsing-Lightning-Data-Timestamps-with-the-datetime.strptime-Method">¶</a>
+</h4>
+<p>Suppose you want to analyze <a href="https://ghrc.nsstc.nasa.gov/uso/ds_docs/vaiconus/vaiconus_dataset.html">US NLDN lightning data</a>. Here is a sample row of data:</p>
+
+<pre><code>06/27/07 16:18:21.898 18.739 -88.184 0.0 kA 0 1.0 0.4 2.5 8 1.2 13 G
+
+</code></pre>
+<p>Part of the task involves parsing the <code>06/27/07 16:18:21.898</code> time string into a <code>datetime</code> object. (The full description of the data are <a href="https://ghrc.nsstc.nasa.gov/uso/ds_docs/vaiconus/vaiconus_dataset.html#a6">described here</a>.) In order to parse this string or others that follow the same format, you will employ the <a href="https://docs.python.org/3/library/datetime.html#datetime.datetime.strptime">datetime.strptime()</a> method from the <code>datetime</code> module. This method takes two arguments: the first is the date time string you wish to parse, the second is the format which describes exactly how the date and time are arranged. <a href="https://docs.python.org/3/library/datetime.html#strftime-and-strptime-behavior">The full range of format options is described in the Python documentation</a>. In reality, the format will take some degree of experimentation to get right. This is a situation where Python shines as you can quickly try out different solutions in the IPython interpreter. Beyond the official documentation, Google and <a href="https://stackoverflow.com/">Stack Overflow</a> are your friends in this process. Eventually, after some trial and error, you will find the <code>'%m/%d/%y %H:%M:%S.%f'</code> format will properly parse the date and time.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
+<span class="n">strike_time</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="s1">'06/27/07 16:18:21.898'</span><span class="p">,</span>
+                                   <span class="s1">'%m/</span><span class="si">%d</span><span class="s1">/%y %H:%M:%S.</span><span class="si">%f</span><span class="s1">'</span><span class="p">)</span>
+<span class="c1"># print strike_time to see if we have properly parsed our time</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">strike_time</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Retrieving-METAR-from-the-MesoWest-API-with-Help-from-the-datetime.strftime-Method">Retrieving METAR from the MesoWest API with Help from the <code>datetime.strftime</code> Method<a class="anchor-link" href="#Retrieving-METAR-from-the-MesoWest-API-with-Help-from-the-datetime.strftime-Method">¶</a>
+</h4>
+<p>Let's say you are interested in obtaining <a href="https://en.wikipedia.org/wiki/METAR">METAR</a> data from the Aleutian Islands with the <a href="http://mesowest.org/api">MesoWest API</a>. In order to retrieve these data, you will have to assemble a URL that abides by the <a href="http://synopticlabs.org/api/mesonet/reference/">MesoWest API reference</a>, and specifically create <a href="http://synopticlabs.org/api/mesonet/reference/">date time strings that the API understands</a> (e.g., <code>201606010000</code> for the year, month, date, hour and minute). For example, typing the following URL in a web browser will return a human-readable nested data structure called a <a href="https://en.wikipedia.org/wiki/JSON">JSON object</a> which will contain the data along with additional "metadata" to help you interpret the data (e.g., units etc.). Here, we are asking for air temperature information from the METAR station at <a href="https://en.wikipedia.org/wiki/Eareckson_Air_Station">Eareckson air force base</a> (ICAO identifier "PASY") in the Aleutians from June 1, 2016, 00:00 UTC to June 1, 2016, 06:00 UTC.</p>
+<p><a href="http://api.mesowest.net/v2/stations/timeseries?stid=pasy&amp;start=201606010000&amp;end=201606010600&amp;vars=air_temp&amp;token=demotoken">http://api.mesowest.net/v2/stations/timeseries?stid=pasy&amp;start=201606010000&amp;end=201606010600&amp;vars=air_temp&amp;token=demotoken</a></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+<pre><code>{
+  "SUMMARY": {
+    "FUNCTION_USED": "time_data_parser",
+    "NUMBER_OF_OBJECTS": 1,
+    "TOTAL_DATA_TIME": "5.50103187561 ms",
+    "DATA_PARSING_TIME": "0.313997268677 ms",
+    "METADATA_RESPONSE_TIME": "97.2690582275 ms",
+    "RESPONSE_MESSAGE": "OK",
+    "RESPONSE_CODE": 1,
+    "DATA_QUERY_TIME": "5.18608093262 ms"
+  },
+  "STATION": [
+    {
+      "ID": "12638",
+      "TIMEZONE": "America/Adak",
+      "LATITUDE": "52.71667",
+      "OBSERVATIONS": {
+        "air_temp_set_1": [
+          8.3,
+          8.0,
+          8.3,
+          8.0,
+          7.8,
+          7.8,
+          7.0,
+          7.2,
+          7.2
+        ],
+        "date_time": [
+          "2016-06-01T00:56:00Z",
+          "2016-06-01T01:26:00Z",
+          "2016-06-01T01:56:00Z",
+          "2016-06-01T02:40:00Z",
+          "2016-06-01T02:56:00Z",
+          "2016-06-01T03:56:00Z",
+          "2016-06-01T04:45:00Z",
+          "2016-06-01T04:56:00Z",
+          "2016-06-01T05:56:00Z"
+        ]
+      },
+      "STATE": "AK",
+      "LONGITUDE": "174.11667",
+      "SENSOR_VARIABLES": {
+        "air_temp": {
+          "air_temp_set_1": {
+            "end": "",
+            "start": ""
+          }
+        },
+        "date_time": {
+          "date_time": {}
+        }
+      },
+      "STID": "PASY",
+      "NAME": "Shemya, Eareckson AFB",
+      "ELEVATION": "98",
+      "PERIOD_OF_RECORD": {
+        "end": "",
+        "start": ""
+      },
+      "MNET_ID": "1",
+      "STATUS": "ACTIVE"
+    }
+  ],
+  "UNITS": {
+    "air_temp": "Celsius"
+  }
+}
+// GET http://api.mesowest.net/v2/stations/timeseries?stid=pasy&amp;start=201606010000&amp;end=201606010600&amp;vars=air_temp&amp;token=demotoken
+// HTTP/1.1 200 OK
+// Content-Type: application/json
+// Date: Mon, 27 Jun 2016 18:17:08 GMT
+// Server: nginx/1.4.6 (Ubuntu)
+// Vary: Accept-Encoding
+// Content-Length: 944
+// Connection: keep-alive
+// Request duration: 0.271790s</code></pre>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Continuing with this example, let's create a function that takes a station identifier, start and end time, a meteorological field and returns the JSON object as a Python dictionary data structure. We will draw upon our knowledge from the <a href="https://github.com/Unidata/online-python-training/blob/master/notebooks/Basic%20Input%20and%20Output.ipynb">Basic Input and Output notebook</a> to properly construct the URL. In addition, we will employ the <a href="https://docs.python.org/3/library/urllib.request.html">urllib.request</a> module for opening and reading URLs.</p>
+<p>But first, we must figure out how to properly format our date with the <a href="https://docs.python.org/2/library/datetime.html#datetime.date.strftime">datetime.strftime()</a> method. This method takes a format identical to the one we employed for <code>strptime()</code>. After some trial and error from the IPython interpreter, we arrive at <code>'%Y%m%d%H%M'</code>:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2016</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%Y%m</span><span class="si">%d</span><span class="s1">%H%M'</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Armed with this knowledge of how to format the date and time according to the MesoWest API reference, we can write our <code>metar()</code> function:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">urllib.request</span>
+<span class="kn">import</span> <span class="nn">json</span>  <span class="c1"># json module to help us with the HTTP response</span>
+<span class="k">def</span> <span class="nf">metar</span><span class="p">(</span><span class="n">icao</span><span class="p">,</span> <span class="n">starttime</span><span class="p">,</span> <span class="n">endtime</span><span class="p">,</span> <span class="n">var</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    Retrieves METAR with the icao identifier, the starttime and endtime</span>
+<span class="sd">    datetime objects and the var atmospheric field (e.g., "air_temp".)</span>
+<span class="sd">    Returns a dictionary data structure that mirros the JSON object from</span>
+<span class="sd">    returned from the MesoWest API.</span>
+<span class="sd">    """</span>
+    <span class="n">fmt</span> <span class="o">=</span> <span class="s1">'%Y%m</span><span class="si">%d</span><span class="s1">%H%M'</span>
+    <span class="n">st</span> <span class="o">=</span> <span class="n">starttime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">fmt</span><span class="p">)</span>
+    <span class="n">et</span> <span class="o">=</span> <span class="n">endtime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">fmt</span><span class="p">)</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">"http://api.mesowest.net/v2/stations/timeseries?"</span>\
+        <span class="s2">"stid=</span><span class="si">{}</span><span class="s2">&amp;start=</span><span class="si">{}</span><span class="s2">&amp;end=</span><span class="si">{}</span><span class="s2">&amp;vars=</span><span class="si">{}</span><span class="s2">&amp;token=demotoken"</span>
+    <span class="n">reply</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">icao</span><span class="p">,</span> <span class="n">st</span><span class="p">,</span> <span class="n">et</span><span class="p">,</span> <span class="n">var</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">reply</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">'utf8'</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can now try out our new <code>metar</code> function to fetch some air temperature data.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
+<span class="n">pasy</span> <span class="o">=</span> <span class="n">metar</span><span class="p">(</span><span class="s2">"pasy"</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2016</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+             <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2016</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">"air_temp"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pasy</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The data are returned in a nested data structure composed of dictionaries and lists. We can pull that data structure apart to fetch our data. Also, observe that the times are returned in UTC according to the <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601 international time standard</a>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">pasy</span><span class="p">[</span><span class="s1">'STATION'</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">'OBSERVATIONS'</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We could continue with this exercise by parsing the returned date time strings in to <code>datetime</code> objects, but we will leave that exercise to the reader.</p>
+<h3 id="Calculating-Coastal-Tides-with-the-timedelta-Class">Calculating Coastal Tides with the <code>timedelta</code> Class<a class="anchor-link" href="#Calculating-Coastal-Tides-with-the-timedelta-Class">¶</a>
+</h3>
+<p>Let's suppose we are looking at coastal tide and current data perhaps in a <a href="http://www.nhc.noaa.gov/surge/">tropical cyclone storm surge scenario</a>. The <a href="http://oceanservice.noaa.gov/education/kits/tides/media/supp_tide05.html">lunar day</a> is 24 hours, 50 minutes with two low tides and two high tides in that time duration. If we know the time of the current high tide, we can easily calculate the occurrence of the next low and high tides with the <code>timedelta</code> class. (In reality, the <em>exact time</em> of tides is influenced by local coastal effects, in addition to the laws of celestial mechanics, but we will ignore that fact for this exercise.)</p>
+<p>The <code>timedelta</code> class is initialized by supplying time duration usually supplied with <a href="https://docs.python.org/3/glossary.html#term-argument">keyword arguments</a> to clearly express the length of time. Significantly, you can use the <code>timedelta</code> class with arithmetic operators (i.e., <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>) to obtain new dates and times as the next code sample illustrates. This convenient language feature is known as <a href="https://en.wikipedia.org/wiki/Operator_overloading">operator overloading</a> and again illustrates Python's batteries-included philosophy of making life easier for the programmer. (In another language such as Java, you would have to call a method significantly obfuscating the code.) Another great feature is that the difference of two times will yield a <code>datetime</code> object. Let's examine all these features in the following code block.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
+<span class="n">high_tide</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2016</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">38</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">lunar_day</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">minutes</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">tide_duration</span> <span class="o">=</span> <span class="n">lunar_day</span> <span class="o">/</span> <span class="mi">4</span>
+<span class="n">next_low_tide</span> <span class="o">=</span> <span class="n">high_tide</span> <span class="o">+</span> <span class="n">tide_duration</span>
+<span class="n">next_high_tide</span> <span class="o">=</span> <span class="n">high_tide</span> <span class="o">+</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">tide_duration</span><span class="p">)</span>
+<span class="n">tide_length</span> <span class="o">=</span> <span class="n">next_high_tide</span> <span class="o">-</span> <span class="n">high_tide</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"The time between high and low tide is </span><span class="si">{}</span><span class="s2">."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tide_duration</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"The current high tide is </span><span class="si">{}</span><span class="s2">."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">high_tide</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"The next low tide is </span><span class="si">{}</span><span class="s2">."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">next_low_tide</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"The next high tide  </span><span class="si">{}</span><span class="s2">."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">next_high_tide</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"The tide length is  </span><span class="si">{}</span><span class="s2">."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tide_length</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"The type of the 'tide_length' variable is </span><span class="si">{}</span><span class="s2">."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span>
+    <span class="n">tide_length</span><span class="p">)))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In the last <code>print</code> statement, we use the <a href="https://docs.python.org/3/library/functions.html#type">type()</a> built-in Python function to simply illustrate the difference between two times yields a <code>timedelta</code> object.</p>
+<h3 id="Dealing-with-Time-Zones">Dealing with Time Zones<a class="anchor-link" href="#Dealing-with-Time-Zones">¶</a>
+</h3>
+<p>Time zones can be a source of confusion and frustration in geoscientific data and in computer programming in general. Core date and time libraries in various programming languages inevitably have design flaws (Python is no different) leading to third-party libraries that attempt to fix the core library limitations. To avoid these issues, it is best to handle data in UTC, or at the very least operate in a consistent time zone, but that is not always possible. Users will expect their tornado alerts in local time.</p>
+<h4 id="What-is-UTC?">What is UTC?<a class="anchor-link" href="#What-is-UTC?">¶</a>
+</h4>
+<p><a href="https://en.wikipedia.org/wiki/Coordinated_Universal_Time">UTC</a> is an abbreviation of Coordinated Universal Time and is equivalent to Greenwich Mean Time (GMT), in practice. (Greenwich at 0 degrees longitude, is a district of London, England.) In geoscientific data, times are often in UTC though you should always verify this assumption is actually true!</p>
+<h4 id="Time-Zone-Naive-Versus-Time-Zone-Aware-datetime-Objects">Time Zone Naive Versus Time Zone Aware <code>datetime</code> Objects<a class="anchor-link" href="#Time-Zone-Naive-Versus-Time-Zone-Aware-datetime-Objects">¶</a>
+</h4>
+<p>When you create <code>datetime</code> objects in Python, they are so-called "naive" which means they are time zone unaware. In many situations, you can happily go forward without this detail getting in the way of your work. As the <a href="https://docs.python.org/3/library/datetime.html">Python documentation states</a>: "Naive objects are easy to understand and to work with, at the cost of ignoring some aspects of reality". However, if you wish to convey time zone information, you will have to make your <code>datetime</code> objects time zone aware. In order to handle time zones in Python, you will need the third-party <a href="https://pypi.python.org/pypi/pytz">pytz</a> module whose classes build upon, or "inherit" in OO terminology, from the <code>tzinfo</code> class. You cannot solely rely on the Python Standard Library unfortunately. Here, we create time zone naive and time zone aware <code>datetime</code> objects:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
+<span class="kn">import</span> <span class="nn">pytz</span>
+<span class="n">naive</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+<span class="n">aware</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">pytz</span><span class="o">.</span><span class="n">timezone</span><span class="p">(</span><span class="s1">'US/Mountain'</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"I am time zone naive </span><span class="si">{}</span><span class="s2">."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">naive</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"I am time zone aware </span><span class="si">{}</span><span class="s2">."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">aware</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The <code>pytz.timezone()</code> method takes a time zone string and returns a <code>tzinfo</code> object which can be used to initialize the time zone. The <code>-06:00</code> denotes we are operating in a time zone six hours behind UTC.</p>
+<h4 id="Print-Time-with-a-Different-Time-Zone">Print Time with a Different Time Zone<a class="anchor-link" href="#Print-Time-with-a-Different-Time-Zone">¶</a>
+</h4>
+<p>If you have data that are in UTC, and wish to convert them to another time zone, Mountain Time Zone for example, you will again make use of the <code>pytz</code> module. First, we will create a UTC time with the <a href="https://docs.python.org/3/library/datetime.html#datetime.datetime.utcnow">utcnow()</a> method which inexplicably returns a time zone naive object so you must still specify the UTC time zone with the <a href="https://docs.python.org/3/library/datetime.html#datetime.datetime.replace">replace()</a> method. We then create a "US/Mountain" <code>tzinfo</code> object as before, but this time we will use the <a href="https://docs.python.org/3/library/datetime.html#datetime.datetime.astimezone">astimzone()</a> method to adjust the time to the specified time zone.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
+<span class="kn">import</span> <span class="nn">pytz</span>
+<span class="n">utc</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"The UTC time is </span><span class="si">{}</span><span class="s2">."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">utc</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%B </span><span class="si">%d</span><span class="s1">, %Y, %-I:%M%p'</span><span class="p">)))</span>
+<span class="n">mountaintz</span> <span class="o">=</span> <span class="n">pytz</span><span class="o">.</span><span class="n">timezone</span><span class="p">(</span><span class="s2">"US/Mountain"</span><span class="p">)</span>
+<span class="n">ny</span> <span class="o">=</span> <span class="n">utc</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">mountaintz</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"The 'US/Mountain' time is </span><span class="si">{}</span><span class="s2">."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ny</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span>
+    <span class="s1">'%B </span><span class="si">%d</span><span class="s1">, %Y, %-I:%M%p'</span><span class="p">)))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We also draw upon our earlier knowledge of the <code>strftime()</code> method to format a human-friendly date and time string.</p>
+
+</div>
+</div>
+</div>
+</div>
+    </div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha384-3lJUsx1TJHt7BA4udB5KPnDrlkO8T6J6v/op7ui0BbCjvZ9WqV4Xm6DTP6kQ/iBH" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

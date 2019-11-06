@@ -57,7 +57,7 @@ GitHub is a online platform for hosting code that promotes collaboration.
 
 - [How to Start and Run a Jupyter Notebook](/python/notebook)
 - [Unidata's Jupyter Notebook Gallery](http://unidata.github.io/notebook-gallery)
-- [Whetting Your Appetite for Python](http://nbviewer.jupyter.org/github/Unidata/online-python-training/blob/master/notebooks/Whetting%20Your%20Appetite%20for%20Python.ipynb)
+- [Whetting Your Appetite for Python](/python/whetting_your_appetite_for_python)
 
 ## Basic Python Syntax
 Here are some good sources for learning the basics of Python's Syntax:
@@ -70,17 +70,17 @@ Here are some good sources for learning the basics of Python's Syntax:
 What follows is a series of Jupyter notebooks on learning Python with geoscience objectives. You can either peruse this material with the nbviewer links below or [run the Jupyter notebooks interactively](notebook.html#how-to-run-opt-notebooks).
 
 - [Control Flow](/python/controlflowintro)
-    * [Conditional Statements](http://nbviewer.jupyter.org/github/Unidata/online-python-training/blob/master/notebooks/Conditionals.ipynb)
-    * [Loops](http://nbviewer.jupyter.org/github/Unidata/online-python-training/blob/master/notebooks/Loops.ipynb)
-    * [Functions](http://nbviewer.jupyter.org/github/Unidata/online-python-training/blob/master/notebooks/Functions.ipynb)
-- [Basic Data Structures](http://nbviewer.jupyter.org/github/Unidata/online-python-training/blob/master/notebooks/Basic%20Data%20Structures.ipynb)
-- [Basic Input and Output](http://nbviewer.jupyter.org/github/Unidata/online-python-training/blob/master/notebooks/Basic%20Input%20and%20Output.ipynb)
-- [Times and Dates](http://nbviewer.jupyter.org/github/Unidata/online-python-training/blob/master/notebooks/Times%20and%20Dates.ipynb)
+    * [Conditional Statements](/python/conditionals)
+    * [Loops](/python/loops)
+    * [Functions](/python/functionsb)
+- [Basic Data Structures](/python/basic_data_structures)
+- [Basic Input and Output](/python/basic_input_and_output)
+- [Times and Dates](/python/times_and_dates)
 
 ## Scientific Python Packages
 - [NumPy](https://numpy.org)
 - [Matplotlib](https://matplotlib.org)
-    * [Basic Line Plots](http://nbviewer.jupyter.org/github/Unidata/online-python-training/blob/master/notebooks/Beginning%20Plots%20With%20Matplotlib.ipynb)
+    * [Basic Line Plots](/python/beginning_plots_with_matplotlib)
 - [netCDF](https://unidata.github.io/netcdf4-python/netCDF4/index.html)
 - [xarray](http://xarray.pydata.org/en/stable/)
 - [CartoPy](https://scitools.org.uk/cartopy/docs/latest/)

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Conditionals | The Unidata Python Training Site</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/python/conditionals/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="Conditionals">
+<meta property="og:url" content="https://unidata.github.io/python-training/python/conditionals/">
+<meta property="og:description" content="Conditional Statements¶A conditional statement is a programming concept that describes whether a region of code runs based on if a condition is true or false. The keywords involved in conditional stat">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-11-06T13:31:26-07:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../../gallery/gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop/workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.ipynb" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Conditionals</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Conditional-Statements">Conditional Statements<a class="anchor-link" href="#Conditional-Statements">¶</a>
+</h2>
+<p>A conditional statement is a programming concept that describes whether a region of code runs based on if a condition is true or false. The keywords involved in conditional statements are <code>if</code>, and optionally <code>elif</code> and <code>else</code>.</p>
+<h3 id="The-if-Statement">The <code>if</code> Statement<a class="anchor-link" href="#The-if-Statement">¶</a>
+</h3>
+<p>A conditional statement starts with the <code>if</code> keyword, followed by the condition to check, and ends with a <code>:</code>. After the <code>:</code> is an indented block of code that will only run if the condition evaluates to a value of <code>True</code>. For example,</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">temperature</span> <span class="o">=</span> <span class="mi">35</span>
+<span class="k">if</span> <span class="n">temperature</span> <span class="o">&gt;</span> <span class="mi">32</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'Temperature is above freezing.'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The code above is checking whether the value of the variable <code>temperature</code> is greater than 32, the freezing point of water in degrees Fahrenheit at mean sea level pressure. If the condition is true, the program prints</p>
+
+<pre><code>Temperature is above freezing. 
+
+</code></pre>
+<p>Note the <code>&gt;</code> is the greater-than "operator" in the usual arithmetic sense. If the condition evaluates to <code>False</code>, then the code in the indented block is not executed. We can check the results by looking at the value of the condition, as we do here:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">temperature</span> <span class="o">&gt;</span> <span class="mi">32</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We see that the value of the condition is <code>True</code>, which explains why the print function was called. We can change the value of <code>temperature</code> to see what happens if the condition is <code>False</code>:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">temperature</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="k">if</span> <span class="n">temperature</span> <span class="o">&gt;</span> <span class="mi">32</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'Temperature is above freezing.'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In this example, nothing is printed since the value of <code>temperature</code> is not greater than 32. What do we do if we want to run one part of the code if a condition is true, and another if the condition is false? We can make use of the <code>else</code> keyword.</p>
+<h3 id="The-Optional-else-Block">The Optional <code>else</code> Block<a class="anchor-link" href="#The-Optional-else-Block">¶</a>
+</h3>
+<p>To run code if a condition is false, we employ the <code>else</code> keyword. The <code>else</code> part of the code is created by following the indented code of an <code>if</code> statement by an unindented <code>else:</code>, followed by an indented block of code. This <code>else</code> block of code will execute if the condition in the <code>if</code> statement evaluates to <code>False</code>. For example, going back to the code we examined earlier, we can augement it to print the message</p>
+<p><code>Temperature is at or below freezing.</code></p>
+<p>in the <code>else</code> block for the case where the condition is <code>False</code> (i.e., <code>temperature</code> is not greater than 32):</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">temperature</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="k">if</span> <span class="n">temperature</span> <span class="o">&gt;</span> <span class="mi">32</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'Temperature is above freezing.'</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'Temperature is at or below freezing.'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="The-Optional-elif-Block(s)">The Optional <code>elif</code> Block(s)<a class="anchor-link" href="#The-Optional-elif-Block(s)">¶</a>
+</h3>
+<p>The <code>if</code> and <code>else</code> keywords are adequate when you have a binary choice such as examining a temperature value that is above or below freezing, but consider a scenario where you want more options. In this case, you will employ the <code>elif</code> keyword that will follow the same <code>:</code>, indented code block syntax. There can be zero or more <code>elif</code> keywords in an <code>if</code> statement. Let's write code that will categorize maximum sustained winds in units of knots according to the <a href="https://en.wikipedia.org/wiki/Saffir%25E2%2580%2593Simpson_scale">Saffir–Simpson hurricane intensity scale</a>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">wind_speed</span> <span class="o">=</span> <span class="mi">65</span>
+
+<span class="k">if</span> <span class="n">wind_speed</span> <span class="o">&gt;=</span> <span class="mi">64</span> <span class="ow">and</span> <span class="n">wind_speed</span> <span class="o">&lt;=</span> <span class="mi">82</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'Category one hurricane'</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">wind_speed</span> <span class="o">&gt;=</span> <span class="mi">83</span> <span class="ow">and</span> <span class="n">wind_speed</span> <span class="o">&lt;=</span> <span class="mi">95</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'Category two hurricane'</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">wind_speed</span> <span class="o">&gt;=</span> <span class="mi">96</span> <span class="ow">and</span> <span class="n">wind_speed</span> <span class="o">&lt;=</span> <span class="mi">112</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'Category three hurricane'</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">wind_speed</span> <span class="o">&gt;=</span> <span class="mi">113</span> <span class="ow">and</span> <span class="n">wind_speed</span> <span class="o">&lt;=</span> <span class="mi">136</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'Category four hurricane'</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">wind_speed</span> <span class="o">&gt;</span> <span class="mi">136</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'Category five hurricane'</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'Below hurricane level wind speed'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Note, the <code>&gt;=</code> arithmetic "operator" signifies greater than or equal, and the <code>&lt;=</code> means less than or equal. We are also using the <code>and</code> keyword to describe a range of values. E.g., <code>wind_speed &gt;= 64 and wind_speed &lt;= 82</code> describes the range of values between <code>64</code> and <code>82</code> knots, end points inclusive. Also, observe that if the <code>wind_speed</code> value does not meet any of the <code>if</code> or <code>elif</code> choices, the code ends up executing the <code>else</code> block. For example, a <code>wind_speed</code> of <code>15</code> will print:</p>
+
+<pre><code>Below hurricane level wind speed.</code></pre>
+
+</div>
+</div>
+</div>
+</div>
+    </div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha384-3lJUsx1TJHt7BA4udB5KPnDrlkO8T6J6v/op7ui0BbCjvZ9WqV4Xm6DTP6kQ/iBH" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

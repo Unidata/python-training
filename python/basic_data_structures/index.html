@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Basic_Data_Structures | The Unidata Python Training Site</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/python/basic_data_structures/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="Basic_Data_Structures">
+<meta property="og:url" content="https://unidata.github.io/python-training/python/basic_data_structures/">
+<meta property="og:description" content="Basic Data Structures¶What are Data Structures?¶Imagine you want to plot hourly precipitation measurements from a rain gauge on a bar graph. Your first step will be to put the precipitation data insid">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-11-06T13:31:26-07:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../../gallery/gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop/workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.ipynb" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Basic_Data_Structures</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Basic-Data-Structures">Basic Data Structures<a class="anchor-link" href="#Basic-Data-Structures">¶</a>
+</h2>
+<h3 id="What-are-Data-Structures?">What are Data Structures?<a class="anchor-link" href="#What-are-Data-Structures?">¶</a>
+</h3>
+<p>Imagine you want to plot hourly precipitation measurements from a rain gauge on a bar graph. Your first step will be to put the precipitation data inside a Python data structure. Data structures are how computer programs store information. This information can subsequently be processed, analyzed and visualized.</p>
+<p>There are many different types of data structures depending on the kind of data you wish to store. You will have to choose data structures that best meet your requirements for the problem you are trying to solve. Fortunately, Python as a "batteries-included" language gives you a practical choice of data structures to select from. We will do a minimal exploration of Python data structures; just enough to get you going. For a more complete treatment of Python data structures, see the <a href="https://docs.python.org/3/tutorial/datastructures.html">Data Structures</a> section in the Python documentation.</p>
+<h3 id="Python-Data-Structures">Python Data Structures<a class="anchor-link" href="#Python-Data-Structures">¶</a>
+</h3>
+<p>First, scientific data can be large and complex and may require data structures appropriate for <em>scientific</em> programming. We cover Python for scientific data further along in the <a href="http://unidata.github.io/online-python-training/">Scientific Python Package</a> section. This notebook covers basic Python data structures meant for general-purpose programming, necessary to write programs in any capacity. Choosing the right data structure for the problem you are targeting will help your programs run correctly and efficiently, and make them easier for others to understand. We will specifically examine three Python data structures: lists, tuples, both Python sequences, and dictionaries.</p>
+<h4 id="Sequences">Sequences<a class="anchor-link" href="#Sequences">¶</a>
+</h4>
+<p>Python offers several data structures to store sequences of information such as hourly mean sea level pressure readings from a weather station, or three-dimensional coordinates describing a location in a climate model. To accommodate storage of such data, Python has a few different choices. We will discuss two of them: lists and tuples.</p>
+<h5 id="List">List<a class="anchor-link" href="#List">¶</a>
+</h5>
+<p>A Python list is a sequence of values that are usually the same kind of item. They are ordered, which means items of a list stay in the order they are inserted in. They can contain strings, numbers, or more complex items. Lists are mutable, which is a fancy way of saying they can be changed after they are created. Here is a Python list of <a href="https://www3.epa.gov/climatechange/science/indicators/ghg/ghg-concentrations.html">decadal concentrations of carbon dioxide (ppm) measured at the Mauna Loa observatory</a> from 1970 to 2010 assigned to the <code>co2</code> variable.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">co2</span> <span class="o">=</span> <span class="p">[</span><span class="mf">325.68</span><span class="p">,</span> <span class="mf">338.68</span><span class="p">,</span> <span class="mf">354.35</span><span class="p">,</span> <span class="mf">371.13</span><span class="p">,</span> <span class="mf">387.37</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The list is demarcated with square brackets, the values are comma delimited and assigned to the <code>co2</code> variable with the <code>=</code> assignment operator.</p>
+<h6 id="What-Can-You-Do-with-a-List?">What Can You Do with a List?<a class="anchor-link" href="#What-Can-You-Do-with-a-List?">¶</a>
+</h6>
+<p>Once you have created your list, there are <a href="https://docs.python.org/3/tutorial/datastructures.html">many options to further manipulate the list</a>. We will examine just a few examples.</p>
+<ul>
+<li><strong>Add an Item to the End of the List</strong></li>
+</ul>
+<p>Continuing with our list of carbon dioxide concentrations, we want to add a prediction for the year 2020 of 400.0 ppm to the <code>co2</code> list. We can use the <code>append</code> <em>method</em> to add an item to the end of the list. (<a href="https://github.com/Unidata/online-python-training/blob/master/notebooks/Times%20and%20Dates.ipynb#The-Thirty-Second-Introduction-to-Object-Oriented-Programming">A method is like a function</a>, but denoted with the <code>.</code> notation after the variable it is acting on. Instead of <code>append(co2, 400.0)</code> you have <code>co2.append(400.0)</code>.)</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">co2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">400.0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">co2</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li><strong>Add an Item to the Front of the List</strong></li>
+</ul>
+<p>The carbon dioxide concentration in 1960 at Mauna Loa was 316.91 ppm. We can use the <code>insert</code> method, to add an item to the list at the location of our choosing, in this case location or index <code>0</code>. (Python sequences start at index <code>0</code>, not <code>1</code> like Matlab or Fortran.)</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">co2</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">316.91</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">co2</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li><strong>Change a Value in the List</strong></li>
+</ul>
+<p>We want to improve our estimate of the year 2020 carbon dioxide concentration to a value of 401.0 ppm. We will access the 7th value on the list with the square bracket notation.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">co2</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="mf">401.0</span>  <span class="c1"># Remember, 7th item at index 6 because we start at 0, not 1</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">co2</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Tuples">Tuples<a class="anchor-link" href="#Tuples">¶</a>
+</h5>
+<p>Tuples are also ordered sequences of information but they are immutable, which means once they are created, they cannot change. Immutability may seem like a strange concept given that computer programs are constantly manipulating and changing data, but your program becomes easier to understand when you can guarantee something is unchanging. Tuples tend to contain related items such as an x and y locations in a Cartesian plane, or an author, title and journal in a scholarly citation.</p>
+<p>Here we define a tuple representing a geographic coordinate expressed latitude, longitude and elevation in meters:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">location</span> <span class="o">=</span> <span class="p">(</span><span class="mf">40.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">105.3</span><span class="p">,</span> <span class="mf">1655.1</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The tuple definition is demarcated with parentheses, the values are comma delimited and assigned to the <code>location</code> variable with the <code>=</code> assignment operator. Because tuples are immutable, unlike lists, there are no operations to change them in-place.</p>
+<h5 id="Built-in-Functions-for-Lists-and-Tuples">Built-in Functions for Lists and Tuples<a class="anchor-link" href="#Built-in-Functions-for-Lists-and-Tuples">¶</a>
+</h5>
+<p>There are several <a href="https://docs.python.org/3/library/functions.html">built-in Python functions</a> to examine both lists and tuples. Let's look at a few. We can find out the length of the tuple or list with the built-in Python <code>len</code> function:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">co2</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can also discover the min and max of a sequence:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">co2</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">co2</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Accessing-Data-from-Lists-and-Tuples">Accessing Data from Lists and Tuples<a class="anchor-link" href="#Accessing-Data-from-Lists-and-Tuples">¶</a>
+</h5>
+<p>Python offers a rich variety of options to access values inside lists and tuples, and you will want to eventually understand <a href="https://docs.python.org/3/reference/datamodel.html#the-standard-type-hierarchy">indexing, slicing and striding expressions</a>. For brevity, we will only examine a couple of examples to get values inside sequences. Again, note valid indices on lists and tuples start at 0 and end at size of list - 1.</p>
+<h6 id="Indexing">Indexing<a class="anchor-link" href="#Indexing">¶</a>
+</h6>
+<p>Individual items inside the list can be obtained with the square bracket notation. Here will assign a couple of values from inside the list to two variables: <code>co2_1960</code> and <code>co2_2010</code>. We will the print the values with <a href="https://docs.python.org/3/library/string.html#format-string-syntax">Python 3 positional formatting</a>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">co2_1960</span> <span class="o">=</span> <span class="n">co2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># index 0 at 1960</span>
+<span class="n">co2_2010</span> <span class="o">=</span> <span class="n">co2</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>  <span class="c1"># index 5 at 2010</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'Mauna Loa carbon dioxide concentration '</span>
+      <span class="s1">'in 1960 was </span><span class="si">{0}</span><span class="s1"> ppm and '</span>
+      <span class="s1">'in 2010 was </span><span class="si">{1}</span><span class="s1"> ppm.'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">co2_1960</span><span class="p">,</span> <span class="n">co2_2010</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h6 id="Multiple-Assignments-for-Unpacking-Tuples">Multiple Assignments for Unpacking Tuples<a class="anchor-link" href="#Multiple-Assignments-for-Unpacking-Tuples">¶</a>
+</h6>
+<p>Python sequences also allow for multiple assignments for unpacking. This trick is quite handy for tuples:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">elev</span> <span class="o">=</span> <span class="n">location</span>  <span class="c1"># unpacking the tuple</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'lat </span><span class="si">{0}</span><span class="s1">, lon </span><span class="si">{1}</span><span class="s1">, elevation </span><span class="si">{2}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">elev</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Dictionaries">Dictionaries<a class="anchor-link" href="#Dictionaries">¶</a>
+</h4>
+<p>Dictionary data structures are easy to understand because you are already familiar with them. When you look up a word definition in a language dictionary or use an index in the back of a book, you are using a dictionary data structure. Dictionaries are composed of key and value pairs. For example,</p>
+<blockquote>
+<p>hydrometeor - an atmospheric phenomenon or entity involving water or water vapor, such as rain or a cloud</p>
+</blockquote>
+<p>Here, the key is "hydrometeor" and the value is "an atmospheric phenomenon or entity involving water or water vapor, such as rain or a cloud."</p>
+<p>Let's build upon the earlier tuple example by defining a dictionary of <a href="https://en.wikipedia.org/wiki/METAR">METAR weather stations</a>. The keys are strings representing the METAR <a href="https://en.wikipedia.org/wiki/International_Civil_Aviation_Organization_airport_code">ICAO</a> identifier, the values are tuples representing the location of the station expressed in latitude, longitude and elevation in meters</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">metars</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'KPRG'</span><span class="p">:</span> <span class="p">(</span><span class="mf">48.96</span><span class="p">,</span> <span class="mf">2.44</span><span class="p">,</span> <span class="mi">66</span><span class="p">),</span>
+    <span class="s1">'FAGM'</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mf">26.24</span><span class="p">,</span> <span class="mf">28.15</span><span class="p">,</span> <span class="mi">1671</span><span class="p">),</span>
+    <span class="s1">'KNYC'</span><span class="p">:</span> <span class="p">(</span><span class="mf">40.71</span><span class="p">,</span> <span class="o">-</span><span class="mf">74.01</span><span class="p">,</span> <span class="mi">10</span><span class="p">)}</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Unlike lists and tuples, dictionaries are unordered; entries in a dictionary are not in the order they are inserted in and you cannot rely on any predictable ordering. This is not a problem as you will be using Python dictionary operations to look up the information contained within the dictionary.</p>
+<h6 id="What-Can-You-Do-with-a-Dictionary?">What Can You Do with a Dictionary?<a class="anchor-link" href="#What-Can-You-Do-with-a-Dictionary?">¶</a>
+</h6>
+<ul>
+<li><strong>Look up a Value in a Dictionary</strong></li>
+</ul>
+<p>Let's look up the METAR location for <code>KNYC</code>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">metars</span><span class="p">[</span><span class="s1">'KNYC'</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li><strong>Add a Value to a Dictionary</strong></li>
+</ul>
+<p>Let's add the METAR station <code>SBSP</code> for São Paulo, Brazil to our METAR dictionary:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">metars</span><span class="p">[</span><span class="s1">'SBSP'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">23.63</span><span class="p">,</span> <span class="o">-</span><span class="mf">46.66</span><span class="p">,</span> <span class="mi">801</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Note that the keys in dictionary data structures are unique. This means, for example, that if you provide a more accurate location for the São Paulo METAR, then that new key will replace the old one:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">metars</span><span class="p">[</span><span class="s1">'SBSP'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">23.627</span><span class="p">,</span> <span class="o">-</span><span class="mf">46.655</span><span class="p">,</span> <span class="mf">803.1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">metars</span><span class="p">[</span><span class="s1">'SBSP'</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>There will not be two <code>SBSP</code> keys in the dictionary.</p>
+<h3 id="Further-Reading">Further Reading<a class="anchor-link" href="#Further-Reading">¶</a>
+</h3>
+<p>There are many topics concerning Python data structures that we did not cover in the interest of brevity. We encourage you to research more elaborate <a href="https://docs.python.org/3/reference/datamodel.html#the-standard-type-hierarchy">indexing, slicing and striding expressions</a>. Also, we did not cover <a href="https://docs.python.org/3/tutorial/datastructures.html#sets">Sets</a>, which is a data structure composed of unique, unordered values similar to keys in a dictionary data structure. There are several valuable built-in Python functions that merit study: <a href="https://docs.python.org/3/library/functions.html#filter">filter()</a>, <a href="https://docs.python.org/3/library/functions.html#map">map()</a>, <a href="https://docs.python.org/3/library/functions.html#sorted">sorted()</a> functions to name a few. Lastly, in the "Flow Control" notebook, we will examine Python list comprehension to process information inside of sequences and dictionaries.</p>
+
+</div>
+</div>
+</div>
+</div>
+    </div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha384-3lJUsx1TJHt7BA4udB5KPnDrlkO8T6J6v/op7ui0BbCjvZ9WqV4Xm6DTP6kQ/iBH" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

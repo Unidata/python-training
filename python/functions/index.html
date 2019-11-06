@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Functions | The Unidata Python Training Site</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/python/functions/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="The Unidata Python Training Site">
+<meta property="og:title" content="Functions">
+<meta property="og:url" content="https://unidata.github.io/python-training/python/functions/">
+<meta property="og:description" content="Functions¶Assume we have some wind speed and direction observations we wish to incorporate into a weather model. The assimilation process requires wind observations to be supplied as the u and v Carte">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-11-06T13:31:26-07:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+
+                <span id="blog-title">The Unidata Python Training Site</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../intro-to-python">Introduction to Python</a>
+                </li>
+<li>
+<a href="../../gallery/gallery-home">Example Gallery</a>
+                </li>
+<li>
+<a href="../../workshop/workshop-intro">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.ipynb" id="sourcelink">Source</a>
+    </li>
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Functions</a></h1>
+
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Functions">Functions<a class="anchor-link" href="#Functions">¶</a>
+</h2>
+<p>Assume we have some wind speed and direction observations we wish to incorporate into a weather model. The assimilation process requires wind observations to be supplied as the u and v Cartesian components of the wind vector. The data here are supplied as a list of <a href="http://nbviewer.jupyter.org/github/Unidata/online-python-training/blob/master/notebooks/Basic%252520Data%252520Structures.ipynb#Tuples">tuples</a> representing the time of the observation, the speed in meters per second, and the degree direction where the winds are coming <strong>from</strong>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">'2016-12-28T01:22:00Z'</span><span class="p">,</span> <span class="mf">26.24</span><span class="p">,</span> <span class="mf">290.0</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">'2016-12-28T04:22:00Z'</span><span class="p">,</span> <span class="mf">16.46</span><span class="p">,</span> <span class="mf">280.0</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">'2016-12-28T05:02:00Z'</span><span class="p">,</span> <span class="mf">18.01</span><span class="p">,</span> <span class="mf">290.0</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">'2016-12-28T05:22:00Z'</span><span class="p">,</span> <span class="mf">16.46</span><span class="p">,</span> <span class="mf">290.0</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">'2016-12-28T06:02:00Z'</span><span class="p">,</span> <span class="mf">18.01</span><span class="p">,</span> <span class="mf">290.0</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">'2016-12-28T06:22:00Z'</span><span class="p">,</span> <span class="mf">16.98</span><span class="p">,</span> <span class="mf">280.0</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">'2016-12-28T07:02:00Z'</span><span class="p">,</span> <span class="mf">17.49</span><span class="p">,</span> <span class="mf">280.0</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">'2016-12-28T07:22:00Z'</span><span class="p">,</span> <span class="mf">17.49</span><span class="p">,</span> <span class="mf">280.0</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">'2016-12-28T08:02:00Z'</span><span class="p">,</span> <span class="mf">17.49</span><span class="p">,</span> <span class="mf">280.0</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">'2016-12-28T08:22:00Z'</span><span class="p">,</span> <span class="mf">13.38</span><span class="p">,</span> <span class="mf">290.0</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">'2016-12-28T08:41:00Z'</span><span class="p">,</span> <span class="mf">15.95</span><span class="p">,</span> <span class="mf">290.0</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">'2016-12-28T09:02:00Z'</span><span class="p">,</span> <span class="mf">14.92</span><span class="p">,</span> <span class="mf">270.0</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">'2016-12-28T09:22:00Z'</span><span class="p">,</span> <span class="mf">19.03</span><span class="p">,</span> <span class="mf">280.0</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">'2016-12-28T11:43:00Z'</span><span class="p">,</span> <span class="mf">16.98</span><span class="p">,</span> <span class="mf">290.0</span><span class="p">)]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>With some basic trigonometry and a <code>for</code> loop <a href="http://nbviewer.jupyter.org/github/Unidata/online-python-training/blob/master/notebooks/loops.ipynb">we learned about in the last section</a>, we can convert the data into u and v components.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Import the Python math module</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="c1"># Constant for converting degrees to radians</span>
+<span class="n">RPERD</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span>
+
+<span class="c1"># The list that will hold our u and v data</span>
+<span class="n">uvdata</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Loop through observations pulling apart the time, speed and direction</span>
+<span class="c1"># components of the observation.</span>
+
+<span class="k">for</span> <span class="n">time</span><span class="p">,</span> <span class="n">speed</span><span class="p">,</span> <span class="n">direction</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="o">-</span><span class="n">speed</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">direction</span> <span class="o">*</span> <span class="n">RPERD</span><span class="p">)</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="o">-</span><span class="n">speed</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">direction</span> <span class="o">*</span> <span class="n">RPERD</span><span class="p">)</span>
+    <span class="n">uvdata</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">time</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+
+<span class="n">uvdata</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>While this code works fine it can be <strong>refactored</strong>, a software engineering term to describe improving the design of existing code. In particular, we can pull the section that calculates the <code>u</code> and <code>v</code> vectors into its own reusable unit of code known as a <strong>function</strong>. Functions in Python are defined with the <code>def</code> keyword as illustrated with this pseudocode:</p>
+
+<pre><code>def function_name( function_parameters ):
+   "function documentation string"
+   function statements usually involving the function parameters
+   return some value or expression based on the function statements</code></pre>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Armed with this knowledge, we can write a function called <code>uandv</code> to calculate the u and v components from wind speed and direction parameters:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">uandv</span><span class="p">(</span><span class="n">speed</span><span class="p">,</span> <span class="n">direction</span><span class="p">):</span>
+    <span class="s2">"calculate u and v components from speed and direction"</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="o">-</span><span class="n">speed</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">direction</span> <span class="o">*</span> <span class="n">RPERD</span><span class="p">)</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="o">-</span><span class="n">speed</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">direction</span> <span class="o">*</span> <span class="n">RPERD</span><span class="p">)</span>
+    <span class="c1"># return the u and v tuple</span>
+    <span class="k">return</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The <code>u</code> and <code>v</code> vectors are returned as <a href="http://nbviewer.jupyter.org/github/Unidata/online-python-training/blob/master/notebooks/Basic%252520Data%252520Structures.ipynb#Tuples">tuples</a>.
+With this function in place, we can jump out of the <code>for</code> loop shown earlier, shift the <em>flow of control</em> to the <code>uandv</code> function, calculate the <code>u</code> and <code>v</code> wind components, and return control to where the function was initially invoked. We can now write the same <code>for</code> loop again, but this time with conciseness and clarity.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">uvdata</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">time</span><span class="p">,</span> <span class="n">speed</span><span class="p">,</span> <span class="n">direction</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+    <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">uandv</span><span class="p">(</span><span class="n">speed</span><span class="p">,</span> <span class="n">direction</span><span class="p">)</span>
+    <span class="n">uvdata</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">time</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+<span class="n">uvdata</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Moreover, we can reuse our <code>uandv</code> function whenever we need to calculate u and v components from speed and direction.</p>
+<h3 id="Python,-a-Functional-Language">Python, a Functional Language<a class="anchor-link" href="#Python,-a-Functional-Language">¶</a>
+</h3>
+<p>A chief attribute and advantage of Python is that it is a <strong>functional language</strong>. In functional languages, functions are treated as "first class citizens". Functions can be passed as arguments or they can be defined on-the-fly as with <a href="https://docs.python.org/3/tutorial/controlflow.html#lambda-expressions">lambda expressions</a>. A Pythonista would have a feeling of disquietude if we stopped at the code above. Indeed, we can further take advantage of the functional programming paradigm by employing <strong>list comprehension</strong>. A more Pythonic way of achieving the same result using list comprehension is done in this manner:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="p">[(</span><span class="n">time</span><span class="p">,)</span> <span class="o">+</span> <span class="n">uandv</span><span class="p">(</span><span class="n">speed</span><span class="p">,</span> <span class="n">direction</span><span class="p">)</span> <span class="k">for</span> <span class="n">time</span><span class="p">,</span> <span class="n">speed</span><span class="p">,</span> <span class="n">direction</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>List comprehensions are enclosed by square brackets starting by a statement and followed with a <code>for</code> loop. Once again, here we are pulling apart the individual tuple <em>in place</em> into the <code>time</code>, <code>speed</code>, and <code>direction</code> components. This syntax allows us to easily pass the necessary arguments to the <code>uandv</code> function. Also, to stay consistent with the previous results, we are prepending the time to the u, v tuple with the <code>+</code> operator. In short, we can do our conversion in one clear, concise line of code. Note, we did not need an intermediate <code>uvdata</code> variable. This style of programming is the essence of functional programming where we eschew "mutable" variables such as <code>uvdata</code>. These "side-effects" can be difficult and error prone to reason about in more complex programs. Functional programming tends to be a natural fit for those with a scientific and mathematical background.</p>
+
+</div>
+</div>
+</div>
+</div>
+    </div>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha384-3lJUsx1TJHt7BA4udB5KPnDrlkO8T6J6v/op7ui0BbCjvZ9WqV4Xm6DTP6kQ/iBH" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>
