@@ -16,5 +16,6 @@
    - ffmpeg
    - boto3
    - botocore
+   - jupyterlab
    - pip:
       - python-awips
