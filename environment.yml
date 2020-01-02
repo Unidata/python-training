@@ -10,6 +10,7 @@
    - metpy
    - siphon
    - pandas
+   - pip
    - xarray
    - ipywidgets
    - ffmpeg
