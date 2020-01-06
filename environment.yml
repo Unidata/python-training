@@ -2,7 +2,7 @@
  channels:
    - conda-forge
  dependencies:
-   - python=3
+   - python>=3.6,<3.8
    - numpy
    - matplotlib
    - cartopy
@@ -10,10 +10,12 @@
    - metpy
    - siphon
    - pandas
+   - pip
    - xarray
    - ipywidgets
    - ffmpeg
    - boto3
    - botocore
+   - jupyterlab
    - pip:
       - python-awips
