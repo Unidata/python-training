@@ -1,14 +1,14 @@
 # Plot wind barbs
-skew.plot_barbs(sounding['pressure'], sounding['u_wind'], sounding['v_wind'])
+my_skew.plot_barbs(my_sounding['pressure'], my_sounding['u_wind'], my_sounding['v_wind'])
 
 # Add dry adiabats
-skew.plot_dry_adiabats()
+my_skew.plot_dry_adiabats()
 
 # Add moist adiabats
-skew.plot_moist_adiabats()
+my_skew.plot_moist_adiabats()
 
 # Add mixing ratio lines
-skew.plot_mixing_lines()
+my_skew.plot_mixing_lines()
 
 # Redisplay figure
-fig
+my_fig
