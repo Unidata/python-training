@@ -24,7 +24,7 @@ SITE_URL = "https://unidata.github.io/python-training/"
 # This is the URL where Nikola's output will be deployed.
 # If not set, defaults to SITE_URL
 # BASE_URL = "https://example.com/"
-BLOG_EMAIL = "support-python@ucar.edu"
+BLOG_EMAIL = "support-python@unidata.ucar.edu"
 BLOG_DESCRIPTION = "The Unidata Python Training Site for Atmospheric Science"  # (translatable)
 
 # Nikola is multilingual!
