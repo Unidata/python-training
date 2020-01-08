@@ -42,7 +42,7 @@ In [ ]:
 
   ">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2019-11-06T13:31:26-07:00">
+<meta property="article:published_time" content="2020-01-08T09:47:29-07:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -130,7 +130,7 @@ Matplotlib.</p>
 <div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 
 <span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
 <span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
@@ -138,12 +138,12 @@ Matplotlib.</p>
 <span class="kn">import</span> <span class="nn">matplotlib.patches</span> <span class="k">as</span> <span class="nn">mpatches</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="k">as</span> <span class="nn">mpcalc</span>
-<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="k">import</span> <span class="n">units</span>
-<span class="kn">from</span> <span class="nn">netCDF4</span> <span class="k">import</span> <span class="n">num2date</span>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
+<span class="kn">from</span> <span class="nn">netCDF4</span> <span class="kn">import</span> <span class="n">num2date</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">numpy.ma</span> <span class="k">as</span> <span class="nn">ma</span>
-<span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="k">import</span> <span class="n">gaussian_filter</span>
-<span class="kn">from</span> <span class="nn">siphon.ncss</span> <span class="k">import</span> <span class="n">NCSS</span>
+<span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="kn">import</span> <span class="n">gaussian_filter</span>
+<span class="kn">from</span> <span class="nn">siphon.ncss</span> <span class="kn">import</span> <span class="n">NCSS</span>
 </pre></div>
 
     </div>
@@ -206,7 +206,7 @@ Matplotlib.</p>
 <span class="n">uwnd</span> <span class="o">=</span> <span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">meter</span> <span class="o">/</span> <span class="n">units</span><span class="o">.</span><span class="n">second</span><span class="p">)</span> <span class="o">*</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'u-component_of_wind_isobaric'</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>
 <span class="n">vwnd</span> <span class="o">=</span> <span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">meter</span> <span class="o">/</span> <span class="n">units</span><span class="o">.</span><span class="n">second</span><span class="p">)</span> <span class="o">*</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'v-component_of_wind_isobaric'</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>
 <span class="n">hgt</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">meter</span> <span class="o">*</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Geopotential_height_isobaric'</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>
-<span class="n">relh</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Relative_humidity_isobaric'</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>
+<span class="n">relh</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">percent</span> <span class="o">*</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Relative_humidity_isobaric'</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>
 <span class="n">lifted_index</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Best_4_layer_lifted_index_layer_between_two_'</span>
                                <span class="s1">'pressure_difference_from_ground_layer'</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span>
                 <span class="n">units</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Best_4_layer_lifted_index_layer_between_two_'</span>
@@ -253,7 +253,7 @@ Matplotlib.</p>
 <span class="c1"># Actually getting the data</span>
 <span class="n">data2</span> <span class="o">=</span> <span class="n">ncss2</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="n">gfsdata</span><span class="p">)</span>
 
-<span class="n">hgt_00z</span> <span class="o">=</span> <span class="n">data2</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Geopotential_height_isobaric'</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meter</span>
+<span class="n">hgt_00z</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">meter</span> <span class="o">*</span> <span class="n">data2</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Geopotential_height_isobaric'</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>
 <span class="n">pmsl_00z</span> <span class="o">=</span> <span class="p">(</span><span class="n">units</span><span class="p">(</span><span class="n">data2</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Pressure_reduced_to_MSL_msl'</span><span class="p">]</span><span class="o">.</span><span class="n">units</span><span class="p">)</span> <span class="o">*</span>
             <span class="n">data2</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">'Pressure_reduced_to_MSL_msl'</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="p">:])</span>
 </pre></div>
@@ -287,20 +287,20 @@ Matplotlib.</p>
 <span class="c1"># 500 hPa, index 20</span>
 <span class="n">idx_500</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">lev</span> <span class="o">==</span> <span class="mf">500.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">avor_500</span> <span class="o">=</span> <span class="n">avor</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">]</span>
-<span class="n">u_500</span> <span class="o">=</span> <span class="n">uwnd</span><span class="p">[</span><span class="n">idx_500</span><span class="p">,</span> <span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'kt'</span><span class="p">)</span>
-<span class="n">v_500</span> <span class="o">=</span> <span class="n">vwnd</span><span class="p">[</span><span class="n">idx_500</span><span class="p">,</span> <span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'kt'</span><span class="p">)</span>
-<span class="n">hgt_500</span> <span class="o">=</span> <span class="n">hgt</span><span class="p">[</span><span class="n">idx_500</span><span class="p">,</span> <span class="p">]</span>
-<span class="n">hgt_500_00z</span> <span class="o">=</span> <span class="n">hgt_00z</span><span class="p">[</span><span class="n">idx_500</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">u_500</span> <span class="o">=</span> <span class="n">uwnd</span><span class="p">[</span><span class="n">idx_500</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'kt'</span><span class="p">)</span>
+<span class="n">v_500</span> <span class="o">=</span> <span class="n">vwnd</span><span class="p">[</span><span class="n">idx_500</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'kt'</span><span class="p">)</span>
+<span class="n">hgt_500</span> <span class="o">=</span> <span class="n">hgt</span><span class="p">[</span><span class="n">idx_500</span><span class="p">]</span>
+<span class="n">hgt_500_00z</span> <span class="o">=</span> <span class="n">hgt_00z</span><span class="p">[</span><span class="n">idx_500</span><span class="p">]</span>
 
 <span class="c1"># 700 hPa, index 12</span>
 <span class="n">idx_700</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">lev</span> <span class="o">==</span> <span class="mf">700.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">tmp_700</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">[</span><span class="n">idx_700</span><span class="p">,</span> <span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'degC'</span><span class="p">)</span>
-<span class="n">rh_700</span> <span class="o">=</span> <span class="n">relh</span><span class="p">[</span><span class="n">idx_700</span><span class="p">,</span> <span class="p">]</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">percent</span>
+<span class="n">tmp_700</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">[</span><span class="n">idx_700</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'degC'</span><span class="p">)</span>
+<span class="n">rh_700</span> <span class="o">=</span> <span class="n">relh</span><span class="p">[</span><span class="n">idx_700</span><span class="p">]</span>
 
 <span class="c1"># 850 hPa, index 6</span>
 <span class="n">idx_850</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">lev</span> <span class="o">==</span> <span class="mf">850.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">u_850</span> <span class="o">=</span> <span class="n">uwnd</span><span class="p">[</span><span class="n">idx_850</span><span class="p">,</span> <span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'kt'</span><span class="p">)</span>
-<span class="n">v_850</span> <span class="o">=</span> <span class="n">vwnd</span><span class="p">[</span><span class="n">idx_850</span><span class="p">,</span> <span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'kt'</span><span class="p">)</span>
+<span class="n">u_850</span> <span class="o">=</span> <span class="n">uwnd</span><span class="p">[</span><span class="n">idx_850</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'kt'</span><span class="p">)</span>
+<span class="n">v_850</span> <span class="o">=</span> <span class="n">vwnd</span><span class="p">[</span><span class="n">idx_850</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'kt'</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -384,7 +384,7 @@ plotting.</p>
 <div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Td_dep_700</span> <span class="o">=</span> <span class="n">tmp_700</span> <span class="o">-</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">dewpoint_rh</span><span class="p">(</span><span class="n">tmp_700</span><span class="p">,</span> <span class="n">rh_700</span> <span class="o">/</span> <span class="mf">100.</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Td_dep_700</span> <span class="o">=</span> <span class="n">tmp_700</span> <span class="o">-</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">dewpoint_from_relative_humidity</span><span class="p">(</span><span class="n">tmp_700</span><span class="p">,</span> <span class="n">rh_700</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -604,7 +604,7 @@ MathJax.Hub.Config({
         <!--End of body content-->
 
         <footer id="footer">
-            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            Contents © 2020         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
             
         </footer>
 </div>

@@ -112,37 +112,109 @@ for information on how to help build this site!</p>
 </div>
 <div class="section" id="installation-instructions">
 <h2>Installation Instructions</h2>
-<p>To set up the Python environment used in the notebooks contained in this repository, follow
-these instructions:</p>
-<p>1. <a class="reference external" href="http://conda.pydata.org/miniconda.html">Install Miniconda (Python 3.7) from Continuum Analytics</a>.
-<a class="reference external" href="http://www.akaipro.com/kb/article/1616#os_32_or_64_bit">Determine if your OS 32 or 64 bit</a>.</p>
-<p>2. Once Miniconda is installed, from the command line (e.g., OS X terminal,
-cmd.exe), run these instructions to clone the repository and create the environment:</p>
-<pre class="code text"><a name="rest_code_b94430d612174d0d8b67d0d207a1b02f-1"></a>git clone https://github.com/Unidata/python-training
-<a name="rest_code_b94430d612174d0d8b67d0d207a1b02f-2"></a>
-<a name="rest_code_b94430d612174d0d8b67d0d207a1b02f-3"></a>cd python-gallery
-<a name="rest_code_b94430d612174d0d8b67d0d207a1b02f-4"></a>
-<a name="rest_code_b94430d612174d0d8b67d0d207a1b02f-5"></a>conda env create -f environment.yml
-</pre>
-<p>From a Unix command line (e.g., OS X terminal)
-If your default shell is NOT bash, first type <cite>bash</cite>.
-To activate or switch to a conda environment, you can <cite>conda activate
-&lt;environment&gt;</cite>. For example,</p>
-<pre class="code text"><a name="rest_code_4306afbc6892416186de58fd0c69035c-1"></a>conda activate training
-</pre>
-<p>To switch and/or deactivate environments:</p>
-<pre class="code text"><a name="rest_code_45a8f4cf536e4177872cadd39e36248a-1"></a>conda deactivate
-<a name="rest_code_45a8f4cf536e4177872cadd39e36248a-2"></a>conda activate &lt;environment&gt;
-</pre>
-<p>From a Windows command line (e.g., cmd.exe)</p>
-<p>To activate or switch to a conda environment, you can <cite>activate
-&lt;environment&gt;</cite>. For example,</p>
-<pre class="code text"><a name="rest_code_4c5c1563e45c4910b8c4326901f2f66e-1"></a>activate training
-</pre>
-<p>To switch and/or deactivate environments:</p>
-<pre class="code text"><a name="rest_code_b5b4ad6c453c475fa8ed2ef8ea72393d-1"></a>deactivate
-<a name="rest_code_b5b4ad6c453c475fa8ed2ef8ea72393d-2"></a>activate &lt;environment&gt;
-</pre>
+<p>Installation consists of getting Conda (what you'll use to manage your Python installation and packages),
+getting the workshop materials, then creating a copy of the environment we've created that contains the
+useful packages you'll need to follow along with the materials and do much of your domain specific work.
+If you're unfamiliar with conda, plan on dedicating about 30 minutes to this process. If you are attending
+and in-person workshop we ask that you complete the installation steps before arriving at the workshop or
+arrive slightly early for help so we may begin on time. You are also welcome to contact our Python team
+at any time with issues you encounter!</p>
+<div class="section" id="installing-conda">
+<h3>Installing Conda</h3>
+<p>Conda is a great way to manage multiple environments (think sandboxes to work in, but more on that later).
+It also makes managing all of the Python packages you'll be using much easier than handling it all yourself.</p>
+<div class="section" id="windows">
+<h4>Windows</h4>
+<ul class="simple">
+<li><p>Download the Miniconda installer for Python 3.X <a class="reference external" href="http://conda.pydata.org/miniconda.html">here</a>.
+<strong>Windows 32-bit machines are NOT supported by most packages and cannot be used.</strong></p></li>
+<li><p>After downloading the installer, open it and click through the graphical install utility.
+Accept all of the default installation settings.</p></li>
+<li><p>You should now have a program called “Anaconda Prompt” installed. Open it
+(this will be your Python command prompt).</p></li>
+</ul>
+</div>
+<div class="section" id="mac-linux">
+<h4>Mac/Linux</h4>
+<ul class="simple">
+<li><p>After downloading the bash installer, open a command prompt (terminal program on the Mac).</p></li>
+<li><p>Change the directory at the terminal to wherever the installer was downloaded. On most systems,
+this will default to the downloads directory in your user account. If that’s the case, <code>cd ~/Downloads</code>
+will get you there, or replace the path with wherever you saved the file.</p></li>
+<li><p>Run the installer script by typing <code>bash Miniconda3-latest-MacOSX-x86_64.sh</code>.
+Note: Your file name may be different depending upon your operating system! replace Miniconda3-latest-MacOSX-x86_64.sh
+with whatever the name of the file you downloaded was.</p></li>
+<li><p>Accept the defaults.</p></li>
+<li><p>After the installer has completed completely close and restart your terminal program (this sources the newly modified path).</p></li>
+<li><p>If bash isn't your default shell, switch to it by running the command <code>bash</code>.</p></li>
+<li><p>Verify that your install is working by running <code>conda --version</code>.
+You should see a response like conda 4.8.0 or similar (though yours may be a slightly different version number).</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="setup-the-environment">
+<h3>Setup the Environment</h3>
+<p>Environments are great ways to isolate your sandbox to work in of a given Python version, packages, etc. You'll
+learn more about them later, but we'll need to create one that contains all of the useful packages used in these
+materials. If you can't wait to learn more about environments, checkout this
+<a class="reference external" href="https://www.youtube.com/watch?v=15DNH25UCi0">MetPy Monday video</a> on them.</p>
+<ul class="simple">
+<li><p>Open a terminal window (Anaconda Prompt if you're on Windows).</p></li>
+<li><p>Download the environment.yml file that tells your system what should be in the environment. Remember where you
+download this file! Most systems go in ~/Downloads by default which is fine. Right click and select "save" on
+<a class="reference external" href="https://raw.githubusercontent.com/Unidata/python-workshop/master/environment.yml">this link</a> to download the file.</p></li>
+<li><p>In the terminal, navigate to wherever this file saved, probably <code>cd ~/Downloads</code> will get you there.</p></li>
+<li><p>Run the command <code>conda env create</code> and wait for the installation to finish.</p></li>
+<li><p>Run the command <code>conda activate training</code> to activate the unidata environment and verify that everything is ready.</p></li>
+<li><p>For an in-depth tutorial on conda and environments, check out this
+<a class="reference external" href="https://kaust-vislab.github.io/introduction-to-conda-for-data-scientists/">Carpentry-style tutorial</a>.</p></li>
+</ul>
+</div>
+<div class="section" id="download-course-materials">
+<h3>Download Course Materials</h3>
+<p>There are two ways you can get the course materials: with git and as a ZIP file. If you're familiar with git or plan
+on contributing to the content, then follow the git based instructions. Otherwise the ZIP file method is fine.</p>
+<div class="section" id="zip-download">
+<h4>ZIP Download</h4>
+<ul>
+<li>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">&lt;string&gt;</span>, line 59); <em><a href="#id1">backlink</a></em></p>
+<p>Duplicate explicit target name: "here".</p>
+</div>
+<p>Head over to the GitHub page for the materials <a class="reference external" href="https://github.com/unidata/python-training">here</a>.</p>
+</li>
+<li><p>Click the green "Clone or download" button in the upper right section of the screen.</p></li>
+<li><p>Click "Download ZIP"</p></li>
+<li><p>Using an unzip utility (right click on the file in Windows), extract the contents and put them wherever you'd like
+your workshop materials to be.</p></li>
+</ul>
+</div>
+<div class="section" id="using-git">
+<h4>Using git</h4>
+<ul class="simple">
+<li><p>Open a terminal/Anaconda prompt.</p></li>
+<li><p>cd into where you'd like the course materials to download.</p></li>
+<li><p>If you don't have git installed already you can do so with <code>conda install git</code>.</p></li>
+<li><p>Clone the repository with <code>git clone https://github.com/Unidata/python-training</code>.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="starting-up-notebooks">
+<h3>Starting up Notebooks</h3>
+<p>It's a good idea to go ahead and try to start up the Jupyter Lab server to make sure your installation and materials download
+was successful.</p>
+<ul class="simple">
+<li><p>Open a terminal/Anaconda Prompt.</p></li>
+<li><p>Activate the training environment we created with <code>conda activate training</code></p></li>
+<li><p>Change directory to the location you've placed your training materials <code>cd ~/Desktop/python-training</code> or similar.</p></li>
+<li><p>Start jupyter lab by running the command <code>jupyter lab</code></p></li>
+<li><p>A browser should open and you're in jupyter lab!</p></li>
+<li><p>Explore some if you'd like, then close the browser.</p></li>
+<li><p>In the terminal/Anaconda Prompt hit <code>ctrl + c</code> a few times until the prompt is back.</p></li>
+<li><p>Close your terminal/Anaconda Prompt.</p></li>
+</ul>
+</div>
 </div>
 </div>
     </div>
@@ -152,7 +224,7 @@ To activate or switch to a conda environment, you can <cite>conda activate
         <!--End of body content-->
 
         <footer id="footer">
-            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            Contents © 2020         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
             
         </footer>
 </div>

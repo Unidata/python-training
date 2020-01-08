@@ -20,7 +20,7 @@
 
 This is a tutorial on building a case study map for Dynamic Meteorology courses with use of Unidata tools, specifically MetPy and Siphon. In this tutorial we will cover accessing, c">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2019-11-06T13:36:31-07:00">
+<meta property="article:published_time" content="2020-01-08T09:50:34-07:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -118,19 +118,19 @@ This is a tutorial on building a case study map for Dynamic Meteorology courses 
 <div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 
 <span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
 <span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
-<span class="kn">from</span> <span class="nn">netCDF4</span> <span class="k">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">num2date</span>
+<span class="kn">from</span> <span class="nn">netCDF4</span> <span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">num2date</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="k">import</span> <span class="n">gaussian_filter</span>
-<span class="kn">from</span> <span class="nn">siphon.catalog</span> <span class="k">import</span> <span class="n">TDSCatalog</span>
-<span class="kn">from</span> <span class="nn">siphon.ncss</span> <span class="k">import</span> <span class="n">NCSS</span>
+<span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="kn">import</span> <span class="n">gaussian_filter</span>
+<span class="kn">from</span> <span class="nn">siphon.catalog</span> <span class="kn">import</span> <span class="n">TDSCatalog</span>
+<span class="kn">from</span> <span class="nn">siphon.ncss</span> <span class="kn">import</span> <span class="n">NCSS</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="k">as</span> <span class="nn">mpcalc</span>
-<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <span class="n">StationPlot</span>
-<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="k">import</span> <span class="n">units</span>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <span class="n">StationPlot</span>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
 </pre></div>
 
     </div>
@@ -299,7 +299,7 @@ Let's go ahead and use the NARR Analysis data to investigate the past case we id
 <span class="n">base_url</span> <span class="o">=</span> <span class="s1">'https://www.ncei.noaa.gov/thredds/catalog/narr-a-files/'</span>
 
 <span class="c1"># Programmatically generate the URL to the day of data we want</span>
-<span class="n">cat</span> <span class="o">=</span> <span class="n">TDSCatalog</span><span class="p">(</span><span class="n">f</span><span class="s1">'</span><span class="si">{base_url}</span><span class="s1">{dt:%Y%m}/{dt:%Y%m</span><span class="si">%d</span><span class="s1">}/catalog.xml'</span><span class="p">)</span>
+<span class="n">cat</span> <span class="o">=</span> <span class="n">TDSCatalog</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{base_url}</span><span class="s1">{dt:%Y%m}/{dt:%Y%m</span><span class="si">%d</span><span class="s1">}/catalog.xml'</span><span class="p">)</span>
 
 <span class="c1"># Have Siphon find the appropriate dataset</span>
 <span class="n">ds</span> <span class="o">=</span> <span class="n">cat</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">filter_time_nearest</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
@@ -930,7 +930,7 @@ Due to the curvilinear nature of the NARR grid, there is a need to smooth the da
 <span class="c1"># Titles</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'850-hPa Geopotential Heights, Temperature (C), </span><span class="se">\</span>
 <span class="s1">          Temp Adv (C/h), and Wind Barbs (kts)'</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">f</span><span class="s1">'VALID: </span><span class="si">{vtime}</span><span class="s1">'</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'right'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">'VALID: </span><span class="si">{vtime}</span><span class="s1">'</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'right'</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -979,7 +979,7 @@ Due to the curvilinear nature of the NARR grid, there is a need to smooth the da
 <span class="c1"># Titles</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'850-hPa Geopotential Heights, Temperature (C), </span><span class="se">\</span>
 <span class="s1">          Temp Adv (C/h), and Wind Barbs (kts)'</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">f</span><span class="s1">'VALID: </span><span class="si">{vtime}</span><span class="s1">'</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'right'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">'VALID: </span><span class="si">{vtime}</span><span class="s1">'</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'right'</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -1045,7 +1045,7 @@ Due to the curvilinear nature of the NARR grid, there is a need to smooth the da
 <span class="c1"># Titles</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'500-hPa Geopotential Heights, Absolute Vorticity </span><span class="se">\</span>
 <span class="s1">          (1/s), and Wind Barbs (kts)'</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">f</span><span class="s1">'VALID: </span><span class="si">{vtime}</span><span class="s1">'</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'right'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">'VALID: </span><span class="si">{vtime}</span><span class="s1">'</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'right'</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -1097,7 +1097,7 @@ Due to the curvilinear nature of the NARR grid, there is a need to smooth the da
 <span class="c1"># Titles</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'500-hPa Geopotential Heights, Absolute Vorticity </span><span class="se">\</span>
 <span class="s1">          (1/s), and Wind Barbs (kts)'</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">f</span><span class="s1">'VALID: </span><span class="si">{vtime}</span><span class="s1">'</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'right'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">'VALID: </span><span class="si">{vtime}</span><span class="s1">'</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'right'</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -1157,7 +1157,7 @@ Due to the curvilinear nature of the NARR grid, there is a need to smooth the da
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'300-hPa Geopotential Heights, Divergence (1/s),</span><span class="se">\</span>
 <span class="s1">          Wind Speed (kts), Ageostrophic Wind Vector (m/s)'</span><span class="p">,</span>
           <span class="n">loc</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">f</span><span class="s1">'VALID: </span><span class="si">{vtime}</span><span class="s1">'</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'right'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">'VALID: </span><span class="si">{vtime}</span><span class="s1">'</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'right'</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -1204,7 +1204,7 @@ Due to the curvilinear nature of the NARR grid, there is a need to smooth the da
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'300-hPa Geopotential Heights, Divergence (1/s),</span><span class="se">\</span>
 <span class="s1">          Wind Speed (kts), Ageostrophic Wind Vector (m/s)'</span><span class="p">,</span>
           <span class="n">loc</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">f</span><span class="s1">'VALID: </span><span class="si">{vtime}</span><span class="s1">'</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'right'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">'VALID: </span><span class="si">{vtime}</span><span class="s1">'</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'right'</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -1530,7 +1530,7 @@ MathJax.Hub.Config({
         <!--End of body content-->
 
         <footer id="footer">
-            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            Contents © 2020         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
             
         </footer>
 </div>

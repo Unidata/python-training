@@ -17,7 +17,7 @@
 <meta property="og:url" content="https://unidata.github.io/python-training/python/conda-osx/">
 <meta property="og:description" content="The aim of this web page is to help you get started with Python on Mac OS X. We will explain what a package management tool is, how to download conda package management tool via the Anaconda installer">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2019-11-06T13:31:26-07:00">
+<meta property="article:published_time" content="2020-01-08T09:47:29-07:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -90,24 +90,24 @@
 <h3>Interacting with <code>conda</code>
 </h3>
 <p>Let's make sure conda is installed by entering this instruction on the command line:</p>
-<pre class="code literal-block"><span></span><span class="n">conda</span> <span class="n">list</span>
+<pre class="code literal-block"><span></span><span class="err">conda list</span>
 </pre>
 
 
 <p>yields</p>
-<pre class="code literal-block"><span></span><span class="o">#</span> <span class="n">packages</span> <span class="k">in</span> <span class="n">environment</span> <span class="k">at</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">chastang</span><span class="o">/</span><span class="n">anaconda</span><span class="p">:</span>
-<span class="o">#</span>
-<span class="n">alabaster</span>                 <span class="mi">0</span><span class="p">.</span><span class="mi">7</span><span class="p">.</span><span class="mi">7</span>                    <span class="n">py35_0</span>  
-<span class="n">anaconda</span>                  <span class="mi">4</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span>               <span class="n">np110py35_0</span>  
-<span class="n">anaconda</span><span class="o">-</span><span class="n">client</span>           <span class="mi">1</span><span class="p">.</span><span class="mi">4</span><span class="p">.</span><span class="mi">0</span>                    <span class="n">py35_0</span>  
-<span class="p">...</span>
-<span class="n">numexpr</span>                   <span class="mi">2</span><span class="p">.</span><span class="mi">5</span>                 <span class="n">np110py35_0</span>  
-<span class="n">numpy</span>                     <span class="mi">1</span><span class="p">.</span><span class="mi">10</span><span class="p">.</span><span class="mi">4</span>                   <span class="n">py35_0</span>  
-<span class="n">odo</span>                       <span class="mi">0</span><span class="p">.</span><span class="mi">4</span><span class="p">.</span><span class="mi">2</span>                    <span class="n">py35_0</span>  
-<span class="p">...</span>
-<span class="n">yaml</span>                      <span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">.</span><span class="mi">6</span>                         <span class="mi">0</span>  
-<span class="n">zeromq</span>                    <span class="mi">4</span><span class="p">.</span><span class="mi">1</span><span class="p">.</span><span class="mi">3</span>                         <span class="mi">0</span>  
-<span class="n">zlib</span>                      <span class="mi">1</span><span class="p">.</span><span class="mi">2</span><span class="p">.</span><span class="mi">8</span>                         <span class="mi">0</span>
+<pre class="code literal-block"><span></span><span class="err"># packages in environment at /Users/chastang/anaconda:</span>
+<span class="err">#</span>
+<span class="err">alabaster                 0.7.7                    py35_0  </span>
+<span class="err">anaconda                  4.0.0               np110py35_0  </span>
+<span class="err">anaconda-client           1.4.0                    py35_0  </span>
+<span class="err">...</span>
+<span class="err">numexpr                   2.5                 np110py35_0  </span>
+<span class="err">numpy                     1.10.4                   py35_0  </span>
+<span class="err">odo                       0.4.2                    py35_0  </span>
+<span class="err">...</span>
+<span class="err">yaml                      0.1.6                         0  </span>
+<span class="err">zeromq                    4.1.3                         0  </span>
+<span class="err">zlib                      1.2.8                         0</span>
 </pre>
 
 
@@ -119,26 +119,26 @@
 <h3>Getting Our Feet Wet by Installing Metpy with <code>conda</code>
 </h3>
 <p>We first have to give <code>conda</code> an instruction on where to find <code>metpy</code> on the <code>conda-forge</code> channel.</p>
-<pre class="code literal-block"><span></span><span class="n">conda</span> <span class="n">config</span> <span class="c1">--add channels conda-forge</span>
+<pre class="code literal-block"><span></span><span class="err">conda config --add channels conda-forge</span>
 </pre>
 
 
 <p>We can now install <code>metpy</code>:</p>
-<pre class="code literal-block"><span></span><span class="n">conda</span> <span class="n">install</span> <span class="n">metpy</span>
+<pre class="code literal-block"><span></span><span class="err">conda install metpy</span>
 </pre>
 
 
 <p>Let's verify we installed <code>metpy</code> with the following command:</p>
-<pre class="code literal-block"><span></span><span class="n">conda</span> <span class="n">list</span>
+<pre class="code literal-block"><span></span><span class="err">conda list</span>
 </pre>
 
 
 <p>should yield amongst other libraries:</p>
-<pre class="code literal-block"><span></span><span class="o">#</span> <span class="n">packages</span> <span class="k">in</span> <span class="n">environment</span> <span class="k">at</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">chastang</span><span class="o">/</span><span class="n">anaconda</span><span class="p">:</span>
-<span class="o">#</span>
-<span class="p">...</span>
-<span class="n">metpy</span>                     <span class="mi">0</span><span class="p">.</span><span class="mi">3</span><span class="p">.</span><span class="mi">0</span>                    <span class="n">py35_1</span>    <span class="n">conda</span><span class="o">-</span><span class="n">forge</span>
-<span class="p">...</span>
+<pre class="code literal-block"><span></span><span class="err"># packages in environment at /Users/chastang/anaconda:</span>
+<span class="err">#</span>
+<span class="err">...</span>
+<span class="err">metpy                     0.3.0                    py35_1    conda-forge</span>
+<span class="err">...</span>
 </pre>
 
 
@@ -161,7 +161,7 @@
         <!--End of body content-->
 
         <footer id="footer">
-            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            Contents © 2020         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
             
         </footer>
 </div>

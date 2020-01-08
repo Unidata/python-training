@@ -42,7 +42,7 @@ In [ ]:
 
     ">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2019-11-06T13:31:26-07:00">
+<meta property="article:published_time" content="2020-01-08T09:47:29-07:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -106,7 +106,7 @@ In [ ]:
 <div style="width:1000 px">
 
 <div style="float:right; width:98 px; height:98px;">
-<img src="https://raw.githubusercontent.com/Unidata/MetPy/master/metpy/plots/_static/unidata_150x150.png" alt="Unidata Logo" style="height: 98px;">
+<img src="https://raw.githubusercontent.com/Unidata/MetPy/master/src/metpy/plots/_static/unidata_150x150.png" alt="Unidata Logo" style="height: 98px;">
 </div>
 <p></p>
 <h2>Extract HRRR data using Unidata's Siphon package and Xarray</h2>
@@ -138,13 +138,13 @@ In [ ]:
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Resolve the latest HRRR dataset</span>
-<span class="kn">from</span> <span class="nn">siphon.catalog</span> <span class="k">import</span> <span class="n">get_latest_access_url</span>
+<span class="kn">from</span> <span class="nn">siphon.catalog</span> <span class="kn">import</span> <span class="n">get_latest_access_url</span>
 
 <span class="n">hrrr_catalog</span> <span class="o">=</span> <span class="s2">"http://thredds.ucar.edu/thredds/catalog/grib/NCEP/HRRR/CONUS_2p5km/catalog.xml"</span>
 <span class="n">latest_hrrr_ncss</span> <span class="o">=</span> <span class="n">get_latest_access_url</span><span class="p">(</span><span class="n">hrrr_catalog</span><span class="p">,</span> <span class="s2">"NetcdfSubset"</span><span class="p">)</span>
 
 <span class="c1"># Set up access via NCSS</span>
-<span class="kn">from</span> <span class="nn">siphon.ncss</span> <span class="k">import</span> <span class="n">NCSS</span>
+<span class="kn">from</span> <span class="nn">siphon.ncss</span> <span class="kn">import</span> <span class="n">NCSS</span>
 <span class="n">ncss</span> <span class="o">=</span> <span class="n">NCSS</span><span class="p">(</span><span class="n">latest_hrrr_ncss</span><span class="p">)</span>
 
 <span class="c1"># Create a query to ask for all times in netcdf4 format for</span>
@@ -398,7 +398,7 @@ MathJax.Hub.Config({
         <!--End of body content-->
 
         <footer id="footer">
-            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            Contents © 2020         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
             
         </footer>
 </div>

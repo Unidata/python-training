@@ -27,7 +27,7 @@ Questions¶
 Where can upper air data be found and what format is it in?
 How can I obtain ">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2019-11-06T13:36:31-07:00">
+<meta property="article:published_time" content="2020-01-08T09:50:34-07:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -92,7 +92,7 @@ How can I obtain ">
 <div style="width:1000 px">
 
 <div style="float:right; width:98 px; height:98px;">
-<img src="https://raw.githubusercontent.com/Unidata/MetPy/master/metpy/plots/_static/unidata_150x150.png" alt="Unidata Logo" style="height: 98px;">
+<img src="https://raw.githubusercontent.com/Unidata/MetPy/master/src/metpy/plots/_static/unidata_150x150.png" alt="Unidata Logo" style="height: 98px;">
 </div>
 <p></p>
 <h2>Upper Air and the Skew-T Log-P</h2>
@@ -165,7 +165,7 @@ How can I obtain ">
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Create a datetime for our request - notice the times are from laregest (year) to smallest (hour)</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 <span class="n">request_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">1999</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
 </pre></div>
 
@@ -195,7 +195,7 @@ How can I obtain ">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Import the Wyoming simple web service and request the data</span>
 <span class="c1"># Don't worry about a possible warning from Pandas - it's related to our handling of units</span>
-<span class="kn">from</span> <span class="nn">siphon.simplewebservice.wyoming</span> <span class="k">import</span> <span class="n">WyomingUpperAir</span>
+<span class="kn">from</span> <span class="nn">siphon.simplewebservice.wyoming</span> <span class="kn">import</span> <span class="n">WyomingUpperAir</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">WyomingUpperAir</span><span class="o">.</span><span class="n">request_data</span><span class="p">(</span><span class="n">request_time</span><span class="p">,</span> <span class="n">station</span><span class="p">)</span>
 </pre></div>
 
@@ -257,7 +257,7 @@ How can I obtain ">
 <div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">metpy.units</span> <span class="k">import</span> <span class="n">pandas_dataframe_to_unit_arrays</span><span class="p">,</span> <span class="n">units</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">pandas_dataframe_to_unit_arrays</span><span class="p">,</span> <span class="n">units</span>
 <span class="n">sounding</span> <span class="o">=</span> <span class="n">pandas_dataframe_to_unit_arrays</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </pre></div>
 
@@ -314,7 +314,7 @@ How can I obtain ">
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <span class="n">SkewT</span>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <span class="n">SkewT</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 
@@ -423,7 +423,7 @@ How can I obtain ">
 <div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Make the request for the data</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Make the request for the data - assign it to a dataframe called my_df</span>
 <span class="c1"># YOUR CODE GOES HERE</span>
 </pre></div>
 
@@ -437,7 +437,7 @@ How can I obtain ">
 <div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Attach units to the data</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Attach units to the data - assign it to the variable my_sounding</span>
 <span class="c1"># YOUR CODE GOES HERE</span>
 </pre></div>
 
@@ -463,33 +463,19 @@ How can I obtain ">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/skewt_get_data.py</span>
 
-
 <span class="c1"># Cell content replaced by load magic replacement.</span>
 <span class="c1"># Import the Wyoming simple web service upper air object</span>
-<span class="kn">from</span> <span class="nn">siphon.simplewebservice.wyoming</span> <span class="k">import</span> <span class="n">WyomingUpperAir</span>
+<span class="kn">from</span> <span class="nn">siphon.simplewebservice.wyoming</span> <span class="kn">import</span> <span class="n">WyomingUpperAir</span>
 
 <span class="c1"># Create the datetime and station variables you'll need</span>
 <span class="n">request_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2011</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">18</span><span class="p">)</span>
 <span class="n">station</span> <span class="o">=</span> <span class="s1">'OUN'</span>
 
 <span class="c1"># Make the request for the data</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">WyomingUpperAir</span><span class="o">.</span><span class="n">request_data</span><span class="p">(</span><span class="n">request_time</span><span class="p">,</span> <span class="n">station</span><span class="p">)</span>
+<span class="n">my_df</span> <span class="o">=</span> <span class="n">WyomingUpperAir</span><span class="o">.</span><span class="n">request_data</span><span class="p">(</span><span class="n">request_time</span><span class="p">,</span> <span class="n">station</span><span class="p">)</span>
 
 <span class="c1"># Attach units to the data</span>
-<span class="n">sounding</span> <span class="o">=</span> <span class="n">pandas_dataframe_to_unit_arrays</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span>
+<span class="n">my_sounding</span> <span class="o">=</span> <span class="n">pandas_dataframe_to_unit_arrays</span><span class="p">(</span><span class="n">my_df</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -517,9 +503,9 @@ How can I obtain ">
 <div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Make a figure</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Make a figure called my_fig</span>
 
-<span class="c1"># Make a SkewT object</span>
+<span class="c1"># Make a SkewT object called my_skew</span>
 
 <span class="c1"># Plot the temperature and dewpoint</span>
 </pre></div>
@@ -546,17 +532,16 @@ How can I obtain ">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/skewt_make_figure.py</span>
 
-
 <span class="c1"># Cell content replaced by load magic replacement.</span>
 <span class="c1"># Make a figure</span>
-<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">my_fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 
 <span class="c1"># Make a SkewT object</span>
-<span class="n">skew</span> <span class="o">=</span> <span class="n">SkewT</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+<span class="n">my_skew</span> <span class="o">=</span> <span class="n">SkewT</span><span class="p">(</span><span class="n">my_fig</span><span class="p">)</span>
 
 <span class="c1"># Plot the temperature and dewpoint</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">],</span> <span class="n">sounding</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'tab:red'</span><span class="p">)</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">],</span> <span class="n">sounding</span><span class="p">[</span><span class="s1">'dewpoint'</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'tab:green'</span><span class="p">)</span>
+<span class="n">my_skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">my_sounding</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">],</span> <span class="n">my_sounding</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'tab:red'</span><span class="p">)</span>
+<span class="n">my_skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">my_sounding</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">],</span> <span class="n">my_sounding</span><span class="p">[</span><span class="s1">'dewpoint'</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'tab:blue'</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -616,22 +601,21 @@ How can I obtain ">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/skewt_wind_fiducials.py</span>
 
-
 <span class="c1"># Cell content replaced by load magic replacement.</span>
 <span class="c1"># Plot wind barbs</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">plot_barbs</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">],</span> <span class="n">sounding</span><span class="p">[</span><span class="s1">'u_wind'</span><span class="p">],</span> <span class="n">sounding</span><span class="p">[</span><span class="s1">'v_wind'</span><span class="p">])</span>
+<span class="n">my_skew</span><span class="o">.</span><span class="n">plot_barbs</span><span class="p">(</span><span class="n">my_sounding</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">],</span> <span class="n">my_sounding</span><span class="p">[</span><span class="s1">'u_wind'</span><span class="p">],</span> <span class="n">my_sounding</span><span class="p">[</span><span class="s1">'v_wind'</span><span class="p">])</span>
 
 <span class="c1"># Add dry adiabats</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">plot_dry_adiabats</span><span class="p">()</span>
+<span class="n">my_skew</span><span class="o">.</span><span class="n">plot_dry_adiabats</span><span class="p">()</span>
 
 <span class="c1"># Add moist adiabats</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">plot_moist_adiabats</span><span class="p">()</span>
+<span class="n">my_skew</span><span class="o">.</span><span class="n">plot_moist_adiabats</span><span class="p">()</span>
 
 <span class="c1"># Add mixing ratio lines</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">plot_mixing_lines</span><span class="p">()</span>
+<span class="n">my_skew</span><span class="o">.</span><span class="n">plot_mixing_lines</span><span class="p">()</span>
 
 <span class="c1"># Redisplay figure</span>
-<span class="n">fig</span>
+<span class="n">my_fig</span>
 </pre></div>
 
     </div>
@@ -667,23 +651,32 @@ How can I obtain ">
 <div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Grab data for our original case and make a basic figure for us to keep working with.</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">WyomingUpperAir</span><span class="o">.</span><span class="n">request_data</span><span class="p">(</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1999</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span> <span class="s1">'OUN'</span><span class="p">)</span>
-<span class="n">sounding</span> <span class="o">=</span> <span class="n">pandas_dataframe_to_unit_arrays</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Add the dewpoint line to our plot we were working with</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">],</span> <span class="n">sounding</span><span class="p">[</span><span class="s1">'dewpoint'</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'tab:blue'</span><span class="p">)</span>
+</pre></div>
 
-<span class="c1"># Create a new figure and SkewT object</span>
-<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
-<span class="n">skew</span> <span class="o">=</span> <span class="n">SkewT</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+    </div>
+</div>
+</div>
 
-<span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">],</span> <span class="n">sounding</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'tab:red'</span><span class="p">)</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">],</span> <span class="n">sounding</span><span class="p">[</span><span class="s1">'dewpoint'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'tab:blue'</span><span class="p">)</span>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Get our basic plot we were working with ready to plot new things on</span>
 
+<span class="c1"># Set some good axis limits</span>
 <span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">60</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
 <span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 
+<span class="c1"># Add relevant fiducial lines</span>
 <span class="n">skew</span><span class="o">.</span><span class="n">plot_dry_adiabats</span><span class="p">()</span>
 <span class="n">skew</span><span class="o">.</span><span class="n">plot_moist_adiabats</span><span class="p">()</span>
 <span class="n">skew</span><span class="o">.</span><span class="n">plot_mixing_lines</span><span class="p">()</span>
+
+<span class="n">fig</span>
 </pre></div>
 
     </div>
@@ -735,7 +728,7 @@ How can I obtain ">
 <div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lcl_temperature</span><span class="p">,</span> <span class="n">lcl_pressure</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">"_"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">markeredgewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">lcl_pressure</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
 <span class="n">fig</span>
 </pre></div>
 
@@ -796,7 +789,7 @@ How can I obtain ">
 </h5>
 <ul>
 <li>Calculate the LFC and EL for the sounding.</li>
-<li>Plot them as horizontal line markers (see how we did it above for the LCL).</li>
+<li>Plot them as horizontal line markers.</li>
 </ul>
 </div>
 </div>
@@ -806,20 +799,7 @@ How can I obtain ">
 <div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Get data for the sounding</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">WyomingUpperAir</span><span class="o">.</span><span class="n">request_data</span><span class="p">(</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1999</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span> <span class="s1">'OUN'</span><span class="p">)</span>
-
-<span class="c1"># Calculate the ideal surface parcel path</span>
-<span class="n">sounding</span><span class="p">[</span><span class="s1">'profile'</span><span class="p">]</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">parcel_profile</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">],</span>
-                                            <span class="n">sounding</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
-                                            <span class="n">sounding</span><span class="p">[</span><span class="s1">'dewpoint'</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'degC'</span><span class="p">)</span>
-
-<span class="c1"># Calculate the LCL</span>
-<span class="n">lcl_pressure</span><span class="p">,</span> <span class="n">lcl_temperature</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">lcl</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
-                                           <span class="n">sounding</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
-                                           <span class="n">sounding</span><span class="p">[</span><span class="s1">'dewpoint'</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
-
-<span class="c1"># Calculate the LFC</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Calculate the LFC</span>
 <span class="c1"># YOUR CODE GOES HERE</span>
 
 <span class="c1"># Calculate the EL</span>
@@ -1064,7 +1044,7 @@ How can I obtain ">
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Import the hodograph class</span>
-<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <span class="n">Hodograph</span>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <span class="n">Hodograph</span>
 </pre></div>
 
     </div>
@@ -1167,7 +1147,7 @@ How can I obtain ">
 <div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <span class="n">colortables</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <span class="n">colortables</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 </pre></div>
 
@@ -1186,8 +1166,8 @@ How can I obtain ">
 <span class="n">h</span> <span class="o">=</span> <span class="n">Hodograph</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">component_range</span><span class="o">=</span><span class="mf">60.</span><span class="p">)</span>
 <span class="n">h</span><span class="o">.</span><span class="n">add_grid</span><span class="p">(</span><span class="n">increment</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 
-<span class="n">norm</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">colortables</span><span class="o">.</span><span class="n">get_with_range</span><span class="p">(</span><span class="s1">'ir_rgbv'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">speed_trimmed</span><span class="p">),</span>
-                                        <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">speed_trimmed</span><span class="p">))</span>
+<span class="n">norm</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">colortables</span><span class="o">.</span><span class="n">get_with_range</span><span class="p">(</span><span class="s1">'ir_rgbv'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">speed_trimmed</span><span class="o">.</span><span class="n">m</span><span class="p">),</span>
+                                        <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">speed_trimmed</span><span class="o">.</span><span class="n">m</span><span class="p">))</span>
 
 <span class="n">h</span><span class="o">.</span><span class="n">plot_colormapped</span><span class="p">(</span><span class="n">u_trimmed</span><span class="p">,</span> <span class="n">v_trimmed</span><span class="p">,</span> <span class="n">speed_trimmed</span><span class="p">,</span>
                    <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">)</span>
@@ -1443,8 +1423,8 @@ How can I obtain ">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Some new imports</span>
 <span class="kn">import</span> <span class="nn">matplotlib.gridspec</span> <span class="k">as</span> <span class="nn">gridspec</span>
-<span class="kn">from</span> <span class="nn">mpl_toolkits.axes_grid1.inset_locator</span> <span class="k">import</span> <span class="n">inset_axes</span>
-<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <span class="n">add_metpy_logo</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.axes_grid1.inset_locator</span> <span class="kn">import</span> <span class="n">inset_axes</span>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <span class="n">add_metpy_logo</span>
 </pre></div>
 
     </div>
@@ -1487,16 +1467,16 @@ How can I obtain ">
 <span class="n">skew</span><span class="o">.</span><span class="n">shade_cape</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">],</span> <span class="n">sounding</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">],</span> <span class="n">parcel_profile</span><span class="p">)</span>
 
 <span class="c1"># Good bounds for aspect ratio</span>
-<span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
 
 <span class="k">if</span> <span class="n">lcl_pressure</span><span class="p">:</span>
-    <span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lcl_temperature</span><span class="p">,</span> <span class="n">lcl_pressure</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">"_"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">markeredgewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lcl_temperature</span><span class="p">,</span> <span class="n">lcl_pressure</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">"_"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'tab:orange'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">markeredgewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
     
 <span class="k">if</span> <span class="n">lfc_pressure</span><span class="p">:</span>
-    <span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lfc_temperature</span><span class="p">,</span> <span class="n">lfc_pressure</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">"_"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'brown'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">markeredgewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lfc_temperature</span><span class="p">,</span> <span class="n">lfc_pressure</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">"_"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'tab:brown'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">markeredgewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
     
 <span class="k">if</span> <span class="n">el_pressure</span><span class="p">:</span>
-    <span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">el_temperature</span><span class="p">,</span> <span class="n">el_pressure</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">"_"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'blue'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">markeredgewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">el_temperature</span><span class="p">,</span> <span class="n">el_pressure</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">"_"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'tab:blue'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">markeredgewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 
 <span class="c1"># Create a hodograph</span>
 <span class="n">agl</span> <span class="o">=</span> <span class="n">sounding</span><span class="p">[</span><span class="s1">'height'</span><span class="p">]</span> <span class="o">-</span> <span class="n">sounding</span><span class="p">[</span><span class="s1">'height'</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
@@ -1506,7 +1486,7 @@ How can I obtain ">
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 <span class="n">h</span> <span class="o">=</span> <span class="n">Hodograph</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">component_range</span><span class="o">=</span><span class="mf">30.</span><span class="p">)</span>
 <span class="n">h</span><span class="o">.</span><span class="n">add_grid</span><span class="p">(</span><span class="n">increment</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">h</span><span class="o">.</span><span class="n">plot_colormapped</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'u_wind'</span><span class="p">][</span><span class="n">mask</span><span class="p">],</span> <span class="n">sounding</span><span class="p">[</span><span class="s1">'v_wind'</span><span class="p">][</span><span class="n">mask</span><span class="p">],</span> <span class="n">agl</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span> <span class="n">bounds</span><span class="o">=</span><span class="n">intervals</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
+<span class="n">h</span><span class="o">.</span><span class="n">plot_colormapped</span><span class="p">(</span><span class="n">sounding</span><span class="p">[</span><span class="s1">'u_wind'</span><span class="p">][</span><span class="n">mask</span><span class="p">],</span> <span class="n">sounding</span><span class="p">[</span><span class="s1">'v_wind'</span><span class="p">][</span><span class="n">mask</span><span class="p">],</span> <span class="n">agl</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span> <span class="n">intervals</span><span class="o">=</span><span class="n">intervals</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -1543,7 +1523,7 @@ MathJax.Hub.Config({
         <!--End of body content-->
 
         <footer id="footer">
-            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            Contents © 2020         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
             
         </footer>
 </div>

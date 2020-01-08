@@ -17,7 +17,7 @@
 <meta property="og:url" content="https://unidata.github.io/python-training/workshop/AWIPS/nexrad_level_3_plot_with_matplotlib/">
 <meta property="og:description" content="Shown here are plots for Base Reflectivity (N0Q, 94) and Base Velocity (N0U, 99) using AWIPS data rendered with Matplotlib, Cartopy, and MetPy.  This example improves upon existing Level 3 Python rend">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2019-11-06T13:31:26-07:00">
+<meta property="article:published_time" content="2020-01-08T09:47:29-07:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -108,19 +108,19 @@
 <div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">awips.dataaccess</span> <span class="k">import</span> <span class="n">DataAccessLayer</span>
-<span class="kn">from</span> <span class="nn">awips</span> <span class="k">import</span> <span class="n">ThriftClient</span><span class="p">,</span> <span class="n">RadarCommon</span>
-<span class="kn">from</span> <span class="nn">dynamicserialize.dstypes.com.raytheon.uf.common.time</span> <span class="k">import</span> <span class="n">TimeRange</span>
-<span class="kn">from</span> <span class="nn">dynamicserialize.dstypes.com.raytheon.uf.common.dataplugin.radar.request</span> <span class="k">import</span> <span class="n">GetRadarDataRecordRequest</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">timedelta</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">awips.dataaccess</span> <span class="kn">import</span> <span class="n">DataAccessLayer</span>
+<span class="kn">from</span> <span class="nn">awips</span> <span class="kn">import</span> <span class="n">ThriftClient</span><span class="p">,</span> <span class="n">RadarCommon</span>
+<span class="kn">from</span> <span class="nn">dynamicserialize.dstypes.com.raytheon.uf.common.time</span> <span class="kn">import</span> <span class="n">TimeRange</span>
+<span class="kn">from</span> <span class="nn">dynamicserialize.dstypes.com.raytheon.uf.common.dataplugin.radar.request</span> <span class="kn">import</span> <span class="n">GetRadarDataRecordRequest</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">ma</span>
-<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <span class="n">ctables</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">ma</span>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <span class="n">ctables</span>
 <span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
-<span class="kn">from</span> <span class="nn">cartopy.feature</span> <span class="k">import</span> <span class="n">ShapelyFeature</span><span class="p">,</span><span class="n">NaturalEarthFeature</span>
-<span class="kn">from</span> <span class="nn">cartopy.mpl.gridliner</span> <span class="k">import</span> <span class="n">LONGITUDE_FORMATTER</span><span class="p">,</span> <span class="n">LATITUDE_FORMATTER</span>
+<span class="kn">from</span> <span class="nn">cartopy.feature</span> <span class="kn">import</span> <span class="n">ShapelyFeature</span><span class="p">,</span><span class="n">NaturalEarthFeature</span>
+<span class="kn">from</span> <span class="nn">cartopy.mpl.gridliner</span> <span class="kn">import</span> <span class="n">LONGITUDE_FORMATTER</span><span class="p">,</span> <span class="n">LATITUDE_FORMATTER</span>
 
 <span class="c1"># set EDEX server and radar site definitions</span>
 <span class="n">site</span> <span class="o">=</span> <span class="s1">'klzk'</span>
@@ -219,7 +219,7 @@
             <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">rangeGates</span><span class="p">,</span> <span class="n">rangeGates</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 
             <span class="c1"># Convert az/range to a lat/lon</span>
-            <span class="kn">from</span> <span class="nn">pyproj</span> <span class="k">import</span> <span class="n">Geod</span>
+            <span class="kn">from</span> <span class="nn">pyproj</span> <span class="kn">import</span> <span class="n">Geod</span>
             <span class="n">g</span> <span class="o">=</span> <span class="n">Geod</span><span class="p">(</span><span class="n">ellps</span><span class="o">=</span><span class="s1">'clrk66'</span><span class="p">)</span>
             <span class="n">center_lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">az</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="n">rng</span><span class="p">)])</span><span class="o">*</span><span class="n">lat</span>   
             <span class="n">center_lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">az</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="n">rng</span><span class="p">)])</span><span class="o">*</span><span class="n">lon</span>
@@ -331,7 +331,7 @@ MathJax.Hub.Config({
         <!--End of body content-->
 
         <footer id="footer">
-            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            Contents © 2020         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
             
         </footer>
 </div>

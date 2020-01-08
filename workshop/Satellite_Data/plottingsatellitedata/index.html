@@ -27,7 +27,7 @@ Questions¶
 Where are current GOES data available?
 How can satellite data be obtained with Sipho">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2019-11-06T13:36:31-07:00">
+<meta property="article:published_time" content="2020-01-08T09:50:34-07:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -172,7 +172,7 @@ How can satellite data be obtained with Sipho">
 <div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 
 <span class="c1"># Create variables for URL generation</span>
 <span class="c1"># YOUR CODE GOES HERE</span>
@@ -208,7 +208,7 @@ How can satellite data be obtained with Sipho">
 
 
 <span class="c1"># Cell content replaced by load magic replacement.</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 
 <span class="c1"># Create variables for URL generation</span>
 <span class="n">image_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
@@ -220,8 +220,8 @@ How can satellite data be obtained with Sipho">
 
 <span class="c1"># Construct the data_url string</span>
 <span class="n">data_url</span> <span class="o">=</span> <span class="p">(</span><span class="s1">'https://thredds.ucar.edu/thredds/catalog/satellite/goes/east/products/'</span>
-            <span class="n">f</span><span class="s1">'CloudAndMoistureImagery/</span><span class="si">{region}</span><span class="s1">/Channel</span><span class="si">{channel:02d}</span><span class="s1">/'</span>
-            <span class="n">f</span><span class="s1">'{image_date:%Y%m</span><span class="si">%d</span><span class="s1">}/catalog.xml'</span><span class="p">)</span>
+            <span class="sa">f</span><span class="s1">'CloudAndMoistureImagery/</span><span class="si">{region}</span><span class="s1">/Channel</span><span class="si">{channel:02d}</span><span class="s1">/'</span>
+            <span class="sa">f</span><span class="s1">'{image_date:%Y%m</span><span class="si">%d</span><span class="s1">}/catalog.xml'</span><span class="p">)</span>
 
 <span class="c1"># Print out your URL and verify it works!</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">data_url</span><span class="p">)</span>
@@ -270,7 +270,7 @@ How can satellite data be obtained with Sipho">
 <div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">siphon.catalog</span> <span class="k">import</span> <span class="n">TDSCatalog</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">siphon.catalog</span> <span class="kn">import</span> <span class="n">TDSCatalog</span>
 </pre></div>
 
     </div>
@@ -555,10 +555,10 @@ How can satellite data be obtained with Sipho">
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Import for colortables</span>
-<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <span class="n">colortables</span>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <span class="n">colortables</span>
 
 <span class="c1"># Import for the bonus exercise</span>
-<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <span class="n">add_timestamp</span>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <span class="n">add_timestamp</span>
 
 <span class="c1"># Make the image plot</span>
 <span class="c1"># YOUR CODE GOES HERE</span>
@@ -589,10 +589,10 @@ How can satellite data be obtained with Sipho">
 
 <span class="c1"># Cell content replaced by load magic replacement.</span>
 <span class="c1">#Import for colortables</span>
-<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <span class="n">colortables</span>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <span class="n">colortables</span>
 
 <span class="c1"># Import for the bonus exercise</span>
-<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <span class="n">add_timestamp</span>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <span class="n">add_timestamp</span>
 
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">proj</span><span class="p">)</span>
@@ -607,7 +607,7 @@ How can satellite data be obtained with Sipho">
 
 <span class="c1">#Bonus</span>
 <span class="n">start_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">start_date_time</span><span class="p">,</span> <span class="s1">'%Y%j%H%M%S'</span><span class="p">)</span>
-<span class="n">add_timestamp</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span> <span class="n">pretext</span><span class="o">=</span><span class="n">f</span><span class="s1">'GOES-16 Ch. </span><span class="si">{channel}</span><span class="s1"> '</span><span class="p">,</span>
+<span class="n">add_timestamp</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span> <span class="n">pretext</span><span class="o">=</span><span class="sa">f</span><span class="s1">'GOES-16 Ch. </span><span class="si">{channel}</span><span class="s1"> '</span><span class="p">,</span>
               <span class="n">high_contrast</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -678,7 +678,7 @@ How can satellite data be obtained with Sipho">
 <span class="n">im</span><span class="o">.</span><span class="n">set_norm</span><span class="p">(</span><span class="n">wv_norm</span><span class="p">)</span>
 
 <span class="n">start_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">start_date_time</span><span class="p">,</span> <span class="s1">'%Y%j%H%M%S'</span><span class="p">)</span>
-<span class="n">add_timestamp</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span> <span class="n">pretext</span><span class="o">=</span><span class="n">f</span><span class="s1">'GOES-16 Ch. </span><span class="si">{channel}</span><span class="s1"> '</span><span class="p">,</span>
+<span class="n">add_timestamp</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span> <span class="n">pretext</span><span class="o">=</span><span class="sa">f</span><span class="s1">'GOES-16 Ch. </span><span class="si">{channel}</span><span class="s1"> '</span><span class="p">,</span>
               <span class="n">high_contrast</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -743,9 +743,9 @@ This is just a quick taste of producing an animation using matplotlib. The anima
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os.path</span>
 <span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">HTML</span>
 <span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
-<span class="kn">from</span> <span class="nn">matplotlib.animation</span> <span class="k">import</span> <span class="n">ArtistAnimation</span>
+<span class="kn">from</span> <span class="nn">matplotlib.animation</span> <span class="kn">import</span> <span class="n">ArtistAnimation</span>
 </pre></div>
 
     </div>
@@ -778,7 +778,7 @@ This is just a quick taste of producing an animation using matplotlib. The anima
 
 <span class="c1"># Get the IRMA case study catalog</span>
 <span class="n">cat</span> <span class="o">=</span> <span class="n">TDSCatalog</span><span class="p">(</span><span class="s1">'http://thredds.ucar.edu/thredds/catalog/casestudies/irma'</span>
-                 <span class="n">f</span><span class="s1">'/goes16/Mesoscale-1/Channel</span><span class="si">{channel:02d}</span><span class="s1">/{case_date:%Y%m</span><span class="si">%d</span><span class="s1">}/'</span>
+                 <span class="sa">f</span><span class="s1">'/goes16/Mesoscale-1/Channel</span><span class="si">{channel:02d}</span><span class="s1">/{case_date:%Y%m</span><span class="si">%d</span><span class="s1">}/'</span>
                  <span class="s1">'catalog.xml'</span><span class="p">)</span>
     
 <span class="n">datasets</span> <span class="o">=</span> <span class="n">cat</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">filter_time_range</span><span class="p">(</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
@@ -817,7 +817,7 @@ This is just a quick taste of producing an animation using matplotlib. The anima
     <span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span> <span class="n">origin</span><span class="o">=</span><span class="s1">'upper'</span><span class="p">,</span>
                    <span class="n">cmap</span><span class="o">=</span><span class="n">wv_cmap</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">wv_norm</span><span class="p">)</span>
 
-    <span class="n">text_time</span> <span class="o">=</span> <span class="n">add_timestamp</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">pretext</span><span class="o">=</span><span class="n">f</span><span class="s1">'GOES-16 Ch.</span><span class="si">{channel}</span><span class="s1"> '</span><span class="p">,</span>
+    <span class="n">text_time</span> <span class="o">=</span> <span class="n">add_timestamp</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">pretext</span><span class="o">=</span><span class="sa">f</span><span class="s1">'GOES-16 Ch.</span><span class="si">{channel}</span><span class="s1"> '</span><span class="p">,</span>
                               <span class="n">high_contrast</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
     
     <span class="c1"># Stuff them in a tuple and add to the list of things to animate</span>
@@ -864,7 +864,7 @@ MathJax.Hub.Config({
         <!--End of body content-->
 
         <footer id="footer">
-            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            Contents © 2020         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
             
         </footer>
 </div>

@@ -15,32 +15,11 @@
 <meta property="og:site_name" content="The Unidata Python Training Site">
 <meta property="og:title" content="GFS_Widget">
 <meta property="og:url" content="https://unidata.github.io/python-training/gallery/gfs_widget/">
-<meta property="og:description" content='In [ ]:
-
-    
- 
-
-
-    
-
-
-
-
-
-
-In [ ]:
-
-    
-"""
-===============================
-Jupyter Notebook Widget Example
-===============================
-
-An example of using widgets in a Jupyter Notebook.
-
-This'>
+<meta property="og:description" content="Jupyter Notebook Widget Example¶An example of using widgets in a Jupyter Notebook.
+This example is only intended to be run in a Jupyter Notebook running a Python
+kernel as it displays the ability to u">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2019-11-06T13:31:26-07:00">
+<meta property="article:published_time" content="2020-01-08T09:47:29-07:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -96,59 +75,38 @@ This'>
         
     </header><div class="e-content entry-content" itemprop="articleBody text">
     <div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Jupyter-Notebook-Widget-Example">Jupyter Notebook Widget Example<a class="anchor-link" href="#Jupyter-Notebook-Widget-Example">¶</a>
+</h2>
+<p>An example of using widgets in a Jupyter Notebook.</p>
+<p>This example is only intended to be run in a Jupyter Notebook running a Python
+kernel as it displays the ability to use widgets and make an interactive plot.
+The interactive plot has the ability to display three different variables, a couple
+of different times, and use four different color maps.</p>
 
-    </div>
 </div>
 </div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="sd">"""</span>
-<span class="sd">===============================</span>
-<span class="sd">Jupyter Notebook Widget Example</span>
-<span class="sd">===============================</span>
-
-<span class="sd">An example of using widgets in a Jupyter Notebook.</span>
-
-<span class="sd">This example is only intended to be run in a Jupyter Notebook running a Python</span>
-<span class="sd">kernel as it displays the ability to use widgets and make an interactive plot.</span>
-<span class="sd">The interactive plot has the ability to display three different variables, a couple</span>
-<span class="sd">of different times, and use four different color maps.</span>
-<span class="sd">"""</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
 <span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
-<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">display</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span>
 <span class="kn">import</span> <span class="nn">ipywidgets</span> <span class="k">as</span> <span class="nn">widgets</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="k">import</span> <span class="n">units</span>
-<span class="kn">from</span> <span class="nn">netCDF4</span> <span class="k">import</span> <span class="n">num2date</span>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
+<span class="kn">from</span> <span class="nn">netCDF4</span> <span class="kn">import</span> <span class="n">num2date</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">siphon.catalog</span> <span class="k">import</span> <span class="n">TDSCatalog</span>
-<span class="kn">from</span> <span class="nn">siphon.ncss</span> <span class="k">import</span> <span class="n">NCSS</span>
+<span class="kn">from</span> <span class="nn">siphon.catalog</span> <span class="kn">import</span> <span class="n">TDSCatalog</span>
+<span class="kn">from</span> <span class="nn">siphon.ncss</span> <span class="kn">import</span> <span class="n">NCSS</span>
 </pre></div>
 
     </div>
@@ -330,7 +288,7 @@ This'>
     <span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">BORDERS</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">varname</span> <span class="o">==</span> <span class="s1">'Temperature_surface'</span><span class="p">:</span>
-        <span class="n">variable</span> <span class="o">=</span> <span class="p">(</span><span class="n">variable</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">kelvin</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'degF'</span><span class="p">)</span>
+        <span class="n">variable</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="s1">'K'</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'degF'</span><span class="p">)</span>
 
     <span class="c1"># Contour based on variable chosen</span>
     <span class="n">c</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">lon_2d</span><span class="p">,</span> <span class="n">lat_2d</span><span class="p">,</span> <span class="n">variable</span><span class="p">[</span><span class="n">time_strings</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">time</span><span class="p">)],</span> <span class="n">cmap</span><span class="o">=</span><span class="n">colormap</span><span class="p">)</span>
@@ -390,7 +348,7 @@ MathJax.Hub.Config({
         <!--End of body content-->
 
         <footer id="footer">
-            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            Contents © 2020         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
             
         </footer>
 </div>

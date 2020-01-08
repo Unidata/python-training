@@ -21,7 +21,7 @@
 
 Overview¶This workshop will teach some of the basics of Climate and Forecasting metadata for netCDF data files with some hands-on work available in Jupyter Notebooks using">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2019-11-06T13:31:26-07:00">
+<meta property="article:published_time" content="2020-01-08T09:47:29-07:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -88,7 +88,7 @@ Overview¶This workshop will teach some of the basics of Climate and Forecasting
 <img src="https://www.unidata.ucar.edu/images/logos/netcdf-150x150.png" alt="netCDF Logo" style="height: 98px;">
 </div>
 <div style="float:right; width:98 px; height:98px;">
-<img src="https://raw.githubusercontent.com/Unidata/MetPy/master/metpy/plots/_static/unidata_150x150.png" alt="Unidata Logo" style="height: 98px;">
+<img src="https://raw.githubusercontent.com/Unidata/MetPy/master/src/metpy/plots/_static/unidata_150x150.png" alt="Unidata Logo" style="height: 98px;">
 </div>
 <div style="text-align:center;">
 <h2>NetCDF and CF: The Basics</h2>
@@ -136,7 +136,7 @@ Overview¶This workshop will teach some of the basics of Climate and Forecasting
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Import some useful Python tools</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
@@ -176,7 +176,7 @@ Overview¶This workshop will teach some of the basics of Climate and Forecasting
 <div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">netCDF4</span> <span class="k">import</span> <span class="n">Dataset</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">netCDF4</span> <span class="kn">import</span> <span class="n">Dataset</span>
 <span class="n">nc</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s1">'forecast_model.nc'</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">'NETCDF4_CLASSIC'</span><span class="p">,</span> <span class="n">diskless</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 
@@ -540,7 +540,7 @@ Overview¶This workshop will teach some of the basics of Climate and Forecasting
 <div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">cftime</span> <span class="k">import</span> <span class="n">date2num</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">cftime</span> <span class="kn">import</span> <span class="n">date2num</span>
 <span class="n">time_units</span> <span class="o">=</span> <span class="s1">'hours since {:%Y-%m-</span><span class="si">%d</span><span class="s1"> 00:00}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">times</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">time_vals</span> <span class="o">=</span> <span class="n">date2num</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">time_units</span><span class="p">)</span>
 <span class="n">time_vals</span>
@@ -647,7 +647,7 @@ Overview¶This workshop will teach some of the basics of Climate and Forecasting
 <div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pyproj</span> <span class="k">import</span> <span class="n">Proj</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pyproj</span> <span class="kn">import</span> <span class="n">Proj</span>
 <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 <span class="n">lcc</span> <span class="o">=</span> <span class="n">Proj</span><span class="p">({</span><span class="s1">'proj'</span><span class="p">:</span><span class="s1">'lcc'</span><span class="p">,</span> <span class="s1">'lon_0'</span><span class="p">:</span><span class="o">-</span><span class="mi">105</span><span class="p">,</span> <span class="s1">'lat_0'</span><span class="p">:</span><span class="mi">40</span><span class="p">,</span> <span class="s1">'a'</span><span class="p">:</span><span class="mf">6371000.</span><span class="p">,</span>
             <span class="s1">'lat_1'</span><span class="p">:</span><span class="mi">25</span><span class="p">})</span>
@@ -1215,7 +1215,7 @@ MathJax.Hub.Config({
         <!--End of body content-->
 
         <footer id="footer">
-            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            Contents © 2020         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
             
         </footer>
 </div>

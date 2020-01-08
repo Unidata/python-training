@@ -27,7 +27,7 @@ Questions¶
 How can satellite data be accessed with siphon?
 How can maps of sat">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2019-11-06T13:36:31-07:00">
+<meta property="article:published_time" content="2020-01-08T09:50:34-07:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -148,8 +148,8 @@ How can maps of sat">
 <div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">siphon.catalog</span> <span class="k">import</span> <span class="n">TDSCatalog</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">siphon.catalog</span> <span class="kn">import</span> <span class="n">TDSCatalog</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 </pre></div>
 
     </div>
@@ -169,8 +169,8 @@ How can maps of sat">
 
 <span class="c1"># Create the URL to provide to siphon</span>
 <span class="n">data_url</span> <span class="o">=</span>  <span class="p">(</span><span class="s1">'https://thredds.ucar.edu/thredds/catalog/satellite/goes/east/products/'</span>
-            <span class="n">f</span><span class="s1">'CloudAndMoistureImagery/</span><span class="si">{region}</span><span class="s1">/Channel</span><span class="si">{channel:02d}</span><span class="s1">/'</span>
-            <span class="n">f</span><span class="s1">'{image_date:%Y%m</span><span class="si">%d</span><span class="s1">}/catalog.xml'</span><span class="p">)</span>
+            <span class="sa">f</span><span class="s1">'CloudAndMoistureImagery/</span><span class="si">{region}</span><span class="s1">/Channel</span><span class="si">{channel:02d}</span><span class="s1">/'</span>
+            <span class="sa">f</span><span class="s1">'{image_date:%Y%m</span><span class="si">%d</span><span class="s1">}/catalog.xml'</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -255,7 +255,7 @@ How can maps of sat">
 <div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <span class="n">ImagePlot</span><span class="p">,</span> <span class="n">MapPanel</span><span class="p">,</span> <span class="n">PanelContainer</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <span class="n">ImagePlot</span><span class="p">,</span> <span class="n">MapPanel</span><span class="p">,</span> <span class="n">PanelContainer</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 
@@ -382,7 +382,7 @@ How can maps of sat">
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Import for the bonus exercise</span>
-<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <span class="n">add_timestamp</span>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <span class="n">add_timestamp</span>
 
 <span class="c1"># Make the image plot</span>
 <span class="c1"># YOUR CODE GOES HERE</span>
@@ -422,7 +422,7 @@ How can maps of sat">
 
 <span class="c1"># Cell content replaced by load magic replacement.</span>
 <span class="c1"># Import for the bonus exercise</span>
-<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <span class="n">add_timestamp</span>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <span class="n">add_timestamp</span>
 
 <span class="c1"># Make the image plot</span>
 <span class="n">img</span> <span class="o">=</span> <span class="n">ImagePlot</span><span class="p">()</span>
@@ -471,7 +471,7 @@ MathJax.Hub.Config({
         <!--End of body content-->
 
         <footer id="footer">
-            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            Contents © 2020         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
             
         </footer>
 </div>

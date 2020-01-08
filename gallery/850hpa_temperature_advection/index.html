@@ -33,7 +33,7 @@
 850 hPa Temperature Advection¶Plot an 850 hPa map with calculating advection using MetPy.
 Beyond just plotting 850-hPa leve">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2019-11-06T13:31:26-07:00">
+<meta property="article:published_time" content="2020-01-08T09:47:29-07:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -133,18 +133,18 @@ the distance between lat/lon grid points.</p>
 <div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 
 <span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
 <span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
 <span class="kn">import</span> <span class="nn">matplotlib.gridspec</span> <span class="k">as</span> <span class="nn">gridspec</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="k">as</span> <span class="nn">mpcalc</span>
-<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="k">import</span> <span class="n">units</span>
-<span class="kn">from</span> <span class="nn">netCDF4</span> <span class="k">import</span> <span class="n">num2date</span>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
+<span class="kn">from</span> <span class="nn">netCDF4</span> <span class="kn">import</span> <span class="n">num2date</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">scipy.ndimage</span> <span class="k">as</span> <span class="nn">ndimage</span>
-<span class="kn">from</span> <span class="nn">siphon.ncss</span> <span class="k">import</span> <span class="n">NCSS</span>
+<span class="kn">from</span> <span class="nn">siphon.ncss</span> <span class="kn">import</span> <span class="n">NCSS</span>
 </pre></div>
 
     </div>
@@ -225,9 +225,9 @@ the distance between lat/lon grid points.</p>
 <span class="n">lat</span> <span class="o">=</span> <span class="n">lat_var</span><span class="p">[:]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
 <span class="n">lon</span> <span class="o">=</span> <span class="n">lon_var</span><span class="p">[:]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
 <span class="n">hght</span> <span class="o">=</span> <span class="n">hght_var</span><span class="p">[:]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
-<span class="n">temp</span> <span class="o">=</span> <span class="n">temp_var</span><span class="p">[:]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">K</span>
-<span class="n">u_wind</span> <span class="o">=</span> <span class="n">units</span><span class="p">(</span><span class="s1">'m/s'</span><span class="p">)</span> <span class="o">*</span> <span class="n">u_wind_var</span><span class="p">[:]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
-<span class="n">v_wind</span> <span class="o">=</span> <span class="n">units</span><span class="p">(</span><span class="s1">'m/s'</span><span class="p">)</span> <span class="o">*</span> <span class="n">v_wind_var</span><span class="p">[:]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+<span class="n">temp</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">temp_var</span><span class="p">[:]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(),</span> <span class="n">temp_var</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+<span class="n">u_wind</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">u_wind_var</span><span class="p">[:]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(),</span> <span class="n">u_wind_var</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+<span class="n">v_wind</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">v_wind_var</span><span class="p">[:]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(),</span> <span class="n">v_wind_var</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
 
 <span class="c1"># Convert number of hours since the reference time into an actual date</span>
 <span class="n">time</span> <span class="o">=</span> <span class="n">num2date</span><span class="p">(</span><span class="n">time_var</span><span class="p">[:]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(),</span> <span class="n">time_var</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
@@ -269,13 +269,13 @@ the distance between lat/lon grid points.</p>
 <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">lat_lon_grid_deltas</span><span class="p">(</span><span class="n">lon_var</span><span class="p">,</span> <span class="n">lat_var</span><span class="p">)</span>
 
 <span class="c1"># Calculate temperature advection using metpy function</span>
-<span class="n">adv</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">advection</span><span class="p">(</span><span class="n">temp_850</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">kelvin</span><span class="p">,</span> <span class="p">[</span><span class="n">u_wind_850</span><span class="p">,</span> <span class="n">v_wind_850</span><span class="p">],</span>
-                       <span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">),</span> <span class="n">dim_order</span><span class="o">=</span><span class="s1">'yx'</span><span class="p">)</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">'K/sec'</span><span class="p">)</span>
+<span class="n">adv</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">advection</span><span class="p">(</span><span class="n">temp_850</span><span class="p">,</span> <span class="p">[</span><span class="n">u_wind_850</span><span class="p">,</span> <span class="n">v_wind_850</span><span class="p">],</span>
+                       <span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">),</span> <span class="n">dim_order</span><span class="o">=</span><span class="s1">'yx'</span><span class="p">)</span>
 
 <span class="c1"># Smooth heights and advection a little</span>
 <span class="c1"># Be sure to only put in a 2D lat/lon or Y/X array for smoothing</span>
-<span class="n">Z_850</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">gaussian_filter</span><span class="p">(</span><span class="n">hght_850</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meter</span>
-<span class="n">adv</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">gaussian_filter</span><span class="p">(</span><span class="n">adv</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">'K/sec'</span><span class="p">)</span>
+<span class="n">Z_850</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">smooth_gaussian</span><span class="p">(</span><span class="n">hght_850</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">adv</span> <span class="o">=</span> <span class="n">mpcalc</span><span class="o">.</span><span class="n">smooth_gaussian</span><span class="p">(</span><span class="n">adv</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -372,7 +372,7 @@ MathJax.Hub.Config({
         <!--End of body content-->
 
         <footer id="footer">
-            Contents © 2019         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            Contents © 2020         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
             
         </footer>
 </div>
