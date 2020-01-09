@@ -137,7 +137,7 @@ materials. If you can't wait to learn more about environments, checkout this
   `this link <https://raw.githubusercontent.com/Unidata/python-training/master/environment.yml>`_ to download the file.
 * In the terminal, navigate to wherever this file saved, probably :code:`cd ~/Downloads` will get you there.
 * Run the command :code:`conda env create` and wait for the installation to finish.
-* Run the command :code:`conda activate training` to activate the unidata environment and verify that everything is ready.
+* Run the command :code:`conda activate unidata` to activate the unidata environment and verify that everything is ready.
 * For an in-depth tutorial on conda and environments, check out this
   `Carpentry-style tutorial <https://kaust-vislab.github.io/introduction-to-conda-for-data-scientists/>`_.
 
@@ -171,7 +171,7 @@ It's a good idea to go ahead and try to start up the Jupyter Lab server to make 
 was successful.
 
 * Open a terminal/Anaconda Prompt.
-* Activate the training environment we created with :code:`conda activate training`
+* Activate the unidata environment we created with :code:`conda activate unidata`
 * Change directory to the location you've placed your training materials :code:`cd ~/Desktop/python-training` or similar.
 * Start jupyter lab by running the command :code:`jupyter lab`
 * A browser should open and you're in jupyter lab!
