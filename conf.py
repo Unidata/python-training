@@ -17,7 +17,7 @@ import time
 
 # Data about this site
 BLOG_AUTHOR = "UCAR/Unidata"  # (translatable)
-BLOG_TITLE = "The Unidata Python Training Site"  # (translatable)
+BLOG_TITLE = "Unidata Python Training"  # (translatable)
 # This is the main URL for your site. It will be used
 # in a prominent link. Don't forget the protocol (http/https)!
 SITE_URL = "https://unidata.github.io/python-training/"
@@ -25,7 +25,7 @@ SITE_URL = "https://unidata.github.io/python-training/"
 # If not set, defaults to SITE_URL
 # BASE_URL = "https://example.com/"
 BLOG_EMAIL = "support-python@unidata.ucar.edu"
-BLOG_DESCRIPTION = "The Unidata Python Training Site for Atmospheric Science"  # (translatable)
+BLOG_DESCRIPTION = "Python Training for Atmospheric Science from Unidata"  # (translatable)
 
 # Nikola is multilingual!
 #
@@ -152,11 +152,11 @@ NAVIGATION_ALT_LINKS = {
 }
 
 # Name of the theme to use.
-THEME = "bootstrap3-jinja"
+THEME = "CUSTOM"
 
 # Primary color of your theme. This will be used to customize your theme.
 # Must be a HEX value.
-THEME_COLOR = '#5670d4'
+THEME_COLOR = '#33758C'
 
 # Theme configuration. Fully theme-dependent. (translatable)
 # Examples below are for bootblog4.
@@ -331,7 +331,7 @@ COMPILERS = {
 # Nikola supports logo display.  If you have one, you can put the URL here.
 # Final output is <img src="LOGO_URL" id="logo" alt="BLOG_TITLE">.
 # The URL may be relative to the site root.
-# LOGO_URL = ''
+LOGO_URL = 'https://docs.unidata.ucar.edu/images/logos/unidata_logo_rgb_sm.png'
 
 # If you want to hide the title of your website (for example, if your logo
 # already contains the text), set this to False.
