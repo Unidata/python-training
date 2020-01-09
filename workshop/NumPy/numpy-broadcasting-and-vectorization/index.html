@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,7 +8,6 @@
 <link href="../../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
 <link href="../../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
 <link href="../../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
-<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
 <meta name="theme-color" content="#33758C">
 <meta name="generator" content="Nikola (getnikola.com)">
 <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.xml">
@@ -39,40 +39,26 @@ Exercises: 15 minutes
 Questions¶
 How can we work with arrays of differing shapes without needing to manu">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2020-01-08T23:18:48-07:00">
+<meta property="article:published_time" content="2020-01-08T23:40:38-07:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
 
-<!-- Header and menu bar -->
-<div class="container">
-      <header class="blog-header py-3"><div class="row nbb-header align-items-center">
-          <div class="col-md-3 col-xs-2 col-sm-2" style="width: auto;">
-            <button class="navbar-toggler navbar-light bg-light nbb-navbar-toggler" type="button" data-toggle="collapse" data-target=".bs-nav-collapsible" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse bs-nav-collapsible bootblog4-search-form-holder">
-                
-            </div>
-        </div>
-          <div class="col-md-6 col-xs-10 col-sm-10 bootblog4-brand" style="width: auto;">
-            <a class="navbar-brand blog-header-logo text-dark" href="https://unidata.github.io/python-training/">
+<!-- Menubar -->
+
+<nav class="navbar navbar-expand-md static-top mb-4
+navbar-dark bg-primary
+"><div class="container">
+<!-- This keeps the margins nice -->
+        <a class="navbar-brand" href="https://unidata.github.io/python-training/">
             <img src="https://docs.unidata.ucar.edu/images/logos/unidata_logo_rgb_sm.png" alt="Unidata Python Training" id="logo" class="d-inline-block align-top"><span id="blog-title">Unidata Python Training</span>
         </a>
-          </div>
-            <div class="col-md-3 justify-content-end align-items-center bs-nav-collapsible collapse flex-collapse bootblog4-right-nav">
-            <nav class="navbar navbar-light bg-white"><ul class="navbar-nav bootblog4-right-nav">
-<li class="nav-item">
-    <a href="index.ipynb" id="sourcelink" class="nav-link">Source</a>
-    </li>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-
-                    
-            </ul></nav>
-</div>
-    </div>
-</header><nav class="navbar navbar-expand-md navbar-light bg-white static-top"><div class="collapse navbar-collapse bs-nav-collapsible" id="bs-navbar">
-            <ul class="navbar-nav nav-fill d-flex w-100">
+        <div class="collapse navbar-collapse" id="bs-navbar">
+            <ul class="navbar-nav mr-auto">
 <li class="nav-item">
 <a href="../../../python/intro-to-python" class="nav-link">Introduction to Python</a>
                 </li>
@@ -85,12 +71,19 @@ How can we work with arrays of differing shapes without needing to manu">
                 
             </li>
 </ul>
+<ul class="navbar-nav navbar-right">
+<li class="nav-item">
+    <a href="index.ipynb" id="sourcelink" class="nav-link">Source</a>
+    </li>
+
+
+                
+            </ul>
 </div>
 <!-- /.navbar-collapse -->
-</nav>
-</div>
-
-<div class="container" id="content" role="main">
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
     <div class="body-content">
         <!--Body content-->
         
@@ -1389,7 +1382,7 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([26. , 17. , 12.4, 21.6, 19. , 14.5, 19.5, 24.2, 23.3, 16.8])</pre>
+<pre>array([21.3, 11.1, 20.7, 20.2, 15.4, 15.7, 23.1, 13.8, 25.1, 16.2])</pre>
 </div>
 
 </div>
@@ -1449,8 +1442,8 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([ 0.        , 18.46666667, 17.        , 17.66666667, 18.36666667,
-       17.66666667, 19.4       , 22.33333333, 21.43333333,  0.        ])</pre>
+<pre>array([ 0.        , 17.7       , 17.33333333, 18.76666667, 17.1       ,
+       18.06666667, 17.53333333, 20.66666667, 18.36666667,  0.        ])</pre>
 </div>
 
 </div>
@@ -1494,8 +1487,8 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([18.46666667, 17.        , 17.66666667, 18.36666667, 17.66666667,
-       19.4       , 22.33333333, 21.43333333])</pre>
+<pre>array([17.7       , 17.33333333, 18.76666667, 17.1       , 18.06666667,
+       17.53333333, 20.66666667, 18.36666667])</pre>
 </div>
 
 </div>
@@ -1538,7 +1531,7 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([26. , 17. , 12.4, 21.6, 19. , 14.5, 19.5, 24.2, 23.3, 16.8])</pre>
+<pre>array([21.3, 11.1, 20.7, 20.2, 15.4, 15.7, 23.1, 13.8, 25.1, 16.2])</pre>
 </div>
 
 </div>
@@ -1587,14 +1580,14 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([[26. , 17. , 12.4],
-       [17. , 12.4, 21.6],
-       [12.4, 21.6, 19. ],
-       [21.6, 19. , 14.5],
-       [19. , 14.5, 19.5],
-       [14.5, 19.5, 24.2],
-       [19.5, 24.2, 23.3],
-       [24.2, 23.3, 16.8]])</pre>
+<pre>array([[21.3, 11.1, 20.7],
+       [11.1, 20.7, 20.2],
+       [20.7, 20.2, 15.4],
+       [20.2, 15.4, 15.7],
+       [15.4, 15.7, 23.1],
+       [15.7, 23.1, 13.8],
+       [23.1, 13.8, 25.1],
+       [13.8, 25.1, 16.2]])</pre>
 </div>
 
 </div>
@@ -1637,8 +1630,8 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([18.46666667, 17.        , 17.66666667, 18.36666667, 17.66666667,
-       19.4       , 22.33333333, 21.43333333])</pre>
+<pre>array([17.7       , 17.33333333, 18.76666667, 17.1       , 18.06666667,
+       17.53333333, 20.66666667, 18.36666667])</pre>
 </div>
 
 </div>
@@ -1682,14 +1675,14 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([[  26. ,   17. , 2000. ],
-       [  17. , 2000. ,   21.6],
-       [2000. ,   21.6,   19. ],
-       [  21.6,   19. ,   14.5],
-       [  19. ,   14.5,   19.5],
-       [  14.5,   19.5,   24.2],
-       [  19.5,   24.2,   23.3],
-       [  24.2,   23.3,   16.8]])</pre>
+<pre>array([[  21.3,   11.1, 2000. ],
+       [  11.1, 2000. ,   20.2],
+       [2000. ,   20.2,   15.4],
+       [  20.2,   15.4,   15.7],
+       [  15.4,   15.7,   23.1],
+       [  15.7,   23.1,   13.8],
+       [  23.1,   13.8,   25.1],
+       [  13.8,   25.1,   16.2]])</pre>
 </div>
 
 </div>
@@ -1760,13 +1753,13 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([[7, 7, 5, ..., 7, 6, 7],
-       [6, 7, 7, ..., 6, 6, 7],
-       [7, 7, 6, ..., 7, 6, 6],
+<pre>array([[7, 8, 6, ..., 7, 6, 7],
+       [7, 7, 6, ..., 6, 6, 7],
+       [7, 6, 7, ..., 6, 7, 7],
        ...,
-       [8, 7, 7, ..., 7, 7, 6],
-       [8, 6, 7, ..., 7, 7, 7],
-       [6, 7, 7, ..., 7, 6, 6]])</pre>
+       [8, 7, 7, ..., 6, 7, 7],
+       [7, 7, 6, ..., 7, 5, 6],
+       [6, 7, 7, ..., 7, 7, 5]])</pre>
 </div>
 
 </div>
@@ -1842,13 +1835,13 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([[737.5, 737.5, 812.5, ..., 737.5, 775. , 737.5],
-       [775. , 737.5, 737.5, ..., 775. , 775. , 737.5],
-       [737.5, 737.5, 775. , ..., 737.5, 775. , 775. ],
+<pre>array([[737.5, 700. , 775. , ..., 737.5, 775. , 737.5],
+       [737.5, 737.5, 775. , ..., 775. , 775. , 737.5],
+       [737.5, 775. , 737.5, ..., 775. , 737.5, 737.5],
        ...,
-       [700. , 737.5, 737.5, ..., 737.5, 737.5, 775. ],
-       [700. , 775. , 737.5, ..., 737.5, 737.5, 737.5],
-       [775. , 737.5, 737.5, ..., 737.5, 775. , 775. ]])</pre>
+       [700. , 737.5, 737.5, ..., 775. , 737.5, 737.5],
+       [737.5, 737.5, 775. , ..., 737.5, 812.5, 775. ],
+       [775. , 737.5, 737.5, ..., 737.5, 737.5, 812.5]])</pre>
 </div>
 
 </div>
@@ -1937,19 +1930,19 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([[ -8.10319965,  -8.09197776,  -7.46559812, ..., -12.28120725,
-         -6.81913619, -13.32454396],
-       [ -4.96586804,  -8.59259404, -12.4502916 , ..., -13.49397573,
-         -9.93460294,  -5.97750353],
-       [ -8.51009763, -10.07886697,  -9.07731015, ..., -11.57679535,
-        -10.98137355,  -8.10845082],
+<pre>array([[-11.34670377, -10.557072  ,  -8.01032748, ..., -13.41498208,
+         -9.8964679 , -11.36153538],
+       [ -8.80514696,  -7.30724612, -10.22434436, ..., -10.00105559,
+         -8.27593272, -10.5690859 ],
+       [-12.52726462,  -9.90836358, -12.16491089, ..., -15.11993901,
+         -8.81558032, -12.5044493 ],
        ...,
-       [-10.94747515, -11.13136047, -14.1546031 , ...,  -9.68050145,
-         -7.91169288,  -7.71919022],
-       [-15.3425717 , -12.11641456,  -9.68133925, ..., -10.90030328,
-         -6.63990232, -11.4094925 ],
-       [-12.84883557, -12.87354881, -11.55333124, ..., -11.76879806,
-         -9.285681  ,  -7.20694785]])</pre>
+       [ -9.76167626, -13.55535865, -11.83886699, ..., -10.14707239,
+        -10.21608137, -12.34340769],
+       [ -9.09230653,  -8.04610989,  -7.41162896, ...,  -8.31379333,
+         -7.98279786,  -5.72452914],
+       [ -8.58219289, -13.50122178,  -9.19289606, ..., -14.77462797,
+        -11.70527278,  -7.01536086]])</pre>
 </div>
 
 </div>
@@ -2083,19 +2076,19 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([[ -8.10319965,  -8.09197776,  -7.46559812, ..., -12.28120725,
-         -6.81913619, -13.32454396],
-       [ -4.96586804,  -8.59259404, -12.4502916 , ..., -13.49397573,
-         -9.93460294,  -5.97750353],
-       [ -8.51009763, -10.07886697,  -9.07731015, ..., -11.57679535,
-        -10.98137355,  -8.10845082],
+<pre>array([[-11.34670377, -10.557072  ,  -8.01032748, ..., -13.41498208,
+         -9.8964679 , -11.36153538],
+       [ -8.80514696,  -7.30724612, -10.22434436, ..., -10.00105559,
+         -8.27593272, -10.5690859 ],
+       [-12.52726462,  -9.90836358, -12.16491089, ..., -15.11993901,
+         -8.81558032, -12.5044493 ],
        ...,
-       [-10.94747515, -11.13136047, -14.1546031 , ...,  -9.68050145,
-         -7.91169288,  -7.71919022],
-       [-15.3425717 , -12.11641456,  -9.68133925, ..., -10.90030328,
-         -6.63990232, -11.4094925 ],
-       [-12.84883557, -12.87354881, -11.55333124, ..., -11.76879806,
-         -9.285681  ,  -7.20694785]])</pre>
+       [ -9.76167626, -13.55535865, -11.83886699, ..., -10.14707239,
+        -10.21608137, -12.34340769],
+       [ -9.09230653,  -8.04610989,  -7.41162896, ...,  -8.31379333,
+         -7.98279786,  -5.72452914],
+       [ -8.58219289, -13.50122178,  -9.19289606, ..., -14.77462797,
+        -11.70527278,  -7.01536086]])</pre>
 </div>
 
 </div>

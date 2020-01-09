@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,7 +8,6 @@
 <link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
 <link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
 <link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
-<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
 <meta name="theme-color" content="#33758C">
 <meta name="generator" content="Nikola (getnikola.com)">
 <link rel="alternate" type="application/rss+xml" title="RSS" href="../../rss.xml">
@@ -30,40 +30,26 @@ MathJax.Hub.Config({
 <meta property="og:url" content="https://unidata.github.io/python-training/python/times_and_dates/">
 <meta property="og:description" content="Times and Dates¶Time is an essential component of nearly all geoscience data. Timescales span orders of magnitude from microseconds for lightning, hours for a supercell thunderstorm, days for a global">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2020-01-08T23:18:48-07:00">
+<meta property="article:published_time" content="2020-01-08T23:39:49-07:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
 
-<!-- Header and menu bar -->
-<div class="container">
-      <header class="blog-header py-3"><div class="row nbb-header align-items-center">
-          <div class="col-md-3 col-xs-2 col-sm-2" style="width: auto;">
-            <button class="navbar-toggler navbar-light bg-light nbb-navbar-toggler" type="button" data-toggle="collapse" data-target=".bs-nav-collapsible" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse bs-nav-collapsible bootblog4-search-form-holder">
-                
-            </div>
-        </div>
-          <div class="col-md-6 col-xs-10 col-sm-10 bootblog4-brand" style="width: auto;">
-            <a class="navbar-brand blog-header-logo text-dark" href="https://unidata.github.io/python-training/">
+<!-- Menubar -->
+
+<nav class="navbar navbar-expand-md static-top mb-4
+navbar-dark bg-primary
+"><div class="container">
+<!-- This keeps the margins nice -->
+        <a class="navbar-brand" href="https://unidata.github.io/python-training/">
             <img src="https://docs.unidata.ucar.edu/images/logos/unidata_logo_rgb_sm.png" alt="Unidata Python Training" id="logo" class="d-inline-block align-top"><span id="blog-title">Unidata Python Training</span>
         </a>
-          </div>
-            <div class="col-md-3 justify-content-end align-items-center bs-nav-collapsible collapse flex-collapse bootblog4-right-nav">
-            <nav class="navbar navbar-light bg-white"><ul class="navbar-nav bootblog4-right-nav">
-<li class="nav-item">
-    <a href="index.ipynb" id="sourcelink" class="nav-link">Source</a>
-    </li>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-
-                    
-            </ul></nav>
-</div>
-    </div>
-</header><nav class="navbar navbar-expand-md navbar-light bg-white static-top"><div class="collapse navbar-collapse bs-nav-collapsible" id="bs-navbar">
-            <ul class="navbar-nav nav-fill d-flex w-100">
+        <div class="collapse navbar-collapse" id="bs-navbar">
+            <ul class="navbar-nav mr-auto">
 <li class="nav-item">
 <a href="../intro-to-python" class="nav-link">Introduction to Python</a>
                 </li>
@@ -76,12 +62,19 @@ MathJax.Hub.Config({
                 
             </li>
 </ul>
+<ul class="navbar-nav navbar-right">
+<li class="nav-item">
+    <a href="index.ipynb" id="sourcelink" class="nav-link">Source</a>
+    </li>
+
+
+                
+            </ul>
 </div>
 <!-- /.navbar-collapse -->
-</nav>
-</div>
-
-<div class="container" id="content" role="main">
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
     <div class="body-content">
         <!--Body content-->
         
@@ -187,7 +180,7 @@ MathJax.Hub.Config({
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>1578550726.4623635
+<pre>1578551986.8896964
 </pre>
 </div>
 </div>
@@ -236,7 +229,7 @@ MathJax.Hub.Config({
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>The benchmark took 1.0009567737579346 seconds
+<pre>The benchmark took 1.0012164115905762 seconds
 </pre>
 </div>
 </div>
@@ -659,7 +652,7 @@ Next, we create two <code>Coord</code> objects: <code>ny</code> and <code>paris<
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>{'UNITS': {'position': 'ft', 'elevation': 'ft', 'air_temp': 'Celsius'}, 'QC_SUMMARY': {'QC_TESTS_APPLIED': ['sl_range_check'], 'TOTAL_OBSERVATIONS_FLAGGED': 0.0, 'PERCENT_OF_TOTAL_OBSERVATIONS_FLAGGED': 0.0}, 'STATION': [{'STATUS': 'ACTIVE', 'MNET_ID': '1', 'PERIOD_OF_RECORD': {'start': '2004-11-18T00:00:00Z', 'end': '2020-01-04T08:30:00Z'}, 'ELEVATION': '98', 'NAME': 'Shemya, Eareckson AFB', 'STID': 'PASY', 'SENSOR_VARIABLES': {'date_time': {'date_time': {}}, 'air_temp': {'air_temp_set_1': {'position': '6.56'}}}, 'ELEV_DEM': '114.8', 'LONGITUDE': '174.11667', 'STATE': 'AK', 'OBSERVATIONS': {'date_time': ['2016-06-01T00:56:00Z', '2016-06-01T01:26:00Z', '2016-06-01T01:56:00Z', '2016-06-01T02:40:00Z', '2016-06-01T02:56:00Z', '2016-06-01T03:56:00Z', '2016-06-01T04:45:00Z', '2016-06-01T04:56:00Z', '2016-06-01T05:56:00Z'], 'air_temp_set_1': [8.3, 8.0, 8.3, 8.0, 7.8, 7.8, 7.0, 7.2, 7.2]}, 'RESTRICTED': False, 'QC_FLAGGED': False, 'LATITUDE': '52.71667', 'TIMEZONE': 'America/Adak', 'ID': '12638'}], 'SUMMARY': {'DATA_QUERY_TIME': '4.10795211792 ms', 'RESPONSE_CODE': 1, 'RESPONSE_MESSAGE': 'OK', 'METADATA_RESPONSE_TIME': '65.9708976746 ms', 'DATA_PARSING_TIME': '0.449180603027 ms', 'TOTAL_DATA_TIME': '4.55904006958 ms', 'NUMBER_OF_OBJECTS': 1, 'FUNCTION_USED': 'time_data_parser'}}
+<pre>{'UNITS': {'position': 'ft', 'elevation': 'ft', 'air_temp': 'Celsius'}, 'QC_SUMMARY': {'QC_TESTS_APPLIED': ['sl_range_check'], 'TOTAL_OBSERVATIONS_FLAGGED': 0.0, 'PERCENT_OF_TOTAL_OBSERVATIONS_FLAGGED': 0.0}, 'STATION': [{'STATUS': 'ACTIVE', 'MNET_ID': '1', 'PERIOD_OF_RECORD': {'start': '2004-11-18T00:00:00Z', 'end': '2020-01-04T08:55:00Z'}, 'ELEVATION': '98', 'NAME': 'Shemya, Eareckson AFB', 'STID': 'PASY', 'SENSOR_VARIABLES': {'date_time': {'date_time': {}}, 'air_temp': {'air_temp_set_1': {'position': '6.56'}}}, 'ELEV_DEM': '114.8', 'LONGITUDE': '174.11667', 'STATE': 'AK', 'OBSERVATIONS': {'date_time': ['2016-06-01T00:56:00Z', '2016-06-01T01:26:00Z', '2016-06-01T01:56:00Z', '2016-06-01T02:40:00Z', '2016-06-01T02:56:00Z', '2016-06-01T03:56:00Z', '2016-06-01T04:45:00Z', '2016-06-01T04:56:00Z', '2016-06-01T05:56:00Z'], 'air_temp_set_1': [8.3, 8.0, 8.3, 8.0, 7.8, 7.8, 7.0, 7.2, 7.2]}, 'RESTRICTED': False, 'QC_FLAGGED': False, 'LATITUDE': '52.71667', 'TIMEZONE': 'America/Adak', 'ID': '12638'}], 'SUMMARY': {'DATA_QUERY_TIME': '2.24089622498 ms', 'RESPONSE_CODE': 1, 'RESPONSE_MESSAGE': 'OK', 'METADATA_RESPONSE_TIME': '66.4069652557 ms', 'DATA_PARSING_TIME': '0.571012496948 ms', 'TOTAL_DATA_TIME': '2.81190872192 ms', 'NUMBER_OF_OBJECTS': 1, 'FUNCTION_USED': 'time_data_parser'}}
 </pre>
 </div>
 </div>
@@ -818,8 +811,8 @@ The type of the 'tide_length' variable is &lt;class 'datetime.timedelta'&gt;.
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>I am time zone naive 2020-01-09 06:18:47.969451.
-I am time zone aware 2020-01-08 23:18:48.012932-07:00.
+<pre>I am time zone naive 2020-01-09 06:39:48.388400.
+I am time zone aware 2020-01-08 23:39:48.453389-07:00.
 </pre>
 </div>
 </div>
@@ -870,8 +863,8 @@ I am time zone aware 2020-01-08 23:18:48.012932-07:00.
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>The UTC time is January 09, 2020, 6:18AM.
-The 'US/Mountain' time is January 08, 2020, 11:18PM.
+<pre>The UTC time is January 09, 2020, 6:39AM.
+The 'US/Mountain' time is January 08, 2020, 11:39PM.
 </pre>
 </div>
 </div>
