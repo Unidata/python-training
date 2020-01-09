@@ -7,7 +7,7 @@
 .. description: A one-stop shop for Python in atmospheric science and meteorology
 .. type: text
 
-Welcome to Unidata's Python Training Site for atmospheric science and meteorology. This site is meant
+Welcome to Unidata's Python training resources for atmospheric science and meteorology. This site is meant
 to be a one-stop website for learning how to use Python for earth-science education and research
 for any experience level. New Python users may find the :doc:`Introduction to Python <intro-to-python>`
 section a good place to start. Check out the :doc:`Example Gallery <gallery-home>` for detailed meteorology-specific

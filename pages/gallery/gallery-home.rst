@@ -1,4 +1,4 @@
-.. title: The Unidata Example Gallery
+.. title: Example Gallery
 .. slug: gallery-home
 .. date: 2019-07-29 14:37:54 UTC-06:00
 .. tags: python example meteorology atmospheric science unidata
@@ -6,7 +6,7 @@
 .. link:
 .. description:
 
-Welcome to the Unidata Python Example Gallery! Check out detailed examples for atmospheric science
+Welcome to the example gallery! Check out detailed examples for atmospheric science
 and meteorology, from data analysis to publication-quality figures. Feel free to use code from these
 examples in your own work. To download an example, click the "Source" link in the top right corner of
 the Notebook page. Curious about the Python libraries used in these
