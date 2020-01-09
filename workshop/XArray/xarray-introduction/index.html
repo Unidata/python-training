@@ -1,18 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>XArray Introduction | The Unidata Python Training Site</title>
+<title>XArray Introduction | Unidata Python Training</title>
 <link href="../../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
 <link href="../../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
 <link href="../../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
-<meta name="theme-color" content="#5670d4">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+<meta name="theme-color" content="#33758C">
 <meta name="generator" content="Nikola (getnikola.com)">
-<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../../rss.xml">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.xml">
 <link rel="canonical" href="https://unidata.github.io/python-training/workshop/XArray/xarray-introduction/">
-<!--[if lt IE 9]><script src="../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
-<meta property="og:site_name" content="The Unidata Python Training Site">
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script><!--[if lt IE 9]><script src="../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="Unidata Python Training">
 <meta property="og:title" content="XArray Introduction">
 <meta property="og:url" content="https://unidata.github.io/python-training/workshop/XArray/xarray-introduction/">
 <meta property="og:description" content="XArray Introduction
@@ -30,60 +43,67 @@ How does XArray fit in with Numpy and Pandas?
 Objectives¶
 Create a Data">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2020-01-08T09:50:34-07:00">
+<meta property="article:published_time" content="2020-01-08T23:21:17-07:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
 
-<!-- Menubar -->
-
-<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
-<!-- This keeps the margins nice -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
+<!-- Header and menu bar -->
+<div class="container">
+      <header class="blog-header py-3"><div class="row nbb-header align-items-center">
+          <div class="col-md-3 col-xs-2 col-sm-2" style="width: auto;">
+            <button class="navbar-toggler navbar-light bg-light nbb-navbar-toggler" type="button" data-toggle="collapse" data-target=".bs-nav-collapsible" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
-
-                <span id="blog-title">The Unidata Python Training Site</span>
-            </a>
+            <div class="collapse bs-nav-collapsible bootblog4-search-form-holder">
+                
+            </div>
         </div>
-<!-- /.navbar-header -->
-        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
-            <ul class="nav navbar-nav">
-<li>
-<a href="../../../python/intro-to-python">Introduction to Python</a>
+          <div class="col-md-6 col-xs-10 col-sm-10 bootblog4-brand" style="width: auto;">
+            <a class="navbar-brand blog-header-logo text-dark" href="https://unidata.github.io/python-training/">
+            <img src="https://docs.unidata.ucar.edu/images/logos/unidata_logo_rgb_sm.png" alt="Unidata Python Training" id="logo" class="d-inline-block align-top"><span id="blog-title">Unidata Python Training</span>
+        </a>
+          </div>
+            <div class="col-md-3 justify-content-end align-items-center bs-nav-collapsible collapse flex-collapse bootblog4-right-nav">
+            <nav class="navbar navbar-light bg-white"><ul class="navbar-nav bootblog4-right-nav">
+<li class="nav-item">
+    <a href="index.ipynb" id="sourcelink" class="nav-link">Source</a>
+    </li>
+
+
+                    
+            </ul></nav>
+</div>
+    </div>
+</header><nav class="navbar navbar-expand-md navbar-light bg-white static-top"><div class="collapse navbar-collapse bs-nav-collapsible" id="bs-navbar">
+            <ul class="navbar-nav nav-fill d-flex w-100">
+<li class="nav-item">
+<a href="../../../python/intro-to-python" class="nav-link">Introduction to Python</a>
                 </li>
-<li>
-<a href="../../../gallery/gallery-home">Example Gallery</a>
+<li class="nav-item">
+<a href="../../../gallery/gallery-home" class="nav-link">Example Gallery</a>
                 </li>
-<li>
-<a href="../../workshop-intro">Python Workshop Materials</a>
+<li class="nav-item">
+<a href="../../workshop-intro" class="nav-link">Python Workshop Materials</a>
 
                 
             </li>
 </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-    <a href="index.ipynb" id="sourcelink">Source</a>
-    </li>
-                
-            </ul>
 </div>
 <!-- /.navbar-collapse -->
-    </div>
-<!-- /.container -->
-</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+</nav>
+</div>
+
+<div class="container" id="content" role="main">
     <div class="body-content">
         <!--Body content-->
-        <div class="row">
-            
+        
+        
+        
 <article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">XArray Introduction</a></h1>
 
         
+
     </header><div class="e-content entry-content" itemprop="articleBody text">
     <div>
 <div class="cell border-box-sizing text_cell rendered">
@@ -157,7 +177,7 @@ Create a Data">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Convention for import to get shortened namespace</span>
@@ -172,7 +192,7 @@ Create a Data">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Create some sample "temperature" data</span>
@@ -181,6 +201,44 @@ Create a Data">
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[2]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>array([[[278.25018297, 291.64605073, 278.9323708 , 281.81229627],
+        [290.32520308, 285.19063174, 296.74609919, 285.07856979],
+        [282.32855897, 283.73909767, 279.08576533, 288.36602435]],
+
+       [[278.43004587, 285.87566431, 276.82326071, 279.15040697],
+        [286.99168165, 286.85631487, 282.35562684, 285.19858763],
+        [283.25958931, 288.77113816, 274.72994502, 285.49512146]],
+
+       [[278.50429421, 290.63580226, 286.36493594, 287.26891349],
+        [287.43316994, 277.06078808, 285.83756508, 280.05585817],
+        [290.28577205, 284.26908681, 275.9117705 , 282.78068446]],
+
+       [[282.68168572, 289.19708049, 283.23177668, 289.91562212],
+        [281.17337213, 280.65442177, 288.21396905, 283.85078917],
+        [286.52914571, 286.06297577, 279.76971174, 282.01935086]],
+
+       [[284.08814909, 280.5332011 , 273.71435864, 283.56163542],
+        [282.64583844, 277.69412005, 290.67238113, 292.36373784],
+        [286.97295361, 285.5411214 , 282.97708166, 274.82912056]]])</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -197,7 +255,7 @@ Create a Data">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">temp</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
@@ -205,6 +263,45 @@ Create a Data">
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[3]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<pre>&lt;xarray.DataArray (dim_0: 5, dim_1: 3, dim_2: 4)&gt;
+array([[[278.25018297, 291.64605073, 278.9323708 , 281.81229627],
+        [290.32520308, 285.19063174, 296.74609919, 285.07856979],
+        [282.32855897, 283.73909767, 279.08576533, 288.36602435]],
+
+       [[278.43004587, 285.87566431, 276.82326071, 279.15040697],
+        [286.99168165, 286.85631487, 282.35562684, 285.19858763],
+        [283.25958931, 288.77113816, 274.72994502, 285.49512146]],
+
+       [[278.50429421, 290.63580226, 286.36493594, 287.26891349],
+        [287.43316994, 277.06078808, 285.83756508, 280.05585817],
+        [290.28577205, 284.26908681, 275.9117705 , 282.78068446]],
+
+       [[282.68168572, 289.19708049, 283.23177668, 289.91562212],
+        [281.17337213, 280.65442177, 288.21396905, 283.85078917],
+        [286.52914571, 286.06297577, 279.76971174, 282.01935086]],
+
+       [[284.08814909, 280.5332011 , 273.71435864, 283.56163542],
+        [282.64583844, 277.69412005, 290.67238113, 292.36373784],
+        [286.97295361, 285.5411214 , 282.97708166, 274.82912056]]])
+Dimensions without coordinates: dim_0, dim_1, dim_2</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -221,7 +318,7 @@ Create a Data">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">temp</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s1">'time'</span><span class="p">,</span> <span class="s1">'lat'</span><span class="p">,</span> <span class="s1">'lon'</span><span class="p">])</span>
@@ -229,6 +326,45 @@ Create a Data">
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[4]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<pre>&lt;xarray.DataArray (time: 5, lat: 3, lon: 4)&gt;
+array([[[278.25018297, 291.64605073, 278.9323708 , 281.81229627],
+        [290.32520308, 285.19063174, 296.74609919, 285.07856979],
+        [282.32855897, 283.73909767, 279.08576533, 288.36602435]],
+
+       [[278.43004587, 285.87566431, 276.82326071, 279.15040697],
+        [286.99168165, 286.85631487, 282.35562684, 285.19858763],
+        [283.25958931, 288.77113816, 274.72994502, 285.49512146]],
+
+       [[278.50429421, 290.63580226, 286.36493594, 287.26891349],
+        [287.43316994, 277.06078808, 285.83756508, 280.05585817],
+        [290.28577205, 284.26908681, 275.9117705 , 282.78068446]],
+
+       [[282.68168572, 289.19708049, 283.23177668, 289.91562212],
+        [281.17337213, 280.65442177, 288.21396905, 283.85078917],
+        [286.52914571, 286.06297577, 279.76971174, 282.01935086]],
+
+       [[284.08814909, 280.5332011 , 273.71435864, 283.56163542],
+        [282.64583844, 277.69412005, 290.67238113, 292.36373784],
+        [286.97295361, 285.5411214 , 282.97708166, 274.82912056]]])
+Dimensions without coordinates: time, lat, lon</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -245,7 +381,7 @@ Create a Data">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Use pandas to create an array of datetimes</span>
@@ -258,10 +394,32 @@ Create a Data">
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[5]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>DatetimeIndex(['2018-01-01', '2018-01-02', '2018-01-03', '2018-01-04',
+               '2018-01-05'],
+              dtype='datetime64[ns]', freq='D')</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Sample lon/lats</span>
@@ -286,7 +444,7 @@ Create a Data">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">temp</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="p">[</span><span class="n">times</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">lons</span><span class="p">],</span> <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s1">'time'</span><span class="p">,</span> <span class="s1">'lat'</span><span class="p">,</span> <span class="s1">'lon'</span><span class="p">])</span>
@@ -294,6 +452,48 @@ Create a Data">
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[7]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<pre>&lt;xarray.DataArray (time: 5, lat: 3, lon: 4)&gt;
+array([[[278.25018297, 291.64605073, 278.9323708 , 281.81229627],
+        [290.32520308, 285.19063174, 296.74609919, 285.07856979],
+        [282.32855897, 283.73909767, 279.08576533, 288.36602435]],
+
+       [[278.43004587, 285.87566431, 276.82326071, 279.15040697],
+        [286.99168165, 286.85631487, 282.35562684, 285.19858763],
+        [283.25958931, 288.77113816, 274.72994502, 285.49512146]],
+
+       [[278.50429421, 290.63580226, 286.36493594, 287.26891349],
+        [287.43316994, 277.06078808, 285.83756508, 280.05585817],
+        [290.28577205, 284.26908681, 275.9117705 , 282.78068446]],
+
+       [[282.68168572, 289.19708049, 283.23177668, 289.91562212],
+        [281.17337213, 280.65442177, 288.21396905, 283.85078917],
+        [286.52914571, 286.06297577, 279.76971174, 282.01935086]],
+
+       [[284.08814909, 280.5332011 , 273.71435864, 283.56163542],
+        [282.64583844, 277.69412005, 290.67238113, 292.36373784],
+        [286.97295361, 285.5411214 , 282.97708166, 274.82912056]]])
+Coordinates:
+  * time     (time) datetime64[ns] 2018-01-01 2018-01-02 ... 2018-01-05
+  * lat      (lat) float64 25.0 40.0 55.0
+  * lon      (lon) float64 -120.0 -100.0 -80.0 -60.0</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -310,7 +510,7 @@ Create a Data">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">temp</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'units'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'kelvin'</span>
@@ -320,6 +520,51 @@ Create a Data">
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[8]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<pre>&lt;xarray.DataArray (time: 5, lat: 3, lon: 4)&gt;
+array([[[278.25018297, 291.64605073, 278.9323708 , 281.81229627],
+        [290.32520308, 285.19063174, 296.74609919, 285.07856979],
+        [282.32855897, 283.73909767, 279.08576533, 288.36602435]],
+
+       [[278.43004587, 285.87566431, 276.82326071, 279.15040697],
+        [286.99168165, 286.85631487, 282.35562684, 285.19858763],
+        [283.25958931, 288.77113816, 274.72994502, 285.49512146]],
+
+       [[278.50429421, 290.63580226, 286.36493594, 287.26891349],
+        [287.43316994, 277.06078808, 285.83756508, 280.05585817],
+        [290.28577205, 284.26908681, 275.9117705 , 282.78068446]],
+
+       [[282.68168572, 289.19708049, 283.23177668, 289.91562212],
+        [281.17337213, 280.65442177, 288.21396905, 283.85078917],
+        [286.52914571, 286.06297577, 279.76971174, 282.01935086]],
+
+       [[284.08814909, 280.5332011 , 273.71435864, 283.56163542],
+        [282.64583844, 277.69412005, 290.67238113, 292.36373784],
+        [286.97295361, 285.5411214 , 282.97708166, 274.82912056]]])
+Coordinates:
+  * time     (time) datetime64[ns] 2018-01-01 2018-01-02 ... 2018-01-05
+  * lat      (lat) float64 25.0 40.0 55.0
+  * lon      (lon) float64 -120.0 -100.0 -80.0 -60.0
+Attributes:
+    units:          kelvin
+    standard_name:  air_temperature</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -336,7 +581,7 @@ Create a Data">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># For example, convert Kelvin to Celsius</span>
@@ -344,6 +589,48 @@ Create a Data">
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[9]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<pre>&lt;xarray.DataArray (time: 5, lat: 3, lon: 4)&gt;
+array([[[ 5.10018297, 18.49605073,  5.7823708 ,  8.66229627],
+        [17.17520308, 12.04063174, 23.59609919, 11.92856979],
+        [ 9.17855897, 10.58909767,  5.93576533, 15.21602435]],
+
+       [[ 5.28004587, 12.72566431,  3.67326071,  6.00040697],
+        [13.84168165, 13.70631487,  9.20562684, 12.04858763],
+        [10.10958931, 15.62113816,  1.57994502, 12.34512146]],
+
+       [[ 5.35429421, 17.48580226, 13.21493594, 14.11891349],
+        [14.28316994,  3.91078808, 12.68756508,  6.90585817],
+        [17.13577205, 11.11908681,  2.7617705 ,  9.63068446]],
+
+       [[ 9.53168572, 16.04708049, 10.08177668, 16.76562212],
+        [ 8.02337213,  7.50442177, 15.06396905, 10.70078917],
+        [13.37914571, 12.91297577,  6.61971174,  8.86935086]],
+
+       [[10.93814909,  7.3832011 ,  0.56435864, 10.41163542],
+        [ 9.49583844,  4.54412005, 17.52238113, 19.21373784],
+        [13.82295361, 12.3911214 ,  9.82708166,  1.67912056]]])
+Coordinates:
+  * time     (time) datetime64[ns] 2018-01-01 2018-01-02 ... 2018-01-05
+  * lat      (lat) float64 25.0 40.0 55.0
+  * lon      (lon) float64 -120.0 -100.0 -80.0 -60.0</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -362,13 +649,42 @@ Create a Data">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">temp</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">'2018-01-02'</span><span class="p">)</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[10]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<pre>&lt;xarray.DataArray (lat: 3, lon: 4)&gt;
+array([[278.43004587, 285.87566431, 276.82326071, 279.15040697],
+       [286.99168165, 286.85631487, 282.35562684, 285.19858763],
+       [283.25958931, 288.77113816, 274.72994502, 285.49512146]])
+Coordinates:
+    time     datetime64[ns] 2018-01-02
+  * lat      (lat) float64 25.0 40.0 55.0
+  * lon      (lon) float64 -120.0 -100.0 -80.0 -60.0
+Attributes:
+    units:          kelvin
+    standard_name:  air_temperature</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -385,7 +701,7 @@ Create a Data">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
@@ -393,6 +709,35 @@ Create a Data">
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[11]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<pre>&lt;xarray.DataArray (lat: 3, lon: 4)&gt;
+array([[284.08814909, 280.5332011 , 273.71435864, 283.56163542],
+       [282.64583844, 277.69412005, 290.67238113, 292.36373784],
+       [286.97295361, 285.5411214 , 282.97708166, 274.82912056]])
+Coordinates:
+    time     datetime64[ns] 2018-01-05
+  * lat      (lat) float64 25.0 40.0 55.0
+  * lon      (lon) float64 -120.0 -100.0 -80.0 -60.0
+Attributes:
+    units:          kelvin
+    standard_name:  air_temperature</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -411,7 +756,7 @@ Create a Data">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Your code goes here</span>
@@ -434,7 +779,7 @@ Create a Data">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/interp_solution.py</span>
@@ -445,6 +790,34 @@ Create a Data">
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[13]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<pre>&lt;xarray.DataArray (time: 5)&gt;
+array([286.47427457, 286.89015656, 279.65388354, 280.78415936,
+       278.93204964])
+Coordinates:
+  * time     (time) datetime64[ns] 2018-01-01 2018-01-02 ... 2018-01-05
+    lon      int64 -105
+    lat      int64 40
+Attributes:
+    units:          kelvin
+    standard_name:  air_temperature</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -461,13 +834,47 @@ Create a Data">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">temp</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="s1">'2018-01-01'</span><span class="p">,</span> <span class="s1">'2018-01-03'</span><span class="p">),</span> <span class="n">lon</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="o">-</span><span class="mi">110</span><span class="p">,</span> <span class="o">-</span><span class="mi">70</span><span class="p">),</span> <span class="n">lat</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">45</span><span class="p">))</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[14]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<pre>&lt;xarray.DataArray (time: 3, lat: 2, lon: 2)&gt;
+array([[[291.64605073, 278.9323708 ],
+        [285.19063174, 296.74609919]],
+
+       [[285.87566431, 276.82326071],
+        [286.85631487, 282.35562684]],
+
+       [[290.63580226, 286.36493594],
+        [277.06078808, 285.83756508]]])
+Coordinates:
+  * time     (time) datetime64[ns] 2018-01-01 2018-01-02 2018-01-03
+  * lat      (lat) float64 25.0 40.0
+  * lon      (lon) float64 -100.0 -80.0
+Attributes:
+    units:          kelvin
+    standard_name:  air_temperature</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -487,7 +894,7 @@ Create a Data">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># As done above</span>
@@ -498,10 +905,39 @@ Create a Data">
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[15]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<pre>&lt;xarray.DataArray (lat: 3, lon: 4)&gt;
+array([[278.43004587, 285.87566431, 276.82326071, 279.15040697],
+       [286.99168165, 286.85631487, 282.35562684, 285.19858763],
+       [283.25958931, 288.77113816, 274.72994502, 285.49512146]])
+Coordinates:
+    time     datetime64[ns] 2018-01-02
+  * lat      (lat) float64 25.0 40.0 55.0
+  * lon      (lon) float64 -120.0 -100.0 -80.0 -60.0
+Attributes:
+    units:          kelvin
+    standard_name:  air_temperature</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">temp</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'2018-01-01'</span><span class="p">:</span><span class="s1">'2018-01-03'</span><span class="p">,</span> <span class="mi">25</span><span class="p">:</span><span class="mi">45</span><span class="p">,</span> <span class="o">-</span><span class="mi">110</span><span class="p">:</span><span class="o">-</span><span class="mi">70</span><span class="p">]</span>
@@ -511,10 +947,44 @@ Create a Data">
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[16]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<pre>&lt;xarray.DataArray (time: 3, lat: 2, lon: 2)&gt;
+array([[[291.64605073, 278.9323708 ],
+        [285.19063174, 296.74609919]],
+
+       [[285.87566431, 276.82326071],
+        [286.85631487, 282.35562684]],
+
+       [[290.63580226, 286.36493594],
+        [277.06078808, 285.83756508]]])
+Coordinates:
+  * time     (time) datetime64[ns] 2018-01-01 2018-01-02 2018-01-03
+  * lat      (lat) float64 25.0 40.0
+  * lon      (lon) float64 -100.0 -80.0
+Attributes:
+    units:          kelvin
+    standard_name:  air_temperature</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># This *doesn't* work however:</span>
@@ -540,7 +1010,7 @@ Create a Data">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Open sample North American Reanalysis data in netCDF format</span>
@@ -549,6 +1019,52 @@ Create a Data">
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[18]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<pre>&lt;xarray.Dataset&gt;
+Dimensions:                       (isobaric1: 29, time1: 1, x: 268, y: 119)
+Coordinates:
+  * time1                         (time1) datetime64[ns] 1993-03-13
+  * isobaric1                     (isobaric1) float32 100.0 125.0 ... 1000.0
+  * y                             (y) float32 -3116.548 -3084.0852 ... 714.08594
+  * x                             (x) float32 -3324.4707 ... 5343.1504
+Data variables:
+    u-component_of_wind_isobaric  (time1, isobaric1, y, x) float32 ...
+    LambertConformal_Projection   int32 ...
+    lat                           (y, x) float64 ...
+    lon                           (y, x) float64 ...
+    Geopotential_height_isobaric  (time1, isobaric1, y, x) float32 ...
+    v-component_of_wind_isobaric  (time1, isobaric1, y, x) float32 ...
+    Temperature_isobaric          (time1, isobaric1, y, x) float32 ...
+Attributes:
+    Originating_or_generating_Center:     US National Weather Service, Nation...
+    Originating_or_generating_Subcenter:  North American Regional Reanalysis ...
+    GRIB_table_version:                   0,131
+    Generating_process_or_model:          North American Regional Reanalysis ...
+    Conventions:                          CF-1.6
+    history:                              Read using CDM IOSP GribCollection v3
+    featureType:                          GRID
+    History:                              Translated to CF-1.0 Conventions by...
+    geospatial_lat_min:                   10.753308882144761
+    geospatial_lat_max:                   46.8308828962289
+    geospatial_lon_min:                   -153.88242040519995
+    geospatial_lon_max:                   -42.666108129242815</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -565,13 +1081,45 @@ Create a Data">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [19]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ds</span><span class="o">.</span><span class="n">isobaric1</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[19]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<pre>&lt;xarray.DataArray 'isobaric1' (isobaric1: 29)&gt;
+array([ 100.,  125.,  150.,  175.,  200.,  225.,  250.,  275.,  300.,  350.,
+        400.,  450.,  500.,  550.,  600.,  650.,  700.,  725.,  750.,  775.,
+        800.,  825.,  850.,  875.,  900.,  925.,  950.,  975., 1000.],
+      dtype=float32)
+Coordinates:
+  * isobaric1  (isobaric1) float32 100.0 125.0 150.0 ... 950.0 975.0 1000.0
+Attributes:
+    units:                   hPa
+    long_name:               Isobaric surface
+    positive:                down
+    Grib_level_type:         100
+    _CoordinateAxisType:     Pressure
+    _CoordinateZisPositive:  down</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -588,13 +1136,45 @@ Create a Data">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [20]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ds</span><span class="p">[</span><span class="s1">'isobaric1'</span><span class="p">]</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[20]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<pre>&lt;xarray.DataArray 'isobaric1' (isobaric1: 29)&gt;
+array([ 100.,  125.,  150.,  175.,  200.,  225.,  250.,  275.,  300.,  350.,
+        400.,  450.,  500.,  550.,  600.,  650.,  700.,  725.,  750.,  775.,
+        800.,  825.,  850.,  875.,  900.,  925.,  950.,  975., 1000.],
+      dtype=float32)
+Coordinates:
+  * isobaric1  (isobaric1) float32 100.0 125.0 150.0 ... 950.0 975.0 1000.0
+Attributes:
+    units:                   hPa
+    long_name:               Isobaric surface
+    positive:                down
+    Grib_level_type:         100
+    _CoordinateAxisType:     Pressure
+    _CoordinateZisPositive:  down</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -611,7 +1191,7 @@ Create a Data">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [21]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ds_1000</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">isobaric1</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">)</span>
@@ -622,16 +1202,103 @@ Create a Data">
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[21]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<pre>&lt;xarray.Dataset&gt;
+Dimensions:                       (time1: 1, x: 268, y: 119)
+Coordinates:
+  * time1                         (time1) datetime64[ns] 1993-03-13
+    isobaric1                     float32 1000.0
+  * y                             (y) float32 -3116.548 -3084.0852 ... 714.08594
+  * x                             (x) float32 -3324.4707 ... 5343.1504
+Data variables:
+    u-component_of_wind_isobaric  (time1, y, x) float32 ...
+    LambertConformal_Projection   int32 ...
+    lat                           (y, x) float64 ...
+    lon                           (y, x) float64 ...
+    Geopotential_height_isobaric  (time1, y, x) float32 ...
+    v-component_of_wind_isobaric  (time1, y, x) float32 ...
+    Temperature_isobaric          (time1, y, x) float32 ...
+Attributes:
+    Originating_or_generating_Center:     US National Weather Service, Nation...
+    Originating_or_generating_Subcenter:  North American Regional Reanalysis ...
+    GRIB_table_version:                   0,131
+    Generating_process_or_model:          North American Regional Reanalysis ...
+    Conventions:                          CF-1.6
+    history:                              Read using CDM IOSP GribCollection v3
+    featureType:                          GRID
+    History:                              Translated to CF-1.0 Conventions by...
+    geospatial_lat_min:                   10.753308882144761
+    geospatial_lat_max:                   46.8308828962289
+    geospatial_lon_min:                   -153.88242040519995
+    geospatial_lon_max:                   -42.666108129242815</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [22]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ds_1000</span><span class="o">.</span><span class="n">Temperature_isobaric</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[22]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<pre>&lt;xarray.DataArray 'Temperature_isobaric' (time1: 1, y: 119, x: 268)&gt;
+array([[[294.09436, 294.1256 , ..., 298.6725 , 298.71936],
+        [294.07874, 294.14124, ..., 298.6256 , 298.5475 ],
+        ...,
+        [276.86   , 276.84436, ..., 289.11   , 289.01624],
+        [277.01624, 276.82874, ..., 289.0475 , 288.96936]]], dtype=float32)
+Coordinates:
+  * time1      (time1) datetime64[ns] 1993-03-13
+    isobaric1  float32 1000.0
+  * y          (y) float32 -3116.548 -3084.0852 -3051.622 ... 681.6229 714.08594
+  * x          (x) float32 -3324.4707 -3292.0078 ... 5310.6875 5343.1504
+Attributes:
+    long_name:           Temperature @ Isobaric surface
+    units:               K
+    description:         Temperature
+    grid_mapping:        LambertConformal_Projection
+    Grib_Variable_Id:    VAR_7-15-131-11_L100
+    Grib1_Center:        7
+    Grib1_Subcenter:     15
+    Grib1_TableVersion:  131
+    Grib1_Parameter:     11
+    Grib1_Level_Type:    100
+    Grib1_Level_Desc:    Isobaric surface</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -650,7 +1317,7 @@ Create a Data">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [23]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">u_winds</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s1">'u-component_of_wind_isobaric'</span><span class="p">]</span>
@@ -658,6 +1325,34 @@ Create a Data">
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[23]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<pre>&lt;xarray.DataArray 'u-component_of_wind_isobaric' (time1: 1, isobaric1: 29)&gt;
+array([[ 8.673963 , 10.212325 , 11.556413 , 12.254429 , 13.372146 ,
+        15.472462 , 16.091969 , 15.846294 , 15.195834 , 13.936979 ,
+        12.93888  , 12.060708 , 10.972139 ,  9.722328 ,  8.853286 ,
+         8.257241 ,  7.679721 ,  7.4516497,  7.2352104,  7.039894 ,
+         6.883371 ,  6.7821493,  6.7088237,  6.6865997,  6.7247376,
+         6.745023 ,  6.6859775,  6.5107226,  5.972262 ]], dtype=float32)
+Coordinates:
+  * time1      (time1) datetime64[ns] 1993-03-13
+  * isobaric1  (isobaric1) float32 100.0 125.0 150.0 ... 950.0 975.0 1000.0</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -691,7 +1386,7 @@ Create a Data">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [24]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/mean_profile.py</span>
@@ -705,6 +1400,34 @@ Create a Data">
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[24]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<pre>&lt;xarray.DataArray 'Temperature_isobaric' (time1: 1, isobaric1: 29)&gt;
+array([[215.078  , 215.76935, 217.243  , 217.82663, 215.83487, 216.10933,
+        219.99902, 224.66118, 228.80576, 234.88701, 238.78503, 242.66309,
+        246.44807, 249.26636, 250.84995, 253.37354, 257.0429 , 259.08398,
+        260.97955, 262.98364, 264.82138, 266.5198 , 268.22467, 269.7471 ,
+        271.18216, 272.66815, 274.13037, 275.54718, 276.97675]],
+      dtype=float32)
+Coordinates:
+  * time1      (time1) datetime64[ns] 1993-03-13
+  * isobaric1  (isobaric1) float32 100.0 125.0 150.0 ... 950.0 975.0 1000.0</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -723,7 +1446,9 @@ Create a Data">
 </div>
 </div>
     </div>
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha384-3lJUsx1TJHt7BA4udB5KPnDrlkO8T6J6v/op7ui0BbCjvZ9WqV4Xm6DTP6kQ/iBH" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+    
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha384-3lJUsx1TJHt7BA4udB5KPnDrlkO8T6J6v/op7ui0BbCjvZ9WqV4Xm6DTP6kQ/iBH" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
 MathJax.Hub.Config({
     tex2jax: {
         inlineMath: [ ['$','$'], ["\\(","\\)"] ],
@@ -735,21 +1460,30 @@ MathJax.Hub.Config({
         styles: {'.MathJax_Display': {"margin": 0}}
     }
 });
-</script></article>
-</div>
-        <!--End of body content-->
+</script></article><!--End of body content--><footer id="footer"><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-        <footer id="footer">
-            Contents © 2020         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+  ga('create', 'UA-92978945-1', 'auto');
+  ga('send', 'pageview');
+
+</script><p>Do you find this useful?
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Installation Guide" accesskey="n">Say Thanks!</a>
+</p>
+Contents © 2020
+<a href="mailto:support-python@unidata.ucar.edu">UCAR/Unidata</a> - Powered by
+<a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+
+            
             
         </footer>
 </div>
 </div>
 
-            <script src="../../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
-    moment.locale("en");
-    fancydates(0, "YYYY-MM-DD HH:mm");
-    </script><!-- end fancy dates --><script>
+
+        <script src="../../../assets/js/all-nocdn.js"></script><script>
     baguetteBox.run('div#content', {
         ignoreClass: 'islink',
         captions: function(element) {

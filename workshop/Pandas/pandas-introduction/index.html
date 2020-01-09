@@ -1,18 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pandas Introduction | The Unidata Python Training Site</title>
+<title>Pandas Introduction | Unidata Python Training</title>
 <link href="../../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
 <link href="../../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
 <link href="../../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
-<meta name="theme-color" content="#5670d4">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+<meta name="theme-color" content="#33758C">
 <meta name="generator" content="Nikola (getnikola.com)">
-<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../../rss.xml">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.xml">
 <link rel="canonical" href="https://unidata.github.io/python-training/workshop/Pandas/pandas-introduction/">
-<!--[if lt IE 9]><script src="../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
-<meta property="og:site_name" content="The Unidata Python Training Site">
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script><!--[if lt IE 9]><script src="../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="Unidata Python Training">
 <meta property="og:title" content="Pandas Introduction">
 <meta property="og:url" content="https://unidata.github.io/python-training/workshop/Pandas/pandas-introduction/">
 <meta property="og:description" content="Introduction to Pandas
@@ -29,60 +42,67 @@ What is Pandas?
 What are the basic Pandas data structures?
 How can I read data into ">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2020-01-08T09:50:34-07:00">
+<meta property="article:published_time" content="2020-01-08T23:17:10-07:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
 
-<!-- Menubar -->
-
-<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
-<!-- This keeps the margins nice -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
+<!-- Header and menu bar -->
+<div class="container">
+      <header class="blog-header py-3"><div class="row nbb-header align-items-center">
+          <div class="col-md-3 col-xs-2 col-sm-2" style="width: auto;">
+            <button class="navbar-toggler navbar-light bg-light nbb-navbar-toggler" type="button" data-toggle="collapse" data-target=".bs-nav-collapsible" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
-
-                <span id="blog-title">The Unidata Python Training Site</span>
-            </a>
+            <div class="collapse bs-nav-collapsible bootblog4-search-form-holder">
+                
+            </div>
         </div>
-<!-- /.navbar-header -->
-        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
-            <ul class="nav navbar-nav">
-<li>
-<a href="../../../python/intro-to-python">Introduction to Python</a>
+          <div class="col-md-6 col-xs-10 col-sm-10 bootblog4-brand" style="width: auto;">
+            <a class="navbar-brand blog-header-logo text-dark" href="https://unidata.github.io/python-training/">
+            <img src="https://docs.unidata.ucar.edu/images/logos/unidata_logo_rgb_sm.png" alt="Unidata Python Training" id="logo" class="d-inline-block align-top"><span id="blog-title">Unidata Python Training</span>
+        </a>
+          </div>
+            <div class="col-md-3 justify-content-end align-items-center bs-nav-collapsible collapse flex-collapse bootblog4-right-nav">
+            <nav class="navbar navbar-light bg-white"><ul class="navbar-nav bootblog4-right-nav">
+<li class="nav-item">
+    <a href="index.ipynb" id="sourcelink" class="nav-link">Source</a>
+    </li>
+
+
+                    
+            </ul></nav>
+</div>
+    </div>
+</header><nav class="navbar navbar-expand-md navbar-light bg-white static-top"><div class="collapse navbar-collapse bs-nav-collapsible" id="bs-navbar">
+            <ul class="navbar-nav nav-fill d-flex w-100">
+<li class="nav-item">
+<a href="../../../python/intro-to-python" class="nav-link">Introduction to Python</a>
                 </li>
-<li>
-<a href="../../../gallery/gallery-home">Example Gallery</a>
+<li class="nav-item">
+<a href="../../../gallery/gallery-home" class="nav-link">Example Gallery</a>
                 </li>
-<li>
-<a href="../../workshop-intro">Python Workshop Materials</a>
+<li class="nav-item">
+<a href="../../workshop-intro" class="nav-link">Python Workshop Materials</a>
 
                 
             </li>
 </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-    <a href="index.ipynb" id="sourcelink">Source</a>
-    </li>
-                
-            </ul>
 </div>
 <!-- /.navbar-collapse -->
-    </div>
-<!-- /.container -->
-</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+</nav>
+</div>
+
+<div class="container" id="content" role="main">
     <div class="body-content">
         <!--Body content-->
-        <div class="row">
-            
+        
+        
+        
 <article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Pandas Introduction</a></h1>
 
         
+
     </header><div class="e-content entry-content" itemprop="articleBody text">
     <div>
 <div class="cell border-box-sizing text_cell rendered">
@@ -145,7 +165,7 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -154,6 +174,30 @@ How can I read data into ">
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[1]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>0    23
+1    20
+2    25
+3    18
+dtype: int64</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -171,7 +215,7 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">temperatures</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">23</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">18</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">'TOP'</span><span class="p">,</span> <span class="s1">'OUN'</span><span class="p">,</span> <span class="s1">'DAL'</span><span class="p">,</span> <span class="s1">'DEN'</span><span class="p">])</span>
@@ -179,6 +223,30 @@ How can I read data into ">
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[2]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>TOP    23
+OUN    20
+DAL    25
+DEN    18
+dtype: int64</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -195,7 +263,7 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">temperatures</span><span class="p">[</span><span class="s1">'DAL'</span><span class="p">]</span>
@@ -205,16 +273,58 @@ How can I read data into ">
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[3]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>25</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">temperatures</span><span class="p">[[</span><span class="s1">'DAL'</span><span class="p">,</span> <span class="s1">'OUN'</span><span class="p">]]</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[4]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>DAL    25
+OUN    20
+dtype: int64</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -231,7 +341,7 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">temperatures</span><span class="p">[</span><span class="n">temperatures</span> <span class="o">&gt;</span> <span class="mi">20</span><span class="p">]</span>
@@ -241,16 +351,62 @@ How can I read data into ">
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[5]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>TOP    23
+DAL    25
+dtype: int64</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">temperatures</span> <span class="o">+</span> <span class="mi">2</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[6]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>TOP    25
+OUN    22
+DAL    27
+DEN    20
+dtype: int64</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -267,7 +423,7 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">dps</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'TOP'</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span>
@@ -284,6 +440,31 @@ How can I read data into ">
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[7]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>TOP    14
+OUN    18
+DEN     9
+PHX    11
+DAL    23
+dtype: int64</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -297,7 +478,7 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="s1">'PHX'</span> <span class="ow">in</span> <span class="n">dewpoints</span>
@@ -307,16 +488,56 @@ How can I read data into ">
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[8]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>True</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="s1">'PHX'</span> <span class="ow">in</span> <span class="n">temperatures</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[9]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>False</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -333,7 +554,7 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">temperatures</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'temperature'</span>
@@ -347,13 +568,38 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">temperatures</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[11]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>station
+TOP    23
+OUN    20
+DAL    25
+DEN    18
+Name: temperature, dtype: int64</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -375,7 +621,7 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Your code goes here</span>
@@ -398,7 +644,7 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/make_series.py</span>
@@ -412,6 +658,27 @@ How can I read data into ">
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>station
+TOP    1012.1
+DEN    1008.8
+Name: pressure, dtype: float64
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -442,7 +709,7 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'station'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'TOP'</span><span class="p">,</span> <span class="s1">'OUN'</span><span class="p">,</span> <span class="s1">'DEN'</span><span class="p">,</span> <span class="s1">'DAL'</span><span class="p">],</span>
@@ -454,6 +721,73 @@ How can I read data into ">
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[14]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>station</th>
+      <th>temperature</th>
+      <th>dewpoint</th>
+    </tr></thead>
+<tbody>
+<tr>
+<th>0</th>
+      <td>TOP</td>
+      <td>23</td>
+      <td>14</td>
+    </tr>
+<tr>
+<th>1</th>
+      <td>OUN</td>
+      <td>20</td>
+      <td>18</td>
+    </tr>
+<tr>
+<th>2</th>
+      <td>DEN</td>
+      <td>25</td>
+      <td>9</td>
+    </tr>
+<tr>
+<th>3</th>
+      <td>DAL</td>
+      <td>18</td>
+      <td>23</td>
+    </tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -470,7 +804,7 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">]</span>
@@ -480,16 +814,64 @@ How can I read data into ">
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[15]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>0    23
+1    20
+2    25
+3    18
+Name: temperature, dtype: int64</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">dewpoint</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[16]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>0    14
+1    18
+2     9
+3    23
+Name: dewpoint, dtype: int64</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -507,7 +889,7 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">'wspeed'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.</span>
@@ -515,6 +897,78 @@ How can I read data into ">
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[17]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>station</th>
+      <th>temperature</th>
+      <th>dewpoint</th>
+      <th>wspeed</th>
+    </tr></thead>
+<tbody>
+<tr>
+<th>0</th>
+      <td>TOP</td>
+      <td>23</td>
+      <td>14</td>
+      <td>0.0</td>
+    </tr>
+<tr>
+<th>1</th>
+      <td>OUN</td>
+      <td>20</td>
+      <td>18</td>
+      <td>0.0</td>
+    </tr>
+<tr>
+<th>2</th>
+      <td>DEN</td>
+      <td>25</td>
+      <td>9</td>
+      <td>0.0</td>
+    </tr>
+<tr>
+<th>3</th>
+      <td>DAL</td>
+      <td>18</td>
+      <td>23</td>
+      <td>0.0</td>
+    </tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -531,7 +985,7 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">station</span>
@@ -539,6 +993,87 @@ How can I read data into ">
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[18]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+      <th>station</th>
+      <th>temperature</th>
+      <th>dewpoint</th>
+      <th>wspeed</th>
+    </tr>
+<tr>
+<th>station</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+</thead>
+<tbody>
+<tr>
+<th>TOP</th>
+      <td>TOP</td>
+      <td>23</td>
+      <td>14</td>
+      <td>0.0</td>
+    </tr>
+<tr>
+<th>OUN</th>
+      <td>OUN</td>
+      <td>20</td>
+      <td>18</td>
+      <td>0.0</td>
+    </tr>
+<tr>
+<th>DEN</th>
+      <td>DEN</td>
+      <td>25</td>
+      <td>9</td>
+      <td>0.0</td>
+    </tr>
+<tr>
+<th>DAL</th>
+      <td>DAL</td>
+      <td>18</td>
+      <td>23</td>
+      <td>0.0</td>
+    </tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -555,7 +1090,7 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [19]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">'station'</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s1">'columns'</span><span class="p">)</span>
@@ -563,6 +1098,81 @@ How can I read data into ">
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[19]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+      <th>temperature</th>
+      <th>dewpoint</th>
+      <th>wspeed</th>
+    </tr>
+<tr>
+<th>station</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+</thead>
+<tbody>
+<tr>
+<th>TOP</th>
+      <td>23</td>
+      <td>14</td>
+      <td>0.0</td>
+    </tr>
+<tr>
+<th>OUN</th>
+      <td>20</td>
+      <td>18</td>
+      <td>0.0</td>
+    </tr>
+<tr>
+<th>DEN</th>
+      <td>25</td>
+      <td>9</td>
+      <td>0.0</td>
+    </tr>
+<tr>
+<th>DAL</th>
+      <td>18</td>
+      <td>23</td>
+      <td>0.0</td>
+    </tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -579,7 +1189,7 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [20]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">1010</span><span class="p">,</span><span class="mi">1000</span><span class="p">,</span><span class="mi">998</span><span class="p">,</span><span class="mi">1018</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">'DEN'</span><span class="p">,</span><span class="s1">'TOP'</span><span class="p">,</span><span class="s1">'DAL'</span><span class="p">,</span><span class="s1">'OUN'</span><span class="p">])</span>
@@ -587,6 +1197,87 @@ How can I read data into ">
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[20]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+      <th>temperature</th>
+      <th>dewpoint</th>
+      <th>wspeed</th>
+      <th>pressure</th>
+    </tr>
+<tr>
+<th>station</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+</thead>
+<tbody>
+<tr>
+<th>TOP</th>
+      <td>23</td>
+      <td>14</td>
+      <td>0.0</td>
+      <td>1000</td>
+    </tr>
+<tr>
+<th>OUN</th>
+      <td>20</td>
+      <td>18</td>
+      <td>0.0</td>
+      <td>1018</td>
+    </tr>
+<tr>
+<th>DEN</th>
+      <td>25</td>
+      <td>9</td>
+      <td>0.0</td>
+      <td>1010</td>
+    </tr>
+<tr>
+<th>DAL</th>
+      <td>18</td>
+      <td>23</td>
+      <td>0.0</td>
+      <td>998</td>
+    </tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -603,13 +1294,37 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [21]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'DEN'</span><span class="p">]</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[21]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>temperature      25.0
+dewpoint          9.0
+wspeed            0.0
+pressure       1010.0
+Name: DEN, dtype: float64</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -626,13 +1341,85 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [22]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">T</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[22]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th>station</th>
+      <th>TOP</th>
+      <th>OUN</th>
+      <th>DEN</th>
+      <th>DAL</th>
+    </tr></thead>
+<tbody>
+<tr>
+<th>temperature</th>
+      <td>23.0</td>
+      <td>20.0</td>
+      <td>25.0</td>
+      <td>18.0</td>
+    </tr>
+<tr>
+<th>dewpoint</th>
+      <td>14.0</td>
+      <td>18.0</td>
+      <td>9.0</td>
+      <td>23.0</td>
+    </tr>
+<tr>
+<th>wspeed</th>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+<tr>
+<th>pressure</th>
+      <td>1000.0</td>
+      <td>1018.0</td>
+      <td>1010.0</td>
+      <td>998.0</td>
+    </tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -649,7 +1436,7 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [23]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">values</span>
@@ -659,16 +1446,59 @@ How can I read data into ">
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[23]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>array([[  23.,   14.,    0., 1000.],
+       [  20.,   18.,    0., 1018.],
+       [  25.,    9.,    0., 1010.],
+       [  18.,   23.,    0.,  998.]])</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [24]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">temperature</span><span class="o">.</span><span class="n">values</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[24]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>array([23, 20, 25, 18])</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -689,7 +1519,7 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [25]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Your code goes here</span>
@@ -712,7 +1542,7 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [26]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/rain_obs.py</span>
@@ -725,6 +1555,93 @@ How can I read data into ">
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[26]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+      <th>temperature</th>
+      <th>dewpoint</th>
+      <th>wspeed</th>
+      <th>pressure</th>
+      <th>rain</th>
+    </tr>
+<tr>
+<th>station</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+</thead>
+<tbody>
+<tr>
+<th>TOP</th>
+      <td>23</td>
+      <td>12</td>
+      <td>0.0</td>
+      <td>1000</td>
+      <td>0.0</td>
+    </tr>
+<tr>
+<th>OUN</th>
+      <td>20</td>
+      <td>16</td>
+      <td>0.0</td>
+      <td>1018</td>
+      <td>0.4</td>
+    </tr>
+<tr>
+<th>DEN</th>
+      <td>25</td>
+      <td>7</td>
+      <td>0.0</td>
+      <td>1010</td>
+      <td>0.2</td>
+    </tr>
+<tr>
+<th>DAL</th>
+      <td>18</td>
+      <td>21</td>
+      <td>0.0</td>
+      <td>998</td>
+      <td>0.0</td>
+    </tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -754,7 +1671,7 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [27]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -767,7 +1684,7 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [28]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'Jan17_CO_ASOS.txt'</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">'</span><span class="se">\t</span><span class="s1">'</span><span class="p">)</span>
@@ -780,7 +1697,7 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [29]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -790,10 +1707,95 @@ How can I read data into ">
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[29]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>station</th>
+      <th>valid</th>
+      <th>tmpc</th>
+      <th>dwpc</th>
+      <th>mslp</th>
+    </tr></thead>
+<tbody>
+<tr>
+<th>0</th>
+      <td>FNL</td>
+      <td>2017-01-01 00:00</td>
+      <td>M</td>
+      <td>M</td>
+      <td>M</td>
+    </tr>
+<tr>
+<th>1</th>
+      <td>FNL</td>
+      <td>2017-01-01 00:05</td>
+      <td>M</td>
+      <td>M</td>
+      <td>M</td>
+    </tr>
+<tr>
+<th>2</th>
+      <td>FNL</td>
+      <td>2017-01-01 00:10</td>
+      <td>M</td>
+      <td>M</td>
+      <td>M</td>
+    </tr>
+<tr>
+<th>3</th>
+      <td>LMO</td>
+      <td>2017-01-01 00:13</td>
+      <td>1.00</td>
+      <td>-7.50</td>
+      <td>M</td>
+    </tr>
+<tr>
+<th>4</th>
+      <td>FNL</td>
+      <td>2017-01-01 00:15</td>
+      <td>-3.00</td>
+      <td>-9.00</td>
+      <td>M</td>
+    </tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [30]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'Jan17_CO_ASOS.txt'</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">'</span><span class="se">\t</span><span class="s1">'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'valid'</span><span class="p">])</span>
@@ -806,7 +1808,7 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [31]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -816,10 +1818,95 @@ How can I read data into ">
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[31]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>station</th>
+      <th>valid</th>
+      <th>tmpc</th>
+      <th>dwpc</th>
+      <th>mslp</th>
+    </tr></thead>
+<tbody>
+<tr>
+<th>0</th>
+      <td>FNL</td>
+      <td>2017-01-01 00:00:00</td>
+      <td>M</td>
+      <td>M</td>
+      <td>M</td>
+    </tr>
+<tr>
+<th>1</th>
+      <td>FNL</td>
+      <td>2017-01-01 00:05:00</td>
+      <td>M</td>
+      <td>M</td>
+      <td>M</td>
+    </tr>
+<tr>
+<th>2</th>
+      <td>FNL</td>
+      <td>2017-01-01 00:10:00</td>
+      <td>M</td>
+      <td>M</td>
+      <td>M</td>
+    </tr>
+<tr>
+<th>3</th>
+      <td>LMO</td>
+      <td>2017-01-01 00:13:00</td>
+      <td>1.00</td>
+      <td>-7.50</td>
+      <td>M</td>
+    </tr>
+<tr>
+<th>4</th>
+      <td>FNL</td>
+      <td>2017-01-01 00:15:00</td>
+      <td>-3.00</td>
+      <td>-9.00</td>
+      <td>M</td>
+    </tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [32]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'Jan17_CO_ASOS.txt'</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">'</span><span class="se">\t</span><span class="s1">'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'valid'</span><span class="p">],</span> <span class="n">na_values</span><span class="o">=</span><span class="s1">'M'</span><span class="p">)</span>
@@ -832,13 +1919,98 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [33]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[33]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>station</th>
+      <th>valid</th>
+      <th>tmpc</th>
+      <th>dwpc</th>
+      <th>mslp</th>
+    </tr></thead>
+<tbody>
+<tr>
+<th>0</th>
+      <td>FNL</td>
+      <td>2017-01-01 00:00:00</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>1</th>
+      <td>FNL</td>
+      <td>2017-01-01 00:05:00</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>2</th>
+      <td>FNL</td>
+      <td>2017-01-01 00:10:00</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>3</th>
+      <td>LMO</td>
+      <td>2017-01-01 00:13:00</td>
+      <td>1.0</td>
+      <td>-7.5</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>4</th>
+      <td>FNL</td>
+      <td>2017-01-01 00:15:00</td>
+      <td>-3.0</td>
+      <td>-9.0</td>
+      <td>NaN</td>
+    </tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -855,7 +2027,7 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [34]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">columns</span>
@@ -865,10 +2037,30 @@ How can I read data into ">
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[34]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Index(['station', 'valid', ' tmpc ', '  dwpc ', '  mslp'], dtype='object')</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [35]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'station'</span><span class="p">,</span> <span class="s1">'time'</span><span class="p">,</span> <span class="s1">'temperature'</span><span class="p">,</span> <span class="s1">'dewpoint'</span><span class="p">,</span> <span class="s1">'pressure'</span><span class="p">]</span>
@@ -881,13 +2073,98 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [36]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[36]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>station</th>
+      <th>time</th>
+      <th>temperature</th>
+      <th>dewpoint</th>
+      <th>pressure</th>
+    </tr></thead>
+<tbody>
+<tr>
+<th>0</th>
+      <td>FNL</td>
+      <td>2017-01-01 00:00:00</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>1</th>
+      <td>FNL</td>
+      <td>2017-01-01 00:05:00</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>2</th>
+      <td>FNL</td>
+      <td>2017-01-01 00:10:00</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>3</th>
+      <td>LMO</td>
+      <td>2017-01-01 00:13:00</td>
+      <td>1.0</td>
+      <td>-7.5</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>4</th>
+      <td>FNL</td>
+      <td>2017-01-01 00:15:00</td>
+      <td>-3.0</td>
+      <td>-9.0</td>
+      <td>NaN</td>
+    </tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -927,7 +2204,7 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [37]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
@@ -937,10 +2214,30 @@ How can I read data into ">
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[37]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>169658</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [38]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">'rows'</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">'all'</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">,</span> <span class="s1">'dewpoint'</span><span class="p">,</span> <span class="s1">'pressure'</span><span class="p">])</span>
@@ -953,7 +2250,7 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [39]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
@@ -963,16 +2260,121 @@ How can I read data into ">
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[39]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>72550</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [40]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[40]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>station</th>
+      <th>time</th>
+      <th>temperature</th>
+      <th>dewpoint</th>
+      <th>pressure</th>
+    </tr></thead>
+<tbody>
+<tr>
+<th>3</th>
+      <td>LMO</td>
+      <td>2017-01-01 00:13:00</td>
+      <td>1.00</td>
+      <td>-7.50</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>4</th>
+      <td>FNL</td>
+      <td>2017-01-01 00:15:00</td>
+      <td>-3.00</td>
+      <td>-9.00</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>5</th>
+      <td>1V6</td>
+      <td>2017-01-01 00:15:00</td>
+      <td>0.00</td>
+      <td>-9.00</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>7</th>
+      <td>0CO</td>
+      <td>2017-01-01 00:23:00</td>
+      <td>-12.00</td>
+      <td>-18.00</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>10</th>
+      <td>LMO</td>
+      <td>2017-01-01 00:34:00</td>
+      <td>-0.22</td>
+      <td>-8.22</td>
+      <td>NaN</td>
+    </tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -991,7 +2393,7 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [41]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Your code goes here</span>
@@ -1015,7 +2417,7 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [42]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/drop_obs.py</span>
@@ -1027,6 +2429,140 @@ How can I read data into ">
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[42]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>station</th>
+      <th>time</th>
+      <th>temperature</th>
+      <th>dewpoint</th>
+      <th>pressure</th>
+    </tr></thead>
+<tbody>
+<tr>
+<th>10422</th>
+      <td>FNL</td>
+      <td>2017-01-24 07:15:00</td>
+      <td>-1.00</td>
+      <td>-2.00</td>
+      <td>929.5</td>
+    </tr>
+<tr>
+<th>10427</th>
+      <td>FNL</td>
+      <td>2017-01-24 07:35:00</td>
+      <td>-1.00</td>
+      <td>-2.00</td>
+      <td>929.5</td>
+    </tr>
+<tr>
+<th>10434</th>
+      <td>FNL</td>
+      <td>2017-01-24 07:55:00</td>
+      <td>-2.00</td>
+      <td>-3.00</td>
+      <td>929.5</td>
+    </tr>
+<tr>
+<th>10435</th>
+      <td>FNL</td>
+      <td>2017-01-24 07:56:00</td>
+      <td>-2.22</td>
+      <td>-2.78</td>
+      <td>998.7</td>
+    </tr>
+<tr>
+<th>10440</th>
+      <td>FNL</td>
+      <td>2017-01-24 08:15:00</td>
+      <td>-3.00</td>
+      <td>-4.00</td>
+      <td>929.5</td>
+    </tr>
+<tr>
+<th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+<tr>
+<th>169573</th>
+      <td>FNL</td>
+      <td>2017-12-30 19:56:00</td>
+      <td>-10.00</td>
+      <td>-12.22</td>
+      <td>1018.7</td>
+    </tr>
+<tr>
+<th>169594</th>
+      <td>FNL</td>
+      <td>2017-12-30 20:56:00</td>
+      <td>-10.00</td>
+      <td>-12.78</td>
+      <td>1017.1</td>
+    </tr>
+<tr>
+<th>169615</th>
+      <td>FNL</td>
+      <td>2017-12-30 21:56:00</td>
+      <td>-8.28</td>
+      <td>-12.22</td>
+      <td>1016.7</td>
+    </tr>
+<tr>
+<th>169637</th>
+      <td>FNL</td>
+      <td>2017-12-30 22:56:00</td>
+      <td>-8.28</td>
+      <td>-11.72</td>
+      <td>1015.9</td>
+    </tr>
+<tr>
+<th>169657</th>
+      <td>FNL</td>
+      <td>2017-12-30 23:56:00</td>
+      <td>-8.89</td>
+      <td>-12.22</td>
+      <td>1016.2</td>
+    </tr>
+</tbody>
+</table>
+<p>7953 rows × 5 columns</p>
+</div>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -1043,7 +2579,7 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [43]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1053,16 +2589,235 @@ How can I read data into ">
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[43]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>station</th>
+      <th>time</th>
+      <th>temperature</th>
+      <th>dewpoint</th>
+      <th>pressure</th>
+    </tr></thead>
+<tbody>
+<tr>
+<th>0</th>
+      <td>LMO</td>
+      <td>2017-01-01 00:13:00</td>
+      <td>1.00</td>
+      <td>-7.50</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>1</th>
+      <td>FNL</td>
+      <td>2017-01-01 00:15:00</td>
+      <td>-3.00</td>
+      <td>-9.00</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>2</th>
+      <td>1V6</td>
+      <td>2017-01-01 00:15:00</td>
+      <td>0.00</td>
+      <td>-9.00</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>3</th>
+      <td>0CO</td>
+      <td>2017-01-01 00:23:00</td>
+      <td>-12.00</td>
+      <td>-18.00</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>4</th>
+      <td>LMO</td>
+      <td>2017-01-01 00:34:00</td>
+      <td>-0.22</td>
+      <td>-8.22</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+<tr>
+<th>72545</th>
+      <td>LMO</td>
+      <td>2017-12-30 23:35:00</td>
+      <td>-7.00</td>
+      <td>-11.28</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>72546</th>
+      <td>1V6</td>
+      <td>2017-12-30 23:50:00</td>
+      <td>-5.00</td>
+      <td>-10.00</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>72547</th>
+      <td>0CO</td>
+      <td>2017-12-30 23:54:00</td>
+      <td>-4.00</td>
+      <td>-10.00</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>72548</th>
+      <td>LMO</td>
+      <td>2017-12-30 23:55:00</td>
+      <td>-7.00</td>
+      <td>-11.00</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>72549</th>
+      <td>FNL</td>
+      <td>2017-12-30 23:56:00</td>
+      <td>-8.89</td>
+      <td>-12.22</td>
+      <td>1016.2</td>
+    </tr>
+</tbody>
+</table>
+<p>72550 rows × 5 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [44]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[44]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>station</th>
+      <th>time</th>
+      <th>temperature</th>
+      <th>dewpoint</th>
+      <th>pressure</th>
+    </tr></thead>
+<tbody>
+<tr>
+<th>3</th>
+      <td>LMO</td>
+      <td>2017-01-01 00:13:00</td>
+      <td>1.00</td>
+      <td>-7.50</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>4</th>
+      <td>FNL</td>
+      <td>2017-01-01 00:15:00</td>
+      <td>-3.00</td>
+      <td>-9.00</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>5</th>
+      <td>1V6</td>
+      <td>2017-01-01 00:15:00</td>
+      <td>0.00</td>
+      <td>-9.00</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>7</th>
+      <td>0CO</td>
+      <td>2017-01-01 00:23:00</td>
+      <td>-12.00</td>
+      <td>-18.00</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>10</th>
+      <td>LMO</td>
+      <td>2017-01-01 00:34:00</td>
+      <td>-0.22</td>
+      <td>-8.22</td>
+      <td>NaN</td>
+    </tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -1092,13 +2847,32 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [45]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Min: {df.temperature.min()}</span><span class="se">\n</span><span class="s1">Max: {df.temperature.max()}'</span><span class="p">)</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Min: -28.72
+Max: 39.0
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -1115,13 +2889,33 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [46]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">temperature</span><span class="o">.</span><span class="n">corr</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">dewpoint</span><span class="p">)</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[46]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>0.7453312035648769</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -1138,13 +2932,88 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [47]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'station'</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[47]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+      <th>temperature</th>
+      <th>dewpoint</th>
+      <th>pressure</th>
+    </tr>
+<tr>
+<th>station</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+</thead>
+<tbody>
+<tr>
+<th>0CO</th>
+      <td>-1.926889</td>
+      <td>-7.491375</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>1V6</th>
+      <td>7.574364</td>
+      <td>-4.872335</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>FNL</th>
+      <td>8.656791</td>
+      <td>-0.228522</td>
+      <td>1014.852848</td>
+    </tr>
+<tr>
+<th>LMO</th>
+      <td>12.006185</td>
+      <td>0.387110</td>
+      <td>NaN</td>
+    </tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -1163,7 +3032,7 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [48]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Calculate min</span>
@@ -1176,7 +3045,7 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [49]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Calculate max</span>
@@ -1189,7 +3058,7 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [50]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Calculate standard deviation</span>
@@ -1212,7 +3081,7 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [51]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/calc_stats.py</span>
@@ -1225,6 +3094,41 @@ How can I read data into ">
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>station
+0CO   -26.00
+1V6   -18.00
+FNL   -27.00
+LMO   -28.72
+Name: temperature, dtype: float64
+station
+0CO    15.00
+1V6    30.00
+FNL    37.22
+LMO    39.00
+Name: temperature, dtype: float64
+station
+0CO     7.701259
+1V6     8.413450
+FNL    11.413245
+LMO    10.716778
+Name: temperature, dtype: float64
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -1241,13 +3145,207 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [52]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'station'</span><span class="p">)</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[52]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr>
+<th></th>
+      <th colspan="8" halign="left">temperature</th>
+      <th colspan="5" halign="left">dewpoint</th>
+      <th colspan="8" halign="left">pressure</th>
+    </tr>
+<tr>
+<th></th>
+      <th>count</th>
+      <th>mean</th>
+      <th>std</th>
+      <th>min</th>
+      <th>25%</th>
+      <th>50%</th>
+      <th>75%</th>
+      <th>max</th>
+      <th>count</th>
+      <th>mean</th>
+      <th>...</th>
+      <th>75%</th>
+      <th>max</th>
+      <th>count</th>
+      <th>mean</th>
+      <th>std</th>
+      <th>min</th>
+      <th>25%</th>
+      <th>50%</th>
+      <th>75%</th>
+      <th>max</th>
+    </tr>
+<tr>
+<th>station</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+</thead>
+<tbody>
+<tr>
+<th>0CO</th>
+      <td>25044.0</td>
+      <td>-1.926889</td>
+      <td>7.701259</td>
+      <td>-26.00</td>
+      <td>-7.00</td>
+      <td>-2.00</td>
+      <td>5.00</td>
+      <td>15.00</td>
+      <td>25044.0</td>
+      <td>-7.491375</td>
+      <td>...</td>
+      <td>-1.0</td>
+      <td>11.00</td>
+      <td>0.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>1V6</th>
+      <td>11632.0</td>
+      <td>7.574364</td>
+      <td>8.413450</td>
+      <td>-18.00</td>
+      <td>1.00</td>
+      <td>7.00</td>
+      <td>13.00</td>
+      <td>30.00</td>
+      <td>11632.0</td>
+      <td>-4.872335</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>12.00</td>
+      <td>0.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>FNL</th>
+      <td>11504.0</td>
+      <td>8.656791</td>
+      <td>11.413245</td>
+      <td>-27.00</td>
+      <td>0.61</td>
+      <td>8.28</td>
+      <td>16.72</td>
+      <td>37.22</td>
+      <td>11500.0</td>
+      <td>-0.228522</td>
+      <td>...</td>
+      <td>7.0</td>
+      <td>18.28</td>
+      <td>7953.0</td>
+      <td>1014.852848</td>
+      <td>8.87871</td>
+      <td>929.5</td>
+      <td>1010.3</td>
+      <td>1015.4</td>
+      <td>1020.0</td>
+      <td>1034.7</td>
+    </tr>
+<tr>
+<th>LMO</th>
+      <td>24370.0</td>
+      <td>12.006185</td>
+      <td>10.716778</td>
+      <td>-28.72</td>
+      <td>4.22</td>
+      <td>12.50</td>
+      <td>19.50</td>
+      <td>39.00</td>
+      <td>24370.0</td>
+      <td>0.387110</td>
+      <td>...</td>
+      <td>7.0</td>
+      <td>19.11</td>
+      <td>0.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+</tbody>
+</table>
+<p>4 rows × 24 columns</p>
+</div>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -1264,13 +3362,98 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [53]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'station'</span><span class="p">)</span><span class="o">.</span><span class="n">get_group</span><span class="p">(</span><span class="s1">'0CO'</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[53]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>station</th>
+      <th>time</th>
+      <th>temperature</th>
+      <th>dewpoint</th>
+      <th>pressure</th>
+    </tr></thead>
+<tbody>
+<tr>
+<th>0</th>
+      <td>0CO</td>
+      <td>2017-01-01 00:23:00</td>
+      <td>-12.0</td>
+      <td>-18.0</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>1</th>
+      <td>0CO</td>
+      <td>2017-01-01 00:43:00</td>
+      <td>-12.0</td>
+      <td>-18.0</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>2</th>
+      <td>0CO</td>
+      <td>2017-01-01 01:03:00</td>
+      <td>-12.0</td>
+      <td>-18.0</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>3</th>
+      <td>0CO</td>
+      <td>2017-01-01 01:23:00</td>
+      <td>-12.0</td>
+      <td>-18.0</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>4</th>
+      <td>0CO</td>
+      <td>2017-01-01 02:03:00</td>
+      <td>-12.0</td>
+      <td>-19.0</td>
+      <td>NaN</td>
+    </tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -1291,7 +3474,7 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [54]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Your code goes here</span>
@@ -1314,7 +3497,7 @@ How can I read data into ">
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [55]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/temperature_count.py</span>
@@ -1326,6 +3509,137 @@ How can I read data into ">
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[55]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+      <th>station</th>
+      <th>time</th>
+      <th>dewpoint</th>
+      <th>pressure</th>
+    </tr>
+<tr>
+<th>temperature</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+</thead>
+<tbody>
+<tr>
+<th>-29.0</th>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+<tr>
+<th>-28.0</th>
+      <td>4</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0</td>
+    </tr>
+<tr>
+<th>-27.0</th>
+      <td>5</td>
+      <td>5</td>
+      <td>4</td>
+      <td>0</td>
+    </tr>
+<tr>
+<th>-26.0</th>
+      <td>15</td>
+      <td>15</td>
+      <td>15</td>
+      <td>0</td>
+    </tr>
+<tr>
+<th>-25.0</th>
+      <td>31</td>
+      <td>31</td>
+      <td>31</td>
+      <td>0</td>
+    </tr>
+<tr>
+<th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+<tr>
+<th>35.0</th>
+      <td>103</td>
+      <td>103</td>
+      <td>103</td>
+      <td>11</td>
+    </tr>
+<tr>
+<th>36.0</th>
+      <td>75</td>
+      <td>75</td>
+      <td>75</td>
+      <td>9</td>
+    </tr>
+<tr>
+<th>37.0</th>
+      <td>40</td>
+      <td>40</td>
+      <td>40</td>
+      <td>6</td>
+    </tr>
+<tr>
+<th>38.0</th>
+      <td>7</td>
+      <td>7</td>
+      <td>7</td>
+      <td>0</td>
+    </tr>
+<tr>
+<th>39.0</th>
+      <td>4</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0</td>
+    </tr>
+</tbody>
+</table>
+<p>69 rows × 4 columns</p>
+</div>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -1342,7 +3656,9 @@ How can I read data into ">
 </div>
 </div>
     </div>
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha384-3lJUsx1TJHt7BA4udB5KPnDrlkO8T6J6v/op7ui0BbCjvZ9WqV4Xm6DTP6kQ/iBH" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+    
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha384-3lJUsx1TJHt7BA4udB5KPnDrlkO8T6J6v/op7ui0BbCjvZ9WqV4Xm6DTP6kQ/iBH" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
 MathJax.Hub.Config({
     tex2jax: {
         inlineMath: [ ['$','$'], ["\\(","\\)"] ],
@@ -1354,21 +3670,30 @@ MathJax.Hub.Config({
         styles: {'.MathJax_Display': {"margin": 0}}
     }
 });
-</script></article>
-</div>
-        <!--End of body content-->
+</script></article><!--End of body content--><footer id="footer"><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-        <footer id="footer">
-            Contents © 2020         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+  ga('create', 'UA-92978945-1', 'auto');
+  ga('send', 'pageview');
+
+</script><p>Do you find this useful?
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Installation Guide" accesskey="n">Say Thanks!</a>
+</p>
+Contents © 2020
+<a href="mailto:support-python@unidata.ucar.edu">UCAR/Unidata</a> - Powered by
+<a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+
+            
             
         </footer>
 </div>
 </div>
 
-            <script src="../../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
-    moment.locale("en");
-    fancydates(0, "YYYY-MM-DD HH:mm");
-    </script><!-- end fancy dates --><script>
+
+        <script src="../../../assets/js/all-nocdn.js"></script><script>
     baguetteBox.run('div#content', {
         ignoreClass: 'islink',
         captions: function(element) {

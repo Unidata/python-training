@@ -1,76 +1,96 @@
 <!DOCTYPE html>
-<html lang="en">
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Times_and_Dates | The Unidata Python Training Site</title>
+<title>Times_and_Dates | Unidata Python Training</title>
 <link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
 <link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
 <link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
-<meta name="theme-color" content="#5670d4">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+<meta name="theme-color" content="#33758C">
 <meta name="generator" content="Nikola (getnikola.com)">
-<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../rss.xml">
 <link rel="canonical" href="https://unidata.github.io/python-training/python/times_and_dates/">
-<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
-<meta property="og:site_name" content="The Unidata Python Training Site">
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script><!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="Unidata Python Training">
 <meta property="og:title" content="Times_and_Dates">
 <meta property="og:url" content="https://unidata.github.io/python-training/python/times_and_dates/">
 <meta property="og:description" content="Times and Dates¶Time is an essential component of nearly all geoscience data. Timescales span orders of magnitude from microseconds for lightning, hours for a supercell thunderstorm, days for a global">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2020-01-08T09:47:29-07:00">
+<meta property="article:published_time" content="2020-01-08T23:18:48-07:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
 
-<!-- Menubar -->
-
-<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
-<!-- This keeps the margins nice -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
+<!-- Header and menu bar -->
+<div class="container">
+      <header class="blog-header py-3"><div class="row nbb-header align-items-center">
+          <div class="col-md-3 col-xs-2 col-sm-2" style="width: auto;">
+            <button class="navbar-toggler navbar-light bg-light nbb-navbar-toggler" type="button" data-toggle="collapse" data-target=".bs-nav-collapsible" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
-
-                <span id="blog-title">The Unidata Python Training Site</span>
-            </a>
+            <div class="collapse bs-nav-collapsible bootblog4-search-form-holder">
+                
+            </div>
         </div>
-<!-- /.navbar-header -->
-        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
-            <ul class="nav navbar-nav">
-<li>
-<a href="../intro-to-python">Introduction to Python</a>
+          <div class="col-md-6 col-xs-10 col-sm-10 bootblog4-brand" style="width: auto;">
+            <a class="navbar-brand blog-header-logo text-dark" href="https://unidata.github.io/python-training/">
+            <img src="https://docs.unidata.ucar.edu/images/logos/unidata_logo_rgb_sm.png" alt="Unidata Python Training" id="logo" class="d-inline-block align-top"><span id="blog-title">Unidata Python Training</span>
+        </a>
+          </div>
+            <div class="col-md-3 justify-content-end align-items-center bs-nav-collapsible collapse flex-collapse bootblog4-right-nav">
+            <nav class="navbar navbar-light bg-white"><ul class="navbar-nav bootblog4-right-nav">
+<li class="nav-item">
+    <a href="index.ipynb" id="sourcelink" class="nav-link">Source</a>
+    </li>
+
+
+                    
+            </ul></nav>
+</div>
+    </div>
+</header><nav class="navbar navbar-expand-md navbar-light bg-white static-top"><div class="collapse navbar-collapse bs-nav-collapsible" id="bs-navbar">
+            <ul class="navbar-nav nav-fill d-flex w-100">
+<li class="nav-item">
+<a href="../intro-to-python" class="nav-link">Introduction to Python</a>
                 </li>
-<li>
-<a href="../../gallery/gallery-home">Example Gallery</a>
+<li class="nav-item">
+<a href="../../gallery/gallery-home" class="nav-link">Example Gallery</a>
                 </li>
-<li>
-<a href="../../workshop/workshop-intro">Python Workshop Materials</a>
+<li class="nav-item">
+<a href="../../workshop/workshop-intro" class="nav-link">Python Workshop Materials</a>
 
                 
             </li>
 </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-    <a href="index.ipynb" id="sourcelink">Source</a>
-    </li>
-                
-            </ul>
 </div>
 <!-- /.navbar-collapse -->
-    </div>
-<!-- /.container -->
-</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+</nav>
+</div>
+
+<div class="container" id="content" role="main">
     <div class="body-content">
         <!--Body content-->
-        <div class="row">
-            
+        
+        
+        
 <article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Times_and_Dates</a></h1>
 
         
+
     </header><div class="e-content entry-content" itemprop="articleBody text">
     <div>
 <div class="cell border-box-sizing text_cell rendered">
@@ -110,7 +130,7 @@
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
@@ -124,10 +144,28 @@
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>2016-03-14 15:09:26
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">time</span> <span class="k">as</span> <span class="nn">tm</span>
@@ -136,6 +174,24 @@
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>1578550726.4623635
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -155,7 +211,7 @@
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">time</span> <span class="k">as</span> <span class="nn">tm</span>
@@ -167,6 +223,24 @@
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>The benchmark took 1.0009567737579346 seconds
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -213,7 +287,7 @@
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
@@ -257,7 +331,7 @@
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">timbuktu</span> <span class="o">=</span> <span class="n">Coord</span><span class="p">(</span><span class="mf">16.77</span><span class="p">,</span> <span class="mf">3.00</span><span class="p">)</span>
@@ -281,7 +355,7 @@ Next, we create two <code>Coord</code> objects: <code>ny</code> and <code>paris<
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ny</span> <span class="o">=</span> <span class="n">Coord</span><span class="p">(</span><span class="mf">40.71</span><span class="p">,</span> <span class="mf">74.01</span><span class="p">)</span>
@@ -292,6 +366,24 @@ Next, we create two <code>Coord</code> objects: <code>ny</code> and <code>paris<
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>The distance from New York to Paris is 5517.0 kilometers.
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -318,7 +410,7 @@ Next, we create two <code>Coord</code> objects: <code>ny</code> and <code>paris<
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
@@ -329,6 +421,24 @@ Next, we create two <code>Coord</code> objects: <code>ny</code> and <code>paris<
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>2007-06-27 16:18:21.898000
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -446,7 +556,7 @@ Next, we create two <code>Coord</code> objects: <code>ny</code> and <code>paris<
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
@@ -454,6 +564,24 @@ Next, we create two <code>Coord</code> objects: <code>ny</code> and <code>paris<
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>201606010000
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -470,7 +598,7 @@ Next, we create two <code>Coord</code> objects: <code>ny</code> and <code>paris<
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">urllib.request</span>
@@ -508,7 +636,7 @@ Next, we create two <code>Coord</code> objects: <code>ny</code> and <code>paris<
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
@@ -518,6 +646,24 @@ Next, we create two <code>Coord</code> objects: <code>ny</code> and <code>paris<
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>{'UNITS': {'position': 'ft', 'elevation': 'ft', 'air_temp': 'Celsius'}, 'QC_SUMMARY': {'QC_TESTS_APPLIED': ['sl_range_check'], 'TOTAL_OBSERVATIONS_FLAGGED': 0.0, 'PERCENT_OF_TOTAL_OBSERVATIONS_FLAGGED': 0.0}, 'STATION': [{'STATUS': 'ACTIVE', 'MNET_ID': '1', 'PERIOD_OF_RECORD': {'start': '2004-11-18T00:00:00Z', 'end': '2020-01-04T08:30:00Z'}, 'ELEVATION': '98', 'NAME': 'Shemya, Eareckson AFB', 'STID': 'PASY', 'SENSOR_VARIABLES': {'date_time': {'date_time': {}}, 'air_temp': {'air_temp_set_1': {'position': '6.56'}}}, 'ELEV_DEM': '114.8', 'LONGITUDE': '174.11667', 'STATE': 'AK', 'OBSERVATIONS': {'date_time': ['2016-06-01T00:56:00Z', '2016-06-01T01:26:00Z', '2016-06-01T01:56:00Z', '2016-06-01T02:40:00Z', '2016-06-01T02:56:00Z', '2016-06-01T03:56:00Z', '2016-06-01T04:45:00Z', '2016-06-01T04:56:00Z', '2016-06-01T05:56:00Z'], 'air_temp_set_1': [8.3, 8.0, 8.3, 8.0, 7.8, 7.8, 7.0, 7.2, 7.2]}, 'RESTRICTED': False, 'QC_FLAGGED': False, 'LATITUDE': '52.71667', 'TIMEZONE': 'America/Adak', 'ID': '12638'}], 'SUMMARY': {'DATA_QUERY_TIME': '4.10795211792 ms', 'RESPONSE_CODE': 1, 'RESPONSE_MESSAGE': 'OK', 'METADATA_RESPONSE_TIME': '65.9708976746 ms', 'DATA_PARSING_TIME': '0.449180603027 ms', 'TOTAL_DATA_TIME': '4.55904006958 ms', 'NUMBER_OF_OBJECTS': 1, 'FUNCTION_USED': 'time_data_parser'}}
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -534,13 +680,31 @@ Next, we create two <code>Coord</code> objects: <code>ny</code> and <code>paris<
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">pasy</span><span class="p">[</span><span class="s1">'STATION'</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">'OBSERVATIONS'</span><span class="p">])</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>{'date_time': ['2016-06-01T00:56:00Z', '2016-06-01T01:26:00Z', '2016-06-01T01:56:00Z', '2016-06-01T02:40:00Z', '2016-06-01T02:56:00Z', '2016-06-01T03:56:00Z', '2016-06-01T04:45:00Z', '2016-06-01T04:56:00Z', '2016-06-01T05:56:00Z'], 'air_temp_set_1': [8.3, 8.0, 8.3, 8.0, 7.8, 7.8, 7.0, 7.2, 7.2]}
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -561,7 +725,7 @@ Next, we create two <code>Coord</code> objects: <code>ny</code> and <code>paris<
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
@@ -581,6 +745,29 @@ Next, we create two <code>Coord</code> objects: <code>ny</code> and <code>paris<
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>The time between high and low tide is 6:12:30.
+The current high tide is 2016-06-01 04:38:00.
+The next low tide is 2016-06-01 10:50:30.
+The next high tide  2016-06-01 17:03:00.
+The tide length is  12:25:00.
+The type of the 'tide_length' variable is &lt;class 'datetime.timedelta'&gt;.
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -606,7 +793,7 @@ Next, we create two <code>Coord</code> objects: <code>ny</code> and <code>paris<
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
@@ -618,6 +805,25 @@ Next, we create two <code>Coord</code> objects: <code>ny</code> and <code>paris<
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>I am time zone naive 2020-01-09 06:18:47.969451.
+I am time zone aware 2020-01-08 23:18:48.012932-07:00.
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -637,7 +843,7 @@ Next, we create two <code>Coord</code> objects: <code>ny</code> and <code>paris<
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
@@ -654,6 +860,25 @@ Next, we create two <code>Coord</code> objects: <code>ny</code> and <code>paris<
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>The UTC time is January 09, 2020, 6:18AM.
+The 'US/Mountain' time is January 08, 2020, 11:18PM.
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -667,7 +892,9 @@ Next, we create two <code>Coord</code> objects: <code>ny</code> and <code>paris<
 </div>
 </div>
     </div>
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha384-3lJUsx1TJHt7BA4udB5KPnDrlkO8T6J6v/op7ui0BbCjvZ9WqV4Xm6DTP6kQ/iBH" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+    
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha384-3lJUsx1TJHt7BA4udB5KPnDrlkO8T6J6v/op7ui0BbCjvZ9WqV4Xm6DTP6kQ/iBH" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
 MathJax.Hub.Config({
     tex2jax: {
         inlineMath: [ ['$','$'], ["\\(","\\)"] ],
@@ -679,21 +906,30 @@ MathJax.Hub.Config({
         styles: {'.MathJax_Display': {"margin": 0}}
     }
 });
-</script></article>
-</div>
-        <!--End of body content-->
+</script></article><!--End of body content--><footer id="footer"><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-        <footer id="footer">
-            Contents © 2020         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+  ga('create', 'UA-92978945-1', 'auto');
+  ga('send', 'pageview');
+
+</script><p>Do you find this useful?
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Installation Guide" accesskey="n">Say Thanks!</a>
+</p>
+Contents © 2020
+<a href="mailto:support-python@unidata.ucar.edu">UCAR/Unidata</a> - Powered by
+<a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+
+            
             
         </footer>
 </div>
 </div>
 
-            <script src="../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
-    moment.locale("en");
-    fancydates(0, "YYYY-MM-DD HH:mm");
-    </script><!-- end fancy dates --><script>
+
+        <script src="../../assets/js/all-nocdn.js"></script><script>
     baguetteBox.run('div#content', {
         ignoreClass: 'islink',
         captions: function(element) {

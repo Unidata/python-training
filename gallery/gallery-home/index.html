@@ -1,23 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Unidata Example Gallery | The Unidata Python Training Site</title>
+<title>Example Gallery | Unidata Python Training</title>
 <link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
 <link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
 <link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
-<meta name="theme-color" content="#5670d4">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+<meta name="theme-color" content="#33758C">
 <meta name="generator" content="Nikola (getnikola.com)">
-<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../rss.xml">
 <link rel="canonical" href="https://unidata.github.io/python-training/gallery/gallery-home/">
-<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
-<meta property="og:site_name" content="The Unidata Python Training Site">
-<meta property="og:title" content="The Unidata Example Gallery">
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script><!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="Unidata Python Training">
+<meta property="og:title" content="Example Gallery">
 <meta property="og:url" content="https://unidata.github.io/python-training/gallery/gallery-home/">
-<meta property="og:description" content="Welcome to the Unidata Python Example Gallery! Check out detailed examples for atmospheric science
+<meta property="og:description" content="Welcome to the example gallery! Check out detailed examples for atmospheric science
 and meteorology, from data analysis to publication-quality figures. Feel free to use code from these
-">
+examples in you">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2019-07-29T14:37:54-06:00">
 <meta property="article:tag" content="python example meteorology atmospheric science unidata">
@@ -25,62 +38,68 @@ and meteorology, from data analysis to publication-quality figures. Feel free to
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
 
-<!-- Menubar -->
-
-<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
-<!-- This keeps the margins nice -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
+<!-- Header and menu bar -->
+<div class="container">
+      <header class="blog-header py-3"><div class="row nbb-header align-items-center">
+          <div class="col-md-3 col-xs-2 col-sm-2" style="width: auto;">
+            <button class="navbar-toggler navbar-light bg-light nbb-navbar-toggler" type="button" data-toggle="collapse" data-target=".bs-nav-collapsible" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand" href="https://unidata.github.io/python-training/">
-
-                <span id="blog-title">The Unidata Python Training Site</span>
-            </a>
+            <div class="collapse bs-nav-collapsible bootblog4-search-form-holder">
+                
+            </div>
         </div>
-<!-- /.navbar-header -->
-        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
-            <ul class="nav navbar-nav">
-<li>
-<a href="../../python/intro-to-python">Introduction to Python</a>
+          <div class="col-md-6 col-xs-10 col-sm-10 bootblog4-brand" style="width: auto;">
+            <a class="navbar-brand blog-header-logo text-dark" href="https://unidata.github.io/python-training/">
+            <img src="https://docs.unidata.ucar.edu/images/logos/unidata_logo_rgb_sm.png" alt="Unidata Python Training" id="logo" class="d-inline-block align-top"><span id="blog-title">Unidata Python Training</span>
+        </a>
+          </div>
+            <div class="col-md-3 justify-content-end align-items-center bs-nav-collapsible collapse flex-collapse bootblog4-right-nav">
+            <nav class="navbar navbar-light bg-white"><ul class="navbar-nav bootblog4-right-nav">
+<li class="nav-item">
+    <a href="index.rst" id="sourcelink" class="nav-link">Source</a>
+    </li>
+
+
+                    
+            </ul></nav>
+</div>
+    </div>
+</header><nav class="navbar navbar-expand-md navbar-light bg-white static-top"><div class="collapse navbar-collapse bs-nav-collapsible" id="bs-navbar">
+            <ul class="navbar-nav nav-fill d-flex w-100">
+<li class="nav-item">
+<a href="../../python/intro-to-python" class="nav-link">Introduction to Python</a>
                 </li>
-<li>
-<a href="../gallery-home">Example Gallery</a>
+<li class="nav-item">
+<a href="../gallery-home" class="nav-link">Example Gallery</a>
                 </li>
-<li>
-<a href="../../workshop/workshop-intro">Python Workshop Materials</a>
+<li class="nav-item">
+<a href="../../workshop/workshop-intro" class="nav-link">Python Workshop Materials</a>
 
                 
             </li>
 </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-    <a href="index.rst" id="sourcelink">Source</a>
-    </li>
-                
-            </ul>
 </div>
 <!-- /.navbar-collapse -->
-    </div>
-<!-- /.container -->
-</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+</nav>
+</div>
+
+<div class="container" id="content" role="main">
     <div class="body-content">
         <!--Body content-->
-        <div class="row">
-            
-<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">The Unidata Example Gallery</a></h1>
+        
+        
+        
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Example Gallery</a></h1>
 
         
+
     </header><div class="e-content entry-content" itemprop="articleBody text">
     <div>
-<p>Welcome to the Unidata Python Example Gallery! Check out detailed examples for atmospheric science
+<p>Welcome to the example gallery! Check out detailed examples for atmospheric science
 and meteorology, from data analysis to publication-quality figures. Feel free to use code from these
 examples in your own work. To download an example, click the "Source" link in the top right corner of
-the Notebook page. To install Python, get your Conda environment created, and run the example, visit
-our <a class="reference external" href="../installation/">Guide for Running Examples</a>. Curious about the Python libraries used in these
+the Notebook page. Curious about the Python libraries used in these
 examples? Visit our <a class="reference external" href="../useful-tools/">Useful Python Tools</a> page to learn more!</p>
 <p>Have an example you would like to share with the community? Check out the Contributor's Guide and then
 submit a Pull Request to the repository on <a class="reference external" href="https://github.com/Unidata/python-training">GitHub</a>!</p>
@@ -96,25 +115,25 @@ submit a Pull Request to the repository on <a class="reference external" href="h
 <tr>
 <td>
 <div class="figure">
-<a class="reference external image-reference" href="../exec_nb/skewt_example"><img alt="/images/sphx_glr_SkewT_Example_thumb.png" src="../../images/sphx_glr_SkewT_Example_thumb.png"></a>
+<a class="reference external image-reference" href="../skewt_example"><img alt="/images/sphx_glr_SkewT_Example_thumb.png" src="../../images/sphx_glr_SkewT_Example_thumb.png"></a>
 <p class="caption">Skew-T</p>
 </div>
 </td>
 <td>
 <div class="figure">
-<a class="reference external image-reference" href="../exec_nb/miller_composite"><img alt="/images/sphx_glr_miller_composite_thumb.png" src="../../images/sphx_glr_miller_composite_thumb.png"></a>
+<a class="reference external image-reference" href="../miller_composite"><img alt="/images/sphx_glr_miller_composite_thumb.png" src="../../images/sphx_glr_miller_composite_thumb.png"></a>
 <p class="caption">Miller Composite</p>
 </div>
 </td>
 <td>
 <div class="figure">
-<a class="reference external image-reference" href="../exec_nb/xarray_500hpa_map"><img alt="/images/sphx_glr_xarray_500hPa_map_thumb.png" src="../../images/sphx_glr_xarray_500hPa_map_thumb.png"></a>
+<a class="reference external image-reference" href="../xarray_500hpa_map"><img alt="/images/sphx_glr_xarray_500hPa_map_thumb.png" src="../../images/sphx_glr_xarray_500hPa_map_thumb.png"></a>
 <p class="caption">Xarray 500-hPa Map</p>
 </div>
 </td>
 <td>
 <div class="figure">
-<a class="reference external image-reference" href="../exec_nb/500hpa_vorticity_advection"><img alt="/images/sphx_glr_500hPa_Vorticity_Advection_thumb.png" src="../../images/sphx_glr_500hPa_Vorticity_Advection_thumb.png"></a>
+<a class="reference external image-reference" href="../500hpa_vorticity_advection"><img alt="/images/sphx_glr_500hPa_Vorticity_Advection_thumb.png" src="../../images/sphx_glr_500hPa_Vorticity_Advection_thumb.png"></a>
 <p class="caption">500-hPa Vorticity Advection</p>
 </div>
 </td>
@@ -122,25 +141,25 @@ submit a Pull Request to the repository on <a class="reference external" href="h
 <tr>
 <td>
 <div class="figure">
-<a class="reference external image-reference" href="../exec_nb/250hpa_hemispheric_plot"><img alt="/images/sphx_glr_250hPa_Hemispheric_Plot_thumb.png" src="../../images/sphx_glr_250hPa_Hemispheric_Plot_thumb.png"></a>
+<a class="reference external image-reference" href="../250hpa_hemispheric_plot"><img alt="/images/sphx_glr_250hPa_Hemispheric_Plot_thumb.png" src="../../images/sphx_glr_250hPa_Hemispheric_Plot_thumb.png"></a>
 <p class="caption">250-hPa Hemispheric Map</p>
 </div>
 </td>
 <td>
 <div class="figure">
-<a class="reference external image-reference" href="../exec_nb/analytic_300hpa_trough"><img alt="/images/sphx_glr_Analytic_300hPa_Trough_thumb.png" src="../../images/sphx_glr_Analytic_300hPa_Trough_thumb.png"></a>
+<a class="reference external image-reference" href="../analytic_300hpa_trough"><img alt="/images/sphx_glr_Analytic_300hPa_Trough_thumb.png" src="../../images/sphx_glr_Analytic_300hPa_Trough_thumb.png"></a>
 <p class="caption">Analytic 300-hPa Trough Map</p>
 </div>
 </td>
 <td>
 <div class="figure">
-<a class="reference external image-reference" href="../exec_nb/500hpa_hght_winds"><img alt="/images/sphx_glr_500hPa_HGHT_Winds_thumb.png" src="../../images/sphx_glr_500hPa_HGHT_Winds_thumb.png"></a>
+<a class="reference external image-reference" href="../500hpa_hght_winds"><img alt="/images/sphx_glr_500hPa_HGHT_Winds_thumb.png" src="../../images/sphx_glr_500hPa_HGHT_Winds_thumb.png"></a>
 <p class="caption">500-hPa Heights and Winds</p>
 </div>
 </td>
 <td>
 <div class="figure">
-<a class="reference external image-reference" href="../exec_nb/500hpa_absolute_vorticity"><img alt="/images/sphx_glr_500hPa_Absolute_Vorticity_winds_thumb.png" src="../../images/sphx_glr_500hPa_Absolute_Vorticity_winds_thumb.png"></a>
+<a class="reference external image-reference" href="../500hpa_absolute_vorticity"><img alt="/images/sphx_glr_500hPa_Absolute_Vorticity_winds_thumb.png" src="../../images/sphx_glr_500hPa_Absolute_Vorticity_winds_thumb.png"></a>
 <p class="caption">500-hPa Absolute Vorticity and Winds</p>
 </div>
 </td>
@@ -148,25 +167,25 @@ submit a Pull Request to the repository on <a class="reference external" href="h
 <tr>
 <td>
 <div class="figure">
-<a class="reference external image-reference" href="../exec_nb/700hpa_relh_winds"><img alt="/images/sphx_glr_700hPa_RELH_Winds_thumb.png" src="../../images/sphx_glr_700hPa_RELH_Winds_thumb.png"></a>
+<a class="reference external image-reference" href="../700hpa_relh_winds"><img alt="/images/sphx_glr_700hPa_RELH_Winds_thumb.png" src="../../images/sphx_glr_700hPa_RELH_Winds_thumb.png"></a>
 <p class="caption">700-hPa Relative Humidity and Winds</p>
 </div>
 </td>
 <td>
 <div class="figure">
-<a class="reference external image-reference" href="../exec_nb/850hpa_tmpc_winds"><img alt="/images/sphx_glr_850hPa_TMPC_Winds_thumb.png" src="../../images/sphx_glr_850hPa_TMPC_Winds_thumb.png"></a>
+<a class="reference external image-reference" href="../850hpa_tmpc_winds"><img alt="/images/sphx_glr_850hPa_TMPC_Winds_thumb.png" src="../../images/sphx_glr_850hPa_TMPC_Winds_thumb.png"></a>
 <p class="caption">850-hPa Temperature and Winds</p>
 </div>
 </td>
 <td>
 <div class="figure">
-<a class="reference external image-reference" href="../exec_nb/850hpa_temperature_advection"><img alt="/images/sphx_glr_850hPa_Temperature_Advection_thumb.png" src="../../images/sphx_glr_850hPa_Temperature_Advection_thumb.png"></a>
+<a class="reference external image-reference" href="../850hpa_temperature_advection"><img alt="/images/sphx_glr_850hPa_Temperature_Advection_thumb.png" src="../../images/sphx_glr_850hPa_Temperature_Advection_thumb.png"></a>
 <p class="caption">850-hPa Temperature Advection</p>
 </div>
 </td>
 <td>
 <div class="figure">
-<a class="reference external image-reference" href="../exec_nb/850hpa_frontogenesis"><img alt="/images/sphx_glr_850hPa_Frontogenesis_thumb.png" src="../../images/sphx_glr_850hPa_Frontogenesis_thumb.png"></a>
+<a class="reference external image-reference" href="../850hpa_frontogenesis"><img alt="/images/sphx_glr_850hPa_Frontogenesis_thumb.png" src="../../images/sphx_glr_850hPa_Frontogenesis_thumb.png"></a>
 <p class="caption">850-hPa Frontogenesis</p>
 </div>
 </td>
@@ -174,25 +193,25 @@ submit a Pull Request to the repository on <a class="reference external" href="h
 <tr>
 <td>
 <div class="figure">
-<a class="reference external image-reference" href="../exec_nb/850hpa_qvectors"><img alt="/images/sphx_glr_850hPa_QVectors_thumb.png" src="../../images/sphx_glr_850hPa_QVectors_thumb.png"></a>
+<a class="reference external image-reference" href="../850hpa_qvectors"><img alt="/images/sphx_glr_850hPa_QVectors_thumb.png" src="../../images/sphx_glr_850hPa_QVectors_thumb.png"></a>
 <p class="caption">850-hPa Q-Vectors</p>
 </div>
 </td>
 <td>
 <div class="figure">
-<a class="reference external image-reference" href="../exec_nb/ageostrophic_wind_example"><img alt="/images/sphx_glr_Ageostrophic_Wind_Example_thumb.png" src="../../images/sphx_glr_Ageostrophic_Wind_Example_thumb.png"></a>
+<a class="reference external image-reference" href="../ageostrophic_wind_example"><img alt="/images/sphx_glr_Ageostrophic_Wind_Example_thumb.png" src="../../images/sphx_glr_Ageostrophic_Wind_Example_thumb.png"></a>
 <p class="caption">Ageostrophic Wind Map</p>
 </div>
 </td>
 <td>
 <div class="figure">
-<a class="reference external image-reference" href="../exec_nb/differential_temperature_advection"><img alt="/images/sphx_glr_Differential_Temperature_Advection_thumb.png" src="../../images/sphx_glr_Differential_Temperature_Advection_thumb.png"></a>
+<a class="reference external image-reference" href="../differential_temperature_advection"><img alt="/images/sphx_glr_Differential_Temperature_Advection_thumb.png" src="../../images/sphx_glr_Differential_Temperature_Advection_thumb.png"></a>
 <p class="caption">Differential Temperature Advection</p>
 </div>
 </td>
 <td>
 <div class="figure">
-<a class="reference external image-reference" href="../exec_nb/pv_baroclinic_isobaric"><img alt="/images/sphx_glr_PV_baroclinic_isobaric_thumb.png" src="../../images/sphx_glr_PV_baroclinic_isobaric_thumb.png"></a>
+<a class="reference external image-reference" href="../pv_baroclinic_isobaric"><img alt="/images/sphx_glr_PV_baroclinic_isobaric_thumb.png" src="../../images/sphx_glr_PV_baroclinic_isobaric_thumb.png"></a>
 <p class="caption">Baroclinic and Isobaric Potential Vorticity</p>
 </div>
 </td>
@@ -200,25 +219,25 @@ submit a Pull Request to the repository on <a class="reference external" href="h
 <tr>
 <td>
 <div class="figure">
-<a class="reference external image-reference" href="../exec_nb/mslp_temp_winds"><img alt="/images/sphx_glr_MSLP_temp_winds_thumb.png" src="../../images/sphx_glr_MSLP_temp_winds_thumb.png"></a>
+<a class="reference external image-reference" href="../mslp_temp_winds"><img alt="/images/sphx_glr_MSLP_temp_winds_thumb.png" src="../../images/sphx_glr_MSLP_temp_winds_thumb.png"></a>
 <p class="caption">Surface Map: MSLP, Temperature, and Winds</p>
 </div>
 </td>
 <td>
 <div class="figure">
-<a class="reference external image-reference" href="../exec_nb/hilo_symbol_plot"><img alt="/images/sphx_glr_HILO_Symbol_Plot_thumb.png" src="../../images/sphx_glr_HILO_Symbol_Plot_thumb.png"></a>
+<a class="reference external image-reference" href="../hilo_symbol_plot"><img alt="/images/sphx_glr_HILO_Symbol_Plot_thumb.png" src="../../images/sphx_glr_HILO_Symbol_Plot_thumb.png"></a>
 <p class="caption">High &amp; Low Pressure Symbols</p>
 </div>
 </td>
 <td>
 <div class="figure">
-<a class="reference external image-reference" href="../exec_nb/precipitation_map"><img alt="/images/sphx_glr_Precipitation_Map_thumb.png" src="../../images/sphx_glr_Precipitation_Map_thumb.png"></a>
+<a class="reference external image-reference" href="../precipitation_map"><img alt="/images/sphx_glr_Precipitation_Map_thumb.png" src="../../images/sphx_glr_Precipitation_Map_thumb.png"></a>
 <p class="caption">Precipitation Map</p>
 </div>
 </td>
 <td>
 <div class="figure">
-<a class="reference external image-reference" href="../exec_nb/satellite_example"><img alt="/images/sphx_glr_Satellite_Example_thumb.png" src="../../images/sphx_glr_Satellite_Example_thumb.png"></a>
+<a class="reference external image-reference" href="../satellite_example"><img alt="/images/sphx_glr_Satellite_Example_thumb.png" src="../../images/sphx_glr_Satellite_Example_thumb.png"></a>
 <p class="caption">GOES 16/17 Satellite Plotting</p>
 </div>
 </td>
@@ -226,25 +245,25 @@ submit a Pull Request to the repository on <a class="reference external" href="h
 <tr>
 <td>
 <div class="figure">
-<a class="reference external image-reference" href="../exec_nb/smoothing_contours"><img alt="/images/sphx_glr_Smoothing_Contours_thumb.png" src="../../images/sphx_glr_Smoothing_Contours_thumb.png"></a>
+<a class="reference external image-reference" href="../smoothing_contours"><img alt="/images/sphx_glr_Smoothing_Contours_thumb.png" src="../../images/sphx_glr_Smoothing_Contours_thumb.png"></a>
 <p class="caption">How to Smooth Contours</p>
 </div>
 </td>
 <td>
 <div class="figure">
-<a class="reference external image-reference" href="../exec_nb/isentropic_interpolation"><img alt="/images/sphx_glr_Isentropic_Interpolation_thumb.png" src="../../images/sphx_glr_Isentropic_Interpolation_thumb.png"></a>
+<a class="reference external image-reference" href="../isentropic_interpolation"><img alt="/images/sphx_glr_Isentropic_Interpolation_thumb.png" src="../../images/sphx_glr_Isentropic_Interpolation_thumb.png"></a>
 <p class="caption">Isentropic Interpolation</p>
 </div>
 </td>
 <td>
 <div class="figure">
-<a class="reference external image-reference" href="../exec_nb/hovmoller_diagram"><img alt="/images/sphx_glr_Hovmoller_Diagram_thumb.png" src="../../images/sphx_glr_Hovmoller_Diagram_thumb.png"></a>
+<a class="reference external image-reference" href="../hovmoller_diagram"><img alt="/images/sphx_glr_Hovmoller_Diagram_thumb.png" src="../../images/sphx_glr_Hovmoller_Diagram_thumb.png"></a>
 <p class="caption">Hovmoller Diagram</p>
 </div>
 </td>
 <td>
 <div class="figure">
-<a class="reference external image-reference" href="../exec_nb/goes_aircraft"><img alt="/images/sphx_glr_GOES_aircraft_thumb.png" src="../../images/sphx_glr_GOES_aircraft_thumb.png"></a>
+<a class="reference external image-reference" href="../goes_aircraft"><img alt="/images/sphx_glr_GOES_aircraft_thumb.png" src="../../images/sphx_glr_GOES_aircraft_thumb.png"></a>
 <p class="caption">GOES 16/17 Satellite and Aircraft Location</p>
 </div>
 </td>
@@ -264,13 +283,13 @@ submit a Pull Request to the repository on <a class="reference external" href="h
 </td>
 <td>
 <div class="figure">
-<a class="reference external image-reference" href="../exec_nb/wind_shear_vectors_example"><img alt="/images/sphx_glr_Wind_Shear_Vectors_Example_thumb.png" src="../../images/sphx_glr_Wind_Shear_Vectors_Example_thumb.png"></a>
+<a class="reference external image-reference" href="../wind_shear_vectors_example"><img alt="/images/sphx_glr_Wind_Shear_Vectors_Example_thumb.png" src="../../images/sphx_glr_Wind_Shear_Vectors_Example_thumb.png"></a>
 <p class="caption">Wind Shear Vectors</p>
 </div>
 </td>
 <td>
 <div class="figure">
-<a class="reference external image-reference" href="../exec_nb/mapping_goes16_truecolor"><img alt="/images/sphx_glr_mapping_GOES16_TrueColor_thumb.png" src="../../images/sphx_glr_mapping_GOES16_TrueColor_thumb.png"></a>
+<a class="reference external image-reference" href="../mapping_goes16_truecolor"><img alt="/images/sphx_glr_mapping_GOES16_TrueColor_thumb.png" src="../../images/sphx_glr_mapping_GOES16_TrueColor_thumb.png"></a>
 <p class="caption">Plotting GOES 16 True Color Images</p>
 </div>
 </td>
@@ -278,13 +297,13 @@ submit a Pull Request to the repository on <a class="reference external" href="h
 <tr>
 <td>
 <div class="figure">
-<a class="reference external image-reference" href="../exec_nb/upperair_obs"><img alt="/images/sphx_glr_Upperair_Obs_thumb.png" src="../../images/sphx_glr_Upperair_Obs_thumb.png"></a>
+<a class="reference external image-reference" href="../upperair_obs"><img alt="/images/sphx_glr_Upperair_Obs_thumb.png" src="../../images/sphx_glr_Upperair_Obs_thumb.png"></a>
 <p class="caption">Upper-Air Observations on a Legacy DIFAX Chart</p>
 </div>
 </td>
 <td>
 <div class="figure">
-<a class="reference external image-reference" href="../exec_nb/observational_data_cross_section"><img alt="/images/sphx_glr_Observational_Data_Cross_Section_thumb.png" src="../../images/sphx_glr_Observational_Data_Cross_Section_thumb.png"></a>
+<a class="reference external image-reference" href="../observational_data_cross_section"><img alt="/images/sphx_glr_Observational_Data_Cross_Section_thumb.png" src="../../images/sphx_glr_Observational_Data_Cross_Section_thumb.png"></a>
 <p class="caption">Observational Data Cross Section</p>
 </div>
 </td>
@@ -296,7 +315,7 @@ submit a Pull Request to the repository on <a class="reference external" href="h
 </td>
 <td>
 <div class="figure">
-<a class="reference external image-reference" href="../exec_nb/declarative_300hpa"><img alt="/images/sphx_glr_Declarative_300hPa_thumb.png" src="../../images/sphx_glr_Declarative_300hPa_thumb.png"></a>
+<a class="reference external image-reference" href="../declarative_300hpa"><img alt="/images/sphx_glr_Declarative_300hPa_thumb.png" src="../../images/sphx_glr_Declarative_300hPa_thumb.png"></a>
 <p class="caption">Declarative Plotting Interface Example</p>
 </div>
 </td>
@@ -304,11 +323,16 @@ submit a Pull Request to the repository on <a class="reference external" href="h
 <tr>
 <td>
 <div class="figure">
-<a class="reference external image-reference" href="../exec_nb/nexrad_s3_demo"><img alt="/images/sphx_glr_Nexrad_S3_Demo_thumb.png" src="../../images/sphx_glr_Nexrad_S3_Demo_thumb.png"></a>
+<a class="reference external image-reference" href="../nexrad_s3_demo"><img alt="/images/sphx_glr_Nexrad_S3_Demo_thumb.png" src="../../images/sphx_glr_Nexrad_S3_Demo_thumb.png"></a>
 <p class="caption">AWS S3 NEXRAD Archive Access and Plotting</p>
 </div>
 </td>
-<td></td>
+<td>
+<div class="figure">
+<a class="reference external image-reference" href="../declarative_500_hpa"><img alt="/images/sphx_glr_Declarative_500_hpa_thumb.png" src="../../images/sphx_glr_Declarative_500_hpa_thumb.png"></a>
+<p class="caption">Declarative 500-hPa map</p>
+</div>
+</td>
 <td></td>
 <td></td>
 </tr>
@@ -317,21 +341,31 @@ submit a Pull Request to the repository on <a class="reference external" href="h
 </div>
     </div>
     
-</article>
-</div>
-        <!--End of body content-->
 
-        <footer id="footer">
-            Contents © 2020         <a href="mailto:support-python@ucar.edu">UCAR/Unidata</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+</article><!--End of body content--><footer id="footer"><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-92978945-1', 'auto');
+  ga('send', 'pageview');
+
+</script><p>Do you find this useful?
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Installation Guide" accesskey="n">Say Thanks!</a>
+</p>
+Contents © 2020
+<a href="mailto:support-python@unidata.ucar.edu">UCAR/Unidata</a> - Powered by
+<a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+
+            
             
         </footer>
 </div>
 </div>
 
-            <script src="../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
-    moment.locale("en");
-    fancydates(0, "YYYY-MM-DD HH:mm");
-    </script><!-- end fancy dates --><script>
+
+        <script src="../../assets/js/all-nocdn.js"></script><script>
     baguetteBox.run('div#content', {
         ignoreClass: 'islink',
         captions: function(element) {

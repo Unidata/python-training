@@ -1,29 +1,11 @@
-#container {
-    width: 960px;
-    margin: 0 auto;
-}
-
-#contentcolumn {
-    max-width: 760px;
-}
-#q {
-    width: 150px;
-}
-
 img {
-    max-width: 90%;
-}
-
-.postbox {
-    border-bottom: 2px solid darkgrey;
-    margin-bottom: 12px;
+    max-width: 100%;
 }
 
 .titlebox {
     text-align: right;
 }
 
-#addthisbox {margin-bottom: 12px;}
 
 td.label {
     /* Issue #290 */
@@ -35,7 +17,6 @@ td.label {
     vertical-align: super;
     font-size: xx-small;
 }
-
 
 .caption {
     /* Issue 292 */
@@ -52,7 +33,7 @@ div.figure > a > img {
 }
 
 blockquote p, blockquote {
-  font-size: 17.5px;
+  font-size: 1.25rem;
   font-weight: 300;
   line-height: 1.25;
 }
@@ -65,10 +46,6 @@ ul.bricks > li {
     line-height: 3;
     white-space:nowrap;
     margin: 3px;
-}
-
-.at300b, .stMainServices, .stButton, .stButton_gradient {
-    box-sizing: content-box;
 }
 
 pre, pre code {
@@ -86,10 +63,6 @@ article.post-micro {
     display: inline-block;
 }
 
-.flowr_row {
-    width: 100%;
-}
-
 .tags {
     padding-left: 0;
     margin-left: -5px;
@@ -100,72 +73,52 @@ article.post-micro {
 
 .tags > li {
     display: inline-block;
-    min-width: 10px;
-    padding: 3px 7px;
-    font-size: 12px;
-    font-weight: bold;
+}
+.tags > li a {
+    display: inline-block;
+    padding: .25em .4em;
+    font-size: 75%;
+    font-weight: 700;
     line-height: 1;
     color: #fff;
     text-align: center;
     white-space: nowrap;
     vertical-align: baseline;
-    background-color: #999;
-    border-radius: 10px;
+    border-radius: .25rem;
+    background-color: #868e96;
 }
 
-.tags > li a {
+.tags > li a:hover {
     color: #fff;
+    text-decoration: none;
+    background-color: #6c757d;
 }
 
 .metadata p:before,
-.postlist .listdate:after,
-.translationslist p:before {
+.postlist .listdate:after {
     content: " — ";
 }
 
-.metadata p:first-of-type:before,
-.translationslist p:first-of-type:before {
+.metadata p:first-of-type:before {
     content: "";
 }
 
-.metadata p,
-.translationslist p {
+.metadata p {
     display: inline;
 }
 
-.posttranslations h3, .translationslist h3 {
+.posttranslations h3 {
     display: inline;
     font-size: 1em;
     font-weight: bold;
 }
 
-.posttranslations h3:last-child, .translationslist h3:last-child {
+.posttranslations h3:last-child {
     display: none;
 }
 
 .entry-content {
     margin-top: 1em;
-}
-
-.navbar-brand {
-    padding: 0 15px;
-}
-
-.navbar-brand #blog-title {
-    padding: 15px 0;
-    display: inline-block;
-}
-
-.navbar-brand #logo {
-    max-width: 100%;
-}
-
-.navbar-brand>img {
-    display: inline;
-}
-
-.row {
-    margin: 0;
 }
 
 /* for alignment with Bootstrap's .entry-content styling */
@@ -215,4 +168,67 @@ article.post-micro {
     .navbar {
         display: none;
     }
+}
+
+pre {
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+    padding: 0.75rem;
+}
+
+.postindexpager {
+    padding-bottom: 1rem;
+}
+
+ul.navbar-nav {
+    margin-top: 0;
+}
+
+ul.pager {
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+    border-radius: .25rem;
+    padding-left: 0;
+    margin: 0.5rem 0;
+}
+
+ul.pager li.previous {
+    margin-right: auto;
+    display: inline;
+}
+
+ul.pager li.next {
+    margin-left: auto;
+    display: inline;
+}
+
+
+ul.pager li a {
+    display: inline;
+    position: relative;
+    padding: .5rem .75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    border: 1px solid #ddd;
+    border-radius: .25rem;
+}
+
+.codetable td {
+    padding: 0;
+    margin: 0;
+    border-radius: 0;
+}
+
+.codetable td.linenos pre {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: none;
+}
+
+.codetable td.code pre.code {
+    margin-left: 0;
+    margin-right: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
 }
