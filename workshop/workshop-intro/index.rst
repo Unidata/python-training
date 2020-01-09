@@ -19,12 +19,14 @@ Scientific Python Basics
 * Numpy
     * :doc:`Introduction to Numpy <numpy-basics>`
     * :doc:`Intermediate Numpy <intermediate-numpy>`
+    * :doc:`Broadcasting and Vectorization <numpy-broadcasting-and-vectorization>`
 * Pandas
     * :doc:`Introduction to Pandas <pandas-introduction>`
 * Matplotlib
     * :doc:`Matplotlib Basics <matplotlib-basics>`
 * XArray
     * :doc:`Introduction to XArray <xarray-introduction>`
+    * :doc:`XArray and CF Conventions <xarray-and-cf>`
 * Pythonic Data Analysis
     * :doc:`Introduction to Data Analysis <pythonic-data-analysis>`
     * :doc:`Advanced Data Analysis <advanced-pythonic-data-analysis>`
@@ -47,15 +49,19 @@ Atmospheric Science & Meteorology Packages and Applications
 * SkewT
     * :doc:`SkewTs and Hodographs <skewt_and_hodograph>`
 * Satellite Analysis
-    * :doc:`Plotting Satellite Data <plottingsatellitedata>`
-    * :doc:`GOES Interactive Plotting <goes_interactive_plot>`
+    * :doc:`Plotting Satellite Data <plotting-satellite-data>`
+    * :doc:`GOES Interactive Plotting <goes-interactive-plot>`
+    * :doc:`Plotting Satellite with MetPy Declarative Interface <declarative-satellite-data>`
+    * :doc:`Animating Satellite Images <satellite-animations>`
 * Surface Analysis
     * :doc:`Surface Data with Siphon and MetPy <surface-data-with-siphon-and-metpy>`
+    * :doc:`Station Plots with Mesonet Data <advanced-stationplots-with-mesonet-data>`
 * Bonus
     * :doc:`GFS Download with Siphon <downloading-gfs-with-siphon>`
     * :doc:`Write netCDF files <netcdf-writing>`
     * :doc:`Plot HRRR Output with Siphon and XArray <siphon_xarray_cartopy_hrrr>`
     * :doc:`Debugging and Troubleshooting Your Code <what-to-do-when-things-go-wrong>`
+    * :doc:`NetCDF CF Conventions: The Basics <netcdf-and-cf-the-basics>`
 
 
 
