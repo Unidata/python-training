@@ -32,18 +32,16 @@ MathJax.Hub.Config({
 Unidata Python Workshop
 
 
-Overview:¶
-Teaching: 10 minutes
-Exercises: 10 minutes
-
 Questions¶
 What is a THREDDS Data Server (TDS)?
 How can I use Siphon to access a TDS?
 
 Objectives¶
-Use ">
+Use Siphon to Access a THREDDS Catalog
+Filtering Data
+Use S">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2020-01-09T09:53:54-07:00">
+<meta property="article:published_time" content="2020-01-09T12:27:38-07:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -117,14 +115,6 @@ navbar-dark bg-primary
 </div>
 <hr style="height:2px;">
 <div style="float:right; width:250 px"><img src="https://unidata.github.io/siphon/latest/_static/siphon_150x150.png" alt="TDS" style="height: 200px;"></div>
-<h3 id="Overview:">Overview:<a class="anchor-link" href="#Overview:">¶</a>
-</h3>
-<ul>
-<li>
-<strong>Teaching:</strong> 10 minutes</li>
-<li>
-<strong>Exercises:</strong> 10 minutes</li>
-</ul>
 <h4 id="Questions">Questions<a class="anchor-link" href="#Questions">¶</a>
 </h4>
 <ol>
@@ -134,9 +124,9 @@ navbar-dark bg-primary
 <h4 id="Objectives">Objectives<a class="anchor-link" href="#Objectives">¶</a>
 </h4>
 <ol>
-<li><a href="#threddsintro">Use siphon to access a THREDDS catalog</a></li>
-<li><a href="#filtering">Find data within the catalog that we wish to access</a></li>
-<li><a href="#dataaccess">Use siphon to perform remote data access</a></li>
+<li><a href="#threddsintro">Use Siphon to Access a THREDDS Catalog</a></li>
+<li><a href="#filtering">Filtering Data</a></li>
+<li><a href="#dataaccess">Use Siphon to Perform Remote Data Access</a></li>
 </ol>
 </div>
 </div>
@@ -147,11 +137,11 @@ navbar-dark bg-primary
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><a name="threddsintro"></a></p>
-<h3 id="1.-What-is-THREDDS?">1. What is THREDDS?<a class="anchor-link" href="#1.-What-is-THREDDS?">¶</a>
+<h3 id="1.-Use-Siphon-to-Access-a-THREDDS-Catalog">1. Use Siphon to Access a THREDDS Catalog<a class="anchor-link" href="#1.-Use-Siphon-to-Access-a-THREDDS-Catalog">¶</a>
 </h3>
+<p>THREDDS is a server for providing remote access to datasets and a variety of server-side services. THREDDS make data access more uniform regardless of the on-disk format.</p>
 <ul>
-<li>Server for providing remote access to datasets</li>
-<li>Variety of services for accesing data:<ul>
+<li>Data Access Services:<ul>
 <li>HTTP Download</li>
 <li>Web Mapping/Coverage Service (WMS/WCS)</li>
 <li>OPeNDAP</li>
@@ -159,34 +149,14 @@ navbar-dark bg-primary
 <li>CDMRemote</li>
 </ul>
 </li>
-<li>Provides a more uniform way to access different types/formats of data</li>
 </ul>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="THREDDS-Demo">THREDDS Demo<a class="anchor-link" href="#THREDDS-Demo">¶</a>
-</h3>
-<p><a href="http://thredds.ucar.edu">http://thredds.ucar.edu</a></p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
+<p>There is a server with real-time data setup at <a href="http://thredds.ucar.edu">http://thredds.ucar.edu</a> that we'll use to explore the capability of THREDDS and learn how to access data. Let's open that link and explore in the browser what's available on THREDDS. Explore the NEXRAD level 3 data specifically.</p>
 <h4 id="THREDDS-Catalogs">THREDDS Catalogs<a class="anchor-link" href="#THREDDS-Catalogs">¶</a>
 </h4>
 <ul>
 <li>XML descriptions of data and metadata</li>
 <li>Access methods</li>
-<li>Easily handled with <code>siphon.catalog.TDSCatalog</code>
+<li>Easily processed with <code>siphon.catalog.TDSCatalog</code>
 </li>
 </ul>
 </div>
@@ -198,13 +168,110 @@ navbar-dark bg-primary
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+
 <span class="kn">from</span> <span class="nn">siphon.catalog</span> <span class="kn">import</span> <span class="n">TDSCatalog</span>
-<span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">cat</span> <span class="o">=</span> <span class="n">TDSCatalog</span><span class="p">(</span><span class="s1">'http://thredds.ucar.edu/thredds/catalog/nexrad/level3/'</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's get data from yesterday at this time. We'll use the timedelta object to do this in an easy way.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>2020-01-08 19:27:30.127522
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We'll then go find the URL for the level 3 radar data. Let's get the N0Q (tilt 1 base reflectivity) for the LRX radar. Notice that we change the <code>html</code> extension to <code>xml</code>. Siphon will do that for us, but issue a warning.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cat</span> <span class="o">=</span> <span class="n">TDSCatalog</span><span class="p">(</span><span class="s1">'http://thredds.ucar.edu/thredds/catalog/nexrad/level3/'</span>
                  <span class="sa">f</span><span class="s1">'N0Q/LRX/{date:%Y%m</span><span class="si">%d</span><span class="s1">}/catalog.xml'</span><span class="p">)</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cat</span><span class="o">.</span><span class="n">datasets</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[4]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>['Level3_LRX_N0Q_20200108_1830.nids', 'Level3_LRX_N0Q_20200108_1820.nids', 'Level3_LRX_N0Q_20200108_1811.nids', 'Level3_LRX_N0Q_20200108_1801.nids', 'Level3_LRX_N0Q_20200108_1752.nids', 'Level3_LRX_N0Q_20200108_1742.nids', 'Level3_LRX_N0Q_20200108_1732.nids', 'Level3_LRX_N0Q_20200108_1723.nids', 'Level3_LRX_N0Q_20200108_1713.nids', 'Level3_LRX_N0Q_20200108_1703.nids', 'Level3_LRX_N0Q_20200108_1654.nids', 'Level3_LRX_N0Q_20200108_1644.nids', 'Level3_LRX_N0Q_20200108_1634.nids', 'Level3_LRX_N0Q_20200108_1625.nids', 'Level3_LRX_N0Q_20200108_1615.nids', 'Level3_LRX_N0Q_20200108_1606.nids', 'Level3_LRX_N0Q_20200108_1556.nids', 'Level3_LRX_N0Q_20200108_1546.nids', 'Level3_LRX_N0Q_20200108_1537.nids', 'Level3_LRX_N0Q_20200108_1527.nids', 'Level3_LRX_N0Q_20200108_1517.nids', 'Level3_LRX_N0Q_20200108_1508.nids', 'Level3_LRX_N0Q_20200108_1458.nids', 'Level3_LRX_N0Q_20200108_1448.nids', 'Level3_LRX_N0Q_20200108_1439.nids', 'Level3_LRX_N0Q_20200108_1429.nids', 'Level3_LRX_N0Q_20200108_1420.nids', 'Level3_LRX_N0Q_20200108_1410.nids', 'Level3_LRX_N0Q_20200108_1400.nids', 'Level3_LRX_N0Q_20200108_1351.nids', 'Level3_LRX_N0Q_20200108_1341.nids', 'Level3_LRX_N0Q_20200108_1331.nids', 'Level3_LRX_N0Q_20200108_1322.nids', 'Level3_LRX_N0Q_20200108_1312.nids', 'Level3_LRX_N0Q_20200108_1302.nids', 'Level3_LRX_N0Q_20200108_1253.nids', 'Level3_LRX_N0Q_20200108_1243.nids', 'Level3_LRX_N0Q_20200108_1234.nids', 'Level3_LRX_N0Q_20200108_1224.nids', 'Level3_LRX_N0Q_20200108_1214.nids', 'Level3_LRX_N0Q_20200108_1205.nids', 'Level3_LRX_N0Q_20200108_1155.nids', 'Level3_LRX_N0Q_20200108_1145.nids', 'Level3_LRX_N0Q_20200108_1136.nids', 'Level3_LRX_N0Q_20200108_1124.nids', 'Level3_LRX_N0Q_20200108_1114.nids', 'Level3_LRX_N0Q_20200108_1105.nids', 'Level3_LRX_N0Q_20200108_1055.nids', 'Level3_LRX_N0Q_20200108_1046.nids', 'Level3_LRX_N0Q_20200108_1036.nids', 'Level3_LRX_N0Q_20200108_1026.nids', 'Level3_LRX_N0Q_20200108_1017.nids', 'Level3_LRX_N0Q_20200108_1007.nids', 'Level3_LRX_N0Q_20200108_0957.nids', 'Level3_LRX_N0Q_20200108_0948.nids', 'Level3_LRX_N0Q_20200108_0938.nids', 'Level3_LRX_N0Q_20200108_0928.nids', 'Level3_LRX_N0Q_20200108_0919.nids', 'Level3_LRX_N0Q_20200108_0909.nids', 'Level3_LRX_N0Q_20200108_0900.nids', 'Level3_LRX_N0Q_20200108_0850.nids', 'Level3_LRX_N0Q_20200108_0840.nids', 'Level3_LRX_N0Q_20200108_0831.nids', 'Level3_LRX_N0Q_20200108_0821.nids', 'Level3_LRX_N0Q_20200108_0811.nids', 'Level3_LRX_N0Q_20200108_0802.nids', 'Level3_LRX_N0Q_20200108_0752.nids', 'Level3_LRX_N0Q_20200108_0742.nids', 'Level3_LRX_N0Q_20200108_0733.nids', 'Level3_LRX_N0Q_20200108_0723.nids', 'Level3_LRX_N0Q_20200108_0714.nids', 'Level3_LRX_N0Q_20200108_0704.nids', 'Level3_LRX_N0Q_20200108_0654.nids', 'Level3_LRX_N0Q_20200108_0645.nids', 'Level3_LRX_N0Q_20200108_0635.nids', 'Level3_LRX_N0Q_20200108_0625.nids', 'Level3_LRX_N0Q_20200108_0616.nids', 'Level3_LRX_N0Q_20200108_0606.nids', 'Level3_LRX_N0Q_20200108_0557.nids', 'Level3_LRX_N0Q_20200108_0547.nids', 'Level3_LRX_N0Q_20200108_0537.nids', 'Level3_LRX_N0Q_20200108_0528.nids', 'Level3_LRX_N0Q_20200108_0518.nids', 'Level3_LRX_N0Q_20200108_0508.nids', 'Level3_LRX_N0Q_20200108_0459.nids', 'Level3_LRX_N0Q_20200108_0449.nids', 'Level3_LRX_N0Q_20200108_0439.nids', 'Level3_LRX_N0Q_20200108_0430.nids', 'Level3_LRX_N0Q_20200108_0420.nids', 'Level3_LRX_N0Q_20200108_0411.nids', 'Level3_LRX_N0Q_20200108_0401.nids', 'Level3_LRX_N0Q_20200108_0351.nids', 'Level3_LRX_N0Q_20200108_0342.nids', 'Level3_LRX_N0Q_20200108_0332.nids', 'Level3_LRX_N0Q_20200108_0320.nids', 'Level3_LRX_N0Q_20200108_0311.nids', 'Level3_LRX_N0Q_20200108_0301.nids', 'Level3_LRX_N0Q_20200108_0251.nids', 'Level3_LRX_N0Q_20200108_0242.nids', 'Level3_LRX_N0Q_20200108_0232.nids', 'Level3_LRX_N0Q_20200108_0223.nids', 'Level3_LRX_N0Q_20200108_0213.nids', 'Level3_LRX_N0Q_20200108_0203.nids', 'Level3_LRX_N0Q_20200108_0154.nids', 'Level3_LRX_N0Q_20200108_0144.nids', 'Level3_LRX_N0Q_20200108_0134.nids', 'Level3_LRX_N0Q_20200108_0125.nids', 'Level3_LRX_N0Q_20200108_0115.nids', 'Level3_LRX_N0Q_20200108_0105.nids', 'Level3_LRX_N0Q_20200108_0056.nids', 'Level3_LRX_N0Q_20200108_0046.nids', 'Level3_LRX_N0Q_20200108_0036.nids', 'Level3_LRX_N0Q_20200108_0027.nids', 'Level3_LRX_N0Q_20200108_0017.nids', 'Level3_LRX_N0Q_20200108_0010.nids', 'Level3_LRX_N0Q_20200108_0003.nids']</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -225,7 +292,7 @@ navbar-dark bg-primary
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><a name="filtering"></a></p>
-<h3 id="2.-Filtering-data">2. Filtering data<a class="anchor-link" href="#2.-Filtering-data">¶</a>
+<h3 id="2.-Filtering-Data">2. Filtering Data<a class="anchor-link" href="#2.-Filtering-Data">¶</a>
 </h3>
 </div>
 </div>
@@ -235,14 +302,14 @@ navbar-dark bg-primary
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>We <em>could</em> manually figure out what dataset we're looking for and generate that name (or index). Siphon provides some helpers to simplify this process, provided the names of the dataset follow a pattern with the timestamp in the name:</p>
+<p>We <em>could</em> manually look through that list above and figure out what dataset we're looking for and generate that name (or index). Siphon provides some helpers to simplify this process, provided the names of the dataset follow a pattern with the timestamp in the name:</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [2]:</div>
+<div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">request_time</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">second</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">microsecond</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -260,7 +327,7 @@ navbar-dark bg-primary
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[2]:</div>
+    <div class="prompt output_prompt">Out[5]:</div>
 
 
 
@@ -287,7 +354,7 @@ navbar-dark bg-primary
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [3]:</div>
+<div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">datasets</span> <span class="o">=</span> <span class="n">cat</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">filter_time_range</span><span class="p">(</span><span class="n">request_time</span><span class="p">,</span> <span class="n">request_time</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
@@ -322,19 +389,20 @@ navbar-dark bg-primary
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Exercise">Exercise<a class="anchor-link" href="#Exercise">¶</a>
-</h4>
-<ul>
-<li>Starting from <a href="http://thredds.ucar.edu/thredds/catalog/satellite/SFC-T/SUPER-NATIONAL_1km/catalog.html">http://thredds.ucar.edu/thredds/catalog/satellite/SFC-T/SUPER-NATIONAL_1km/catalog.html</a>, find the composites for the previous day.</li>
-<li>Grab the URL and create a TDSCatalog instance.</li>
-<li>Using Siphon, find the data available in the catalog between 12Z and 18Z on the previous day.</li>
-</ul>
+<div class="alert alert-success">
+    <b>EXERCISE</b>:
+     <ul>
+<li>Starting from http://thredds.ucar.edu/, find the level 2 radar data for the Tulsa, OK radar (KINX) for the previous day.</li>
+        <li>Grab the URL and create a TDSCatalog instance.</li>
+        <li>Using Siphon, find the data available in the catalog between 12Z and 18Z on the previous day.</li>
+    </ul>
+</div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [4]:</div>
+<div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># YOUR CODE GOES HERE</span>
@@ -350,22 +418,23 @@ navbar-dark bg-primary
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h5 id="Solution">Solution<a class="anchor-link" href="#Solution">¶</a>
-</h5>
+<div class="alert alert-info">
+    <b>SOLUTION</b>
+</div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [5]:</div>
+<div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/datasets.py</span>
 
-
 <span class="c1"># Cell content replaced by load magic replacement.</span>
+<span class="c1"># Solution from above in case you had trouble</span>
 <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">cat</span> <span class="o">=</span> <span class="n">TDSCatalog</span><span class="p">(</span><span class="sa">f</span><span class="s1">'http://thredds.ucar.edu/thredds/catalog/satellite/SFC-T/SUPER-NATIONAL_1km/{date:%Y%m</span><span class="si">%d</span><span class="s1">}/catalog.xml'</span><span class="p">)</span>
+<span class="n">cat</span> <span class="o">=</span> <span class="n">TDSCatalog</span><span class="p">(</span><span class="sa">f</span><span class="s1">'https://thredds.ucar.edu/thredds/catalog/nexrad/level2/KINX/{date:%Y%m</span><span class="si">%d</span><span class="s1">}/catalog.xml'</span><span class="p">)</span>
 <span class="n">request_time</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">second</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">microsecond</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">datasets</span> <span class="o">=</span> <span class="n">cat</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">filter_time_range</span><span class="p">(</span><span class="n">request_time</span><span class="p">,</span> <span class="n">request_time</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">6</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">datasets</span><span class="p">)</span>
@@ -385,7 +454,7 @@ navbar-dark bg-primary
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>[SUPER-NATIONAL_1km_SFC-T_20200108_1800.gini, SUPER-NATIONAL_1km_SFC-T_20200108_1700.gini, SUPER-NATIONAL_1km_SFC-T_20200108_1600.gini, SUPER-NATIONAL_1km_SFC-T_20200108_1500.gini, SUPER-NATIONAL_1km_SFC-T_20200108_1400.gini, SUPER-NATIONAL_1km_SFC-T_20200108_1300.gini, SUPER-NATIONAL_1km_SFC-T_20200108_1200.gini]
+<pre>[Level2_KINX_20200108_1800.ar2v, Level2_KINX_20200108_1752.ar2v, Level2_KINX_20200108_1743.ar2v, Level2_KINX_20200108_1735.ar2v, Level2_KINX_20200108_1727.ar2v, Level2_KINX_20200108_1718.ar2v, Level2_KINX_20200108_1710.ar2v, Level2_KINX_20200108_1702.ar2v, Level2_KINX_20200108_1653.ar2v, Level2_KINX_20200108_1645.ar2v, Level2_KINX_20200108_1637.ar2v, Level2_KINX_20200108_1628.ar2v, Level2_KINX_20200108_1620.ar2v, Level2_KINX_20200108_1612.ar2v, Level2_KINX_20200108_1603.ar2v, Level2_KINX_20200108_1555.ar2v, Level2_KINX_20200108_1546.ar2v, Level2_KINX_20200108_1538.ar2v, Level2_KINX_20200108_1529.ar2v, Level2_KINX_20200108_1520.ar2v, Level2_KINX_20200108_1512.ar2v, Level2_KINX_20200108_1503.ar2v, Level2_KINX_20200108_1455.ar2v, Level2_KINX_20200108_1444.ar2v, Level2_KINX_20200108_1436.ar2v, Level2_KINX_20200108_1427.ar2v, Level2_KINX_20200108_1419.ar2v, Level2_KINX_20200108_1410.ar2v, Level2_KINX_20200108_1401.ar2v, Level2_KINX_20200108_1353.ar2v, Level2_KINX_20200108_1344.ar2v, Level2_KINX_20200108_1335.ar2v, Level2_KINX_20200108_1327.ar2v, Level2_KINX_20200108_1318.ar2v, Level2_KINX_20200108_1310.ar2v, Level2_KINX_20200108_1301.ar2v, Level2_KINX_20200108_1253.ar2v, Level2_KINX_20200108_1244.ar2v, Level2_KINX_20200108_1236.ar2v, Level2_KINX_20200108_1227.ar2v, Level2_KINX_20200108_1218.ar2v, Level2_KINX_20200108_1210.ar2v, Level2_KINX_20200108_1201.ar2v]
 </pre>
 </div>
 </div>
@@ -410,16 +479,8 @@ navbar-dark bg-primary
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><a name="dataaccess"></a></p>
-<h3 id="3.-Accessing-data">3. Accessing data<a class="anchor-link" href="#3.-Accessing-data">¶</a>
+<h3 id="3.-Use-Siphon-to-Perform-Remote-Data-Access">3. Use Siphon to Perform Remote Data Access<a class="anchor-link" href="#3.-Use-Siphon-to-Perform-Remote-Data-Access">¶</a>
 </h3>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
 <p>Accessing catalogs is only part of the story; Siphon is much more useful if you're trying to access/download datasets.</p>
 <p>For instance, using our data that we just retrieved:</p>
 
@@ -428,7 +489,24 @@ navbar-dark bg-primary
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [6]:</div>
+<div class="prompt input_prompt">In [9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Solution from above in case you had trouble</span>
+<span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">cat</span> <span class="o">=</span> <span class="n">TDSCatalog</span><span class="p">(</span><span class="sa">f</span><span class="s1">'https://thredds.ucar.edu/thredds/catalog/nexrad/level2/KINX/{date:%Y%m</span><span class="si">%d</span><span class="s1">}/catalog.xml'</span><span class="p">)</span>
+<span class="n">request_time</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">second</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">microsecond</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">datasets</span> <span class="o">=</span> <span class="n">cat</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">filter_time_range</span><span class="p">(</span><span class="n">request_time</span><span class="p">,</span> <span class="n">request_time</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">6</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ds</span> <span class="o">=</span> <span class="n">datasets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -451,7 +529,7 @@ navbar-dark bg-primary
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [7]:</div>
+<div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ds</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>
@@ -462,9 +540,19 @@ navbar-dark bg-primary
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Look in your file explorer panel or run the cell below to verify that we did actually download the file!</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [8]:</div>
+<div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span><span class="p">;</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">()</span>
@@ -480,15 +568,13 @@ navbar-dark bg-primary
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[8]:</div>
+    <div class="prompt output_prompt">Out[12]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>['solutions',
- 'Siphon Overview.ipynb',
- 'SUPER-NATIONAL_1km_SFC-T_20200108_1800.gini']</pre>
+<pre>['solutions', 'Siphon Overview.ipynb', 'Level2_KINX_20200108_1800.ar2v']</pre>
 </div>
 
 </div>
@@ -509,7 +595,7 @@ navbar-dark bg-primary
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [9]:</div>
+<div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fobj</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">remote_open</span><span class="p">()</span>
@@ -531,7 +617,7 @@ navbar-dark bg-primary
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>219818
+<pre>2278121
 </pre>
 </div>
 </div>
@@ -562,7 +648,7 @@ navbar-dark bg-primary
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [10]:</div>
+<div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">nc</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">remote_access</span><span class="p">()</span>
@@ -578,14 +664,14 @@ navbar-dark bg-primary
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>By default this uses CDMRemote (if available), but it's also possible to ask for OPeNDAP (using netCDF4-python).</p>
+<p>By default this uses CDMRemote (if available), but it's also possible to ask for OPeNDAP (using netCDF4-python). There is even XArray support which is great with the declarative plotting interface - more on that later.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [11]:</div>
+<div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">nc</span><span class="o">.</span><span class="n">variables</span><span class="p">))</span>
@@ -605,7 +691,7 @@ navbar-dark bg-primary
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>['time', 'SFC_T', 'x', 'y', 'Stereographic']
+<pre>['Reflectivity_HI', 'timeR_HI', 'elevationR_HI', 'azimuthR_HI', 'distanceR_HI', 'numRadialsR_HI', 'numGatesR_HI', 'Reflectivity', 'timeR', 'elevationR', 'azimuthR', 'distanceR', 'numRadialsR', 'numGatesR', 'RadialVelocity_HI', 'timeV_HI', 'elevationV_HI', 'azimuthV_HI', 'distanceV_HI', 'numRadialsV_HI', 'numGatesV_HI', 'RadialVelocity', 'timeV', 'elevationV', 'azimuthV', 'distanceV', 'numRadialsV', 'numGatesV', 'SpectrumWidth_HI', 'SpectrumWidth', 'DifferentialReflectivity_HI', 'timeD_HI', 'elevationD_HI', 'azimuthD_HI', 'distanceD_HI', 'numRadialsD_HI', 'numGatesD_HI', 'DifferentialReflectivity', 'timeD', 'elevationD', 'azimuthD', 'distanceD', 'numRadialsD', 'numGatesD', 'CorrelationCoefficient_HI', 'timeC_HI', 'elevationC_HI', 'azimuthC_HI', 'distanceC_HI', 'numRadialsC_HI', 'numGatesC_HI', 'CorrelationCoefficient', 'timeC', 'elevationC', 'azimuthC', 'distanceC', 'numRadialsC', 'numGatesC', 'DifferentialPhase_HI', 'timeP_HI', 'elevationP_HI', 'azimuthP_HI', 'distanceP_HI', 'numRadialsP_HI', 'numGatesP_HI', 'DifferentialPhase', 'timeP', 'elevationP', 'azimuthP', 'distanceP', 'numRadialsP', 'numGatesP']
 </pre>
 </div>
 </div>
