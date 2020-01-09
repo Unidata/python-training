@@ -30,7 +30,7 @@ install:
 script:
 - python notebooks_preprocess.py
 - python run_notebooks.py
-- nikola build
+- nikola build --strict
 deploy:
   provider: script
   skip_cleanup: true
