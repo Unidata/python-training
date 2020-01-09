@@ -17,15 +17,15 @@ import time
 
 # Data about this site
 BLOG_AUTHOR = "UCAR/Unidata"  # (translatable)
-BLOG_TITLE = "The Unidata Python Training Site"  # (translatable)
+BLOG_TITLE = "Unidata Python Training"  # (translatable)
 # This is the main URL for your site. It will be used
 # in a prominent link. Don't forget the protocol (http/https)!
 SITE_URL = "https://unidata.github.io/python-training/"
 # This is the URL where Nikola's output will be deployed.
 # If not set, defaults to SITE_URL
 # BASE_URL = "https://example.com/"
-BLOG_EMAIL = "support-python@ucar.edu"
-BLOG_DESCRIPTION = "The Unidata Python Training Site for Atmospheric Science"  # (translatable)
+BLOG_EMAIL = "support-python@unidata.ucar.edu"
+BLOG_DESCRIPTION = "Python Training for Atmospheric Science from Unidata"  # (translatable)
 
 # Nikola is multilingual!
 #
@@ -152,11 +152,11 @@ NAVIGATION_ALT_LINKS = {
 }
 
 # Name of the theme to use.
-THEME = "bootstrap3-jinja"
+THEME = "CUSTOM"
 
 # Primary color of your theme. This will be used to customize your theme.
 # Must be a HEX value.
-THEME_COLOR = '#5670d4'
+THEME_COLOR = '#33758C'
 
 # Theme configuration. Fully theme-dependent. (translatable)
 # Examples below are for bootblog4.
@@ -331,7 +331,7 @@ COMPILERS = {
 # Nikola supports logo display.  If you have one, you can put the URL here.
 # Final output is <img src="LOGO_URL" id="logo" alt="BLOG_TITLE">.
 # The URL may be relative to the site root.
-# LOGO_URL = ''
+LOGO_URL = 'https://docs.unidata.ucar.edu/images/logos/unidata_logo_rgb_sm.png'
 
 # If you want to hide the title of your website (for example, if your logo
 # already contains the text), set this to False.
@@ -922,7 +922,23 @@ LICENSE = ""
 
 # A small copyright notice for the page footer (in HTML).
 # (translatable)
-CONTENT_FOOTER = 'Contents &copy; {date}         <a href="mailto:{email}">{author}</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         {license}'
+CONTENT_FOOTER = """<script>
+  (function(i,s,o,g,r,a,m){{i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){{
+  (i[r].q=i[r].q||[]).push(arguments)}},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  }})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-92978945-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<p>Do you find this useful?
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Installation Guide" accesskey="n">Say Thanks!</a>
+</p>
+Contents &copy; {date}
+<a href="mailto:{email}">{author}</a> - Powered by
+<a href="https://getnikola.com" rel="nofollow">Nikola</a>         {license}
+"""
 
 # Things that will be passed to CONTENT_FOOTER.format().  This is done
 # for translatability, as dicts are not formattable.  Nikola will

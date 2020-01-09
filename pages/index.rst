@@ -7,7 +7,7 @@
 .. description: A one-stop shop for Python in atmospheric science and meteorology
 .. type: text
 
-Welcome to Unidata's Python Training Site for atmospheric science and meteorology. This site is meant
+Welcome to Unidata's Python training resources for atmospheric science and meteorology. This site is meant
 to be a one-stop website for learning how to use Python for earth-science education and research
 for any experience level. New Python users may find the :doc:`Introduction to Python <intro-to-python>`
 section a good place to start. Check out the :doc:`Example Gallery <gallery-home>` for detailed meteorology-specific
@@ -84,7 +84,7 @@ It also makes managing all of the Python packages you'll be using much easier th
 
 Windows
 =======
-* Download the Miniconda installer for Python 3.X `here <http://conda.pydata.org/miniconda.html>`_.
+* Download the `Miniconda installer <http://conda.pydata.org/miniconda.html>`_ for Python 3.X.
   **Windows 32-bit machines are NOT supported by most packages and cannot be used.**
 * After downloading the installer, open it and click through the graphical install utility.
   Accept all of the default installation settings.
@@ -134,7 +134,7 @@ on contributing to the content, then follow the git based instructions. Otherwis
 
 ZIP Download
 ============
-* Head over to the GitHub page for the materials `here <https://github.com/unidata/python-training>`_.
+* Head over to the GitHub page for the `materials <https://github.com/unidata/python-training>`_.
 * Click the green "Clone or download" button in the upper right section of the screen.
 * Click "Download ZIP"
 * Using an unzip utility (right click on the file in Windows), extract the contents and put them wherever you'd like

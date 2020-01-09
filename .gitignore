@@ -6,7 +6,7 @@
 __pycache__/*
 cache/*
 output/*
-plugins/import_jekyll/__pycache__/*
+plugins/*
 pages/gallery/exec_nb/*
 
 id_rsa

@@ -24,7 +24,7 @@ def run_notebook(notebook):
     args = ['jupyter', 'nbconvert', '--execute',
             '--ExecutePreprocessor.timeout=900',
             '--ExecutePreprocessor.kernel_name=python3',
-            '--to=notebook', '--stdout']
+            '--to=notebook', '--inplace']
 
     args.append(notebook)
     with subprocess.Popen(args, stdout=subprocess.DEVNULL, stderr=None) as proc:

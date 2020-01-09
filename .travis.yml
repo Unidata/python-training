@@ -28,13 +28,8 @@ install:
 - pip install -U --upgrade-strategy=eager 'Nikola[extras]'
 - conda list
 script:
-- if test -d pages/gallery/exec_nb; then rm -r pages/gallery/exec_nb; fi
 - python notebooks_preprocess.py
 - python run_notebooks.py
-- cd pages/gallery
-- mkdir exec_nb
-- python ../../execute_notebooks.py *.ipynb
-- cd ../..
 - nikola build
 deploy:
   provider: script
