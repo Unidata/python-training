@@ -1,4 +1,4 @@
-.. title: The Unidata Python Training Site
+.. title: Unidata Python Training
 .. slug: index
 .. date: 2019-07-26 14:38:34 UTC-06:00
 .. tags: atmospheric science python meteorology training examples gallery
