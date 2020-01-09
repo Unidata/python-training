@@ -75,6 +75,22 @@ and in-person workshop we ask that you complete the installation steps before ar
 arrive slightly early for help so we may begin on time. You are also welcome to contact our Python team
 at any time with issues you encounter!
 
+************
+Video Guides
+************
+
+Mac/Linux
+=========
+.. raw:: html
+
+   <iframe width="560" height="315" src="https://www.youtube.com/embed/lmAulLlXNOc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+Windows
+=======
+.. raw:: html
+
+   <iframe width="560" height="315" src="https://www.youtube.com/embed/5DFDXKzqkrU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 ****************
 Installing Conda
 ****************
