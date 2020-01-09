@@ -118,7 +118,7 @@ materials. If you can't wait to learn more about environments, checkout this
 * Open a terminal window (Anaconda Prompt if you're on Windows).
 * Download the environment.yml file that tells your system what should be in the environment. Remember where you
   download this file! Most systems go in ~/Downloads by default which is fine. Right click and select "save" on
-  `this link <https://raw.githubusercontent.com/Unidata/python-workshop/master/environment.yml>`_ to download the file.
+  `this link <https://raw.githubusercontent.com/Unidata/python-training/master/environment.yml>`_ to download the file.
 * In the terminal, navigate to wherever this file saved, probably :code:`cd ~/Downloads` will get you there.
 * Run the command :code:`conda env create` and wait for the installation to finish.
 * Run the command :code:`conda activate training` to activate the unidata environment and verify that everything is ready.
