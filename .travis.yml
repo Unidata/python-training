@@ -24,7 +24,7 @@ before_install:
 - sed -i -e "s/python=3/python=$Python/" environment.yml;
 install:
 - conda env create -q -f environment.yml
-- source activate training
+- source activate unidata
 - pip install -U --upgrade-strategy=eager 'Nikola[extras]'
 - conda list
 script:

@@ -1,4 +1,4 @@
- name: training
+ name: unidata
  channels:
    - conda-forge
  dependencies:
