@@ -11,3 +11,5 @@ pages/gallery/exec_nb/*
 
 id_rsa
 id_rsa.pub
+
+*.mp4

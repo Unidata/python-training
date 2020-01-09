@@ -2,7 +2,7 @@ from datetime import datetime
 
 # Create variables for URL generation
 image_date = datetime.utcnow().date()
-region = 'Mesoscale-1'
+region = 'CONUS'
 channel = 8
 
 # We want to match something like:
