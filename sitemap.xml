@@ -7,442 +7,442 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <url>
   <loc>https://unidata.github.io/python-training/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/archive.html</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/blog/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/categories/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/contributing/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/250hpa_hemispheric_plot/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/500hpa_absolute_vorticity_winds/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/500hpa_hght_winds/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/500hpa_vorticity_advection/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/700hpa_relh_winds/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/850hpa_frontogenesis/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/850hpa_qvectors/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/850hpa_temperature_advection/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/850hpa_tmpc_winds/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/ageostrophic_wind_example/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/analytic_300hpa_trough/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/declarative_300hpa/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/declarative_500_hpa/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/differential_temperature_advection/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/gallery-home/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/gfs_widget/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/goes_aircraft/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/hilo_symbol_plot/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/hovmoller_diagram/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/hurricanetracker/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/isentropic_interpolation/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/mapping_goes16_truecolor/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/miller_composite/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/mslp_temp_winds/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/nexrad_s3_demo/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/observational_data_cross_section/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/precipitation_map/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/pv_baroclinic_isobaric/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/satellite_example/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/skewt_example/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/smoothing_contours/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/sounding_plotter/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/upperair_obs/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/useful-tools/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/wind_shear_vectors_example/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/gallery/xarray_500hpa_map/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/python/basic_data_structures/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/python/basic_input_and_output/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/python/beginning_plots_with_matplotlib/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/python/choosing/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/python/conda-osx/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/python/conda-windows/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/python/conditionals/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/python/controlflowintro/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/python/data/histogram/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/python/functions/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/python/git/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/python/intro-to-python/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/python/introduction/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/python/loops/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/python/notebook/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/python/support/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/python/times_and_dates/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/python/what/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/python/whetting_your_appetite_for_python/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/AWIPS/awips_grids_and_cartopy/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/AWIPS/grid_levels_and_parameters/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/AWIPS/map_resources_and_topography/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/AWIPS/model_sounding_data/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/AWIPS/nexrad_level_3_plot_with_matplotlib/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/AWIPS/satellite_imagery/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/AWIPS/upper_air_bufr_soundings/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/AWIPS/watch_and_warning_polygons/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/Bonus/downloading-gfs-with-siphon/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/Bonus/netcdf-writing/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/Bonus/siphon_xarray_cartopy_hrrr/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/Bonus/what-to-do-when-things-go-wrong/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/CF%20Conventions/netcdf-and-cf-the-basics/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/CartoPy/cartopy/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/Command_Line_Tools/command_line_primer/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/Jupyter_Notebooks/jupyter-notebooks-introduction/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/Jupyter_Notebooks/plotting-and-interactivity/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/Matplotlib/matplotlib-basics/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/MetPy_Advanced/isentropic-analysis/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/MetPy_Advanced/qg-analysis/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/MetPy_Case_Study/metpy_case_study/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/Metpy_Introduction/introduction-to-metpy/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/Model_Output/downloading-model-fields-with-ncss/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/NumPy/intermediate-numpy/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/NumPy/numpy-basics/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/NumPy/numpy-broadcasting-and-vectorization/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/Pandas/jan17_co_asos/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/Pandas/pandas-introduction/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/Primer/numpy-and-matplotlib-basics/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/Primer/primer-exercises/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/Primer/primer/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/Python_Ecosystem/scientific_python_ecosystem_overview/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/Pythonic_Data_Analysis/advanced-pythonic-data-analysis/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/Pythonic_Data_Analysis/pythonic-data-analysis/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/Satellite_Data/declarative-satellite-data/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/Satellite_Data/goes-interactive-plot/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/Satellite_Data/plotting-satellite-data/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/Satellite_Data/satellite-animations/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/Siphon/siphon-overview/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/Skew_T/skewt_and_hodograph/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/Surface_Data/West_Texas_data/fivemin_82/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/Surface_Data/West_Texas_data/fivemin_83/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/Surface_Data/West_Texas_data/onemin_82/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/Surface_Data/West_Texas_data/onemin_83/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/Surface_Data/advanced-stationplots-with-mesonet-data/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/Surface_Data/surface-data-with-siphon-and-metpy/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/Time_Series/basic-time-series-plotting/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/XArray/xarray-and-cf/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/XArray/xarray-introduction/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
  <url>
   <loc>https://unidata.github.io/python-training/workshop/workshop-intro/</loc>
-  <lastmod>2020-01-09T22:58:00Z</lastmod>
+  <lastmod>2020-01-10T07:07:00Z</lastmod>
  </url>
 </urlset>
