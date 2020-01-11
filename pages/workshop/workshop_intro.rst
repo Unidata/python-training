@@ -39,7 +39,7 @@ Atmospheric Science & Meteorology Packages and Applications
     * :doc:`Introduction to Cartopy <cartopy>`
 * MetPy
     * :doc:`Introduction to MetPy <introduction-to-metpy>`
-    * :doc:`MetPy Case Study <metpy_case_study>`
+    * :doc:`MetPy Case Study <metpy-case-study>`
     * :doc:`Isentropic Analysis <isentropic-analysis>`
     * :doc:`QG Analysis <qg-analysis>`
 * Siphon
@@ -47,7 +47,7 @@ Atmospheric Science & Meteorology Packages and Applications
 * Model Output
     * :doc:`Downloading Model Data with NCSS <downloading-model-fields-with-NCSS>`
 * SkewT
-    * :doc:`SkewTs and Hodographs <skewt_and_hodograph>`
+    * :doc:`SkewTs and Hodographs <skewt-and-hodograph>`
 * Satellite Analysis
     * :doc:`Plotting Satellite Data <plotting-satellite-data>`
     * :doc:`GOES Interactive Plotting <goes-interactive-plot>`
@@ -59,7 +59,7 @@ Atmospheric Science & Meteorology Packages and Applications
 * Bonus
     * :doc:`GFS Download with Siphon <downloading-gfs-with-siphon>`
     * :doc:`Write netCDF files <netcdf-writing>`
-    * :doc:`Plot HRRR Output with Siphon and XArray <siphon_xarray_cartopy_hrrr>`
+    * :doc:`Plot HRRR Output with Siphon and XArray <siphon-xarray-cartopy-and-hrrr>`
     * :doc:`Debugging and Troubleshooting Your Code <what-to-do-when-things-go-wrong>`
     * :doc:`NetCDF CF Conventions: The Basics <netcdf-and-cf-the-basics>`
 
