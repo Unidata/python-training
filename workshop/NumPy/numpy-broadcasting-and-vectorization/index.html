@@ -32,14 +32,11 @@ MathJax.Hub.Config({
 Unidata Python Workshop
 
 
-Overview:¶
-Teaching: 20 minutes
-Exercises: 15 minutes
-
 Questions¶
-How can we work with arrays of differing shapes without needing to manu">
+How can we work with arrays of differing shapes without needing to manually loop or copy data?
+How can we reframe operations o">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2020-01-10T00:05:51-07:00">
+<meta property="article:published_time" content="2020-01-11T09:56:27-07:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -113,14 +110,6 @@ navbar-dark bg-primary
 </div>
 <hr style="height:2px;">
 <div style="float:right; width:250 px"><img src="http://www.contribute.geeksforgeeks.org/wp-content/uploads/numpy-logo1.jpg" alt="NumPy Logo" style="height: 250px;"></div>
-<h3 id="Overview:">Overview:<a class="anchor-link" href="#Overview:">¶</a>
-</h3>
-<ul>
-<li>
-<strong>Teaching:</strong> 20 minutes</li>
-<li>
-<strong>Exercises:</strong> 15 minutes</li>
-</ul>
 <h4 id="Questions">Questions<a class="anchor-link" href="#Questions">¶</a>
 </h4>
 <ol>
@@ -911,10 +900,11 @@ navbar-dark bg-primary
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Exercise">Exercise<a class="anchor-link" href="#Exercise">¶</a>
-</h4>
-<p>Given the 3D temperature field and 1-D pressure coordinates below, calculate: $T * exp(P / 1000)$. You will need to use broadcasting to make the arrays compatible.</p>
+<div class="alert alert-success">
+    <b>EXERCISE</b>:
 
+Given the 3D temperature field and 1-D pressure coordinates below, calculate: $T * exp(P / 1000)$. You will need to use broadcasting to make the arrays compatible.
+</div>
 </div>
 </div>
 </div>
@@ -955,13 +945,23 @@ navbar-dark bg-primary
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="alert alert-info">
+    <b>SOLUTION</b>
+</div>
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In [23]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/broadcasting.py</span>
-
 
 <span class="c1"># Cell content replaced by load magic replacement.</span>
 <span class="c1"># Starting data</span>
@@ -1009,6 +1009,16 @@ navbar-dark bg-primary
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="#pagetop">Top</a></p>
+<hr style="height:2px;">
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -1294,17 +1304,21 @@ navbar-dark bg-primary
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Exercise:-2nd-Derivative">Exercise: 2nd Derivative<a class="anchor-link" href="#Exercise:-2nd-Derivative">¶</a>
-</h4>
-<p>A finite difference estimate of the 2nd derivative is given by:
-$$f''(x) = 2
-f_i - f_{i+1} - f_{i-1}$$</p>
-<p>(we're ignoring $\Delta x$ here)</p>
-<ul>
-<li>Write vectorized code to calculate this finite difference for <code>a</code> (using slices)</li>
-</ul>
-<p>What values should we be expecting to get for the 2nd derivative?</p>
+<div class="alert alert-success">
+    <b>EXERCISE</b>:
 
+2nd Derivative
+
+A finite difference estimate of the 2nd derivative is given by:
+$$f''(x) = 2
+f_i - f_{i+1} - f_{i-1}$$
+
+(we're ignoring $\Delta x$ here)
+
+* Write vectorized code to calculate this finite difference for a (using slices)
+
+What values should we be expecting to get for the 2nd derivative?
+</div>
 </div>
 </div>
 </div>
@@ -1313,8 +1327,31 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 <div class="prompt input_prompt">In [29]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/vectorized_diff.py</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># YOUR CODE GOES HERE</span>
+</pre></div>
 
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="alert alert-info">
+    <b>SOLUTION</b>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [30]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/vectorized_diff.py</span>
 
 <span class="c1"># Cell content replaced by load magic replacement.</span>
 <span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
@@ -1330,7 +1367,7 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[29]:</div>
+    <div class="prompt output_prompt">Out[30]:</div>
 
 
 
@@ -1359,7 +1396,7 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [30]:</div>
+<div class="prompt input_prompt">In [31]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">temps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">20</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
@@ -1376,13 +1413,13 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[30]:</div>
+    <div class="prompt output_prompt">Out[31]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([18.1, 21.1, 15.5, 25.8, 17.8, 13.4, 19.3, 23.5, 22. , 14.2])</pre>
+<pre>array([23.3, 30.9, 20.7, 23.6, 26.2, 19.6, 17. , 21.1, 23.4, 19.1])</pre>
 </div>
 
 </div>
@@ -1403,7 +1440,7 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [31]:</div>
+<div class="prompt input_prompt">In [32]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">avg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">temps</span><span class="p">)</span>
@@ -1420,7 +1457,7 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [32]:</div>
+<div class="prompt input_prompt">In [33]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">avg</span>
@@ -1436,14 +1473,14 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[32]:</div>
+    <div class="prompt output_prompt">Out[33]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([ 0.        , 18.23333333, 20.8       , 19.7       , 19.        ,
-       16.83333333, 18.73333333, 21.6       , 19.9       ,  0.        ])</pre>
+<pre>array([ 0.        , 24.96666667, 25.06666667, 23.5       , 23.13333333,
+       20.93333333, 19.23333333, 20.5       , 21.2       ,  0.        ])</pre>
 </div>
 
 </div>
@@ -1464,7 +1501,7 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [33]:</div>
+<div class="prompt input_prompt">In [34]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># i - 1            i          i + 1</span>
@@ -1481,14 +1518,14 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[33]:</div>
+    <div class="prompt output_prompt">Out[34]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([18.23333333, 20.8       , 19.7       , 19.        , 16.83333333,
-       18.73333333, 21.6       , 19.9       ])</pre>
+<pre>array([24.96666667, 25.06666667, 23.5       , 23.13333333, 20.93333333,
+       19.23333333, 20.5       , 21.2       ])</pre>
 </div>
 
 </div>
@@ -1509,7 +1546,7 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [34]:</div>
+<div class="prompt input_prompt">In [35]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">temps</span>
@@ -1525,13 +1562,13 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[34]:</div>
+    <div class="prompt output_prompt">Out[35]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([18.1, 21.1, 15.5, 25.8, 17.8, 13.4, 19.3, 23.5, 22. , 14.2])</pre>
+<pre>array([23.3, 30.9, 20.7, 23.6, 26.2, 19.6, 17. , 21.1, 23.4, 19.1])</pre>
 </div>
 
 </div>
@@ -1552,7 +1589,7 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [35]:</div>
+<div class="prompt input_prompt">In [36]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">block_size</span> <span class="o">=</span> <span class="mi">3</span>
@@ -1574,20 +1611,20 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[35]:</div>
+    <div class="prompt output_prompt">Out[36]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([[18.1, 21.1, 15.5],
-       [21.1, 15.5, 25.8],
-       [15.5, 25.8, 17.8],
-       [25.8, 17.8, 13.4],
-       [17.8, 13.4, 19.3],
-       [13.4, 19.3, 23.5],
-       [19.3, 23.5, 22. ],
-       [23.5, 22. , 14.2]])</pre>
+<pre>array([[23.3, 30.9, 20.7],
+       [30.9, 20.7, 23.6],
+       [20.7, 23.6, 26.2],
+       [23.6, 26.2, 19.6],
+       [26.2, 19.6, 17. ],
+       [19.6, 17. , 21.1],
+       [17. , 21.1, 23.4],
+       [21.1, 23.4, 19.1]])</pre>
 </div>
 
 </div>
@@ -1608,7 +1645,7 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [36]:</div>
+<div class="prompt input_prompt">In [37]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">temps_strided</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
@@ -1624,14 +1661,14 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[36]:</div>
+    <div class="prompt output_prompt">Out[37]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([18.23333333, 20.8       , 19.7       , 19.        , 16.83333333,
-       18.73333333, 21.6       , 19.9       ])</pre>
+<pre>array([24.96666667, 25.06666667, 23.5       , 23.13333333, 20.93333333,
+       19.23333333, 20.5       , 21.2       ])</pre>
 </div>
 
 </div>
@@ -1652,7 +1689,7 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [37]:</div>
+<div class="prompt input_prompt">In [38]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">temps_strided</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2000</span>
@@ -1669,20 +1706,20 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[37]:</div>
+    <div class="prompt output_prompt">Out[38]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([[  18.1,   21.1, 2000. ],
-       [  21.1, 2000. ,   25.8],
-       [2000. ,   25.8,   17.8],
-       [  25.8,   17.8,   13.4],
-       [  17.8,   13.4,   19.3],
-       [  13.4,   19.3,   23.5],
-       [  19.3,   23.5,   22. ],
-       [  23.5,   22. ,   14.2]])</pre>
+<pre>array([[  23.3,   30.9, 2000. ],
+       [  30.9, 2000. ,   23.6],
+       [2000. ,   23.6,   26.2],
+       [  23.6,   26.2,   19.6],
+       [  26.2,   19.6,   17. ],
+       [  19.6,   17. ,   21.1],
+       [  17. ,   21.1,   23.4],
+       [  21.1,   23.4,   19.1]])</pre>
 </div>
 
 </div>
@@ -1705,7 +1742,7 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [38]:</div>
+<div class="prompt input_prompt">In [39]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">pressure</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
@@ -1729,7 +1766,7 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [39]:</div>
+<div class="prompt input_prompt">In [40]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Using axis=0 to tell it to operate along the pressure dimension</span>
@@ -1747,19 +1784,19 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[39]:</div>
+    <div class="prompt output_prompt">Out[40]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([[7, 7, 6, ..., 7, 6, 6],
-       [6, 7, 7, ..., 6, 6, 7],
-       [8, 7, 6, ..., 6, 7, 6],
+<pre>array([[7, 7, 5, ..., 7, 7, 5],
+       [7, 6, 6, ..., 7, 7, 7],
+       [7, 7, 8, ..., 6, 7, 6],
        ...,
-       [7, 7, 7, ..., 6, 6, 8],
-       [6, 7, 6, ..., 6, 7, 6],
-       [6, 7, 7, ..., 7, 7, 7]])</pre>
+       [7, 7, 7, ..., 7, 8, 7],
+       [7, 6, 6, ..., 7, 8, 7],
+       [7, 7, 7, ..., 7, 6, 6]])</pre>
 </div>
 
 </div>
@@ -1770,7 +1807,7 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [40]:</div>
+<div class="prompt input_prompt">In [41]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">inds</span><span class="o">.</span><span class="n">shape</span>
@@ -1786,7 +1823,7 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[40]:</div>
+    <div class="prompt output_prompt">Out[41]:</div>
 
 
 
@@ -1813,7 +1850,7 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [41]:</div>
+<div class="prompt input_prompt">In [42]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">pressure</span><span class="p">[</span><span class="n">inds</span><span class="p">]</span>
@@ -1829,19 +1866,19 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[41]:</div>
+    <div class="prompt output_prompt">Out[42]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([[737.5, 737.5, 775. , ..., 737.5, 775. , 775. ],
-       [775. , 737.5, 737.5, ..., 775. , 775. , 737.5],
-       [700. , 737.5, 775. , ..., 775. , 737.5, 775. ],
+<pre>array([[737.5, 737.5, 812.5, ..., 737.5, 737.5, 812.5],
+       [737.5, 775. , 775. , ..., 737.5, 737.5, 737.5],
+       [737.5, 737.5, 700. , ..., 775. , 737.5, 775. ],
        ...,
-       [737.5, 737.5, 737.5, ..., 775. , 775. , 700. ],
-       [775. , 737.5, 775. , ..., 775. , 737.5, 775. ],
-       [775. , 737.5, 737.5, ..., 737.5, 737.5, 737.5]])</pre>
+       [737.5, 737.5, 737.5, ..., 737.5, 700. , 737.5],
+       [737.5, 775. , 775. , ..., 737.5, 700. , 737.5],
+       [737.5, 737.5, 737.5, ..., 737.5, 775. , 775. ]])</pre>
 </div>
 
 </div>
@@ -1862,7 +1899,7 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [42]:</div>
+<div class="prompt input_prompt">In [43]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">temps</span><span class="p">[</span><span class="n">inds</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span><span class="o">.</span><span class="n">shape</span>
@@ -1878,7 +1915,7 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[42]:</div>
+    <div class="prompt output_prompt">Out[43]:</div>
 
 
 
@@ -1905,7 +1942,7 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [43]:</div>
+<div class="prompt input_prompt">In [44]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">inds</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">temps</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
@@ -1924,25 +1961,25 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[43]:</div>
+    <div class="prompt output_prompt">Out[44]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([[-12.68572839, -10.46174486,  -9.09690344, ..., -10.74099291,
-         -7.24265996,  -8.59498901],
-       [ -8.3729268 , -10.54442598,  -9.55262646, ...,  -5.81127572,
-         -6.68535163,  -8.32983339],
-       [-12.46206102,  -9.65522912,  -9.93644608, ...,  -8.37429641,
-         -9.38300403,  -6.39393388],
+<pre>array([[-13.54570446, -11.25693407,  -5.86485991, ..., -10.37381442,
+        -15.36337461,  -8.10312411],
+       [-14.37485406,  -9.8880143 ,  -8.98793531, ..., -10.46134355,
+         -8.03185858, -11.29236999],
+       [-12.00298378,  -8.53094208, -16.63976927, ...,  -9.2774205 ,
+        -10.83402025,  -9.97221545],
        ...,
-       [-14.59548742, -12.96479159, -10.99515113, ...,  -8.30567531,
-         -8.18009253, -12.59637103],
-       [ -8.93289731, -12.22154611,  -6.19223574, ...,  -9.27257324,
-         -6.46833927,  -8.85298754],
-       [ -8.3991757 , -12.04088665, -13.49072393, ..., -14.33777144,
-        -11.49288847, -14.11922716]])</pre>
+       [ -8.252857  ,  -9.84715346, -13.6912349 , ..., -11.75861772,
+        -11.61846515,  -9.42606908],
+       [-12.05069249,  -8.70507145, -11.00830893, ..., -12.78557886,
+        -14.51975175, -11.81188504],
+       [ -8.22632245,  -6.08421885,  -9.40156477, ..., -10.80847542,
+         -9.45051294,  -3.48594262]])</pre>
 </div>
 
 </div>
@@ -1963,7 +2000,7 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [44]:</div>
+<div class="prompt input_prompt">In [45]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">pressure</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">pressure</span><span class="o">.</span><span class="n">size</span><span class="p">)]</span>
@@ -1979,7 +2016,7 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[44]:</div>
+    <div class="prompt output_prompt">Out[45]:</div>
 
 
 
@@ -1999,7 +2036,7 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [45]:</div>
+<div class="prompt input_prompt">In [46]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">pressure</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">pressure</span><span class="o">.</span><span class="n">size</span><span class="p">)]</span> <span class="o">==</span> <span class="n">pressure</span><span class="p">)</span>
@@ -2015,7 +2052,7 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[45]:</div>
+    <div class="prompt output_prompt">Out[46]:</div>
 
 
 
@@ -2052,7 +2089,7 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [46]:</div>
+<div class="prompt input_prompt">In [47]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">y_inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">temps</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
@@ -2070,25 +2107,25 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[46]:</div>
+    <div class="prompt output_prompt">Out[47]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([[-12.68572839, -10.46174486,  -9.09690344, ..., -10.74099291,
-         -7.24265996,  -8.59498901],
-       [ -8.3729268 , -10.54442598,  -9.55262646, ...,  -5.81127572,
-         -6.68535163,  -8.32983339],
-       [-12.46206102,  -9.65522912,  -9.93644608, ...,  -8.37429641,
-         -9.38300403,  -6.39393388],
+<pre>array([[-13.54570446, -11.25693407,  -5.86485991, ..., -10.37381442,
+        -15.36337461,  -8.10312411],
+       [-14.37485406,  -9.8880143 ,  -8.98793531, ..., -10.46134355,
+         -8.03185858, -11.29236999],
+       [-12.00298378,  -8.53094208, -16.63976927, ...,  -9.2774205 ,
+        -10.83402025,  -9.97221545],
        ...,
-       [-14.59548742, -12.96479159, -10.99515113, ...,  -8.30567531,
-         -8.18009253, -12.59637103],
-       [ -8.93289731, -12.22154611,  -6.19223574, ...,  -9.27257324,
-         -6.46833927,  -8.85298754],
-       [ -8.3991757 , -12.04088665, -13.49072393, ..., -14.33777144,
-        -11.49288847, -14.11922716]])</pre>
+       [ -8.252857  ,  -9.84715346, -13.6912349 , ..., -11.75861772,
+        -11.61846515,  -9.42606908],
+       [-12.05069249,  -8.70507145, -11.00830893, ..., -12.78557886,
+        -14.51975175, -11.81188504],
+       [ -8.22632245,  -6.08421885,  -9.40156477, ..., -10.80847542,
+         -9.45051294,  -3.48594262]])</pre>
 </div>
 
 </div>
@@ -2109,7 +2146,7 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [47]:</div>
+<div class="prompt input_prompt">In [48]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">output</span> <span class="o">==</span> <span class="n">temps</span><span class="p">[</span><span class="n">inds</span><span class="p">,</span> <span class="n">y_inds</span><span class="p">,</span> <span class="n">x_inds</span><span class="p">])</span>
@@ -2125,7 +2162,7 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[47]:</div>
+    <div class="prompt output_prompt">Out[48]:</div>
 
 
 
@@ -2151,6 +2188,16 @@ f_i - f_{i+1} - f_{i-1}$$</p>
 <li><a href="https://docs.scipy.org/doc/numpy/user/basics.broadcasting.html">NumPy Broadcasting Documentation</a></li>
 <li><a href="https://numpy.org/devdocs/user/theory.broadcasting.html">NumPy Broadcasting Article</a></li>
 </ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="#pagetop">Top</a></p>
+<hr style="height:2px;">
 </div>
 </div>
 </div>

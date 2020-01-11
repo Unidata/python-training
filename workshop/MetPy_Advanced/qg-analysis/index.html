@@ -31,16 +31,14 @@ MathJax.Hub.Config({
 <meta property="og:description" content="Advanced MetPy: Quasi-Geostrophic Analysis
 
 
-Overview:¶
-Teaching: 30 minutes
-Exercises: 45 minutes
-
 Objectives¶
 Download NARR output from TDS
 Calculate QG-Omega Forcing Terms
-Create a four-panel plot ">
+Create a four-panel plot of QG Forcings
+
+This is a tutorial demonstrates common ">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2020-01-10T00:00:23-07:00">
+<meta property="article:published_time" content="2020-01-11T09:50:44-07:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -111,14 +109,6 @@ navbar-dark bg-primary
 <div style="clear:both"></div>
 </div>
 <hr style="height:2px;">
-<h3 id="Overview:">Overview:<a class="anchor-link" href="#Overview:">¶</a>
-</h3>
-<ul>
-<li>
-<strong>Teaching:</strong> 30 minutes</li>
-<li>
-<strong>Exercises:</strong> 45 minutes</li>
-</ul>
 <h4 id="Objectives">Objectives<a class="anchor-link" href="#Objectives">¶</a>
 </h4>
 <ol>
@@ -341,17 +331,20 @@ navbar-dark bg-primary
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Exercise">Exercise<a class="anchor-link" href="#Exercise">¶</a>
-</h4>
-<p>Write the code to access the remaining necessary pieces of data from our file to calculate the QG Omega forcing terms valid at 700 hPa.</p>
-<p>Data variables desired:</p>
-<ul>
+<div class="alert alert-success">
+    <b>EXERCISE</b>:
+
+Write the code to access the remaining necessary pieces of data from our file to calculate the QG Omega forcing terms valid at 700 hPa.
+
+Data variables desired:
+     <ul>
 <li>hght_500: 500-hPa Geopotential_height_isobaric</li>
-<li>uwnd_500: 500-hPa u-component_of_wind_isobaric</li>
-<li>vwnd_500: 500-hPa v-component_of_wind_isobaric</li>
-<li>uwnd_900: 900-hPa u-component_of_wind_isobaric</li>
-<li>vwnd_900: 900-hPa v-component_of_wind_isobaric</li>
-</ul>
+         <li>uwnd_500: 500-hPa u-component_of_wind_isobaric</li>
+         <li>vwnd_500: 500-hPa v-component_of_wind_isobaric</li>
+         <li>uwnd_900: 900-hPa u-component_of_wind_isobaric</li>
+         <li>vwnd_900: 900-hPa v-component_of_wind_isobaric</li>
+    </ul>
+</div>
 </div>
 </div>
 </div>
@@ -385,8 +378,9 @@ navbar-dark bg-primary
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h5 id="Solution">Solution<a class="anchor-link" href="#Solution">¶</a>
-</h5>
+<div class="alert alert-info">
+    <b>SOLUTION</b>
+</div>
 </div>
 </div>
 </div>
@@ -536,18 +530,21 @@ $$\left(\nabla_p ^2 + \frac{f^2}{\sigma}\frac{\partial ^2}{\partial p^2}\right)\
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Exercise">Exercise<a class="anchor-link" href="#Exercise">¶</a>
-</h4>
-<h5 id="Compute-Term-B---Laplacian-of-Temperature-Advection">Compute Term B - Laplacian of Temperature Advection<a class="anchor-link" href="#Compute-Term-B---Laplacian-of-Temperature-Advection">¶</a>
-</h5>
-<p>Need to compute:</p>
-<ol>
-<li>Temperature advection at 700 hPa (tadv_700)</li>
-<li>Laplacian of Temp Adv. at 700 hPa (lap_tadv_700)</li>
-<li>final term B with appropriate constants (term_B)</li>
-</ol>
-<p>For information on how to calculate a Laplacian using MetPy, see the <a href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.laplacian.html">documentation</a> on this function.</p>
+<div class="alert alert-success">
+    <b>EXERCISE</b>:
 
+Compute Term B - Laplacian of Temperature Advection
+
+Need to compute:
+
+ <ul>
+<li>Temperature advection at 700 hPa (tadv_700)</li>
+     <li>Laplacian of Temp Adv. at 700 hPa (lap_tadv_700)</li>
+     <li>Final term B with appropriate constants (term_B)</li>
+</ul>
+
+For information on how to calculate a Laplacian using MetPy, see the <a href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.laplacian.html">documentation</a> on this function.
+</div>
 </div>
 </div>
 </div>
@@ -575,8 +572,9 @@ $$\left(\nabla_p ^2 + \frac{f^2}{\sigma}\frac{\partial ^2}{\partial p^2}\right)\
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h5 id="Solution">Solution<a class="anchor-link" href="#Solution">¶</a>
-</h5>
+<div class="alert alert-info">
+    <b>SOLUTION</b>
+</div>
 </div>
 </div>
 </div>
@@ -832,11 +830,14 @@ $$\left(\nabla_p ^2 + \frac{f^2}{\sigma}\frac{\partial ^2}{\partial p^2}\right)\
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Exercise">Exercise<a class="anchor-link" href="#Exercise">¶</a>
-</h4>
-<p>Plot the combined QG Omega forcing terms (term_A + term_B) in a single panel</p>
-<p>BONUS: Compute a difference map of Term A and Term B and plot</p>
-
+<div class="alert alert-success">
+    <b>EXERCISE</b>:
+     <ul>
+<li>Plot the combined QG Omega forcing terms (term_A + term_B) in a single panel.</li>
+         <li>
+<b>BONUS:</b> Compute a difference map of Term A and Term B and plot.</li>
+    </ul>
+</div>
 </div>
 </div>
 </div>
@@ -845,7 +846,7 @@ $$\left(\nabla_p ^2 + \frac{f^2}{\sigma}\frac{\partial ^2}{\partial p^2}\right)\
 <div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># YOUR CODE GOES HERE</span>
 </pre></div>
 
     </div>
@@ -858,8 +859,9 @@ $$\left(\nabla_p ^2 + \frac{f^2}{\sigma}\frac{\partial ^2}{\partial p^2}\right)\
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h5 id="Solution">Solution<a class="anchor-link" href="#Solution">¶</a>
-</h5>
+<div class="alert alert-info">
+    <b>SOLUTION</b>
+</div>
 </div>
 </div>
 </div>
@@ -869,7 +871,6 @@ $$\left(\nabla_p ^2 + \frac{f^2}{\sigma}\frac{\partial ^2}{\partial p^2}\right)\
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/qg_omega_total_fig.py</span>
-
 
 <span class="c1"># Cell content replaced by load magic replacement.</span>
 <span class="n">fig</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">15.</span><span class="p">,</span><span class="mf">12.</span><span class="p">))</span>

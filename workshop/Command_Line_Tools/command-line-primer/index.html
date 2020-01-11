@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Command Line Primer | Unidata Python Training</title>
+<link href="../../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#33758C">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.xml">
+<link rel="canonical" href="https://unidata.github.io/python-training/workshop/Command_Line_Tools/command-line-primer/">
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script><!--[if lt IE 9]><script src="../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<meta property="og:site_name" content="Unidata Python Training">
+<meta property="og:title" content="Command Line Primer">
+<meta property="og:url" content="https://unidata.github.io/python-training/workshop/Command_Line_Tools/command-line-primer/">
+<meta property="og:description" content="Command Line Tool Creation
+Unidata Python Workshop
+
+
+
+
+
+
+
+
+
+Create command line tools to do common jobs¶
+Do common data manipulations
+Make plots
+Download data or batch process items
+
+
+
+
+
+
+
+
+You are al">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2020-01-11T09:54:53-07:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-expand-md static-top mb-4
+navbar-dark bg-primary
+"><div class="container">
+<!-- This keeps the margins nice -->
+        <a class="navbar-brand" href="https://unidata.github.io/python-training/">
+            <img src="https://docs.unidata.ucar.edu/images/logos/unidata_logo_rgb_sm.png" alt="Unidata Python Training" id="logo" class="d-inline-block align-top"><span id="blog-title">Unidata Python Training</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="bs-navbar">
+            <ul class="navbar-nav mr-auto">
+<li class="nav-item">
+<a href="../../../python/intro-to-python" class="nav-link">Introduction to Python</a>
+                </li>
+<li class="nav-item">
+<a href="../../../gallery/gallery-home" class="nav-link">Example Gallery</a>
+                </li>
+<li class="nav-item">
+<a href="../../workshop-intro" class="nav-link">Python Workshop Materials</a>
+
+                
+            </li>
+</ul>
+<ul class="navbar-nav navbar-right">
+<li class="nav-item">
+    <a href="index.ipynb" id="sourcelink" class="nav-link">Source</a>
+    </li>
+
+
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+        
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Command Line Primer</a></h1>
+
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div style="width:1000 px">
+
+<div style="float:right; width:98 px; height:98px;">
+<img src="https://raw.githubusercontent.com/Unidata/MetPy/master/src/metpy/plots/_static/unidata_150x150.png" alt="Unidata Logo" style="height: 98px;">
+</div>
+<p></p>
+<h2>Command Line Tool Creation</h2>
+<h4>Unidata Python Workshop</h4>
+<div style="clear:both"></div>
+</div>
+<hr style="height:2px;">
+<div style="float:right; width:250 px"><img src="http://media02.hongkiat.com/developers-command-line/command-line.jpg" alt="Command Line" style="height: 500px;"></div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Create-command-line-tools-to-do-common-jobs">Create command line tools to do common jobs<a class="anchor-link" href="#Create-command-line-tools-to-do-common-jobs">¶</a>
+</h2>
+<ul>
+<li>Do common data manipulations</li>
+<li>Make plots</li>
+<li>Download data or batch process items</li>
+</ul>
+<div style="float:right; width:250 px"><img src="https://unidata.github.io/MetPy/latest/_images/sounding.png" alt="Sounding" style="height: 500px;"></div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="You-are-already-used-to-using-command-line-tools">You are already used to using command line tools<a class="anchor-link" href="#You-are-already-used-to-using-command-line-tools">¶</a>
+</h2>
+<ul>
+<li>ls</li>
+<li>grep</li>
+<li>git</li>
+<li>GEMPAK</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Command-line-tools-take-command-line-arguments">Command line tools take command line arguments<a class="anchor-link" href="#Command-line-tools-take-command-line-arguments">¶</a>
+</h2>
+<pre><code>GREP(1)                   BSD General Commands Manual                  GREP(1)
+
+NAME
+     grep, egrep, fgrep, zgrep, zegrep, zfgrep -- file pattern searcher
+
+SYNOPSIS
+     grep [-abcdDEFGHhIiJLlmnOopqRSsUVvwxZ] [-A num] [-B num] [-C[num]] [-e pattern] [-f file] [--binary-files=value] [--color[=when]] [--colour[=when]]
+          [--context[=num]] [--label] [--line-buffered] [--null] [pattern] [file ...]
+
+DESCRIPTION
+     The grep utility searches any given input files, selecting lines that match one or more patterns.  By default, a pattern matches an input line if the regular
+     expression (RE) in the pattern matches the input line without its trailing newline.  An empty expression matches every line.  Each input line that matches at
+     least one of the patterns is written to the standard output.
+
+     grep is used for simple patterns and basic regular expressions (BREs); egrep can handle extended regular expressions (EREs).  See re_format(7) for more informa-
+     tion on regular expressions.  fgrep is quicker than both grep and egrep, but can only handle fixed patterns (i.e. it does not interpret regular expressions).
+     Patterns may consist of one or more lines, allowing any of the pattern lines to match a portion of the input.
+
+     zgrep, zegrep, and zfgrep act like grep, egrep, and fgrep, respectively, but accept input files compressed with the compress(1) or gzip(1) compression utili-
+     ties.
+
+     The following options are available:
+
+     -A num, --after-context=num
+             Print num lines of trailing context after each match.  See also the -B and -C options.
+
+     -a, --text
+             Treat all files as ASCII text.  Normally grep will simply print ``Binary file ... matches'' if files contain binary characters.  Use of this option
+             forces grep to output lines matching the specified pattern.
+
+     -B num, --before-context=num
+             Print num lines of leading context before each match.  See also the -A and -C options.
+
+     -b, --byte-offset
+             The offset in bytes of a matched pattern is displayed in front of the respective matched line.
+
+     -C[num, --context=num]
+             Print num lines of leading and trailing context surrounding each match.  The default is 2 and is equivalent to -A 2 -B 2.  Note: no whitespace may be
+             given between the option and its argument.</code></pre>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id='Start-by-writing-a-"requirements-document"-for-yourself'>Start by writing a "requirements document" for yourself<a class="anchor-link" href="#Start-by-writing-a-%22requirements-document%22-for-yourself">¶</a>
+</h2>
+<ul>
+<li>Describe the specific functionality of the tool</li>
+<li>Describe the options that are available to the user</li>
+<li>Include an expected set of outputs</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="You-can-also-begin-the-design-process">You can also begin the design process<a class="anchor-link" href="#You-can-also-begin-the-design-process">¶</a>
+</h3>
+<ul>
+<li>Functional blocks</li>
+<li>Flow charts</li>
+<li>Interface decisions</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Let's-design-a-tool-to-make-a-plot-like-this">Let's design a tool to make a plot like this<a class="anchor-link" href="#Let's-design-a-tool-to-make-a-plot-like-this">¶</a>
+</h2>
+<p><img src="example_output.png" alt="Example image"></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Requirements---Let's-design-the-tool">Requirements - Let's design the tool<a class="anchor-link" href="#Requirements---Let's-design-the-tool">¶</a>
+</h2>
+<ul>
+<li>Plot super national visible satellite image</li>
+<li>Contour a recent GFS field of the user's choice and a level specified by the user</li>
+<li>Plot with a basemap containing coastlines, country, state, and provice borders</li>
+<li>Make the plot for the current time or up to 24 hours in the past</li>
+<li>Use the GFS and satellite data from the time closest to that requested (smallest delta t)</li>
+<li>Indicate the model and satellite times on the plot</li>
+<li>Show or save the output image</li>
+<li>Have a sensible default behavior</li>
+<li>Include help documentation to remind others and ourselves how to use the program</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="We'll-use-five-command-line-arguments">We'll use five command line arguments<a class="anchor-link" href="#We'll-use-five-command-line-arguments">¶</a>
+</h2>
+<ul>
+<li>
+<strong>--gfsfield GFSFIELD</strong>   - <em>CF field name of data to contour from the GFS model.</em>
+</li>
+<li>
+<strong>--gfslevel GFSLEVEL</strong>   - <em>Model level to plot (in hPa)</em>
+</li>
+<li>
+<strong>--hours HOURS</strong>         - <em>Time to plot (must be present or past)</em>
+</li>
+<li>
+<strong>--savefig</strong>             - <em>Save out figure instead of displaying it</em>
+</li>
+<li>
+<strong>--imgformat IMGFORMAT</strong> - <em>Format to save the resulting image as.</em>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="We-could-write-a-parser-ourselves,-but-there's-no-need">We could write a parser ourselves, but there's no need<a class="anchor-link" href="#We-could-write-a-parser-ourselves,-but-there's-no-need">¶</a>
+</h2>
+<p>The <a href="https://docs.python.org/3/library/argparse.html">argparse</a> module has us covered!
+<img src="http://i.imgur.com/KGrV41o.png" alt=""></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># For demo purposes only</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">argv</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'greetme.py'</span><span class="p">,</span> <span class="s1">'--name'</span><span class="p">,</span> <span class="s1">'John'</span><span class="p">,</span> <span class="s1">'--greeting'</span><span class="p">,</span> <span class="s1">'Hola,'</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">argparse</span>
+
+<span class="c1"># Create an instance</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">'A simple program that prints a greeting to the name specified'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Add a name argument</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">'--name'</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Name of the person being greeted'</span><span class="p">)</span>
+
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">'--greeting'</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">'Hello, '</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'Greeting to be used'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[3]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>_StoreAction(option_strings=['--greeting'], dest='greeting', nargs=None, const=None, default='Hello, ', type=&lt;class 'str'&gt;, choices=None, help='Greeting to be used', metavar=None)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Parse the arguments</span>
+<span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Print the greeting</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{args.greeting}</span><span class="s1"> </span><span class="si">{args.name}</span><span class="s1">'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Hola, John
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Let's-run-it-all-together!">Let's run it all together!<a class="anchor-link" href="#Let's-run-it-all-together!">¶</a>
+</h2>
+<ul>
+<li>Create using the editor in the notebook</li>
+<li>Run from the command line</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+    </div>
+    
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha384-3lJUsx1TJHt7BA4udB5KPnDrlkO8T6J6v/op7ui0BbCjvZ9WqV4Xm6DTP6kQ/iBH" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article><!--End of body content--><footer id="footer"><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-92978945-1', 'auto');
+  ga('send', 'pageview');
+
+</script><p>Do you find this useful?
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Installation Guide" accesskey="n">Say Thanks!</a>
+</p>
+Contents © 2020
+<a href="mailto:support-python@unidata.ucar.edu">UCAR/Unidata</a> - Powered by
+<a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+
+            
+            
+        </footer>
+</div>
+</div>
+
+
+        <script src="../../../assets/js/all-nocdn.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

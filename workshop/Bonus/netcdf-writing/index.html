@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>netCDF-Writing | Unidata Python Training</title>
+<title>netCDF Writing | Unidata Python Training</title>
 <link href="../../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
 <link href="../../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
 <link href="../../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
@@ -26,7 +26,7 @@ MathJax.Hub.Config({
 });
 </script><!--[if lt IE 9]><script src="../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
 <meta property="og:site_name" content="Unidata Python Training">
-<meta property="og:title" content="netCDF-Writing">
+<meta property="og:title" content="netCDF Writing">
 <meta property="og:url" content="https://unidata.github.io/python-training/workshop/Bonus/netcdf-writing/">
 <meta property="og:description" content="Writing netCDF data
 Unidata Python Workshop
@@ -34,7 +34,7 @@ Unidata Python Workshop
 
 Important Note: when running this notebook interactively in a browser, you probably will not be able to execute individual cells out of order without gett">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2020-01-09T23:57:18-07:00">
+<meta property="article:published_time" content="2020-01-11T09:52:34-07:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -84,7 +84,7 @@ navbar-dark bg-primary
         
         
         
-<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">netCDF-Writing</a></h1>
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">netCDF Writing</a></h1>
 
         
 
@@ -114,7 +114,7 @@ navbar-dark bg-primary
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">netCDF4</span> <span class="kn">import</span> <span class="n">Dataset</span>    <span class="c1"># Note: python is case-sensitive!</span>
@@ -148,7 +148,7 @@ navbar-dark bg-primary
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">try</span><span class="p">:</span> <span class="n">ncfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>  <span class="c1"># just to be safe, make sure dataset is not already open.</span>
@@ -158,6 +158,28 @@ navbar-dark bg-primary
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&lt;class 'netCDF4._netCDF4.Dataset'&gt;
+root group (NETCDF4_CLASSIC data model, file format HDF5):
+    dimensions(sizes): 
+    variables(dimensions): 
+    groups: 
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -184,7 +206,7 @@ navbar-dark bg-primary
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">lat_dim</span> <span class="o">=</span> <span class="n">ncfile</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">'lat'</span><span class="p">,</span> <span class="mi">73</span><span class="p">)</span>     <span class="c1"># latitude axis</span>
@@ -195,6 +217,26 @@ navbar-dark bg-primary
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>('lat', &lt;class 'netCDF4._netCDF4.Dimension'&gt;: name = 'lat', size = 73)
+('lon', &lt;class 'netCDF4._netCDF4.Dimension'&gt;: name = 'lon', size = 144)
+('time', &lt;class 'netCDF4._netCDF4.Dimension'&gt; (unlimited): name = 'time', size = 0)
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -216,7 +258,7 @@ navbar-dark bg-primary
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ncfile</span><span class="o">.</span><span class="n">title</span><span class="o">=</span><span class="s1">'My model data'</span>
@@ -227,10 +269,28 @@ navbar-dark bg-primary
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>My model data
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ncfile</span><span class="o">.</span><span class="n">subtitle</span><span class="o">=</span><span class="s2">"My model data subtitle"</span>
@@ -239,6 +299,31 @@ navbar-dark bg-primary
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>My model data subtitle
+&lt;class 'netCDF4._netCDF4.Dataset'&gt;
+root group (NETCDF4_CLASSIC data model, file format HDF5):
+    title: My model data
+    subtitle: My model data subtitle
+    dimensions(sizes): lat(73), lon(144), time(0)
+    variables(dimensions): 
+    groups: 
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -278,7 +363,7 @@ navbar-dark bg-primary
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Define two variables with the same names as dimensions,</span>
@@ -303,6 +388,30 @@ navbar-dark bg-primary
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&lt;class 'netCDF4._netCDF4.Variable'&gt;
+float64 temp(time, lat, lon)
+    units: K
+    standard_name: air_temperature
+unlimited dimensions: time
+current shape = (0, 73, 144)
+filling on, default _FillValue of 9.969209968386869e+36 used
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -319,7 +428,7 @@ navbar-dark bg-primary
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"-- Some pre-defined attributes for variable temp:"</span><span class="p">)</span>
@@ -330,6 +439,28 @@ navbar-dark bg-primary
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>-- Some pre-defined attributes for variable temp:
+temp.dimensions: ('time', 'lat', 'lon')
+temp.shape: (0, 73, 144)
+temp.dtype: float64
+temp.ndim: 3
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -348,7 +479,7 @@ navbar-dark bg-primary
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">nlats</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lat_dim</span><span class="p">);</span> <span class="n">nlons</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lon_dim</span><span class="p">);</span> <span class="n">ntimes</span> <span class="o">=</span> <span class="mi">3</span>
@@ -366,6 +497,25 @@ navbar-dark bg-primary
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>-- Wrote data, temp.shape is now  (3, 73, 144)
+-- Min/Max values: 280.0013153059755 329.9984814878174
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -387,7 +537,7 @@ navbar-dark bg-primary
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># create a 2D array of random numbers</span>
@@ -397,6 +547,24 @@ navbar-dark bg-primary
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>-- Wrote more data, temp.shape is now  (4, 73, 144)
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -413,7 +581,7 @@ navbar-dark bg-primary
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
@@ -422,6 +590,31 @@ navbar-dark bg-primary
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&lt;class 'netCDF4._netCDF4.Variable'&gt;
+float64 time(time)
+    units: hours since 1800-01-01
+    long_name: time
+unlimited dimensions: time
+current shape = (4,)
+filling on, default _FillValue of 9.969209968386869e+36 used
+&lt;class 'numpy.ma.core.MaskedArray'&gt; [-- -- -- --]
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -440,7 +633,7 @@ navbar-dark bg-primary
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
@@ -454,10 +647,28 @@ navbar-dark bg-primary
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[datetime.datetime(2014, 10, 1, 0, 0), datetime.datetime(2014, 10, 2, 0, 0), datetime.datetime(2014, 10, 3, 0, 0), datetime.datetime(2014, 10, 4, 0, 0)]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">times</span> <span class="o">=</span> <span class="n">date2num</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
@@ -468,10 +679,28 @@ navbar-dark bg-primary
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[1882440. 1882464. 1882488. 1882512.] hours since 1800-01-01
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">time</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">times</span>
@@ -482,6 +711,27 @@ navbar-dark bg-primary
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[1882440. 1882464. 1882488. 1882512.]
+hours since 1800-01-01
+[datetime.datetime(2014, 10, 1, 0, 0) datetime.datetime(2014, 10, 2, 0, 0)
+ datetime.datetime(2014, 10, 3, 0, 0) datetime.datetime(2014, 10, 4, 0, 0)]
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -503,7 +753,7 @@ navbar-dark bg-primary
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># first print the Dataset object to see what we've got</span>
@@ -516,16 +766,59 @@ navbar-dark bg-primary
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&lt;class 'netCDF4._netCDF4.Dataset'&gt;
+root group (NETCDF4_CLASSIC data model, file format HDF5):
+    title: My model data
+    subtitle: My model data subtitle
+    dimensions(sizes): lat(73), lon(144), time(4)
+    variables(dimensions): float32 lat(lat), float32 lon(lon), float64 time(time), float64 temp(time,lat,lon)
+    groups: 
+Dataset is closed!
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>ncdump -h ../data/new.nc
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>ncdump: ../data/new.nc: ../data/new.nc: No such file or directory
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -545,7 +838,7 @@ navbar-dark bg-primary
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ncfile</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s1">'../../data/new2.nc'</span><span class="p">,</span><span class="s1">'w'</span><span class="p">,</span><span class="nb">format</span><span class="o">=</span><span class="s1">'NETCDF4'</span><span class="p">)</span>
@@ -553,6 +846,28 @@ navbar-dark bg-primary
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&lt;class 'netCDF4._netCDF4.Dataset'&gt;
+root group (NETCDF4 data model, file format HDF5):
+    dimensions(sizes): 
+    variables(dimensions): 
+    groups: 
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -583,7 +898,7 @@ navbar-dark bg-primary
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">grp1</span> <span class="o">=</span> <span class="n">ncfile</span><span class="o">.</span><span class="n">createGroup</span><span class="p">(</span><span class="s1">'model_run1'</span><span class="p">)</span>
@@ -593,6 +908,33 @@ navbar-dark bg-primary
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>('model_run1', &lt;class 'netCDF4._netCDF4.Group'&gt;
+group /model_run1:
+    dimensions(sizes): 
+    variables(dimensions): 
+    groups: )
+('model_run2', &lt;class 'netCDF4._netCDF4.Group'&gt;
+group /model_run2:
+    dimensions(sizes): 
+    variables(dimensions): 
+    groups: )
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -609,7 +951,7 @@ navbar-dark bg-primary
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">lat_dim</span> <span class="o">=</span> <span class="n">ncfile</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">'lat'</span><span class="p">,</span> <span class="mi">73</span><span class="p">)</span>     <span class="c1"># latitude axis</span>
@@ -638,7 +980,7 @@ navbar-dark bg-primary
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [19]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">temp1</span> <span class="o">=</span> <span class="n">grp1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">'temp'</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,(</span><span class="s1">'time'</span><span class="p">,</span><span class="s1">'lat'</span><span class="p">,</span><span class="s1">'lon'</span><span class="p">),</span><span class="n">zlib</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -648,6 +990,33 @@ navbar-dark bg-primary
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>('model_run1', &lt;class 'netCDF4._netCDF4.Group'&gt;
+group /model_run1:
+    dimensions(sizes): 
+    variables(dimensions): float64 temp(time,lat,lon)
+    groups: )
+('model_run2', &lt;class 'netCDF4._netCDF4.Group'&gt;
+group /model_run2:
+    dimensions(sizes): 
+    variables(dimensions): float64 temp(time,lat,lon)
+    groups: )
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -674,7 +1043,7 @@ navbar-dark bg-primary
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [20]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># create complex128 numpy structured data type</span>
@@ -701,6 +1070,30 @@ navbar-dark bg-primary
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&lt;class 'netCDF4._netCDF4.Variable'&gt;
+compound cmplx_var(time, lat, lon)
+compound data type: {'names':['real','imag'], 'formats':['&lt;f8','&lt;f8'], 'offsets':[0,8], 'itemsize':16, 'aligned':True}
+path = /model_run1
+unlimited dimensions: time
+current shape = (1, 73, 144)
+{'names':['real','imag'], 'formats':['&lt;f8','&lt;f8'], 'offsets':[0,8], 'itemsize':16, 'aligned':True} (73, 144) (0.72755432, 0.89088717)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -719,7 +1112,7 @@ navbar-dark bg-primary
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [21]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">vlen_t</span> <span class="o">=</span> <span class="n">ncfile</span><span class="o">.</span><span class="n">createVLType</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span> <span class="s1">'phony_vlen'</span><span class="p">)</span>
@@ -742,7 +1135,7 @@ navbar-dark bg-primary
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [22]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">vlvar</span> <span class="o">=</span> <span class="n">grp2</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">'phony_vlen_var'</span><span class="p">,</span> <span class="n">vlen_t</span><span class="p">,</span> <span class="p">(</span><span class="s1">'time'</span><span class="p">,</span><span class="s1">'lat'</span><span class="p">,</span><span class="s1">'lon'</span><span class="p">))</span>
@@ -769,7 +1162,7 @@ navbar-dark bg-primary
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [23]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">vlen_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">nlats</span><span class="p">,</span><span class="n">nlons</span><span class="p">),</span><span class="nb">object</span><span class="p">)</span>
@@ -786,6 +1179,48 @@ navbar-dark bg-primary
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&lt;class 'netCDF4._netCDF4.Variable'&gt;
+vlen phony_vlen_var(time, lat, lon)
+vlen data type: int64
+path = /model_run2
+unlimited dimensions: time
+current shape = (1, 73, 144)
+data =
+ [[[array([4, 8, 0, 6]) array([2, 4, 5, 9, 7, 5]) array([2]) ...
+   array([8]) array([7, 4, 8]) array([9, 5])]
+  [array([0, 8, 2, 0, 1, 4, 0, 0, 5]) array([3, 4, 9, 1, 8, 2, 9, 5, 1])
+   array([5, 6, 0, 2, 7, 3, 6, 3]) ... array([8, 3, 8, 8, 3])
+   array([2, 3]) array([2, 9, 0, 9, 8, 0])]
+  [array([4, 3, 7, 1, 9, 2, 2]) array([4, 3, 8, 2, 4, 4, 1, 5])
+   array([6, 2, 4, 8, 1, 9, 8]) ... array([9, 6, 7, 5, 5])
+   array([8, 9, 5, 3, 5, 7, 1]) array([8, 6, 3, 9, 2, 8, 5])]
+  ...
+  [array([4, 6]) array([3, 6, 5]) array([7, 0, 0, 0, 8, 2, 5, 1, 6]) ...
+   array([2, 5, 2, 2, 3, 4, 7, 9, 2]) array([5, 8, 3, 2, 3, 8, 2, 6])
+   array([3])]
+  [array([5, 0, 4, 2]) array([9, 1, 9, 7, 8])
+   array([5, 9, 5, 4, 5, 4, 5, 9, 6]) ...
+   array([8, 2, 5, 5, 7, 5, 8, 4]) array([4]) array([6, 2])]
+  [array([1, 2, 8, 5, 9]) array([8, 8, 2, 4, 4, 1])
+   array([4, 5, 4, 2, 2, 4]) ... array([0, 9, 0, 3, 8, 3, 3, 4, 5])
+   array([8]) array([3, 4])]]]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -799,7 +1234,7 @@ navbar-dark bg-primary
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [24]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ncfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -807,6 +1242,24 @@ navbar-dark bg-primary
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>ncdump: ../data/new2.nc: ../data/new2.nc: No such file or directory
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 

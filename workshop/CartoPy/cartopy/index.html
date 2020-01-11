@@ -32,16 +32,13 @@ MathJax.Hub.Config({
 Unidata Python Workshop
 
 
-Overview:¶
-Teaching: 20 minutes
-Exercises: 20 minutes
-
 Questions¶
 How do we plot on a map in Python?
 How do I specify a map projection?
-How do ">
+How do I tell CartoPy how to reference my data?
+How do I add m">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2020-01-10T00:04:03-07:00">
+<meta property="article:published_time" content="2020-01-11T09:53:43-07:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -115,14 +112,6 @@ navbar-dark bg-primary
 </div>
 <hr style="height:2px;">
 <div style="float:right; width:250 px"><img src="http://scitools.org.uk/images/cartopy.png" alt="CartoPy" style="height: 200px;"></div>
-<h3 id="Overview:">Overview:<a class="anchor-link" href="#Overview:">¶</a>
-</h3>
-<ul>
-<li>
-<strong>Teaching:</strong> 20 minutes</li>
-<li>
-<strong>Exercises:</strong> 20 minutes</li>
-</ul>
 <h4 id="Questions">Questions<a class="anchor-link" href="#Questions">¶</a>
 </h4>
 <ol>
@@ -227,7 +216,7 @@ navbar-dark bg-primary
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.image.AxesImage at 0x7f264f74bc90&gt;</pre>
+<pre>&lt;matplotlib.image.AxesImage at 0x7efd4000fd90&gt;</pre>
 </div>
 
 </div>
@@ -295,7 +284,7 @@ navbar-dark bg-primary
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.image.AxesImage at 0x7f264e39a3d0&gt;</pre>
+<pre>&lt;matplotlib.image.AxesImage at 0x7efd3de694d0&gt;</pre>
 </div>
 
 </div>
@@ -434,7 +423,11 @@ navbar-dark bg-primary
 
 
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>/home/travis/miniconda/envs/unidata/lib/python3.7/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: http://naciscdn.org/naturalearth/110m/physical/ne_110m_lakes.zip
+<pre>/home/travis/miniconda/envs/unidata/lib/python3.7/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: http://naciscdn.org/naturalearth/110m/physical/ne_110m_land.zip
+  warnings.warn('Downloading: {}'.format(url), DownloadWarning)
+/home/travis/miniconda/envs/unidata/lib/python3.7/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: http://naciscdn.org/naturalearth/110m/physical/ne_110m_ocean.zip
+  warnings.warn('Downloading: {}'.format(url), DownloadWarning)
+/home/travis/miniconda/envs/unidata/lib/python3.7/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: http://naciscdn.org/naturalearth/110m/physical/ne_110m_lakes.zip
   warnings.warn('Downloading: {}'.format(url), DownloadWarning)
 /home/travis/miniconda/envs/unidata/lib/python3.7/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: http://naciscdn.org/naturalearth/110m/physical/ne_110m_rivers_lake_centerlines.zip
   warnings.warn('Downloading: {}'.format(url), DownloadWarning)
@@ -505,7 +498,11 @@ navbar-dark bg-primary
 
 
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>/home/travis/miniconda/envs/unidata/lib/python3.7/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: http://naciscdn.org/naturalearth/50m/physical/ne_50m_rivers_lake_centerlines.zip
+<pre>/home/travis/miniconda/envs/unidata/lib/python3.7/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: http://naciscdn.org/naturalearth/50m/cultural/ne_50m_admin_0_boundary_lines_land.zip
+  warnings.warn('Downloading: {}'.format(url), DownloadWarning)
+/home/travis/miniconda/envs/unidata/lib/python3.7/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: http://naciscdn.org/naturalearth/50m/cultural/ne_50m_admin_1_states_provinces_lakes.zip
+  warnings.warn('Downloading: {}'.format(url), DownloadWarning)
+/home/travis/miniconda/envs/unidata/lib/python3.7/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: http://naciscdn.org/naturalearth/50m/physical/ne_50m_rivers_lake_centerlines.zip
   warnings.warn('Downloading: {}'.format(url), DownloadWarning)
 </pre>
 </div>
@@ -823,13 +820,14 @@ navbar-dark bg-primary
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Exercise">Exercise<a class="anchor-link" href="#Exercise">¶</a>
-</h4>
-<ul>
+<div class="alert alert-success">
+    <b>EXERCISE</b>:
+     <ul>
 <li>Create a map, on a Mercator Projection, which at least has coastlines and country and state borders. Bonus points for putting on colored land and oceans, or other map features.</li>
-<li>Plot our location correctly on the map.</li>
-<li>Set the bounds of the map to zoom in mostly over our state/region.</li>
-</ul>
+         <li>Plot our location correctly on the map.</li>
+         <li>Set the bounds of the map to zoom in mostly over our state/region.</li>
+    </ul>
+</div>
 </div>
 </div>
 </div>
@@ -851,8 +849,9 @@ navbar-dark bg-primary
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h5 id="Solution">Solution<a class="anchor-link" href="#Solution">¶</a>
-</h5>
+<div class="alert alert-info">
+    <b>SOLUTION</b>
+</div>
 </div>
 </div>
 </div>
@@ -862,7 +861,6 @@ navbar-dark bg-primary
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># %load solutions/map.py</span>
-
 
 <span class="c1"># Cell content replaced by load magic replacement.</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
