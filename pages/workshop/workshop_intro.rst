@@ -59,7 +59,7 @@ Atmospheric Science & Meteorology Packages and Applications
 * Bonus
     * :doc:`GFS Download with Siphon <downloading-gfs-with-siphon>`
     * :doc:`Write netCDF files <netcdf-writing>`
-    * :doc:`Plot HRRR Output with Siphon and XArray <siphon-xarray-cartopy-and-hrrr>`
+    * :doc:`Plot HRRR Output with Siphon and XArray <siphon-xarray-cartopy-hrrr>`
     * :doc:`Debugging and Troubleshooting Your Code <what-to-do-when-things-go-wrong>`
     * :doc:`NetCDF CF Conventions: The Basics <netcdf-and-cf-the-basics>`
 
