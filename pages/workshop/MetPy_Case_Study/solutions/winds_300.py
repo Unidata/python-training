@@ -29,5 +29,4 @@ plt.title('300-hPa Geopotential Heights, Divergence (1/s),\
           loc='left')
 plt.title(f'VALID: {vtime}', loc='right')
 
-plt.tight_layout()
 plt.show()

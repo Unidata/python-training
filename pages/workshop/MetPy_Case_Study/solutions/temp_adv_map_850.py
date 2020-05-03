@@ -31,5 +31,4 @@ plt.title('850-hPa Geopotential Heights, Temperature (C), \
           Temp Adv (C/h), and Wind Barbs (kts)', loc='left')
 plt.title(f'VALID: {vtime}', loc='right')
 
-plt.tight_layout()
 plt.show()
