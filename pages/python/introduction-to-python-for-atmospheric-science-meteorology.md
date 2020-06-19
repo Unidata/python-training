@@ -62,7 +62,7 @@ GitHub is a online platform for hosting code that promotes collaboration.
 ## Basic Python Syntax
 Here are some good sources for learning the basics of Python's Syntax:
 
-- [Codecademy](https://www.codecademy.com/learn/python) has some free lessons on learning Python
+- [Codecademy](https://www.codecademy.com/learn/learn-python-3) has some free lessons on learning Python
 - [learnpython.org](http://www.learnpython.org/) also has some free, interactive materials
 - The [official](https://docs.python.org/3.5/tutorial/index.html) Python tutorial is pretty good as well
 
