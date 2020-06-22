@@ -932,9 +932,6 @@ CONTENT_FOOTER = """<script>
   ga('send', 'pageview');
 
 </script>
-<p>Do you find this useful?
-  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Installation Guide" accesskey="n">Say Thanks!</a>
-</p>
 Contents &copy; {date}
 <a href="mailto:{email}">{author}</a> - Powered by
 <a href="https://getnikola.com" rel="nofollow">Nikola</a>         {license}
