@@ -4,20 +4,23 @@ import subprocess
 import os.path
 
 NOTEBOOKS_DIR = 'pages/'
-SKIP_NOTEBOOKS = [os.path.join('workshop/Bonus', 'What to do when things go wrong.ipynb'),
-                  os.path.join('workshop/Bonus', 'netCDF-Writing.ipynb'),
-                  os.path.join('workshop/AWIPS', 'AWIPS_Grids_and_Cartopy.ipynb'),
-                  os.path.join('workshop/AWIPS', 'Grid_Levels_and_Parameters.ipynb'),
-                  os.path.join('workshop/AWIPS', 'Map_Resources_and_Topography.ipynb'),
-                  os.path.join('workshop/AWIPS', 'Model_Sounding_Data.ipynb'),
-                  os.path.join('workshop/AWIPS', 'NEXRAD_Level_3_Plot_with_Matplotlib.ipynb'),
-                  os.path.join('workshop/AWIPS', 'Satellite_Imagery.ipynb'),
-                  os.path.join('workshop/AWIPS', 'Upper_Air_BUFR_Soundings.ipynb'),
-                  os.path.join('workshop/AWIPS', 'Watch_and_Warning_Polygons.ipynb'),
-                  os.path.join('gallery', 'Sounding_Plotter.ipynb'),
-                  os.path.join('gallery', 'Precipitation_Map.ipynb'),
-                  os.path.join('workshop/MetPy_Advanced', 'QG Analysis.ipynb'),
-                  os.path.join('workshop/MetPy_Case_Study', 'MetPy_Case_Study.ipynb')]
+SKIP_NOTEBOOKS = [
+    os.path.join('workshop/Bonus', 'What to do when things go wrong.ipynb'),
+    os.path.join('workshop/Bonus', 'netCDF-Writing.ipynb'),
+    os.path.join('workshop/AWIPS', 'AWIPS_Grids_and_Cartopy.ipynb'),
+    os.path.join('workshop/AWIPS', 'Grid_Levels_and_Parameters.ipynb'),
+    os.path.join('workshop/AWIPS', 'Map_Resources_and_Topography.ipynb'),
+    os.path.join('workshop/AWIPS', 'Model_Sounding_Data.ipynb'),
+    os.path.join('workshop/AWIPS', 'NEXRAD_Level_3_Plot_with_Matplotlib.ipynb'),
+    os.path.join('workshop/AWIPS', 'Satellite_Imagery.ipynb'),
+    os.path.join('workshop/AWIPS', 'Upper_Air_BUFR_Soundings.ipynb'),
+    os.path.join('workshop/AWIPS', 'Watch_and_Warning_Polygons.ipynb'),
+    os.path.join('gallery', 'Sounding_Plotter.ipynb'),
+    os.path.join('gallery', 'Precipitation_Map.ipynb'),
+    os.path.join('gallery', 'upperair_500_obs_contours.ipynb')
+    #os.path.join('workshop/MetPy_Advanced', 'QG Analysis.ipynb'),
+    #os.path.join('workshop/MetPy_Case_Study', 'MetPy_Case_Study.ipynb')
+    ]
 
 
 def run_notebook(notebook):
