@@ -10,21 +10,9 @@
 <link href="../../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
 <meta name="theme-color" content="#33758C">
 <meta name="generator" content="Nikola (getnikola.com)">
-<link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.xml">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../../rss.xml">
 <link rel="canonical" href="https://unidata.github.io/python-training/workshop/Python_Ecosystem/scientific-python-ecosystem-overview/">
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-    tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-        processEscapes: true
-    },
-    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
-    "HTML-CSS": {
-        styles: {'.MathJax_Display': {"margin": 0}}
-    }
-});
-</script><!--[if lt IE 9]><script src="../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<!--[if lt IE 9]><script src="../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
 <meta property="og:site_name" content="Unidata Python Training">
 <meta property="og:title" content="Scientific Python Ecosystem Overview">
 <meta property="og:url" content="https://unidata.github.io/python-training/workshop/Python_Ecosystem/scientific-python-ecosystem-overview/">
@@ -37,7 +25,7 @@ MathJax.Hub.Config({
 
 Python¶Python is a interpreted, high-level programming language that is meant to be easily understandable and usable for a multitude of purposes. It is composed ">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2020-01-17T08:13:27-07:00">
+<meta property="article:published_time" content="2020-08-21T17:18:35-06:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -49,7 +37,7 @@ navbar-dark bg-primary
 "><div class="container">
 <!-- This keeps the margins nice -->
         <a class="navbar-brand" href="https://unidata.github.io/python-training/">
-            <img src="https://docs.unidata.ucar.edu/images/logos/unidata_logo_rgb_sm.png" alt="Unidata Python Training" id="logo" class="d-inline-block align-top"><span id="blog-title">Unidata Python Training</span>
+            <img src="https://www.unidata.ucar.edu/images/logos/unidata_logo_rgb_sm.png" alt="Unidata Python Training" id="logo" class="d-inline-block align-top"><span id="blog-title">Unidata Python Training</span>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -356,7 +344,7 @@ navbar-dark bg-primary
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
-<span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">'../../data/NARR_19930313_0000.nc'</span><span class="p">)</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">'../../../data/NARR_19930313_0000.nc'</span><span class="p">)</span>
 <span class="n">ds</span>
 </pre></div>
 
@@ -375,7 +363,344 @@ navbar-dark bg-primary
 
 
 <div class="output_html rendered_html output_subarea output_execute_result">
-<pre>&lt;xarray.Dataset&gt;
+<div>
+<svg style="position: absolute; width: 0; height: 0; overflow: hidden"><defs><symbol id="icon-database" viewbox="0 0 32 32"><path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path><path d="M16 17c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path><path d="M16 26c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path></symbol><symbol id="icon-file-text2" viewbox="0 0 32 32"><path d="M28.681 7.159c-0.694-0.947-1.662-2.053-2.724-3.116s-2.169-2.030-3.116-2.724c-1.612-1.182-2.393-1.319-2.841-1.319h-15.5c-1.378 0-2.5 1.121-2.5 2.5v27c0 1.378 1.122 2.5 2.5 2.5h23c1.378 0 2.5-1.122 2.5-2.5v-19.5c0-0.448-0.137-1.23-1.319-2.841zM24.543 5.457c0.959 0.959 1.712 1.825 2.268 2.543h-4.811v-4.811c0.718 0.556 1.584 1.309 2.543 2.268zM28 29.5c0 0.271-0.229 0.5-0.5 0.5h-23c-0.271 0-0.5-0.229-0.5-0.5v-27c0-0.271 0.229-0.5 0.5-0.5 0 0 15.499-0 15.5 0v7c0 0.552 0.448 1 1 1h7v19.5z"></path><path d="M23 26h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path><path d="M23 22h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path><path d="M23 18h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path></symbol></defs></svg><style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
+ *
+ */
+
+:root {
+  --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
+  --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
+  --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
+  --xr-border-color: var(--jp-border-color2, #e0e0e0);
+  --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
+  --xr-background-color: var(--jp-layout-color0, white);
+  --xr-background-color-row-even: var(--jp-layout-color1, white);
+  --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+}
+
+html[theme=dark],
+body.vscode-dark {
+  --xr-font-color0: rgba(255, 255, 255, 1);
+  --xr-font-color2: rgba(255, 255, 255, 0.54);
+  --xr-font-color3: rgba(255, 255, 255, 0.38);
+  --xr-border-color: #1F1F1F;
+  --xr-disabled-color: #515151;
+  --xr-background-color: #111111;
+  --xr-background-color-row-even: #111111;
+  --xr-background-color-row-odd: #313131;
+}
+
+.xr-wrap {
+  display: block;
+  min-width: 300px;
+  max-width: 700px;
+}
+
+.xr-text-repr-fallback {
+  /* fallback to plain text repr when CSS is not injected (untrusted notebook) */
+  display: none;
+}
+
+.xr-header {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+  border-bottom: solid 1px var(--xr-border-color);
+}
+
+.xr-header > div,
+.xr-header > ul {
+  display: inline;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.xr-obj-type,
+.xr-array-name {
+  margin-left: 2px;
+  margin-right: 10px;
+}
+
+.xr-obj-type {
+  color: var(--xr-font-color2);
+}
+
+.xr-sections {
+  padding-left: 0 !important;
+  display: grid;
+  grid-template-columns: 150px auto auto 1fr 20px 20px;
+}
+
+.xr-section-item {
+  display: contents;
+}
+
+.xr-section-item input {
+  display: none;
+}
+
+.xr-section-item input + label {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-item input:enabled + label {
+  cursor: pointer;
+  color: var(--xr-font-color2);
+}
+
+.xr-section-item input:enabled + label:hover {
+  color: var(--xr-font-color0);
+}
+
+.xr-section-summary {
+  grid-column: 1;
+  color: var(--xr-font-color2);
+  font-weight: 500;
+}
+
+.xr-section-summary > span {
+  display: inline-block;
+  padding-left: 0.5em;
+}
+
+.xr-section-summary-in:disabled + label {
+  color: var(--xr-font-color2);
+}
+
+.xr-section-summary-in + label:before {
+  display: inline-block;
+  content: '►';
+  font-size: 11px;
+  width: 15px;
+  text-align: center;
+}
+
+.xr-section-summary-in:disabled + label:before {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-summary-in:checked + label:before {
+  content: '▼';
+}
+
+.xr-section-summary-in:checked + label > span {
+  display: none;
+}
+
+.xr-section-summary,
+.xr-section-inline-details {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.xr-section-inline-details {
+  grid-column: 2 / -1;
+}
+
+.xr-section-details {
+  display: none;
+  grid-column: 1 / -1;
+  margin-bottom: 5px;
+}
+
+.xr-section-summary-in:checked ~ .xr-section-details {
+  display: contents;
+}
+
+.xr-array-wrap {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 20px auto;
+}
+
+.xr-array-wrap > label {
+  grid-column: 1;
+  vertical-align: top;
+}
+
+.xr-preview {
+  color: var(--xr-font-color3);
+}
+
+.xr-array-preview,
+.xr-array-data {
+  padding: 0 5px !important;
+  grid-column: 2;
+}
+
+.xr-array-data,
+.xr-array-in:checked ~ .xr-array-preview {
+  display: none;
+}
+
+.xr-array-in:checked ~ .xr-array-data,
+.xr-array-preview {
+  display: inline-block;
+}
+
+.xr-dim-list {
+  display: inline-block !important;
+  list-style: none;
+  padding: 0 !important;
+  margin: 0;
+}
+
+.xr-dim-list li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+.xr-dim-list:before {
+  content: '(';
+}
+
+.xr-dim-list:after {
+  content: ')';
+}
+
+.xr-dim-list li:not(:last-child):after {
+  content: ',';
+  padding-right: 5px;
+}
+
+.xr-has-index {
+  font-weight: bold;
+}
+
+.xr-var-list,
+.xr-var-item {
+  display: contents;
+}
+
+.xr-var-item > div,
+.xr-var-item label,
+.xr-var-item > .xr-var-name span {
+  background-color: var(--xr-background-color-row-even);
+  margin-bottom: 0;
+}
+
+.xr-var-item > .xr-var-name:hover span {
+  padding-right: 5px;
+}
+
+.xr-var-list > li:nth-child(odd) > div,
+.xr-var-list > li:nth-child(odd) > label,
+.xr-var-list > li:nth-child(odd) > .xr-var-name span {
+  background-color: var(--xr-background-color-row-odd);
+}
+
+.xr-var-name {
+  grid-column: 1;
+}
+
+.xr-var-dims {
+  grid-column: 2;
+}
+
+.xr-var-dtype {
+  grid-column: 3;
+  text-align: right;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-preview {
+  grid-column: 4;
+}
+
+.xr-var-name,
+.xr-var-dims,
+.xr-var-dtype,
+.xr-preview,
+.xr-attrs dt {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 10px;
+}
+
+.xr-var-name:hover,
+.xr-var-dims:hover,
+.xr-var-dtype:hover,
+.xr-attrs dt:hover {
+  overflow: visible;
+  width: auto;
+  z-index: 1;
+}
+
+.xr-var-attrs,
+.xr-var-data {
+  display: none;
+  background-color: var(--xr-background-color) !important;
+  padding-bottom: 5px !important;
+}
+
+.xr-var-attrs-in:checked ~ .xr-var-attrs,
+.xr-var-data-in:checked ~ .xr-var-data {
+  display: block;
+}
+
+.xr-var-data > table {
+  float: right;
+}
+
+.xr-var-name span,
+.xr-var-data,
+.xr-attrs {
+  padding-left: 25px !important;
+}
+
+.xr-attrs,
+.xr-var-attrs,
+.xr-var-data {
+  grid-column: 1 / -1;
+}
+
+dl.xr-attrs {
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 125px auto;
+}
+
+.xr-attrs dt, dd {
+  padding: 0;
+  margin: 0;
+  float: left;
+  padding-right: 10px;
+  width: auto;
+}
+
+.xr-attrs dt {
+  font-weight: normal;
+  grid-column: 1;
+}
+
+.xr-attrs dt:hover span {
+  display: inline-block;
+  background: var(--xr-background-color);
+  padding-right: 10px;
+}
+
+.xr-attrs dd {
+  grid-column: 2;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.xr-icon-database,
+.xr-icon-file-text2 {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1.5em !important;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+</style>
+<pre class="xr-text-repr-fallback">&lt;xarray.Dataset&gt;
 Dimensions:                       (isobaric1: 29, time1: 1, x: 268, y: 119)
 Coordinates:
   * time1                         (time1) datetime64[ns] 1993-03-13
@@ -384,9 +709,9 @@ Coordinates:
   * x                             (x) float32 -3324.4707 ... 5343.1504
 Data variables:
     u-component_of_wind_isobaric  (time1, isobaric1, y, x) float32 ...
-    LambertConformal_Projection   int32 ...
-    lat                           (y, x) float64 ...
-    lon                           (y, x) float64 ...
+    LambertConformal_Projection   int32 0
+    lat                           (y, x) float64 17.87 17.96 ... 34.85 34.64
+    lon                           (y, x) float64 -135.0 -134.8 ... -43.13 -42.91
     Geopotential_height_isobaric  (time1, isobaric1, y, x) float32 ...
     v-component_of_wind_isobaric  (time1, isobaric1, y, x) float32 ...
     Temperature_isobaric          (time1, isobaric1, y, x) float32 ...
@@ -403,6 +728,363 @@ Attributes:
     geospatial_lat_max:                   46.8308828962289
     geospatial_lon_min:                   -153.88242040519995
     geospatial_lon_max:                   -42.666108129242815</pre>
+<div class="xr-wrap" hidden>
+<div class="xr-header"><div class="xr-obj-type">xarray.Dataset</div></div>
+<ul class="xr-sections">
+<li class="xr-section-item">
+<input id="section-63f4766a-f4da-4b7a-a66a-090939f3c9b0" class="xr-section-summary-in" type="checkbox" disabled><label for="section-63f4766a-f4da-4b7a-a66a-090939f3c9b0" class="xr-section-summary" title="Expand/collapse section">Dimensions:</label><div class="xr-section-inline-details"><ul class="xr-dim-list">
+<li>
+<span class="xr-has-index">isobaric1</span>: 29</li>
+<li>
+<span class="xr-has-index">time1</span>: 1</li>
+<li>
+<span class="xr-has-index">x</span>: 268</li>
+<li>
+<span class="xr-has-index">y</span>: 119</li>
+</ul></div>
+<div class="xr-section-details"></div>
+</li>
+<li class="xr-section-item">
+<input id="section-192b761e-3a06-42ea-8dad-99e9d41fb244" class="xr-section-summary-in" type="checkbox" checked><label for="section-192b761e-3a06-42ea-8dad-99e9d41fb244" class="xr-section-summary">Coordinates: <span>(4)</span></label><div class="xr-section-inline-details"></div>
+<div class="xr-section-details"><ul class="xr-var-list">
+<li class="xr-var-item">
+<div class="xr-var-name"><span class="xr-has-index">time1</span></div>
+<div class="xr-var-dims">(time1)</div>
+<div class="xr-var-dtype">datetime64[ns]</div>
+<div class="xr-var-preview xr-preview">1993-03-13</div>
+<input id="attrs-a2b51540-af2d-4078-a63d-954a4bdc11cd" class="xr-var-attrs-in" type="checkbox"><label for="attrs-a2b51540-af2d-4078-a63d-954a4bdc11cd" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use xlink:href="#icon-file-text2"></use></svg></label><input id="data-afad73e7-be1c-4e9b-9a7e-fc786d2b251e" class="xr-var-data-in" type="checkbox"><label for="data-afad73e7-be1c-4e9b-9a7e-fc786d2b251e" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use xlink:href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs">
+<dt><span>standard_name :</span></dt>
+<dd>time</dd>
+<dt><span>long_name :</span></dt>
+<dd>GRIB forecast or observation time</dd>
+<dt><span>_CoordinateAxisType :</span></dt>
+<dd>Time</dd>
+</dl></div>
+<div class="xr-var-data"><pre>array(['1993-03-13T00:00:00.000000000'], dtype='datetime64[ns]')</pre></div>
+</li>
+<li class="xr-var-item">
+<div class="xr-var-name"><span class="xr-has-index">isobaric1</span></div>
+<div class="xr-var-dims">(isobaric1)</div>
+<div class="xr-var-dtype">float32</div>
+<div class="xr-var-preview xr-preview">100.0 125.0 150.0 ... 975.0 1000.0</div>
+<input id="attrs-53dcf3d3-61da-4828-89ec-04dca02450f5" class="xr-var-attrs-in" type="checkbox"><label for="attrs-53dcf3d3-61da-4828-89ec-04dca02450f5" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use xlink:href="#icon-file-text2"></use></svg></label><input id="data-f816de79-6c16-4590-a2a7-4ec6560f70d1" class="xr-var-data-in" type="checkbox"><label for="data-f816de79-6c16-4590-a2a7-4ec6560f70d1" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use xlink:href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs">
+<dt><span>units :</span></dt>
+<dd>hPa</dd>
+<dt><span>long_name :</span></dt>
+<dd>Isobaric surface</dd>
+<dt><span>positive :</span></dt>
+<dd>down</dd>
+<dt><span>Grib_level_type :</span></dt>
+<dd>100</dd>
+<dt><span>_CoordinateAxisType :</span></dt>
+<dd>Pressure</dd>
+<dt><span>_CoordinateZisPositive :</span></dt>
+<dd>down</dd>
+</dl></div>
+<div class="xr-var-data"><pre>array([ 100.,  125.,  150.,  175.,  200.,  225.,  250.,  275.,  300.,  350.,
+        400.,  450.,  500.,  550.,  600.,  650.,  700.,  725.,  750.,  775.,
+        800.,  825.,  850.,  875.,  900.,  925.,  950.,  975., 1000.],
+      dtype=float32)</pre></div>
+</li>
+<li class="xr-var-item">
+<div class="xr-var-name"><span class="xr-has-index">y</span></div>
+<div class="xr-var-dims">(y)</div>
+<div class="xr-var-dtype">float32</div>
+<div class="xr-var-preview xr-preview">-3116.548 -3084.0852 ... 714.08594</div>
+<input id="attrs-b40d3e2c-2b9e-45ae-9b38-71e58ceaa67e" class="xr-var-attrs-in" type="checkbox"><label for="attrs-b40d3e2c-2b9e-45ae-9b38-71e58ceaa67e" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use xlink:href="#icon-file-text2"></use></svg></label><input id="data-9a6edc7c-7a8c-4802-966f-923d9bcc7440" class="xr-var-data-in" type="checkbox"><label for="data-9a6edc7c-7a8c-4802-966f-923d9bcc7440" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use xlink:href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs">
+<dt><span>standard_name :</span></dt>
+<dd>projection_y_coordinate</dd>
+<dt><span>units :</span></dt>
+<dd>km</dd>
+<dt><span>_CoordinateAxisType :</span></dt>
+<dd>GeoY</dd>
+</dl></div>
+<div class="xr-var-data"><pre>array([-3.116548e+03, -3.084085e+03, -3.051622e+03, -3.019159e+03,
+       -2.986696e+03, -2.954233e+03, -2.921770e+03, -2.889307e+03,
+       -2.856844e+03, -2.824381e+03, -2.791918e+03, -2.759455e+03,
+       -2.726992e+03, -2.694529e+03, -2.662066e+03, -2.629603e+03,
+       -2.597140e+03, -2.564677e+03, -2.532214e+03, -2.499751e+03,
+       -2.467288e+03, -2.434825e+03, -2.402362e+03, -2.369899e+03,
+       -2.337436e+03, -2.304973e+03, -2.272510e+03, -2.240047e+03,
+       -2.207584e+03, -2.175121e+03, -2.142658e+03, -2.110195e+03,
+       -2.077732e+03, -2.045269e+03, -2.012806e+03, -1.980343e+03,
+       -1.947880e+03, -1.915417e+03, -1.882954e+03, -1.850491e+03,
+       -1.818028e+03, -1.785565e+03, -1.753102e+03, -1.720639e+03,
+       -1.688176e+03, -1.655713e+03, -1.623250e+03, -1.590787e+03,
+       -1.558324e+03, -1.525861e+03, -1.493398e+03, -1.460935e+03,
+       -1.428472e+03, -1.396009e+03, -1.363546e+03, -1.331083e+03,
+       -1.298620e+03, -1.266157e+03, -1.233694e+03, -1.201231e+03,
+       -1.168768e+03, -1.136305e+03, -1.103842e+03, -1.071379e+03,
+       -1.038916e+03, -1.006453e+03, -9.739901e+02, -9.415271e+02,
+       -9.090641e+02, -8.766011e+02, -8.441381e+02, -8.116751e+02,
+       -7.792121e+02, -7.467491e+02, -7.142861e+02, -6.818231e+02,
+       -6.493601e+02, -6.168971e+02, -5.844341e+02, -5.519711e+02,
+       -5.195081e+02, -4.870451e+02, -4.545821e+02, -4.221191e+02,
+       -3.896561e+02, -3.571931e+02, -3.247301e+02, -2.922671e+02,
+       -2.598041e+02, -2.273411e+02, -1.948781e+02, -1.624151e+02,
+       -1.299521e+02, -9.748907e+01, -6.502608e+01, -3.256308e+01,
+       -1.000744e-01,  3.236293e+01,  6.482593e+01,  9.728893e+01,
+        1.297519e+02,  1.622149e+02,  1.946779e+02,  2.271409e+02,
+        2.596039e+02,  2.920669e+02,  3.245299e+02,  3.569930e+02,
+        3.894559e+02,  4.219189e+02,  4.543820e+02,  4.868449e+02,
+        5.193079e+02,  5.517709e+02,  5.842339e+02,  6.166970e+02,
+        6.491600e+02,  6.816229e+02,  7.140859e+02], dtype=float32)</pre></div>
+</li>
+<li class="xr-var-item">
+<div class="xr-var-name"><span class="xr-has-index">x</span></div>
+<div class="xr-var-dims">(x)</div>
+<div class="xr-var-dtype">float32</div>
+<div class="xr-var-preview xr-preview">-3324.4707 -3292.0078 ... 5343.1504</div>
+<input id="attrs-ebb9abd1-8f96-48a7-9f5b-bf98c60d70dc" class="xr-var-attrs-in" type="checkbox"><label for="attrs-ebb9abd1-8f96-48a7-9f5b-bf98c60d70dc" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use xlink:href="#icon-file-text2"></use></svg></label><input id="data-f6843e7a-0283-4f87-9e52-9bd70e536ed5" class="xr-var-data-in" type="checkbox"><label for="data-f6843e7a-0283-4f87-9e52-9bd70e536ed5" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use xlink:href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs">
+<dt><span>standard_name :</span></dt>
+<dd>projection_x_coordinate</dd>
+<dt><span>units :</span></dt>
+<dd>km</dd>
+<dt><span>_CoordinateAxisType :</span></dt>
+<dd>GeoX</dd>
+</dl></div>
+<div class="xr-var-data"><pre>array([-3324.4707, -3292.0078, -3259.5447, ...,  5278.2246,  5310.6875,
+        5343.1504], dtype=float32)</pre></div>
+</li>
+</ul></div>
+</li>
+<li class="xr-section-item">
+<input id="section-835b177e-4197-45a4-bc7c-2183ae6d0f95" class="xr-section-summary-in" type="checkbox" checked><label for="section-835b177e-4197-45a4-bc7c-2183ae6d0f95" class="xr-section-summary">Data variables: <span>(7)</span></label><div class="xr-section-inline-details"></div>
+<div class="xr-section-details"><ul class="xr-var-list">
+<li class="xr-var-item">
+<div class="xr-var-name"><span>u-component_of_wind_isobaric</span></div>
+<div class="xr-var-dims">(time1, isobaric1, y, x)</div>
+<div class="xr-var-dtype">float32</div>
+<div class="xr-var-preview xr-preview">...</div>
+<input id="attrs-0157924c-535c-49be-bd8e-97bcde23cbc5" class="xr-var-attrs-in" type="checkbox"><label for="attrs-0157924c-535c-49be-bd8e-97bcde23cbc5" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use xlink:href="#icon-file-text2"></use></svg></label><input id="data-71c297af-02b4-44b3-9051-02a268e97662" class="xr-var-data-in" type="checkbox"><label for="data-71c297af-02b4-44b3-9051-02a268e97662" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use xlink:href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs">
+<dt><span>long_name :</span></dt>
+<dd>u-component of wind @ Isobaric surface</dd>
+<dt><span>units :</span></dt>
+<dd>m s^-1</dd>
+<dt><span>description :</span></dt>
+<dd>u-component of wind</dd>
+<dt><span>grid_mapping :</span></dt>
+<dd>LambertConformal_Projection</dd>
+<dt><span>Grib_Variable_Id :</span></dt>
+<dd>VAR_7-15-131-33_L100</dd>
+<dt><span>Grib1_Center :</span></dt>
+<dd>7</dd>
+<dt><span>Grib1_Subcenter :</span></dt>
+<dd>15</dd>
+<dt><span>Grib1_TableVersion :</span></dt>
+<dd>131</dd>
+<dt><span>Grib1_Parameter :</span></dt>
+<dd>33</dd>
+<dt><span>Grib1_Level_Type :</span></dt>
+<dd>100</dd>
+<dt><span>Grib1_Level_Desc :</span></dt>
+<dd>Isobaric surface</dd>
+</dl></div>
+<div class="xr-var-data"><pre>[924868 values with dtype=float32]</pre></div>
+</li>
+<li class="xr-var-item">
+<div class="xr-var-name"><span>LambertConformal_Projection</span></div>
+<div class="xr-var-dims">()</div>
+<div class="xr-var-dtype">int32</div>
+<div class="xr-var-preview xr-preview">...</div>
+<input id="attrs-b77c5324-c232-4772-bda6-b8c72d823a71" class="xr-var-attrs-in" type="checkbox"><label for="attrs-b77c5324-c232-4772-bda6-b8c72d823a71" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use xlink:href="#icon-file-text2"></use></svg></label><input id="data-59d6d189-50e7-47da-92f8-f3fcdaf36637" class="xr-var-data-in" type="checkbox"><label for="data-59d6d189-50e7-47da-92f8-f3fcdaf36637" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use xlink:href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs">
+<dt><span>grid_mapping_name :</span></dt>
+<dd>lambert_conformal_conic</dd>
+<dt><span>latitude_of_projection_origin :</span></dt>
+<dd>50.000003814697266</dd>
+<dt><span>longitude_of_central_meridian :</span></dt>
+<dd>-107.00000762939453</dd>
+<dt><span>standard_parallel :</span></dt>
+<dd>50.000003814697266</dd>
+<dt><span>earth_radius :</span></dt>
+<dd>6367470.0</dd>
+<dt><span>_CoordinateTransformType :</span></dt>
+<dd>Projection</dd>
+<dt><span>_CoordinateAxisTypes :</span></dt>
+<dd>GeoX GeoY</dd>
+</dl></div>
+<div class="xr-var-data"><pre>array(0, dtype=int32)</pre></div>
+</li>
+<li class="xr-var-item">
+<div class="xr-var-name"><span>lat</span></div>
+<div class="xr-var-dims">(y, x)</div>
+<div class="xr-var-dtype">float64</div>
+<div class="xr-var-preview xr-preview">...</div>
+<input id="attrs-7af0b3ef-c3ca-4976-8f91-e31bb4718783" class="xr-var-attrs-in" type="checkbox"><label for="attrs-7af0b3ef-c3ca-4976-8f91-e31bb4718783" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use xlink:href="#icon-file-text2"></use></svg></label><input id="data-294d72ab-7831-4427-b6ab-c2f3fe6d77d6" class="xr-var-data-in" type="checkbox"><label for="data-294d72ab-7831-4427-b6ab-c2f3fe6d77d6" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use xlink:href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs">
+<dt><span>units :</span></dt>
+<dd>degrees_north</dd>
+<dt><span>long_name :</span></dt>
+<dd>latitude coordinate</dd>
+<dt><span>standard_name :</span></dt>
+<dd>latitude</dd>
+<dt><span>_CoordinateAxisType :</span></dt>
+<dd>Lat</dd>
+</dl></div>
+<div class="xr-var-data"><pre>array([[17.871157, 17.96379 , 18.055705, ..., 11.171237, 11.04458 , 10.917531],
+       [18.107957, 18.201085, 18.293491, ..., 11.374014, 11.246746, 11.119084],
+       [18.345107, 18.43873 , 18.53163 , ..., 11.57699 , 11.449107, 11.320831],
+       ...,
+       [46.323111, 46.49107 , 46.657954, ..., 34.691863, 34.480463, 34.268685],
+       [46.56076 , 46.72954 , 46.897241, ..., 34.879394, 34.667184, 34.454598],
+       [46.79791 , 46.967512, 47.136034, ..., 35.066338, 34.853317, 34.639922]])</pre></div>
+</li>
+<li class="xr-var-item">
+<div class="xr-var-name"><span>lon</span></div>
+<div class="xr-var-dims">(y, x)</div>
+<div class="xr-var-dtype">float64</div>
+<div class="xr-var-preview xr-preview">...</div>
+<input id="attrs-61b6b171-a034-4366-927f-cde5dec2236d" class="xr-var-attrs-in" type="checkbox"><label for="attrs-61b6b171-a034-4366-927f-cde5dec2236d" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use xlink:href="#icon-file-text2"></use></svg></label><input id="data-3e7d5e30-7fa6-4549-8efa-5fb441d22f77" class="xr-var-data-in" type="checkbox"><label for="data-3e7d5e30-7fa6-4549-8efa-5fb441d22f77" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use xlink:href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs">
+<dt><span>units :</span></dt>
+<dd>degrees_east</dd>
+<dt><span>long_name :</span></dt>
+<dd>longitude coordinate</dd>
+<dt><span>standard_name :</span></dt>
+<dd>longitude</dd>
+<dt><span>_CoordinateAxisType :</span></dt>
+<dd>Lon</dd>
+</dl></div>
+<div class="xr-var-data"><pre>array([[-135.006462, -134.757515, -134.50792 , ...,  -65.276918,  -65.070682,
+         -64.865157],
+       [-135.104494, -134.854843, -134.604538, ...,  -65.14766 ,  -64.941078,
+         -64.735212],
+       [-135.203181, -134.952825, -134.701807, ...,  -65.017683,  -64.810756,
+         -64.60455 ],
+       ...,
+       [-153.092434, -152.746829, -152.398966, ...,  -43.878114,  -43.650466,
+         -43.424375],
+       [-153.337548, -152.991143, -152.642454, ...,  -43.620454,  -43.393   ,
+         -43.167112],
+       [-153.584937, -153.237739, -152.88823 , ...,  -43.361216,  -43.133969,
+         -42.908296]])</pre></div>
+</li>
+<li class="xr-var-item">
+<div class="xr-var-name"><span>Geopotential_height_isobaric</span></div>
+<div class="xr-var-dims">(time1, isobaric1, y, x)</div>
+<div class="xr-var-dtype">float32</div>
+<div class="xr-var-preview xr-preview">...</div>
+<input id="attrs-a83aef42-4195-4c90-b52d-84aa10f0566c" class="xr-var-attrs-in" type="checkbox"><label for="attrs-a83aef42-4195-4c90-b52d-84aa10f0566c" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use xlink:href="#icon-file-text2"></use></svg></label><input id="data-806a37c4-b3d6-450b-a5cf-bfda173564fc" class="xr-var-data-in" type="checkbox"><label for="data-806a37c4-b3d6-450b-a5cf-bfda173564fc" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use xlink:href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs">
+<dt><span>long_name :</span></dt>
+<dd>Geopotential height @ Isobaric surface</dd>
+<dt><span>units :</span></dt>
+<dd>gpm</dd>
+<dt><span>description :</span></dt>
+<dd>Geopotential height</dd>
+<dt><span>grid_mapping :</span></dt>
+<dd>LambertConformal_Projection</dd>
+<dt><span>Grib_Variable_Id :</span></dt>
+<dd>VAR_7-15-131-7_L100</dd>
+<dt><span>Grib1_Center :</span></dt>
+<dd>7</dd>
+<dt><span>Grib1_Subcenter :</span></dt>
+<dd>15</dd>
+<dt><span>Grib1_TableVersion :</span></dt>
+<dd>131</dd>
+<dt><span>Grib1_Parameter :</span></dt>
+<dd>7</dd>
+<dt><span>Grib1_Level_Type :</span></dt>
+<dd>100</dd>
+<dt><span>Grib1_Level_Desc :</span></dt>
+<dd>Isobaric surface</dd>
+</dl></div>
+<div class="xr-var-data"><pre>[924868 values with dtype=float32]</pre></div>
+</li>
+<li class="xr-var-item">
+<div class="xr-var-name"><span>v-component_of_wind_isobaric</span></div>
+<div class="xr-var-dims">(time1, isobaric1, y, x)</div>
+<div class="xr-var-dtype">float32</div>
+<div class="xr-var-preview xr-preview">...</div>
+<input id="attrs-bebdc969-31dd-4ebb-91e3-2c8db6bcd25c" class="xr-var-attrs-in" type="checkbox"><label for="attrs-bebdc969-31dd-4ebb-91e3-2c8db6bcd25c" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use xlink:href="#icon-file-text2"></use></svg></label><input id="data-94e31eac-ec01-46eb-a7fc-182c96a69a78" class="xr-var-data-in" type="checkbox"><label for="data-94e31eac-ec01-46eb-a7fc-182c96a69a78" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use xlink:href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs">
+<dt><span>long_name :</span></dt>
+<dd>v-component of wind @ Isobaric surface</dd>
+<dt><span>units :</span></dt>
+<dd>m s^-1</dd>
+<dt><span>description :</span></dt>
+<dd>v-component of wind</dd>
+<dt><span>grid_mapping :</span></dt>
+<dd>LambertConformal_Projection</dd>
+<dt><span>Grib_Variable_Id :</span></dt>
+<dd>VAR_7-15-131-34_L100</dd>
+<dt><span>Grib1_Center :</span></dt>
+<dd>7</dd>
+<dt><span>Grib1_Subcenter :</span></dt>
+<dd>15</dd>
+<dt><span>Grib1_TableVersion :</span></dt>
+<dd>131</dd>
+<dt><span>Grib1_Parameter :</span></dt>
+<dd>34</dd>
+<dt><span>Grib1_Level_Type :</span></dt>
+<dd>100</dd>
+<dt><span>Grib1_Level_Desc :</span></dt>
+<dd>Isobaric surface</dd>
+</dl></div>
+<div class="xr-var-data"><pre>[924868 values with dtype=float32]</pre></div>
+</li>
+<li class="xr-var-item">
+<div class="xr-var-name"><span>Temperature_isobaric</span></div>
+<div class="xr-var-dims">(time1, isobaric1, y, x)</div>
+<div class="xr-var-dtype">float32</div>
+<div class="xr-var-preview xr-preview">...</div>
+<input id="attrs-6028eda6-7c52-40e7-bd9a-4ddfc728abf8" class="xr-var-attrs-in" type="checkbox"><label for="attrs-6028eda6-7c52-40e7-bd9a-4ddfc728abf8" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use xlink:href="#icon-file-text2"></use></svg></label><input id="data-1af42484-a0b7-491a-b0bf-ca931fa8cddf" class="xr-var-data-in" type="checkbox"><label for="data-1af42484-a0b7-491a-b0bf-ca931fa8cddf" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use xlink:href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs">
+<dt><span>long_name :</span></dt>
+<dd>Temperature @ Isobaric surface</dd>
+<dt><span>units :</span></dt>
+<dd>K</dd>
+<dt><span>description :</span></dt>
+<dd>Temperature</dd>
+<dt><span>grid_mapping :</span></dt>
+<dd>LambertConformal_Projection</dd>
+<dt><span>Grib_Variable_Id :</span></dt>
+<dd>VAR_7-15-131-11_L100</dd>
+<dt><span>Grib1_Center :</span></dt>
+<dd>7</dd>
+<dt><span>Grib1_Subcenter :</span></dt>
+<dd>15</dd>
+<dt><span>Grib1_TableVersion :</span></dt>
+<dd>131</dd>
+<dt><span>Grib1_Parameter :</span></dt>
+<dd>11</dd>
+<dt><span>Grib1_Level_Type :</span></dt>
+<dd>100</dd>
+<dt><span>Grib1_Level_Desc :</span></dt>
+<dd>Isobaric surface</dd>
+</dl></div>
+<div class="xr-var-data"><pre>[924868 values with dtype=float32]</pre></div>
+</li>
+</ul></div>
+</li>
+<li class="xr-section-item">
+<input id="section-23eaa79a-02f6-4905-9bbc-8284d26389f2" class="xr-section-summary-in" type="checkbox"><label for="section-23eaa79a-02f6-4905-9bbc-8284d26389f2" class="xr-section-summary">Attributes: <span>(12)</span></label><div class="xr-section-inline-details"></div>
+<div class="xr-section-details"><dl class="xr-attrs">
+<dt><span>Originating_or_generating_Center :</span></dt>
+<dd>US National Weather Service, National Centres for Environmental Prediction (NCEP)</dd>
+<dt><span>Originating_or_generating_Subcenter :</span></dt>
+<dd>North American Regional Reanalysis Project</dd>
+<dt><span>GRIB_table_version :</span></dt>
+<dd>0,131</dd>
+<dt><span>Generating_process_or_model :</span></dt>
+<dd>North American Regional Reanalysis (NARR)</dd>
+<dt><span>Conventions :</span></dt>
+<dd>CF-1.6</dd>
+<dt><span>history :</span></dt>
+<dd>Read using CDM IOSP GribCollection v3</dd>
+<dt><span>featureType :</span></dt>
+<dd>GRID</dd>
+<dt><span>History :</span></dt>
+<dd>Translated to CF-1.0 Conventions by Netcdf-Java CDM (CFGridWriter2)
+Original Dataset = DatasetScan#narr-a_221_19930313_0000_000.grb; Translation Date = 2018-01-04T23:57:16.043Z</dd>
+<dt><span>geospatial_lat_min :</span></dt>
+<dd>10.753308882144761</dd>
+<dt><span>geospatial_lat_max :</span></dt>
+<dd>46.8308828962289</dd>
+<dt><span>geospatial_lon_min :</span></dt>
+<dd>-153.88242040519995</dd>
+<dt><span>geospatial_lon_max :</span></dt>
+<dd>-42.666108129242815</dd>
+</dl></div>
+</li>
+</ul>
+</div>
+</div>
 </div>
 
 </div>
@@ -500,7 +1182,7 @@ Attributes:
 
 
 <div class="output_png output_subarea ">
-<img src="data:image/png;base64,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">
+<img src="data:image/png;base64,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">
 </div>
 
 </div>

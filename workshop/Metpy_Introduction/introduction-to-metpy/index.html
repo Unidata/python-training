@@ -10,21 +10,9 @@
 <link href="../../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
 <meta name="theme-color" content="#33758C">
 <meta name="generator" content="Nikola (getnikola.com)">
-<link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.xml">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../../rss.xml">
 <link rel="canonical" href="https://unidata.github.io/python-training/workshop/Metpy_Introduction/introduction-to-metpy/">
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-    tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-        processEscapes: true
-    },
-    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
-    "HTML-CSS": {
-        styles: {'.MathJax_Display': {"margin": 0}}
-    }
-});
-</script><!--[if lt IE 9]><script src="../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<!--[if lt IE 9]><script src="../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
 <meta property="og:site_name" content="Unidata Python Training">
 <meta property="og:title" content="Introduction to MetPy">
 <meta property="og:url" content="https://unidata.github.io/python-training/workshop/Metpy_Introduction/introduction-to-metpy/">
@@ -43,7 +31,7 @@ Units and MetPy
 MetPy Constants
 MetPy Cal">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2020-01-17T08:17:48-07:00">
+<meta property="article:published_time" content="2020-08-21T17:12:22-06:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -55,7 +43,7 @@ navbar-dark bg-primary
 "><div class="container">
 <!-- This keeps the margins nice -->
         <a class="navbar-brand" href="https://unidata.github.io/python-training/">
-            <img src="https://docs.unidata.ucar.edu/images/logos/unidata_logo_rgb_sm.png" alt="Unidata Python Training" id="logo" class="d-inline-block align-top"><span id="blog-title">Unidata Python Training</span>
+            <img src="https://www.unidata.ucar.edu/images/logos/unidata_logo_rgb_sm.png" alt="Unidata Python Training" id="logo" class="d-inline-block align-top"><span id="blog-title">Unidata Python Training</span>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -294,7 +282,7 @@ navbar-dark bg-primary
 
 
 <div class="output_html rendered_html output_subarea output_execute_result">
-\[5.2832\ meter^2\]
+\[5.2832\ {meter}^{2}\]
 </div>
 
 </div>
@@ -1102,7 +1090,7 @@ A cold front is moving through, decreasing the ambient temperature of 25 degC at
 <div class="prompt input_prompt">In [25]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mpcalc</span><span class="o">.</span><span class="n">dewpoint_rh</span><span class="p">(</span><span class="mi">25</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span><span class="p">,</span> <span class="mi">75</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">percent</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mpcalc</span><span class="o">.</span><span class="n">dewpoint_from_relative_humidity</span><span class="p">(</span><span class="mi">25</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span><span class="p">,</span> <span class="mi">75</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">percent</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -1112,18 +1100,6 @@ A cold front is moving through, decreasing the ambient temperature of 25 degC at
 <div class="output_wrapper">
 <div class="output">
 
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>/home/travis/miniconda/envs/unidata/lib/python3.7/site-packages/metpy/xarray.py:655: MetpyDeprecationWarning: The dewpoint_rh function was deprecated in version 0.12. This function has been renamed dewpoint_from_relative_humidity.
-  return func(*args, **kwargs)
-</pre>
-</div>
-</div>
 
 <div class="output_area">
 

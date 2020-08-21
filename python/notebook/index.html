@@ -10,27 +10,15 @@
 <link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
 <meta name="theme-color" content="#33758C">
 <meta name="generator" content="Nikola (getnikola.com)">
-<link rel="alternate" type="application/rss+xml" title="RSS" href="../../rss.xml">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
 <link rel="canonical" href="https://unidata.github.io/python-training/python/notebook/">
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-    tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-        processEscapes: true
-    },
-    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
-    "HTML-CSS": {
-        styles: {'.MathJax_Display': {"margin": 0}}
-    }
-});
-</script><!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
 <meta property="og:site_name" content="Unidata Python Training">
 <meta property="og:title" content="How to Start and Run a Jupyter Notebook">
 <meta property="og:url" content="https://unidata.github.io/python-training/python/notebook/">
 <meta property="og:description" content="As discussed in the introduction, Jupyter notebooks provide a tremendous advantage for scientific computing, analysis and visualization. Here, we will explain how to start a Jupyter notebook. We will ">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2020-01-17T08:10:00-07:00">
+<meta property="article:published_time" content="2020-08-21T17:08:18-06:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -42,7 +30,7 @@ navbar-dark bg-primary
 "><div class="container">
 <!-- This keeps the margins nice -->
         <a class="navbar-brand" href="https://unidata.github.io/python-training/">
-            <img src="https://docs.unidata.ucar.edu/images/logos/unidata_logo_rgb_sm.png" alt="Unidata Python Training" id="logo" class="d-inline-block align-top"><span id="blog-title">Unidata Python Training</span>
+            <img src="https://www.unidata.ucar.edu/images/logos/unidata_logo_rgb_sm.png" alt="Unidata Python Training" id="logo" class="d-inline-block align-top"><span id="blog-title">Unidata Python Training</span>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -98,20 +86,20 @@ navbar-dark bg-primary
 <p>On Mac OS X, create a Desktop folder with the Finder called <code>my-notebook</code>. <a href="conda-osx.html">In the last section</a>, we learned how to start the OS X Terminal. Launch the Terminal again so that we may start Jupyter. Change to that directory (i.e., open the newly created <code>my-notebook</code> folder) with the <code>cd</code> command: <code>cd ~/Desktop/my-notebook</code>. The <code>~</code> character is a shortcut to indicate you are at your home directory.</p>
 <p>On Windows, <a href="http://windows.microsoft.com/en-us/windows/create-new-folder">create a Desktop folder</a> called <code>my-notebook</code>. Hold down the shift key and right-click on the newly created folder. A context menu will appear and there will be an option to, "Open command window here". Click this option to launch the Windows Command Prompt at that specific location.</p>
 <p>We can now start our Jupyter notebook with this command:</p>
-<pre class="code literal-block"><span></span><span class="err">jupyter notebook</span>
-</pre>
+<pre class="code literal-block"><span></span><code><span class="err">jupyter notebook</span>
+</code></pre>
 
 
 <p>Once entered, this command will automatically launch your default web browser with a new notebook in an empty directory.</p>
 <p>To actually create a notebook, go to the New, Python 3 menu item.</p>
 <p>Enter some code in the first cell:</p>
-<pre class="code literal-block"><span></span><span class="err">print("hello world")</span>
-</pre>
+<pre class="code literal-block"><span></span><code><span class="err">print("hello world")</span>
+</code></pre>
 
 
 <p>and press Shift-Enter to actually run the cell yielding</p>
-<pre class="code literal-block"><span></span><span class="err">hello world</span>
-</pre>
+<pre class="code literal-block"><span></span><code><span class="err">hello world</span>
+</code></pre>
 
 
 <!-- Cannot handle in pure markdown b/c of onclick -->

@@ -10,21 +10,9 @@
 <link href="../../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
 <meta name="theme-color" content="#33758C">
 <meta name="generator" content="Nikola (getnikola.com)">
-<link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.xml">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../../rss.xml">
 <link rel="canonical" href="https://unidata.github.io/python-training/workshop/NumPy/numpy-broadcasting-and-vectorization/">
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-    tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-        processEscapes: true
-    },
-    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
-    "HTML-CSS": {
-        styles: {'.MathJax_Display': {"margin": 0}}
-    }
-});
-</script><!--[if lt IE 9]><script src="../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<!--[if lt IE 9]><script src="../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
 <meta property="og:site_name" content="Unidata Python Training">
 <meta property="og:title" content="NumPy Broadcasting and Vectorization">
 <meta property="og:url" content="https://unidata.github.io/python-training/workshop/NumPy/numpy-broadcasting-and-vectorization/">
@@ -36,7 +24,7 @@ Questions¶
 How can we work with arrays of differing shapes without needing to manually loop or copy data?
 How can we reframe operations o">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2020-01-17T08:16:00-07:00">
+<meta property="article:published_time" content="2020-08-21T17:13:40-06:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -48,7 +36,7 @@ navbar-dark bg-primary
 "><div class="container">
 <!-- This keeps the margins nice -->
         <a class="navbar-brand" href="https://unidata.github.io/python-training/">
-            <img src="https://docs.unidata.ucar.edu/images/logos/unidata_logo_rgb_sm.png" alt="Unidata Python Training" id="logo" class="d-inline-block align-top"><span id="blog-title">Unidata Python Training</span>
+            <img src="https://www.unidata.ucar.edu/images/logos/unidata_logo_rgb_sm.png" alt="Unidata Python Training" id="logo" class="d-inline-block align-top"><span id="blog-title">Unidata Python Training</span>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -1419,7 +1407,7 @@ What values should we be expecting to get for the 2nd derivative?
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([20.1, 22.9, 21.6, 17.8, 15.7, 21.2, 20.4, 26.7, 18.6, 15.6])</pre>
+<pre>array([26.7, 32.5, 15.9, 22.9, 14.4, 24.7, 15.2, 21.8, 21.1, 23.2])</pre>
 </div>
 
 </div>
@@ -1479,8 +1467,8 @@ What values should we be expecting to get for the 2nd derivative?
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([ 0.        , 21.53333333, 20.76666667, 18.36666667, 18.23333333,
-       19.1       , 22.76666667, 21.9       , 20.3       ,  0.        ])</pre>
+<pre>array([ 0.        , 25.03333333, 23.76666667, 17.73333333, 20.66666667,
+       18.1       , 20.56666667, 19.36666667, 22.03333333,  0.        ])</pre>
 </div>
 
 </div>
@@ -1524,8 +1512,8 @@ What values should we be expecting to get for the 2nd derivative?
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([21.53333333, 20.76666667, 18.36666667, 18.23333333, 19.1       ,
-       22.76666667, 21.9       , 20.3       ])</pre>
+<pre>array([25.03333333, 23.76666667, 17.73333333, 20.66666667, 18.1       ,
+       20.56666667, 19.36666667, 22.03333333])</pre>
 </div>
 
 </div>
@@ -1568,7 +1556,7 @@ What values should we be expecting to get for the 2nd derivative?
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([20.1, 22.9, 21.6, 17.8, 15.7, 21.2, 20.4, 26.7, 18.6, 15.6])</pre>
+<pre>array([26.7, 32.5, 15.9, 22.9, 14.4, 24.7, 15.2, 21.8, 21.1, 23.2])</pre>
 </div>
 
 </div>
@@ -1617,14 +1605,14 @@ What values should we be expecting to get for the 2nd derivative?
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([[20.1, 22.9, 21.6],
-       [22.9, 21.6, 17.8],
-       [21.6, 17.8, 15.7],
-       [17.8, 15.7, 21.2],
-       [15.7, 21.2, 20.4],
-       [21.2, 20.4, 26.7],
-       [20.4, 26.7, 18.6],
-       [26.7, 18.6, 15.6]])</pre>
+<pre>array([[26.7, 32.5, 15.9],
+       [32.5, 15.9, 22.9],
+       [15.9, 22.9, 14.4],
+       [22.9, 14.4, 24.7],
+       [14.4, 24.7, 15.2],
+       [24.7, 15.2, 21.8],
+       [15.2, 21.8, 21.1],
+       [21.8, 21.1, 23.2]])</pre>
 </div>
 
 </div>
@@ -1667,8 +1655,8 @@ What values should we be expecting to get for the 2nd derivative?
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([21.53333333, 20.76666667, 18.36666667, 18.23333333, 19.1       ,
-       22.76666667, 21.9       , 20.3       ])</pre>
+<pre>array([25.03333333, 23.76666667, 17.73333333, 20.66666667, 18.1       ,
+       20.56666667, 19.36666667, 22.03333333])</pre>
 </div>
 
 </div>
@@ -1712,14 +1700,14 @@ What values should we be expecting to get for the 2nd derivative?
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([[  20.1,   22.9, 2000. ],
-       [  22.9, 2000. ,   17.8],
-       [2000. ,   17.8,   15.7],
-       [  17.8,   15.7,   21.2],
-       [  15.7,   21.2,   20.4],
-       [  21.2,   20.4,   26.7],
-       [  20.4,   26.7,   18.6],
-       [  26.7,   18.6,   15.6]])</pre>
+<pre>array([[  26.7,   32.5, 2000. ],
+       [  32.5, 2000. ,   22.9],
+       [2000. ,   22.9,   14.4],
+       [  22.9,   14.4,   24.7],
+       [  14.4,   24.7,   15.2],
+       [  24.7,   15.2,   21.8],
+       [  15.2,   21.8,   21.1],
+       [  21.8,   21.1,   23.2]])</pre>
 </div>
 
 </div>
@@ -1790,13 +1778,13 @@ What values should we be expecting to get for the 2nd derivative?
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([[7, 7, 7, ..., 7, 6, 6],
-       [7, 7, 6, ..., 7, 7, 7],
-       [7, 7, 7, ..., 7, 7, 7],
+<pre>array([[6, 8, 7, ..., 6, 7, 6],
+       [8, 7, 7, ..., 7, 6, 6],
+       [8, 6, 7, ..., 8, 7, 8],
        ...,
-       [7, 5, 7, ..., 7, 6, 7],
-       [6, 8, 8, ..., 7, 6, 7],
-       [7, 7, 6, ..., 7, 6, 7]])</pre>
+       [6, 7, 7, ..., 7, 7, 7],
+       [7, 7, 6, ..., 7, 7, 6],
+       [7, 6, 7, ..., 7, 6, 8]])</pre>
 </div>
 
 </div>
@@ -1872,13 +1860,13 @@ What values should we be expecting to get for the 2nd derivative?
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([[737.5, 737.5, 737.5, ..., 737.5, 775. , 775. ],
-       [737.5, 737.5, 775. , ..., 737.5, 737.5, 737.5],
-       [737.5, 737.5, 737.5, ..., 737.5, 737.5, 737.5],
+<pre>array([[775. , 700. , 737.5, ..., 775. , 737.5, 775. ],
+       [700. , 737.5, 737.5, ..., 737.5, 775. , 775. ],
+       [700. , 775. , 737.5, ..., 700. , 737.5, 700. ],
        ...,
-       [737.5, 812.5, 737.5, ..., 737.5, 775. , 737.5],
-       [775. , 700. , 700. , ..., 737.5, 775. , 737.5],
-       [737.5, 737.5, 775. , ..., 737.5, 775. , 737.5]])</pre>
+       [775. , 737.5, 737.5, ..., 737.5, 737.5, 737.5],
+       [737.5, 737.5, 775. , ..., 737.5, 737.5, 775. ],
+       [737.5, 775. , 737.5, ..., 737.5, 775. , 700. ]])</pre>
 </div>
 
 </div>
@@ -1967,19 +1955,19 @@ What values should we be expecting to get for the 2nd derivative?
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([[-14.74393253, -11.27464956,  -9.28431445, ...,  -9.91771046,
-         -9.91589928, -10.51022177],
-       [-14.10386876,  -9.86277966,  -9.27660136, ..., -10.31874454,
-        -10.68160248,  -9.18095511],
-       [-10.10994669, -10.51009102,  -9.12803363, ..., -10.49617632,
-        -12.6296744 , -10.08161021],
+<pre>array([[ -8.49849538, -11.86346253, -10.59476414, ..., -10.25321287,
+        -11.06946152,  -5.40021997],
+       [-14.12849685,  -9.49543339,  -9.64698495, ..., -13.28628111,
+        -10.27942315,  -8.16932535],
+       [-10.55241548,  -7.50442591, -11.82188452, ...,  -9.69862276,
+        -11.55961534, -11.76371663],
        ...,
-       [-10.64039796,  -5.60686186, -12.65882205, ..., -13.51045102,
-         -8.94736546,  -8.70406772],
-       [ -8.04172443, -11.34267057, -11.3133564 , ...,  -9.41633544,
-         -7.05314116, -10.1051816 ],
-       [ -9.79875788,  -8.54531154, -10.040366  , ..., -12.12941304,
-         -5.81029834,  -4.75388255]])</pre>
+       [ -5.03839888, -12.18861026, -10.85309033, ..., -12.49289648,
+         -9.94527186,  -8.43937177],
+       [-11.55436194,  -9.40906216,  -9.17521948, ..., -11.51277827,
+        -12.66087111,  -1.55703951],
+       [-14.93331276, -10.28799653,  -9.77035669, ...,  -8.90109127,
+         -7.73136493, -12.57822851]])</pre>
 </div>
 
 </div>
@@ -2113,19 +2101,19 @@ What values should we be expecting to get for the 2nd derivative?
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([[-14.74393253, -11.27464956,  -9.28431445, ...,  -9.91771046,
-         -9.91589928, -10.51022177],
-       [-14.10386876,  -9.86277966,  -9.27660136, ..., -10.31874454,
-        -10.68160248,  -9.18095511],
-       [-10.10994669, -10.51009102,  -9.12803363, ..., -10.49617632,
-        -12.6296744 , -10.08161021],
+<pre>array([[ -8.49849538, -11.86346253, -10.59476414, ..., -10.25321287,
+        -11.06946152,  -5.40021997],
+       [-14.12849685,  -9.49543339,  -9.64698495, ..., -13.28628111,
+        -10.27942315,  -8.16932535],
+       [-10.55241548,  -7.50442591, -11.82188452, ...,  -9.69862276,
+        -11.55961534, -11.76371663],
        ...,
-       [-10.64039796,  -5.60686186, -12.65882205, ..., -13.51045102,
-         -8.94736546,  -8.70406772],
-       [ -8.04172443, -11.34267057, -11.3133564 , ...,  -9.41633544,
-         -7.05314116, -10.1051816 ],
-       [ -9.79875788,  -8.54531154, -10.040366  , ..., -12.12941304,
-         -5.81029834,  -4.75388255]])</pre>
+       [ -5.03839888, -12.18861026, -10.85309033, ..., -12.49289648,
+         -9.94527186,  -8.43937177],
+       [-11.55436194,  -9.40906216,  -9.17521948, ..., -11.51277827,
+        -12.66087111,  -1.55703951],
+       [-14.93331276, -10.28799653,  -9.77035669, ...,  -8.90109127,
+         -7.73136493, -12.57822851]])</pre>
 </div>
 
 </div>

@@ -10,27 +10,15 @@
 <link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
 <meta name="theme-color" content="#33758C">
 <meta name="generator" content="Nikola (getnikola.com)">
-<link rel="alternate" type="application/rss+xml" title="RSS" href="../../rss.xml">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
 <link rel="canonical" href="https://unidata.github.io/python-training/python/conda-windows/">
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-    tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-        processEscapes: true
-    },
-    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
-    "HTML-CSS": {
-        styles: {'.MathJax_Display': {"margin": 0}}
-    }
-});
-</script><!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
 <meta property="og:site_name" content="Unidata Python Training">
 <meta property="og:title" content="Getting Going with Python on a Windows">
 <meta property="og:url" content="https://unidata.github.io/python-training/python/conda-windows/">
 <meta property="og:description" content="The aim of this web page is to help you get started with Python on Windows. We will explain what a package management tool is, how to download conda package management tool via the Anaconda installer,">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2020-01-17T08:10:00-07:00">
+<meta property="article:published_time" content="2020-08-21T17:08:18-06:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -42,7 +30,7 @@ navbar-dark bg-primary
 "><div class="container">
 <!-- This keeps the margins nice -->
         <a class="navbar-brand" href="https://unidata.github.io/python-training/">
-            <img src="https://docs.unidata.ucar.edu/images/logos/unidata_logo_rgb_sm.png" alt="Unidata Python Training" id="logo" class="d-inline-block align-top"><span id="blog-title">Unidata Python Training</span>
+            <img src="https://www.unidata.ucar.edu/images/logos/unidata_logo_rgb_sm.png" alt="Unidata Python Training" id="logo" class="d-inline-block align-top"><span id="blog-title">Unidata Python Training</span>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -101,12 +89,12 @@ navbar-dark bg-primary
 <h3>Interacting with <code>conda</code>
 </h3>
 <p>Let's make sure conda is installed by entering this instruction on the command line:</p>
-<pre class="code literal-block"><span></span><span class="err">conda list</span>
-</pre>
+<pre class="code literal-block"><span></span><code><span class="err">conda list</span>
+</code></pre>
 
 
 <p>yields</p>
-<pre class="code literal-block"><span></span><span class="err"># packages in environment at C:\Users\Jane\AppData\Local\Continuum\Anaconda3:</span>
+<pre class="code literal-block"><span></span><code><span class="err"># packages in environment at C:\Users\Jane\AppData\Local\Continuum\Anaconda3:</span>
 <span class="err">#</span>
 <span class="err">alabaster                 0.7.7                    py35_0  </span>
 <span class="err">anaconda                  4.0.0               np110py35_0  </span>
@@ -119,34 +107,34 @@ navbar-dark bg-primary
 <span class="err">yaml                      0.1.6                         0  </span>
 <span class="err">zeromq                    4.1.3                         0  </span>
 <span class="err">zlib                      1.2.8                         0</span>
-</pre>
+</code></pre>
 
 
 <p>which will list linked packages in a conda environment. You’ll notice libraries such as the scientific computing library <a href="http://www.numpy.org/">numpy</a> that you will probably be making use of.</p>
 <h3>Getting Our Feet Wet by Installing Metpy with <code>conda</code>
 </h3>
 <p>We first have to give <code>conda</code> an instruction on where to find <code>metpy</code> on the <code>conda-forge</code> channel.</p>
-<pre class="code literal-block"><span></span><span class="err">conda config --add channels conda-forge</span>
-</pre>
+<pre class="code literal-block"><span></span><code><span class="err">conda config --add channels conda-forge</span>
+</code></pre>
 
 
 <p>We can now install <code>metpy</code>:</p>
-<pre class="code literal-block"><span></span><span class="err">conda install metpy</span>
-</pre>
+<pre class="code literal-block"><span></span><code><span class="err">conda install metpy</span>
+</code></pre>
 
 
 <p>Let's verify we installed <code>metpy</code> with the following command:</p>
-<pre class="code literal-block"><span></span><span class="err">conda list</span>
-</pre>
+<pre class="code literal-block"><span></span><code><span class="err">conda list</span>
+</code></pre>
 
 
 <p>should yield amongst other libraries:</p>
-<pre class="code literal-block"><span></span><span class="err"># packages in environment at /Users/chastang/anaconda:</span>
+<pre class="code literal-block"><span></span><code><span class="err"># packages in environment at /Users/chastang/anaconda:</span>
 <span class="err">#</span>
 <span class="err">...</span>
 <span class="err">metpy                     0.3.0                    py35_1    conda-forge</span>
 <span class="err">...</span>
-</pre>
+</code></pre>
 
 
 <h3>In Summary</h3>

@@ -10,27 +10,15 @@
 <link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
 <meta name="theme-color" content="#33758C">
 <meta name="generator" content="Nikola (getnikola.com)">
-<link rel="alternate" type="application/rss+xml" title="RSS" href="../../rss.xml">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
 <link rel="canonical" href="https://unidata.github.io/python-training/python/times_and_dates/">
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-    tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-        processEscapes: true
-    },
-    displayAlign: 'center', // Change this to 'left' if you want left-aligned equations.
-    "HTML-CSS": {
-        styles: {'.MathJax_Display': {"margin": 0}}
-    }
-});
-</script><!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="UCAR/Unidata">
 <meta property="og:site_name" content="Unidata Python Training">
 <meta property="og:title" content="Times_and_Dates">
 <meta property="og:url" content="https://unidata.github.io/python-training/python/times_and_dates/">
 <meta property="og:description" content="Times and Dates¶Time is an essential component of nearly all geoscience data. Timescales span orders of magnitude from microseconds for lightning, hours for a supercell thunderstorm, days for a global">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2020-01-17T08:18:11-07:00">
+<meta property="article:published_time" content="2020-08-21T17:15:52-06:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -42,7 +30,7 @@ navbar-dark bg-primary
 "><div class="container">
 <!-- This keeps the margins nice -->
         <a class="navbar-brand" href="https://unidata.github.io/python-training/">
-            <img src="https://docs.unidata.ucar.edu/images/logos/unidata_logo_rgb_sm.png" alt="Unidata Python Training" id="logo" class="d-inline-block align-top"><span id="blog-title">Unidata Python Training</span>
+            <img src="https://www.unidata.ucar.edu/images/logos/unidata_logo_rgb_sm.png" alt="Unidata Python Training" id="logo" class="d-inline-block align-top"><span id="blog-title">Unidata Python Training</span>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -180,7 +168,7 @@ navbar-dark bg-primary
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>1579274288.5981417
+<pre>1598051749.8652434
 </pre>
 </div>
 </div>
@@ -229,7 +217,7 @@ navbar-dark bg-primary
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>The benchmark took 1.0012426376342773 seconds
+<pre>The benchmark took 1.0005979537963867 seconds
 </pre>
 </div>
 </div>
@@ -652,7 +640,7 @@ Next, we create two <code>Coord</code> objects: <code>ny</code> and <code>paris<
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>{'UNITS': {'position': 'ft', 'elevation': 'ft', 'air_temp': 'Celsius'}, 'QC_SUMMARY': {'QC_TESTS_APPLIED': ['sl_range_check'], 'TOTAL_OBSERVATIONS_FLAGGED': 0.0, 'PERCENT_OF_TOTAL_OBSERVATIONS_FLAGGED': 0.0}, 'STATION': [{'STATUS': 'ACTIVE', 'MNET_ID': '1', 'PERIOD_OF_RECORD': {'start': '2004-11-18T00:00:00Z', 'end': '2020-01-04T05:15:00Z'}, 'ELEVATION': '98', 'NAME': 'Shemya, Eareckson AFB', 'STID': 'PASY', 'SENSOR_VARIABLES': {'date_time': {'date_time': {}}, 'air_temp': {'air_temp_set_1': {'position': '6.56'}}}, 'ELEV_DEM': '114.8', 'LONGITUDE': '174.11667', 'STATE': 'AK', 'OBSERVATIONS': {'date_time': ['2016-06-01T00:56:00Z', '2016-06-01T01:26:00Z', '2016-06-01T01:56:00Z', '2016-06-01T02:40:00Z', '2016-06-01T02:56:00Z', '2016-06-01T03:56:00Z', '2016-06-01T04:45:00Z', '2016-06-01T04:56:00Z', '2016-06-01T05:56:00Z'], 'air_temp_set_1': [8.3, 8.0, 8.3, 8.0, 7.8, 7.8, 7.0, 7.2, 7.2]}, 'RESTRICTED': False, 'QC_FLAGGED': False, 'LATITUDE': '52.71667', 'TIMEZONE': 'America/Adak', 'ID': '12638'}], 'SUMMARY': {'DATA_QUERY_TIME': '6.13284111023 ms', 'RESPONSE_CODE': 1, 'RESPONSE_MESSAGE': 'OK', 'METADATA_RESPONSE_TIME': '117.57183075 ms', 'DATA_PARSING_TIME': '0.720977783203 ms', 'TOTAL_DATA_TIME': '6.85381889343 ms', 'NUMBER_OF_OBJECTS': 1, 'FUNCTION_USED': 'time_data_parser'}}
+<pre>{'UNITS': {'position': 'ft', 'elevation': 'ft', 'air_temp': 'Celsius'}, 'QC_SUMMARY': {'QC_CHECKS_APPLIED': ['sl_range_check'], 'TOTAL_OBSERVATIONS_FLAGGED': 0.0, 'PERCENT_OF_TOTAL_OBSERVATIONS_FLAGGED': 0.0}, 'STATION': [{'STATUS': 'ACTIVE', 'MNET_ID': '1', 'PERIOD_OF_RECORD': {'start': '2004-11-18T00:00:00Z', 'end': '2020-07-24T19:58:00Z'}, 'ELEVATION': '98', 'NAME': 'Shemya, Eareckson AFB', 'STID': 'PASY', 'SENSOR_VARIABLES': {'date_time': {'date_time': {}}, 'air_temp': {'air_temp_set_1': {'position': '6.56'}}}, 'ELEV_DEM': '114.8', 'LONGITUDE': '174.11667', 'STATE': 'AK', 'OBSERVATIONS': {'date_time': ['2016-06-01T00:56:00Z', '2016-06-01T01:26:00Z', '2016-06-01T01:56:00Z', '2016-06-01T02:40:00Z', '2016-06-01T02:56:00Z', '2016-06-01T03:56:00Z', '2016-06-01T04:45:00Z', '2016-06-01T04:56:00Z', '2016-06-01T05:56:00Z'], 'air_temp_set_1': [8.3, 8.0, 8.3, 8.0, 7.8, 7.8, 7.0, 7.2, 7.2]}, 'RESTRICTED': False, 'QC_FLAGGED': False, 'LATITUDE': '52.71667', 'TIMEZONE': 'America/Adak', 'ID': '12638'}], 'SUMMARY': {'DATA_QUERY_TIME': '13.4801864624 ms', 'RESPONSE_CODE': 1, 'RESPONSE_MESSAGE': 'OK', 'METADATA_RESPONSE_TIME': '75.6781101227 ms', 'DATA_PARSING_TIME': '0.59700012207 ms', 'TOTAL_DATA_TIME': '14.0790939331 ms', 'NUMBER_OF_OBJECTS': 1, 'FUNCTION_USED': 'time_data_parser'}}
 </pre>
 </div>
 </div>
@@ -811,8 +799,8 @@ The type of the 'tide_length' variable is &lt;class 'datetime.timedelta'&gt;.
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>I am time zone naive 2020-01-17 15:18:10.125979.
-I am time zone aware 2020-01-17 08:18:10.176597-07:00.
+<pre>I am time zone naive 2020-08-21 23:15:51.318313.
+I am time zone aware 2020-08-21 17:15:51.405911-06:00.
 </pre>
 </div>
 </div>
@@ -863,8 +851,8 @@ I am time zone aware 2020-01-17 08:18:10.176597-07:00.
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>The UTC time is January 17, 2020, 3:18PM.
-The 'US/Mountain' time is January 17, 2020, 8:18AM.
+<pre>The UTC time is August 21, 2020, 11:15PM.
+The 'US/Mountain' time is August 21, 2020, 5:15PM.
 </pre>
 </div>
 </div>
