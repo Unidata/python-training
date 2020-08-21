@@ -34,5 +34,4 @@ plt.title('500-hPa Geopotential Heights, Absolute Vorticity \
           (1/s), and Wind Barbs (kts)', loc='left')
 plt.title(f'VALID: {vtime}', loc='right')
 
-plt.tight_layout()
 plt.show()

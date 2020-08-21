@@ -24,5 +24,4 @@ stationplot.plot_parameter((1.5, -1), vwnd_500[::3, ::3].ravel()[mask],
 plt.title('Geopotential (m; top), U-wind (m/s; Lower Left), \
           V-wind (m/s; Lower Right)')
 
-plt.tight_layout()
 plt.show()
