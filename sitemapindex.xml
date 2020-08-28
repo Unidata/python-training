@@ -7,10 +7,10 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <sitemap>
   <loc>https://unidata.github.io/python-training/rss.xml</loc>
-  <lastmod>2020-08-21T23:23:00Z</lastmod>
+  <lastmod>2020-08-28T15:43:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://unidata.github.io/python-training/sitemap.xml</loc>
-  <lastmod>2020-08-21T23:23:00Z</lastmod>
+  <lastmod>2020-08-28T15:43:00Z</lastmod>
  </sitemap>
 </sitemapindex>
