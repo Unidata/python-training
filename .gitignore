@@ -1,6 +1,7 @@
 .DS_Store
 .doit.db.db
 *.swp
+.vscode/
 
 .idea/*
 .ipynb_checkpoints/
