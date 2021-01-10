@@ -73,7 +73,7 @@ What follows is a series of Jupyter notebooks on learning Python with geoscience
 - [Control Flow](/python/controlflowintro)
     * [Conditional Statements](/python/conditionals)
     * [Loops](/python/loops)
-    * [Functions](/python/functionsb)
+    * [Functions](/python/functions)
 - [Basic Data Structures](/python/basic_data_structures)
 - [Basic Input and Output](/python/basic_input_and_output)
 - [Times and Dates](/python/times_and_dates)
