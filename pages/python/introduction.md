@@ -49,4 +49,10 @@ In addition, Python has a rich ecosystem for scientific inquiry in the form of m
 -   [xarray](http://xarray.pydata.org/en/stable/), N-D array handling with metadata
 -   [Pandas](https://pandas.pydata.org/pandas-docs/stable/), library for tabular data analysis
 
+Here are quick tutorials for some of these popular Python packages:
+
+- [Pandas Tutorial](https://jobtensor.com/Tutorial/Python/en/Pandas)
+- [NumPy Tutorial](https://jobtensor.com/Tutorial/Python/en/NumPy)
+- [SciPy Tutorial](https://jobtensor.com/Tutorial/Python/en/SciPy)
+
 In summary, Python's pragmatic focus for getting work done makes it an excellent choice for science students and professionals.
